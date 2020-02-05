@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 
-export class HomeScreen extends Component {
+export class HomeScreen extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
