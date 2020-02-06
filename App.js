@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator, HeaderStyleInterpolators, TransitionPresets } from 'react-navigation-stack';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import { Transition } from 'react-native-reanimated';
 
@@ -10,14 +10,47 @@ import { ROUTES } from 'app/src/constants/Routes';
 
 import { AuthLoadingScreen } from 'app/src/screens/AuthLoadingScreen';
 import { HomeScreen        } from 'app/src/screens/HomeScreen';
+import { CreateQuizScreen  } from 'app/src/screens/CreateQuizScreen';
+
+import { ViewQuizModal } from 'app/src/modals/ViewQuizModal';
+
+import { useScreens } from 'react-native-screens';
+useScreens();
+
 
 const AppStack = createStackNavigator({ 
-  [ROUTES.homeRoute]: HomeScreen,
-});
+    [ROUTES.homeRoute      ]: HomeScreen, 
+    [ROUTES.createQuizRoute]: CreateQuizScreen,
+  }, {
+    mode: 'card',
+    defaultNavigationOptions: {
+      headerMode: 'float',
+      headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
+      headerTransparent: true,
+    },
+  }
+);
+
+const AppModalStack = createStackNavigator({ 
+    [ROUTES.appStackRoute     ]: AppStack     ,
+    [ROUTES.modalViewQuizRoute]: ViewQuizModal,
+  }, {
+    mode: 'modal',
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      ...TransitionPresets.ModalPresentationIOS,
+      gestureEnabled: true,
+      cardOverlayEnabled: true,
+      cardStyle: {
+        backgroundColor: 'transparent',
+      },
+    },
+  }
+);
 
 const rootNavigator = createAnimatedSwitchNavigator({
     [ROUTES.authRoute]: AuthLoadingScreen,
-    [ROUTES.appRoute ]: AppStack,
+    [ROUTES.appRoute ]: AppModalStack,
   },{
     initialRouteName: ROUTES.authRoute,
     transition: (
