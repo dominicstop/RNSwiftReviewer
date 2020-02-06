@@ -37,6 +37,8 @@ target 'RNSwiftReviewer' do
   pod 'Folly', :podspec => "#{rnPrefix}/third-party-podspecs/Folly.podspec"
 
   # Other native modules
+  # RNN
+  pod 'ReactNativeNavigation', :podspec => '../node_modules/react-native-navigation/ReactNativeNavigation.podspec'
 
   # Automatically detect installed unimodules
   use_unimodules!
