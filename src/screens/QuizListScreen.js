@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Clipboard } from 'react-native';
 
-const { Navigation } = require('react-native-navigation');
 import { ROUTES } from 'app/src/constants/Routes';
+import { ModalController } from 'app/src/functions/ModalController';
 
 
 export class QuizListScreen extends React.Component {
@@ -11,6 +11,7 @@ export class QuizListScreen extends React.Component {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: 'blue',
     },
   });
 
@@ -19,24 +20,7 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressNavigate = () => {
-    //const { navigation } = this.props;
-    //navigation.navigate(ROUTES.modalViewQuizRoute);
-
-    Navigation.showModal({
-      component: { 
-        name: 'RNNModalViewQuiz',
-        options: {
-          modalPresentationStyle: 'pageSheet',
-          modal: {
-            swipeToDismiss: true,
-            background: 'transparent',
-          },
-          layout: {
-            backgroundColor: 'transparent',
-          },
-        },
-      },
-    });
+    ModalController.showModal();
   };
 
   render() {

@@ -1,4 +1,4 @@
-/** ROUTE keys */
+/** ROUTE keys for react-navigation */
 export const ROUTES = {
   // rootnav routes
   authRoute: 'authRoute',
@@ -12,4 +12,10 @@ export const ROUTES = {
   // home tabnav routes
   TabQuizRoute: 'TabQuizRoute',
   TabExamRoute: 'TabExamRoute',
+};
+
+export const RNN_ROUTES = {
+  RootReactNavigationRoute: 'RootReactNavigationRoute',
+  // modal comps/routes
+  RNNModalViewQuiz: 'RNNModalViewQuiz', 
 };

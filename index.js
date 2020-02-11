@@ -3,15 +3,17 @@ import App from './App';
 
 import { ViewQuizModal } from 'app/src/modals/ViewQuizModal';
 
-Navigation.registerComponent(`rootReactNavigationRoute`, () => App          );
-Navigation.registerComponent(`RNNModalViewQuiz`        , () => ViewQuizModal);
+import { RNN_ROUTES } from 'app/src/constants/Routes';
+
+Navigation.registerComponent(RNN_ROUTES.RootReactNavigationRoute, () => App          );
+Navigation.registerComponent(RNN_ROUTES.RNNModalViewQuiz        , () => ViewQuizModal);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     root: {
       component: {
-        name: "rootReactNavigationRoute"
-      }
+        name: RNN_ROUTES.RootReactNavigationRoute,
+      },
     }
   });
 });
