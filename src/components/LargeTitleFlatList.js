@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { Platform, StyleSheet, Text, View, Dimensions, SectionList } from 'react-native';
+import PropTypes from 'prop-types';
 
 import { HeaderValues } from 'app/src/constants/HeaderValues';
+import { GREY } from 'app/src/constants/Colors';
 
 import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { iOSUIKit } from 'react-native-typography';
+
 import Animated, { Easing } from 'react-native-reanimated';
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add } = Animated;
 
@@ -19,11 +22,12 @@ const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(true);
 
 export class LargeTitleWithSnap extends React.PureComponent {
   static propTypes = {
-    titleText     : PropTypes.string,
-    subtitleText  : PropTypes.string,
-    subtitleHeight: PropTypes.number,
-    showSubtitle  : PropTypes.bool  ,
-    renderSubtitle: PropTypes.func  ,
+    titleText      : PropTypes.string,
+    subtitleText   : PropTypes.string,
+    subtitleHeight : PropTypes.number,
+    showSubtitle   : PropTypes.bool  ,
+    renderSubtitle : PropTypes.func  ,
+    renderTitleIcon: PropTypes.func  ,
   };
 
   static defaultProps = {
@@ -32,13 +36,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
   };
 
   static styles = StyleSheet.create({
-    rootContainer: {
-      flex: 1,
-    },
-    dummyItem1: {
-      width: '100%',
-      height: 50,
-    },
     headerContainer: {
       position: "absolute",
       width: '100%',
@@ -49,6 +46,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
       width: '100%',
       height: '100%',
       backgroundColor: 'white',
+      borderBottomColor: GREY[300],
+      borderBottomWidth: 1,
     },
     subtitleContainer: {
       //backgroundColor: 'green',
@@ -57,6 +56,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
       marginLeft: 10,
       overflow: 'hidden',
       bottom: 0,
+    },
+    titleIconContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     //controls horizontal alignment
     titleWrapper: {
@@ -112,12 +115,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
     });
 
     const diff   = (NAVBAR_FHEIGHT - NAVBAR_NORMAL);
-    const offset = (diff - NAVBAR_NORMAL)
+    const offset = (diff - NAVBAR_NORMAL);
+
     this._sectionListTransY = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
       outputRange: [offset,  0],
-      extrapolateLeft : Extrapolate.EXTEND,
-      extrapolateRight: Extrapolate.CLAMP
+      extrapolate: Extrapolate.CLAMP,
     });
 
     this._bGOpacity = interpolate(this._scrollY, {
@@ -186,12 +189,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
   _handleOnLayoutTitleLarge = ({nativeEvent}) => {
     if(!this._isTitleLargeMeasured){
       const { x, y, width, height } = nativeEvent.layout;
+
       this._titleLargeHeight.setValue(height);
       this._titleLargeWidth.setValue(width + (width / 6.15) + 10);
-      console.log(`
-        width: ${width}
-        height: ${height}
-      `);
+
       this._isTitleLargeMeasured = true;
     };
   };
@@ -226,6 +227,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
   _renderHeader(){
     const { styles } = LargeTitleWithSnap;
+    const { renderTitleIcon } = this.props;
 
     const headerContainerStyle = {
       height: this._headerHeight,
@@ -251,7 +253,15 @@ export class LargeTitleWithSnap extends React.PureComponent {
     };
 
     const titleLarge = {
-      fontWeight: concat(this._titleFontWeight, '00')
+      fontWeight: concat(this._titleFontWeight, '00'),
+      ...(renderTitleIcon && { 
+        marginLeft: 7,
+       })
+    };
+
+    const headerParams = {
+      scrollY   : this._scrollY     ,
+      inputRange: [0, NAVBAR_NORMAL],
     };
 
     return(
@@ -262,7 +272,11 @@ export class LargeTitleWithSnap extends React.PureComponent {
         <Animated.View style={[styles.background, backgroundStyle]}/>
         <Animated.View style={[styles.titleWrapper, titleWrapperStyle]}>
           <Animated.View style={[styles.titleContainer, titleContainer]}>
-            <View onLayout={this._handleOnLayoutTitleLarge}>
+            <View 
+              style={styles.titleIconContainer}
+              onLayout={this._handleOnLayoutTitleLarge}
+            >
+              {renderTitleIcon && renderTitleIcon(headerParams)}
               <Animated.Text style={[styles.titleLarge, titleLarge]}>
                 {this.props.titleText}
               </Animated.Text>
@@ -276,12 +290,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
   _renderListHeader = () => {
     const { styles } = LargeTitleWithSnap;
-    const { ListHeaderComponent: header } = this.props;
+    const { renderHeader } = this.props;
 
     return(
       <Fragment>
         <View style={[styles.listHeader, {height: NAVBAR_NORMAL}]}/>
-        {header && header()}
+        {renderHeader && renderHeader()}
       </Fragment>
     );
   };
@@ -312,10 +326,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
     });
 
     return(
-      <View style={styles.rootContainer}>
+      <Fragment>
         {ScrollView}
         {this._renderHeader()}
-      </View>
+      </Fragment>
     );
   };
 };

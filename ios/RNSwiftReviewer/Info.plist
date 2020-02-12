@@ -74,8 +74,6 @@
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow Review to access your reminders</string>
 	<key>UIAppFonts</key>
-	<array>
-		<string>Ionicons.ttf</string>
-	</array>
+	<array/>
 </dict>
 </plist>

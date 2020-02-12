@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import * as Font from 'expo-font';
 
 import * as COLORS  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -19,7 +20,10 @@ export class AuthLoadingScreen extends Component {
   async componentDidMount(){
     const { navigation } = this.props;
 
-    await Helpers.timeout(750);
+    await Promise.all([
+      Helpers.timeout(750),
+    ]);
+
     navigation.navigate(ROUTES.homeRoute);
   };
 

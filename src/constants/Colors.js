@@ -11,6 +11,20 @@ export const BLACK = {
 };
 
 export const GREY = {
+  50 : '#FAFAFA',
+  100: '#F5F5F5',
+  200: '#EEEEEE',
+  300: '#E0E0E0',
+  400: '#BDBDBD',
+  500: '#9E9E9E',
+  600: '#757575',
+  700: '#616161',
+  800: '#424242',
+  900: '#212121',
+};
+
+export const BLUE_GREY = {
+  50 : '#ECEFF1',
   100: '#CFD8DC',
   200: '#B0BEC5',
   300: '#90A4AE',
