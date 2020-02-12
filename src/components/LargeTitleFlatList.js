@@ -1,23 +1,20 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
+import { Platform, StyleSheet, Text, View, Dimensions, SectionList } from 'react-native';
+
+import { HeaderValues } from 'app/src/constants/HeaderValues';
 
 import { BlurView, VibrancyView } from "@react-native-community/blur";
-
-
-import { ScrollView } from 'react-native-gesture-handler';
 import Animated, { Easing } from 'react-native-reanimated';
-const { concat, floor, Extrapolate, interpolate, spring, neq, diffClamp, debug, add, cond, diff, divide, eq, event, exp, lessThan, and, call, block, multiply, pow, set, abs, clockRunning, greaterOrEq, lessOrEq, sqrt, startClock, stopClock, sub, Clock, Value, or, timing } = Animated;
+const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add } = Animated;
 
 const { width: screenWidth } = Dimensions.get('screen');
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+const AnimatedBlurView    = Animated.createAnimatedComponent(BlurView   );
+const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
-const SBAR_HEIGHT   = 20;
-const NAVBAR_LARGE  = 125;
-const NAVBAR_NORMAL = 65;
-const NAVBAR_ADJ    = (NAVBAR_NORMAL - SBAR_HEIGHT  ); 
-const NAVBAR_DIFF   = (NAVBAR_LARGE  - NAVBAR_NORMAL);
+const NAVBAR_NORMAL = HeaderValues.getHeaderHeight     (true);
+const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(true);
 
 
 export class LargeTitleWithSnap extends React.PureComponent {
@@ -31,7 +28,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
   static defaultProps = {
     subtitleHeight: 30,
-    titleText: 'Title',
+    titleText: 'Large Title',
   };
 
   static styles = StyleSheet.create({
@@ -85,6 +82,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
       fontWeight: '400',
       opacity: 0.8,
     },
+    listHeader: {
+      width: '100%', 
+      backgroundColor: 'white'
+    },
   });
 
   constructor(props){
@@ -97,8 +98,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
     this._titleLargeHeight = new Value(-1);
     this._scrollY          = new Value(0 );
 
-    this._diffClampY = diffClamp(this._scrollY, 0, NAVBAR_LARGE);
-    
     this._handleOnScroll = event([{ 
       nativeEvent: ({contentOffset: {y}}) => block([
         set(this._scrollY, y),
@@ -112,10 +111,13 @@ export class LargeTitleWithSnap extends React.PureComponent {
       extrapolateRight: Extrapolate.CLAMP ,
     });
 
-    this._snapTopHeight = interpolate(this._scrollY, {
+    const diff   = (NAVBAR_FHEIGHT - NAVBAR_NORMAL);
+    const offset = (diff - NAVBAR_NORMAL)
+    this._sectionListTransY = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
-      outputRange: [(NAVBAR_FHEIGHT - NAVBAR_NORMAL),  NAVBAR_NORMAL],
-      extrapolate: Extrapolate.CLAMP
+      outputRange: [offset,  0],
+      extrapolateLeft : Extrapolate.EXTEND,
+      extrapolateRight: Extrapolate.CLAMP
     });
 
     this._bGOpacity = interpolate(this._scrollY, {
@@ -159,6 +161,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
       extrapolate: Extrapolate.CLAMP,
     });
     
+    const NAVBAR_ADJ = HeaderValues.getHeaderHeight(false);
     this._titleContainerHeight = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
       outputRange: [add(this._titleLargeHeight, titleMargin), NAVBAR_ADJ],
@@ -167,13 +170,13 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     this._titleTransScale = interpolate(this._scrollY, {
       inputRange : [-NAVBAR_NORMAL, 0, NAVBAR_NORMAL],
-      outputRange: [1, 1, 0.65],
+      outputRange: [1.045, 1, 0.65],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._titleFontWeight = floor(
       interpolate(this._scrollY, {
-        inputRange : [0, (NAVBAR_NORMAL/2.5), NAVBAR_NORMAL],
+        inputRange : [0, (NAVBAR_NORMAL/4), NAVBAR_NORMAL],
         outputRange: [9, 9, 3],
         extrapolate: Extrapolate.CLAMP,
       })
@@ -254,8 +257,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     return(
       <AnimatedBlurView 
         style={[styles.headerContainer, headerContainerStyle]}
-        blurType={"regular"}
-        blurAmount={100}
+        intensity={100}
       >
         <Animated.View style={[styles.background, backgroundStyle]}/>
         <Animated.View style={[styles.titleWrapper, titleWrapperStyle]}>
@@ -272,18 +274,15 @@ export class LargeTitleWithSnap extends React.PureComponent {
     );
   };
 
-  _renderSnapSpacer(){
+  _renderListHeader = () => {
     const { styles } = LargeTitleWithSnap;
-    
-    const snapStyle = {
-      height: this._snapTopHeight,
-    };
+    const { ListHeaderComponent: header } = this.props;
 
     return(
-      <View>
-        <Animated.View style={[{width: '100%'}, snapStyle]}/>
-
-      </View>
+      <Fragment>
+        <View style={[styles.listHeader, {height: NAVBAR_NORMAL}]}/>
+        {header && header()}
+      </Fragment>
     );
   };
 
@@ -291,15 +290,25 @@ export class LargeTitleWithSnap extends React.PureComponent {
     const { styles } = LargeTitleWithSnap;
     const { children } = this.props;
 
+    const sectionListStyle = {
+      paddingTop: NAVBAR_NORMAL,
+      transform : [
+        {translateY: this._sectionListTransY}
+      ]
+    };
+
     let ScrollView = React.cloneElement(children, {
-      scrollEventThrottle: 1,
-      ListHeaderComponent: this._renderSnapSpacer,
-      onScroll: this._handleOnScroll,
-      onScrollEndDrag: this._handleOnScrollEndDrag,
-      snapToOffsets: [NAVBAR_NORMAL],
-      scrollIndicatorInsets: {
-        top: NAVBAR_NORMAL
-      }
+      style: [sectionListStyle],
+      //render + handlers
+      ListHeaderComponent: this._renderListHeader     ,
+      onScrollEndDrag    : this._handleOnScrollEndDrag,
+      onScroll           : this._handleOnScroll       ,
+      //config scrollview
+      scrollEventThrottle: 1              ,
+      snapToOffsets      : [NAVBAR_NORMAL],
+      //adjust insets + offsets
+      scrollIndicatorInsets: { top: NAVBAR_NORMAL },
+      //contentInset: {top: 200}
     });
 
     return(
