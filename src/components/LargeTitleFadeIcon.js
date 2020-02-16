@@ -32,7 +32,7 @@ export class LargeTitleFadeIcon extends React.Component {
 
   render(){
     const { styles } = LargeTitleFadeIcon;
-    const { children: _children, style } = this.props;
+    const { children: _children, ...props } = this.props;
 
     const children = React.Children.toArray(_children);
 
@@ -45,7 +45,7 @@ export class LargeTitleFadeIcon extends React.Component {
     };
 
     return(
-      <View {...{style}}>
+      <View {...props}>
         <Reanimated.View style={[styles.iconBContainer, iconStyleB]}>
           {children[1]}
         </Reanimated.View>

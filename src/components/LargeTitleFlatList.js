@@ -3,14 +3,14 @@ import { Platform, StyleSheet, Text, View, Dimensions, SectionList } from 'react
 import PropTypes from 'prop-types';
 
 import { HeaderValues } from 'app/src/constants/HeaderValues';
-import { GREY, ORANGE, YELLOW } from 'app/src/constants/Colors';
+import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
 
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
 import Animated, { Easing } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add } = Animated;
+const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, debug } = Animated;
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
@@ -30,7 +30,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
     renderSubtitle : PropTypes.func  ,
     renderTitleIcon: PropTypes.func  ,
   };
-
   static defaultProps = {
     subtitleHeight: 30,
     titleText: 'Large Title',
@@ -47,6 +46,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
       borderBottomColor: GREY[500],
       borderBottomWidth: 1,
     },
+    headerContentContainer: {
+      flex: 1,
+      flexDirection: 'row', 
+    },
     background: {
       position: 'absolute',
       width: '100%',
@@ -58,12 +61,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
       width: '100%',
       marginLeft: 10,
       overflow: 'hidden',
-      bottom: 0,
+      bottom: 5,
     },
     titleIconContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      //marginBottom: 3,
+      marginBottom: 5,
     },
     //controls horizontal alignment
     titleWrapper: {
@@ -83,19 +86,25 @@ export class LargeTitleWithSnap extends React.PureComponent {
       //backgroundColor: 'yellow',
       fontSize: 34,
       fontWeight: '900',
+      color: 'white',
     },
     subtitleText: {
       fontSize: 20,
       fontWeight: '400',
+      color: 'white',
+
     },
     listHeader: {
       width: '100%', 
-      backgroundColor: 'white'
     },
   });
 
   constructor(props){
     super(props);
+
+    this.state = {
+      enableSnap: false,
+    };
 
     const subtitleHeight = (props.showSubtitle? props.subtitleHeight : 0);
     const NAVBAR_FHEIGHT = (NAVBAR_LARGE + subtitleHeight);
@@ -107,6 +116,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     this._handleOnScroll = event([{ 
       nativeEvent: ({contentOffset: {y}}) => block([
         set(this._scrollY, y),
+        //sdebug('scrollY: ', this._scrollY),
       ])
     }]);
 
@@ -128,7 +138,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     this._bGOpacity = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
-      outputRange: [0.9, 0.7],
+      outputRange: [1, 0.75],
       extrapolate: Extrapolate.CLAMP,
     });
 
@@ -189,12 +199,17 @@ export class LargeTitleWithSnap extends React.PureComponent {
     );
   };
 
+  componentDidMount = () => {
+    this.setState({enableSnap: true});
+  };
+
   _handleOnLayoutTitleLarge = ({nativeEvent}) => {
     if(!this._isTitleLargeMeasured){
       const { x, y, width, height } = nativeEvent.layout;
 
       this._titleLargeHeight.setValue(height);
       this._titleLargeWidth.setValue(width + (width / 6.15) + 10);
+      //this._scrollY.setValue(0);
 
       this._isTitleLargeMeasured = true;
     };
@@ -276,24 +291,26 @@ export class LargeTitleWithSnap extends React.PureComponent {
         />
         <AnimatedLinearGradient
           style={[styles.background, backgroundStyle]}
-          colors={[ORANGE.A700, YELLOW.A700]}
+          colors={[INDIGO[700], BLUE[500]]}
           start={{x: 0, y: 1}} 
           end  ={{x: 1, y: 0}}
         />
-        <Animated.View style={[styles.titleWrapper, titleWrapperStyle]}>
-          <Animated.View style={[styles.titleContainer, titleContainer]}>
-            <View 
-              style={styles.titleIconContainer}
-              onLayout={this._handleOnLayoutTitleLarge}
-            >
-              {renderTitleIcon && renderTitleIcon(headerParams)}
-              <Animated.Text style={[styles.titleLarge, titleLarge]}>
-                {this.props.titleText}
-              </Animated.Text>
-            </View>
+        <View style={styles.headerContentContainer}>
+          <Animated.View style={[styles.titleWrapper, titleWrapperStyle]}>
+            <Animated.View style={[styles.titleContainer, titleContainer]}>
+              <View 
+                style={styles.titleIconContainer}
+                onLayout={this._handleOnLayoutTitleLarge}
+              >
+                {renderTitleIcon && renderTitleIcon(headerParams)}
+                <Animated.Text style={[styles.titleLarge, titleLarge]}>
+                  {this.props.titleText}
+                </Animated.Text>
+              </View>
+            </Animated.View>
           </Animated.View>
-        </Animated.View>
-        {this._renderSubtitle()}
+          {this._renderSubtitle()}
+        </View>
       </Animated.View>
     );
   };
@@ -303,19 +320,18 @@ export class LargeTitleWithSnap extends React.PureComponent {
     const { renderHeader } = this.props;
 
     return(
-      <Fragment>
-        <View style={[styles.listHeader, {height: NAVBAR_NORMAL}]}/>
+      <View style={[styles.listHeader, {marginTop: NAVBAR_NORMAL}]}>
         {renderHeader && renderHeader()}
-      </Fragment>
+      </View>
     );
   };
 
   render(){
     const { styles } = LargeTitleWithSnap;
     const { children } = this.props;
+    const { enableSnap } = this.state;
 
     const sectionListStyle = {
-      paddingBottom: 100,
       paddingTop: NAVBAR_NORMAL,
       transform : [
         {translateY: this._sectionListTransY}
@@ -332,11 +348,14 @@ export class LargeTitleWithSnap extends React.PureComponent {
       onScrollEndDrag    : this._handleOnScrollEndDrag,
       onScroll           : this._handleOnScroll       ,
       //config scrollview
-      scrollEventThrottle: 1              ,
-      snapToOffsets      : [NAVBAR_NORMAL],
+      scrollEventThrottle          : 1   ,
+      disableScrollViewPanResponder: true,
+      //snaping behaviour
+      snapToOffsets: (enableSnap? [0, NAVBAR_NORMAL] : null),
       //adjust insets + offsets
       scrollIndicatorInsets: { top: NAVBAR_NORMAL },
       //contentInset: {top: 200}
+
     });
 
     return(
