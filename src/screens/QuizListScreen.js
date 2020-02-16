@@ -130,18 +130,18 @@ export class QuizListScreen extends React.Component {
 
     return(
       <LargeTitleFadeIcon 
-        style={{marginTop: 2}}
+        style={{marginTop: 2, marginRight: 5,}}
         {...{scrollY, inputRange}}
       >
         <SvgIcon
           name={SVG_KEYS.BookFilled}
           size={30}
-          color={'black'}
+          fill={'white'}
         />
         <SvgIcon
           name={SVG_KEYS.BookOutlined}
           size={30}
-          color={'black'}
+          stroke={'white'}
         />
       </LargeTitleFadeIcon>
     );
