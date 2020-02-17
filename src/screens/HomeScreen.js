@@ -29,6 +29,13 @@ function getNavigationOptionFromRoute(routeKey){
         SVG_KEYS.DocumentTextFilled ,
       ],
     };
+    case ROUTES.TabOptionsRoute: return {
+      headerTitle: 'Options',
+      iconNames: [
+        SVG_KEYS.SettingsOutlined,
+        SVG_KEYS.SettingsFilled  ,
+      ],
+    };
     default: return {
       headerTitle: 'Unknown',
       iconNames: ['', ''],
@@ -39,19 +46,21 @@ function getNavigationOptionFromRoute(routeKey){
 function getTabBarIcon({focused, horizontal, tintColor}, navigation){
   const { routeName } = navigation.state;  
   const { iconNames: [iconInactive, iconActive] } = getNavigationOptionFromRoute(routeName);
-
+  
   return (
     <SvgIcon 
       name={(focused? iconActive : iconInactive)}
-      stroke={tintColor}
+      stroke={'white'}
+      fill={'white'}
       size={30}
     />
   );
 };
 
 const HomeScreen = createBottomTabNavigator({
-    [ROUTES.TabQuizRoute]: QuizListScreen,
-    [ROUTES.TabExamRoute]: ExamListScreen,
+    [ROUTES.TabQuizRoute   ]: QuizListScreen,
+    [ROUTES.TabExamRoute   ]: ExamListScreen,
+    [ROUTES.TabOptionsRoute]: ExamListScreen,
   }, {
     initialRouteName: ROUTES.QuizListScreen,
     tabBarComponent: CustomTabBar,
@@ -63,8 +72,8 @@ const HomeScreen = createBottomTabNavigator({
       style: {
         backgroundColor: 'transparent',
         borderTopWidth: 0,
-        activeTintColor  : 'rgba(0,0,0,0.9)',
-        inactiveTintColor: 'rgba(0,0,0,0.3)',
+        activeTintColor  : 'white',
+        inactiveTintColor: 'white',
       },
       safeAreaInset: {
         bottom: 'never',

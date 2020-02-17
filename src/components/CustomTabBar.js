@@ -3,19 +3,21 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions,  Clipboard } from
 
 import Reanimated, { Easing, Value, interpolate, concat, Extrapolate} from 'react-native-reanimated';
 
-import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import * as Animatable from 'react-native-animatable';
 import { iOSUIKit } from 'react-native-typography';
+import LinearGradient from 'react-native-linear-gradient';
 
+import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
 import { timeout } from 'app/src/functions/helpers';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
+
 //#region tabbar values
 const TB_MARGIN = 10;
-const TB_HEIGHT = 60;
+const TB_HEIGHT = 70;
 const TB_WIDTH  = (screenWidth - (TB_MARGIN * 2));
 const TB_RADIUS = (TB_MARGIN * 2);
 
@@ -24,21 +26,12 @@ const bottomInset = StaticSafeAreaInsets.safeAreaInsetsBottom;
 const bottomMargin = (bottomInset == 0)? TB_MARGIN : bottomInset;
 //#endregion
 
-/** store/record ui values */
-let TBValues = {};
-const TBKeys = {
-  x     : 'x'     ,
-  y     : 'y'     ,
-  width : 'width' ,
-  height: 'height',
-};
-
 class TabBarItem extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 7,
+      marginVertical: 10,
     },
     background: {
       position: 'absolute',
@@ -46,11 +39,22 @@ class TabBarItem extends React.Component {
       height: '100%',
       backgroundColor: 'rgba(0,0,0, 0.15)',
       borderRadius: 10,
+      overflow: 'hidden',
+    },
+    backgroundIcon: {
+      width: 45,
+      height: 45,
+      backgroundColor: 'rgba(0,0,0, 0.1)',
     },
     iconContainer: {
+      width: 45,
+      height: 45,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    textContainer: {
+      justifyContent: 'center',
       marginLeft: 10,
-      marginVertical: 5,
-      marginRight: 10,
     },
     tabLabelText: {
       ...iOSUIKit.bodyEmphasizedObject,
@@ -59,6 +63,7 @@ class TabBarItem extends React.Component {
       right: 0,
       width: 60,
       paddingRight: 10,
+      color: 'white'
     },
   });
 
@@ -82,14 +87,14 @@ class TabBarItem extends React.Component {
     });
 
     this._iconOpacity = interpolate(this._progress, {
-      inputRange : [0   , 100],
-      outputRange: [0.75, 1  ],
+      inputRange : [0, 100],
+      outputRange: [0.6, 1  ],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._iconScale = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [1, 1.05],
+      outputRange: [1.05, 0.85],
       extrapolate: Extrapolate.CLAMP,
     });
 
@@ -142,7 +147,6 @@ class TabBarItem extends React.Component {
     const textStyle = {
       width  : this._textWidth  ,
       opacity: this._textOpacity,
-      justifyContent: 'center',
     };
 
     return(
@@ -151,11 +155,13 @@ class TabBarItem extends React.Component {
         activeOpacity={0.75}
         onPress={this._handleOnPressTab}
       >
-        <Reanimated.View style={[styles.background, bgStyle]}/>
+        <Reanimated.View style={[styles.background, bgStyle]}>
+          <View style={styles.backgroundIcon}/>
+        </Reanimated.View>
         <Reanimated.View style={[styles.iconContainer, iconStyle]}>
           {tabIcon}
         </Reanimated.View>
-        <Reanimated.View style={[textStyle]}>
+        <Reanimated.View style={[styles.textContainer, textStyle]}>
           <Text style={styles.tabLabelText}>
           {labelText}
           </Text>
@@ -174,14 +180,7 @@ export class CustomTabBar extends React.Component {
       left: 0,
       right: 0,
       //layout
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    tabBarContainer: {
-      height: TB_HEIGHT,
-      width: TB_WIDTH,
-      marginBottom: bottomMargin,
-      borderRadius: TB_RADIUS,
+      width: '100%',
       backgroundColor: 'transparent',
       //shadow
       shadowColor: "#000",
@@ -195,9 +194,16 @@ export class CustomTabBar extends React.Component {
     blurContainer: {
       flex: 1,
       flexDirection: 'row',
-      borderRadius: TB_RADIUS,
-      justifyContent: 'space-around',
+      justifyContent: 'space-evenly',
     },
+    background: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      opacity: 0.8,
+    }
   });
 
   constructor(props){
@@ -233,7 +239,7 @@ export class CustomTabBar extends React.Component {
     };
 
     onTabPress && onTabPress({ route });
-    this.rootContainer.pulse(300);
+    this.rootContainer.pulse(500);
   };
 
   _renderTabs = (route, routeIndex) => {
@@ -264,21 +270,25 @@ export class CustomTabBar extends React.Component {
     const { routes, index: activeRouteIndex } = navigation.state;
 
     return(
-      <View style={styles.rootContainer}>
-        <Animatable.View
-          style={styles.tabBarContainer}
-          ref={r => this.rootContainer = r}
-          useNativeDriver={true}
+      <Animatable.View
+        style={styles.rootContainer}
+        ref={r => this.rootContainer = r}
+        useNativeDriver={true}
+      >
+        <BlurView
+          style={styles.blurContainer}
+          blurType={"regular"}
+          blurAmount={100}
         >
-          <BlurView
-            style={styles.blurContainer}
-            blurType={"regular"}
-            blurAmount={100}
-          >
-            {routes.map(this._renderTabs)}
-          </BlurView>
-        </Animatable.View>
-      </View>
+          <LinearGradient
+            style={[styles.background]}
+            colors={[INDIGO[700], BLUE[500]]}
+            start={{x: 0, y: 1}} 
+            end  ={{x: 1, y: 0}}
+          />
+          {routes.map(this._renderTabs)}
+        </BlurView>
+      </Animatable.View>
     );
   };
 };

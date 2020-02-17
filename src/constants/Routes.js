@@ -12,6 +12,7 @@ export const ROUTES = {
   // home tabnav routes
   TabQuizRoute: 'TabQuizRoute',
   TabExamRoute: 'TabExamRoute',
+  TabOptionsRoute: 'TabOptionsRoute',
 };
 
 export const RNN_ROUTES = {

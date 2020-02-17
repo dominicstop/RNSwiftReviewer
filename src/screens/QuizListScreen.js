@@ -164,8 +164,8 @@ export class QuizListScreen extends React.Component {
           <RNSectionList
             sections={[{ data: quizes }]}
             renderSectionHeader={this._renderSectionHeader}
-            renderItem={({item}) => (
-              <View style={{backgroundColor: 'red', padding: 30}}>
+            renderItem={({item, index}) => (
+              <View style={{backgroundColor:index % 2 == 0? 'red': 'yellow', padding: 30}}>
                 <Text>{item}</Text>
               </View>
             )}
