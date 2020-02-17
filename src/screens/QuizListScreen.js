@@ -104,10 +104,13 @@ export class QuizListScreen extends React.Component {
     ModalController.showModal();
   };
 
-  _renderListHeader = () => {
+  // receives params from LargeTitleWithSnap comp
+  _renderListHeader = ({scrollY, inputRange}) => {
     return(
-      <LargeTitleHeaderCard 
+      <LargeTitleHeaderCard
         imageSource={require('app/assets/icons/circle_paper_pencil.png')}
+        textTitle={'Your Quizes'}
+        {...{scrollY, inputRange}}
       />
     );
   };
@@ -119,15 +122,8 @@ export class QuizListScreen extends React.Component {
     );
   };
 
-  //receives params from LargeTitleWithSnap comp
+  // receives params from LargeTitleWithSnap comp
   _renderTitleIcon = ({scrollY, inputRange}) => {
-
-    const activeIconStyle = {
-      opacity: Reanimated.interpolate(scrollY, {inputRange,
-        outputRange: [0, 1],
-      }),
-    };
-
     return(
       <LargeTitleFadeIcon 
         style={{marginTop: 2, marginRight: 5,}}

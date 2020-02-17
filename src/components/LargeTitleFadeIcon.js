@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Reanimated from "react-native-reanimated";
+import Reanimated, { Extrapolate } from "react-native-reanimated";
 
 export class LargeTitleFadeIcon extends React.Component {
   static propTypes = {
@@ -22,11 +22,13 @@ export class LargeTitleFadeIcon extends React.Component {
     this.iconOpacityA = Reanimated.interpolate(props.scrollY, {
       inputRange : props.inputRange,
       outputRange: [1, 0],
+      extrapolate: Extrapolate.CLAMP,
     });
 
     this.iconOpacityB = Reanimated.interpolate(props.scrollY, {
       inputRange : props.inputRange,
       outputRange: [0, 1],
+      extrapolate: Extrapolate.CLAMP,
     });
   };
 

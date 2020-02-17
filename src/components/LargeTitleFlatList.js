@@ -7,9 +7,10 @@ import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
 
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
-
 import Animated, { Easing } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
+
+
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, debug } = Animated;
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
@@ -30,6 +31,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     renderSubtitle : PropTypes.func  ,
     renderTitleIcon: PropTypes.func  ,
   };
+
   static defaultProps = {
     subtitleHeight: 30,
     titleText: 'Large Title',
@@ -197,6 +199,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
         extrapolate: Extrapolate.CLAMP,
       })
     );
+
+    // shared animated values
+    this.sharedAnimatedValues = {
+      scrollY   : this._scrollY     ,
+      inputRange: [0, NAVBAR_NORMAL],
+    };
   };
 
   componentDidMount = () => {
@@ -277,11 +285,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
        })
     };
 
-    const headerParams = {
-      scrollY   : this._scrollY     ,
-      inputRange: [0, NAVBAR_NORMAL],
-    };
-
     return(
       <Animated.View style={[styles.headerContainer, headerContainerStyle]}>
         <VibrancyView
@@ -302,7 +305,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
                 style={styles.titleIconContainer}
                 onLayout={this._handleOnLayoutTitleLarge}
               >
-                {renderTitleIcon && renderTitleIcon(headerParams)}
+                {renderTitleIcon && renderTitleIcon(this.sharedAnimatedValues)}
                 <Animated.Text style={[styles.titleLarge, titleLarge]}>
                   {this.props.titleText}
                 </Animated.Text>
@@ -321,7 +324,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     return(
       <View style={[styles.listHeader, {marginTop: NAVBAR_NORMAL}]}>
-        {renderHeader && renderHeader()}
+        {renderHeader && renderHeader(this.sharedAnimatedValues)}
       </View>
     );
   };
@@ -351,9 +354,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
       scrollEventThrottle          : 1   ,
       disableScrollViewPanResponder: true,
       //snaping behaviour
-      snapToOffsets: (enableSnap? [0, NAVBAR_NORMAL] : null),
+      snapToOffsets: (enableSnap? [NAVBAR_NORMAL] : null),
+      snapToEnd: false,
+      snapToAlignment: 'center',
+      snapToStart: true,
       //adjust insets + offsets
-      scrollIndicatorInsets: { top: NAVBAR_NORMAL },
+      scrollIndicatorInsets: { top: NAVBAR_LARGE + 50 },
       //contentInset: {top: 200}
 
     });
