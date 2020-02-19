@@ -11,11 +11,13 @@ import { iOSUIKit } from 'react-native-typography';
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
+import { TransitionWithHeight } from 'app/src/components/TransitionWithHeight';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { GREY } from 'app/src/constants/Colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 //create reanimated comps
@@ -55,13 +57,38 @@ class ListSectionHeader extends React.Component {
     const { styles } = ListSectionHeader;
 
     return(
-      <View style={styles.rootContainer}>
-        <Text style={styles.textTitle}>
-          {'Showing '}
-          <Text style={styles.textCount}>
-            {'12 items'}
-          </Text>
-        </Text>
+      <View style={{backgroundColor: 'white'}}> 
+        <TransitionWithHeight
+          ref={r => this.transitoner = r}
+          containerStyle={{}}
+          handlePointerEvents={true}
+          unmountWhenHidden={false}
+        >
+          <TouchableOpacity 
+            style={styles.rootContainer}
+            onPress={() => this.transitoner.toggle()}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.textTitle}>
+              {'Showing '}
+              <Text style={styles.textCount}>
+                {'12 items'}
+              </Text>
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.rootContainer}
+            onPress={() => this.transitoner.toggle()}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.textTitle}>
+              {'Options '}
+            </Text>
+            <Text style={styles.textTitle}>
+              {'Options '}
+            </Text>
+          </TouchableOpacity>
+        </TransitionWithHeight>
       </View>
     );
   };

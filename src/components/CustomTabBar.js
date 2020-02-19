@@ -45,6 +45,8 @@ class TabBarItem extends React.Component {
       width: 45,
       height: 45,
       backgroundColor: 'rgba(0,0,0, 0.1)',
+      borderRightColor: 'rgba(255,255,255,0.2)',
+      borderRightWidth: 1,
     },
     iconContainer: {
       width: 45,
