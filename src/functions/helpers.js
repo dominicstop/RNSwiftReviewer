@@ -38,7 +38,7 @@ export function returnToZero(i, max){
 };
 
 export function plural(string = "", count = 0, suffix = 's'){
-  return string + (count > 1? suffix : '');
+  return string + ((count > 1 || count == 0)? suffix : '');
 };
 
 /** returns undefined when index is invalid */

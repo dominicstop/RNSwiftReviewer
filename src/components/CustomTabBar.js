@@ -17,10 +17,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 //#region tabbar values
 const TB_MARGIN = 10;
-const TB_HEIGHT = 70;
 const TB_WIDTH  = (screenWidth - (TB_MARGIN * 2));
-const TB_RADIUS = (TB_MARGIN * 2);
-
 
 const bottomInset = StaticSafeAreaInsets.safeAreaInsetsBottom;
 const bottomMargin = (bottomInset == 0)? TB_MARGIN : bottomInset;
@@ -53,6 +50,14 @@ class TabBarItem extends React.Component {
       height: 45,
       alignItems: 'center',
       justifyContent: 'center',
+      //glow style
+      shadowColor: "white",
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
     },
     textContainer: {
       justifyContent: 'center',
@@ -65,7 +70,15 @@ class TabBarItem extends React.Component {
       right: 0,
       width: 60,
       paddingRight: 10,
-      color: 'white'
+      color: 'white',
+      //glow style
+      shadowColor: "white",
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
     },
   });
 
@@ -165,7 +178,7 @@ class TabBarItem extends React.Component {
         </Reanimated.View>
         <Reanimated.View style={[styles.textContainer, textStyle]}>
           <Text style={styles.tabLabelText}>
-          {labelText}
+            {labelText}
           </Text>
         </Reanimated.View>
       </TouchableOpacity>

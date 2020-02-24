@@ -34,6 +34,7 @@ export class LargeTitleHeaderCard  extends React.Component {
     titleBodyContainer: {
       flex: 1,
       marginLeft: 15,
+      justifyContent: 'center',
     },
     iconImage: {
       width: 75,
@@ -41,7 +42,7 @@ export class LargeTitleHeaderCard  extends React.Component {
     },
     textBody: {
       ...iOSUIKit.subheadObject,
-      flex: 1,
+      textAlignVertical: 'center',
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,
