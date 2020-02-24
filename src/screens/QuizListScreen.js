@@ -2,105 +2,31 @@ import React from 'react';
 import { StyleSheet, Text, View, SectionList, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { ROUTES } from 'app/src/constants/Routes';
-import { ModalController } from 'app/src/functions/ModalController';
-
 import Reanimated from "react-native-reanimated";
 import { iOSUIKit } from 'react-native-typography';
 
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
-import { TransitionWithHeight } from 'app/src/components/TransitionWithHeight';
+import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
+import { SortValuesQuiz, SortKeysQuiz } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { ModalController } from 'app/src/functions/ModalController';
+import { setStateAsync, timeout   } from 'app/src/functions/helpers';
 
 //create reanimated comps
 const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
-
-class ListSectionHeader extends React.Component {
-  static propTypes = {};
-
-  static defaultProps = {};
-
-  static styles = StyleSheet.create({
-    rootContainer: {
-      backgroundColor: 'white',
-      paddingHorizontal: 10,
-      paddingVertical: 10,
-      //borders
-      borderTopColor: GREY[400],
-      borderTopWidth: 1,
-      //shadows
-      shadowColor: "#000",
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      shadowOffset: {
-        width: 0,
-        height: 5,
-      },
-    },
-    textTitle: {
-      ...iOSUIKit.subheadObject,
-    },
-    textCount: {
-      ...iOSUIKit.subheadEmphasizedObject,
-    },
-  });
-
-  render(){
-    const { styles } = ListSectionHeader;
-
-    return(
-      <View style={{backgroundColor: 'white'}}> 
-        <TransitionWithHeight
-          ref={r => this.transitoner = r}
-          containerStyle={{}}
-          handlePointerEvents={true}
-          unmountWhenHidden={false}
-        >
-          <TouchableOpacity 
-            style={styles.rootContainer}
-            onPress={() => this.transitoner.toggle()}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textTitle}>
-              {'Showing '}
-              <Text style={styles.textCount}>
-                {'12 items'}
-              </Text>
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.rootContainer}
-            onPress={() => this.transitoner.toggle()}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textTitle}>
-              {'Options '}
-            </Text>
-            <Text style={styles.textTitle}>
-              {'Options '}
-            </Text>
-          </TouchableOpacity>
-        </TransitionWithHeight>
-      </View>
-    );
-  };
-};
-
 
 
 export class QuizListScreen extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
-      backgroundColor: 'blue',
     },
     headerContainer: {
       position: 'absolute',
@@ -121,16 +47,62 @@ export class QuizListScreen extends React.Component {
     super(props);
 
     this.state = {
+      scrollEnabled: true,
+      isAsc: false,
+      sortIndex: 0,
       quizes: [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
       ],
     };
   };
 
+  componentDidMount = async () => {
+    await timeout(100);
+    const node = this.sectionList.getNode();
+    node && node.scrollToLocation({
+      itemIndex: 0,
+      sectionIndex: 0,
+      viewPosition: 100,
+      animated: false,
+    });
+  };
+
   _handleOnPressNavigate = () => {
     ModalController.showModal();
   };
 
+  //#region - event handlers / callbacks
+  // sort pill pressed - cycle through sort options
+  _handleOnPressSort = async (isAsc, sortIndex) => {
+    await setStateAsync(this, { 
+      isAsc, sortIndex,
+      scrollEnabled: false
+    });
+
+    await timeout(500);
+    
+    await setStateAsync(this, { 
+      scrollEnabled: true
+    });
+  };
+
+  // sort options expanded/shown
+  _handleOnSortExpanded = () => {
+    this.setState({ scrollEnabled: false });
+  };
+
+  // sort options collapsed/hidden
+  _handleOnPressCancel = () => {
+    this.setState({ scrollEnabled: true });
+  };
+
+  // sort item has been selected from options
+  _handleOnPressSortOption = () => {
+    this.setState({ scrollEnabled: true });
+  };
+  //#endregion
+
+  //#region - render functions
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
     return(
@@ -142,18 +114,29 @@ export class QuizListScreen extends React.Component {
     );
   };
 
+  // item count + sort buttons
   _renderSectionHeader = ({ section }) => {
-    const { sections } = this.props;
+    const { sortIndex, isAsc: isAscending } = this.state;
     return(
-      <ListSectionHeader/>
+      <ListSectionHeader
+        sortTypes={SortKeysQuiz}
+        sortValues={SortValuesQuiz}
+        {...{sortIndex, isAscending}}
+        // event handlers
+        onSortExpanded={this._handleOnSortExpanded}
+        onPressSort={this._handleOnPressSort}
+        onPressCancel={this._handleOnPressCancel}
+        onPressSortOption={this._handleOnPressSortOption}
+      />
     );
   };
 
   // receives params from LargeTitleWithSnap comp
+  // section list header card
   _renderTitleIcon = ({scrollY, inputRange}) => {
     return(
       <LargeTitleFadeIcon 
-        style={{marginTop: 2, marginRight: 5,}}
+        style={{marginTop: 3, marginRight: 5,}}
         {...{scrollY, inputRange}}
       >
         <SvgIcon
@@ -172,7 +155,7 @@ export class QuizListScreen extends React.Component {
 
   render() {
     const { styles } = QuizListScreen;
-    const { quizes } = this.state;
+    const { quizes, scrollEnabled } = this.state;
 
     return (
       <View style={styles.rootContainer}>
@@ -185,18 +168,21 @@ export class QuizListScreen extends React.Component {
           renderTitleIcon={this._renderTitleIcon}
         >
           <RNSectionList
+            ref={r => this.sectionList = r}
             sections={[{ data: quizes }]}
             renderSectionHeader={this._renderSectionHeader}
+            keyExtractor={(item, index) => item + index}
+            {...{scrollEnabled}}
             renderItem={({item, index}) => (
-              <View style={{backgroundColor:index % 2 == 0? 'red': 'yellow', padding: 30}}>
+              <View style={{backgroundColor:index % 2 == 0? 'white': 'yellow', padding: 30}}>
                 <Text>{item}</Text>
               </View>
             )}
-            keyExtractor={(item, index) => item + index}
           />
         </LargeTitleWithSnap>
       </View>
     );
   };
+  //#endregion
 };
 

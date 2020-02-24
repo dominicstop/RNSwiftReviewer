@@ -26,7 +26,11 @@ export class TransitionWithHeight extends React.PureComponent {
       flex: 1,
       overflow: 'hidden',
     },
-    transContainer: {
+    transAContainer: {
+      position: 'absolute',
+      width: '100%',
+    },
+    transBContainer: {
       position: 'absolute',
       width: '100%',
     },
@@ -39,16 +43,16 @@ export class TransitionWithHeight extends React.PureComponent {
     this.showCompA = props.showLastFirst;
 
     // store recorded height
-    this.layoutHeightA = -1;
-    this.layoutHeightB = -1;
+    this.layoutHeightA = props.heightA ?? -1;
+    this.layoutHeightB = props.heightB ?? -1;
 
     this.progress = new Value(
       props.showLastFirst? 100 : 0
     );
 
     // final expanded height for each trans item
-    this.heightA = new Value(-1);
-    this.heightB = new Value(-1);
+    this.heightA = new Value(props.heightA ?? -1);
+    this.heightB = new Value(props.heightB ?? -1);
 
     this.opacityA = interpolate(this.progress, {
       inputRange : [0, 100],
@@ -95,6 +99,14 @@ export class TransitionWithHeight extends React.PureComponent {
         ? { mountB: true }
         : { mountA: true }
       ));
+
+      const isHeightDefined = (
+        this.layoutHeightA != -1 &&
+        this.layoutHeightB != -1
+      );
+
+      //delay animation if there's no height 
+      isHeightDefined && await timeout(100);
 
       //start and wait for animation to fin
       await new Promise((resolve) => {
@@ -144,7 +156,7 @@ export class TransitionWithHeight extends React.PureComponent {
   render(){
     const { styles } = TransitionWithHeight;
     const { mountA, mountB,  touchEventsA } = this.state;
-    const props = this.props
+    const { renderHeader, ...props } = this.props
 
     const containerStyle = {
       height: this.height,
@@ -162,37 +174,48 @@ export class TransitionWithHeight extends React.PureComponent {
       props.handlePointerEvents? 'none' : 'auto'
     );
 
+    const ComponentA = (
+      <View 
+        onLayout={this._handleOnLayoutA}
+        pointerEvents={'box-none'}
+      >
+        {props.children[0]}
+      </View>
+    );
+
+    const ComponentB = (
+      <View 
+        onLayout={this._handleOnLayoutB}
+        pointerEvents={'box-none'}
+      >
+        {props.children[1]}
+      </View>
+    );
+
     return(
-      <Reanimated.View style={[styles.container, containerStyle, props.containerStyle]}>
-        <Reanimated.View 
-          style={[styles.transContainer, transAStyle]}
-          pointerEvents={touchEventsA? 'auto' : disabledPointerEvent}
-        >
-          <View 
-            onLayout={this._handleOnLayoutA}
-            pointerEvents={'box-none'}
+      <Fragment>
+        {renderHeader && renderHeader(this.progress)}
+        <Reanimated.View style={[styles.container, containerStyle, props.containerStyle]}>
+          <Reanimated.View 
+            style={[styles.transAContainer, transAStyle]}
+            pointerEvents={touchEventsA? 'auto' : disabledPointerEvent}
           >
             {(props.unmountWhenHidden
-              ? (mountA && props.children[0])
-              : (props.children[0])
+              ? (mountA && ComponentA)
+              : (ComponentA)
             )}
-          </View>
-        </Reanimated.View>
-        <Reanimated.View 
-          style={[styles.transContainer, transBStyle]}
-          pointerEvents={touchEventsA? disabledPointerEvent : 'auto'}
-        >
-          <View 
-            onLayout={this._handleOnLayoutB}
-            pointerEvents={'box-none'}
+          </Reanimated.View>
+          <Reanimated.View 
+            style={[styles.transBContainer, transBStyle]}
+            pointerEvents={touchEventsA? disabledPointerEvent : 'auto'}
           >
             {(props.unmountWhenHidden
-              ? (mountB && props.children[1])
-              : (props.children[1])
+              ? (mountB && ComponentB)
+              : (ComponentB)
             )}
-          </View>
+          </Reanimated.View>
         </Reanimated.View>
-      </Reanimated.View>
+      </Fragment>
     );
   };
 };
