@@ -9,6 +9,7 @@ import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
+import { QuizListItem         } from 'app/src/components/QuizListItem';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -110,7 +111,9 @@ export class QuizListScreen extends React.Component {
         imageSource={require('app/assets/icons/circle_paper_pencil.png')}
         textTitle={'Your Quizes'}
         {...{scrollY, inputRange}}
-      />
+      >
+        
+      </LargeTitleHeaderCard>
     );
   };
 
@@ -153,6 +156,12 @@ export class QuizListScreen extends React.Component {
     );
   };
 
+  _renderItem = ({item, index}) => {
+    return (
+      <QuizListItem/>
+    );
+  };
+
   render() {
     const { styles } = QuizListScreen;
     const { quizes, scrollEnabled } = this.state;
@@ -172,12 +181,8 @@ export class QuizListScreen extends React.Component {
             sections={[{ data: quizes }]}
             renderSectionHeader={this._renderSectionHeader}
             keyExtractor={(item, index) => item + index}
+            renderItem={this._renderItem}
             {...{scrollEnabled}}
-            renderItem={({item, index}) => (
-              <View style={{backgroundColor:index % 2 == 0? 'white': 'yellow', padding: 30}}>
-                <Text>{item}</Text>
-              </View>
-            )}
           />
         </LargeTitleWithSnap>
       </View>

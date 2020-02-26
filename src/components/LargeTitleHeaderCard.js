@@ -122,6 +122,7 @@ export class LargeTitleHeaderCard  extends React.Component {
             </Text>
           </View>
         </View>
+        {props.children}
       </View>
     );
   };

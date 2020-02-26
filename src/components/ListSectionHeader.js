@@ -42,13 +42,14 @@ export class ListSectionHeader extends React.Component {
     rootContainer: {
       backgroundColor: 'white',
       paddingVertical: 8,
+      marginBottom: 0,
       //borders
       borderColor: GREY[300],
       borderTopWidth: 1,
       borderBottomWidth: 1,
       //shadows
       shadowColor: "#000",
-      shadowOpacity: 0.05,
+      shadowOpacity: 0.15,
       shadowRadius: 7,
       shadowOffset: {
         width: 0,
@@ -243,7 +244,7 @@ export class ListSectionHeader extends React.Component {
           ref={r => this.transitoner = r}
           containerStyle={styles.transitionContainer}
           handlePointerEvents={true}
-          unmountWhenHidden={false}
+          unmountWhenHidden={true}
           heightA={25}
         >
           {this._renderCollapsedHeader()}

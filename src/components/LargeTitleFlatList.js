@@ -125,8 +125,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
     this._headerHeight = interpolate(this._scrollY, {
       inputRange      : [0, NAVBAR_NORMAL],
       outputRange     : [NAVBAR_FHEIGHT, NAVBAR_NORMAL],
-      extrapolateLeft : Extrapolate.EXTEND,
-      extrapolateRight: Extrapolate.CLAMP ,
+      extrapolateLeft : Extrapolate.CLAMP,
+      extrapolateRight: Extrapolate.CLAMP,
     });
 
     const diff   = (NAVBAR_FHEIGHT - NAVBAR_NORMAL);
@@ -140,15 +140,15 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     this._bGOpacity = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
-      outputRange: [1, 0.75],
+      outputRange: [0.9, 0.7],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._subtitleHeight = interpolate(this._scrollY, {
       inputRange      : [0, NAVBAR_NORMAL],
       outputRange     : [subtitleHeight, 0],
-      extrapolateLeft : Extrapolate.EXTEND,
-      extrapolateRight: Extrapolate.CLAMP ,
+      extrapolateLeft : Extrapolate.CLAMP,
+      extrapolateRight: Extrapolate.CLAMP,
     });
 
     this._subtitleOpacity = interpolate(this._scrollY, {
@@ -187,8 +187,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
     });
 
     this._titleTransScale = interpolate(this._scrollY, {
-      inputRange : [-NAVBAR_NORMAL, 0, NAVBAR_NORMAL],
-      outputRange: [1.045, 1, 0.65],
+      inputRange : [0, NAVBAR_NORMAL],
+      outputRange: [1, 0.65],
       extrapolate: Extrapolate.CLAMP,
     });
 
@@ -289,8 +289,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
       <Animated.View style={[styles.headerContainer, headerContainerStyle]}>
         <VibrancyView
           style={styles.background}
-          blurType={"regular"}
-          intensity={0}
+          blurType={"light"}
+          intensity={100}
         />
         <AnimatedLinearGradient
           style={[styles.background, backgroundStyle]}
@@ -344,14 +344,14 @@ export class LargeTitleWithSnap extends React.PureComponent {
     let ScrollView = React.cloneElement(children, {
       style: [sectionListStyle],
       contentContainerStyle: { 
-        paddingBottom: EXTRA_HEIGHT
+        paddingBottom: EXTRA_HEIGHT + 1000
       },
       //render + handlers
       ListHeaderComponent: this._renderListHeader     ,
       onScrollEndDrag    : this._handleOnScrollEndDrag,
       onScroll           : this._handleOnScroll       ,
       //config scrollview
-      scrollEventThrottle          : 1   ,
+      scrollEventThrottle: 1,
       disableScrollViewPanResponder: true,
       //snaping behaviour
       snapToOffsets: (enableSnap? [NAVBAR_NORMAL] : null),
@@ -359,9 +359,11 @@ export class LargeTitleWithSnap extends React.PureComponent {
       snapToAlignment: 'center',
       snapToStart: true,
       //adjust insets + offsets
-      scrollIndicatorInsets: { top: NAVBAR_LARGE + 50 },
+      scrollIndicatorInsets: { 
+        top: NAVBAR_LARGE + 50,
+        bottom: 100,
+      },
       //contentInset: {top: 200}
-
     });
 
     return(

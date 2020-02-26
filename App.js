@@ -7,6 +7,7 @@ import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import { Transition } from 'react-native-reanimated';
 
 import { ROUTES } from 'app/src/constants/Routes';
+import { INDIGO } from 'app/src/constants/Colors';
 
 import { AuthLoadingScreen } from 'app/src/screens/AuthLoadingScreen';
 import { HomeScreen        } from 'app/src/screens/HomeScreen';
@@ -27,6 +28,9 @@ const AppStack = createStackNavigator({
       headerMode: 'float',
       headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
       headerTransparent: true,
+      cardStyle: {
+        backgroundColor: INDIGO[50],
+      },
     },
   }
 );
@@ -41,9 +45,6 @@ const AppModalStack = createStackNavigator({
       ...TransitionPresets.ModalPresentationIOS,
       gestureEnabled: true,
       cardOverlayEnabled: true,
-      cardStyle: {
-        backgroundColor: 'transparent',
-      },
     },
   }
 );

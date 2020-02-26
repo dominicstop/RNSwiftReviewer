@@ -35,15 +35,15 @@ class TabBarItem extends React.Component {
       width: '100%',
       height: '100%',
       backgroundColor: 'rgba(0,0,0, 0.15)',
-      borderRadius: 10,
+      borderRadius: 12,
       overflow: 'hidden',
     },
     backgroundIcon: {
       width: 45,
       height: 45,
       backgroundColor: 'rgba(0,0,0, 0.1)',
-      borderRightColor: 'rgba(255,255,255,0.2)',
-      borderRightWidth: 1,
+      borderTopRightRadius: 12,
+      borderBottomRightRadius: 12,
     },
     iconContainer: {
       width: 45,
@@ -217,7 +217,7 @@ export class CustomTabBar extends React.Component {
       bottom: 0,
       left: 0,
       right: 0,
-      opacity: 0.8,
+      opacity: 0.7,
     }
   });
 
@@ -292,7 +292,7 @@ export class CustomTabBar extends React.Component {
       >
         <BlurView
           style={styles.blurContainer}
-          blurType={"regular"}
+          blurType={"light"}
           blurAmount={100}
         >
           <LinearGradient
