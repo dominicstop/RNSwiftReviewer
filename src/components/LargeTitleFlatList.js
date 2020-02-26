@@ -45,8 +45,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
       position: "absolute",
       width: '100%',
       overflow: 'hidden',
-      borderBottomColor: GREY[500],
-      borderBottomWidth: 1,
     },
     headerContentContainer: {
       flex: 1,

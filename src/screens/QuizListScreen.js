@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, SectionList, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Reanimated from "react-native-reanimated";
+import Ionicon    from '@expo/vector-icons/Ionicons';
+
+import { Divider  } from "react-native-elements";
 import { iOSUIKit } from 'react-native-typography';
 
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
@@ -18,7 +21,8 @@ import { SortValuesQuiz, SortKeysQuiz } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { setStateAsync, timeout   } from 'app/src/functions/helpers';
+import { setStateAsync, timeout } from 'app/src/functions/helpers';
+import { ButtonGradient } from '../components/ButtonGradient';
 
 //create reanimated comps
 const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
@@ -34,6 +38,14 @@ export class QuizListScreen extends React.Component {
       backgroundColor: 'red',
       width: '100%',
       height: 100,
+    },
+    divider: {
+      marginTop: 15,
+      marginHorizontal: 15,
+    },
+    headerButton: {
+      marginTop: 10,
+      marginBottom: 10
     },
     scrollview: {
       flex: 1,
@@ -106,13 +118,33 @@ export class QuizListScreen extends React.Component {
   //#region - render functions
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
+    const { styles } = QuizListScreen;
+
     return(
       <LargeTitleHeaderCard
         imageSource={require('app/assets/icons/circle_paper_pencil.png')}
         textTitle={'Your Quizes'}
         {...{scrollY, inputRange}}
       >
-        
+        <Divider style={styles.divider}/>
+        <ButtonGradient
+          containerStyle={styles.headerButton}
+          title={'Create Quiz'}
+          subtitle={'Create a new quiz item'}
+          onPress={this._handleOnPressButton}
+          iconType={'ionicon'}
+          iconDistance={10}
+          isBgGradient={true}
+          showChevron={true}
+          showIcon={true}
+          leftIcon={(
+            <Ionicon
+              name={'ios-add-circle'}
+              color={'white'}
+              size={22}
+            />
+          )}
+        />
       </LargeTitleHeaderCard>
     );
   };

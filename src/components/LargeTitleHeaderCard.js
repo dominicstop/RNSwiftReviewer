@@ -24,8 +24,10 @@ export class LargeTitleHeaderCard  extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       backgroundColor: 'white',
+    },
+    topContentContainer: {
       paddingHorizontal: 10,
-      paddingVertical: 15,
+      paddingTop: 15,
     },
     imageTextContainer: {
       flexDirection: 'row',
@@ -110,16 +112,18 @@ export class LargeTitleHeaderCard  extends React.Component {
 
     return(
       <View style={styles.rootContainer}>
-        <View style={styles.imageTextContainer}>
-          <Image
-            style={styles.iconImage}
-            source={props.imageSource}
-          />
-          <View style={styles.titleBodyContainer}>
-            {hasAnimatedValues && this._renderAnimatedTitle()}
-            <Text style={styles.textBody}>
-              {props.textBody}
-            </Text>
+        <View style={styles.topContentContainer}>
+          <View style={styles.imageTextContainer}>
+            <Image
+              style={styles.iconImage}
+              source={props.imageSource}
+            />
+            <View style={styles.titleBodyContainer}>
+              {hasAnimatedValues && this._renderAnimatedTitle()}
+              <Text style={styles.textBody}>
+                {props.textBody}
+              </Text>
+            </View>
           </View>
         </View>
         {props.children}
