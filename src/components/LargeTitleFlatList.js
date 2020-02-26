@@ -358,7 +358,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
       snapToStart: true,
       //adjust insets + offsets
       scrollIndicatorInsets: { 
-        top: NAVBAR_LARGE + 50,
+        top: NAVBAR_LARGE + 20,
         bottom: 100,
       },
       //contentInset: {top: 200}

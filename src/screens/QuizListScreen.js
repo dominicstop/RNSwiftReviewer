@@ -23,6 +23,8 @@ import { GREY } from 'app/src/constants/Colors';
 import { ModalController } from 'app/src/functions/ModalController';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
 import { ButtonGradient } from '../components/ButtonGradient';
+import { HeaderValues } from '../constants/HeaderValues';
+
 
 //create reanimated comps
 const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
@@ -75,7 +77,7 @@ export class QuizListScreen extends React.Component {
     node && node.scrollToLocation({
       itemIndex: 0,
       sectionIndex: 0,
-      viewPosition: 100,
+      viewPosition: 0,
       animated: false,
     });
   };
@@ -92,6 +94,15 @@ export class QuizListScreen extends React.Component {
       scrollEnabled: false
     });
 
+    const node = this.sectionList.getNode();
+    node && node.scrollToLocation({
+      itemIndex: 0,
+      sectionIndex: 0,
+      viewPosition: 0,
+      viewOffset: 0,
+      animated: true,
+    });
+
     await timeout(500);
     
     await setStateAsync(this, { 
@@ -102,6 +113,17 @@ export class QuizListScreen extends React.Component {
   // sort options expanded/shown
   _handleOnSortExpanded = () => {
     this.setState({ scrollEnabled: false });
+
+    const headerHeight = HeaderValues.getHeaderHeight(true);
+    const node = this.sectionList.getNode();
+
+    node && node.scrollToLocation({
+      itemIndex: 0,
+      sectionIndex: 0,
+      viewPosition: 0,
+      viewOffset: headerHeight,
+      animated: true,
+    });
   };
 
   // sort options collapsed/hidden
