@@ -24,6 +24,7 @@ import { ModalController } from 'app/src/functions/ModalController';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
 import { ButtonGradient } from '../components/ButtonGradient';
 import { HeaderValues } from '../constants/HeaderValues';
+import { TestDataQuiz } from '../constants/TestData';
 
 
 //create reanimated comps
@@ -61,13 +62,13 @@ export class QuizListScreen extends React.Component {
   constructor(props){
     super(props);
 
+    const testData = Object.values(TestDataQuiz);
+
     this.state = {
       scrollEnabled: true,
       isAsc: false,
       sortIndex: 0,
-      quizes: [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
-      ],
+      quizes: testData,
     };
   };
 

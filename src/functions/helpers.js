@@ -189,3 +189,14 @@ export function formatMsToDuration(mills) {
 export function lerp(a, b, n) {
   return (1 - n) * a + n * b;
 };
+
+export function createObjectFromKeys(keys = {}){
+  let newObject = {};
+
+  const propKeys = Object.keys(keys);
+  propKeys.forEach(key =>  {
+    newObject[key] = null;
+  });
+
+  return newObject;
+};
