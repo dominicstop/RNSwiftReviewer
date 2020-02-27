@@ -211,9 +211,11 @@ export class QuizListScreen extends React.Component {
     );
   };
 
-  _renderItem = ({item, index}) => {
+  _renderItem = ({item: quiz, index}) => {
     return (
-      <QuizListItem/>
+      <QuizListItem
+        {...{quiz, index}}
+      />
     );
   };
 

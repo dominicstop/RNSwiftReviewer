@@ -35,10 +35,10 @@ export class ListItemBadge extends React.Component {
 
   static defaultProps = {
     size          : 18         ,
-    color         : INDIGO.A200,
+    color         : INDIGO.A700,
     adjustFontSize: true       ,
     initFontSize  : 13         ,
-    diffFontSize  : 2          ,  
+    diffFontSize  : 2          ,
   };
 
   render(){
@@ -60,6 +60,7 @@ export class ListItemBadge extends React.Component {
       height: size,
       borderRadius   : (size / 2),
       backgroundColor: props.color,
+      marginRight: props.marginRight,
     };
 
     return(
