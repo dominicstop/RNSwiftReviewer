@@ -10,6 +10,7 @@ export const TestDataQuiz = {
     quizDateLastTaken: 1582790625,
     quizQuestionCount: 100,
     quizSectionCount : 10,
+    quizTimesTaken   : 5,
   }),
   'quizID-1': QuizModel.wrap({
     quizID           : 'quizID-1',
@@ -18,7 +19,8 @@ export const TestDataQuiz = {
     quizDateCreated  : 1564214625,
     quizDateLastTaken: 1577433825,
     quizQuestionCount: 25,
-    quizSectionCount : 1 ,
+    quizSectionCount : 1,
+    quizTimesTaken   : 1,
   }),
   'quizID-2': QuizModel.wrap({
     quizID           : 'quizID-2',
@@ -27,7 +29,8 @@ export const TestDataQuiz = {
     quizDateCreated  : 1577520225,
     quizDateLastTaken: 1578038625,
     quizQuestionCount: 75,
-    quizSectionCount : 3 ,
+    quizSectionCount : 3,
+    quizTimesTaken   : 10,
   }),
   'quizID-3': QuizModel.wrap({
     quizID           : 'quizID-3',
@@ -36,7 +39,8 @@ export const TestDataQuiz = {
     quizDateCreated  : 1553673825,
     quizDateLastTaken: null,
     quizQuestionCount: 50,
-    quizSectionCount : 2 ,
+    quizSectionCount : 2,
+    quizTimesTaken   : 0,
   }),
 };
 //#endregion

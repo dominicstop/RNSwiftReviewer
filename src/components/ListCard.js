@@ -9,7 +9,8 @@ export class ListCard extends React.Component {
       marginTop: 15,
       backgroundColor: 'white',
       paddingHorizontal: 10,
-      paddingVertical: 10,
+      paddingTop: 10,
+      paddingBottom: 12,
       borderRadius: 10,
       //shadow style
       shadowColor: "#000",

@@ -11,6 +11,7 @@ import { ListCard } from 'app/src/components/ListCard';
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 import { GREY, BLUE, INDIGO } from 'app/src/constants/Colors';
 import { QuizKeys } from 'app/src/models/QuizModel';
+import { plural } from '../functions/helpers';
 
 class QuizListItemHeader extends React.Component {
   static propTypes = {
@@ -103,6 +104,115 @@ class QuizListItemHeader extends React.Component {
   };
 };
 
+class QuizListItemStats extends React.Component {
+  static propTypes = {
+    quiz: PropTypes.object,
+  };
+  
+  static styles = StyleSheet.create({
+    rootContainer: {
+      flexDirection: 'row',
+      marginTop: 10,
+    },
+    columnLeftContainer: {
+      flex: 1,
+      marginRight: 5,
+    },
+    columnRightContainer: {
+      flex: 1,
+      marginLeft: 5,
+    },
+    rowContainer: {
+      flexDirection: 'row',
+    },
+    textDetailLabel: {
+      ...iOSUIKit.subheadEmphasizedObject,
+      flex: 1,
+    },
+    textDetail: {
+      ...iOSUIKit.subheadObject,
+      color: GREY[800]
+    },
+  });
+
+  render(){
+    const { styles } = QuizListItemStats;
+    const { quiz } = this.props;
+
+    const timesTaken    = quiz[QuizKeys.quizTimesTaken   ] ?? 0;
+    const sectionCount  = quiz[QuizKeys.quizSectionCount ] ?? 0;
+    const questionCount = quiz[QuizKeys.quizQuestionCount] ?? 0;
+    const lastTaken     = quiz[QuizKeys.quizDateLastTaken] ?? 0;
+
+    const dateLastTaken = moment.unix(lastTaken);
+
+    return(
+      <View style={styles.rootContainer}>
+        <View style={styles.columnLeftContainer}>
+          <View style={styles.rowContainer}>
+            <Text 
+              style={styles.textDetailLabel}
+              numberOfLines={1}
+            >
+              {'Taken'}
+            </Text>
+            <Text 
+              style={styles.textDetail}
+              numberOfLines={1}
+            >
+              {`${timesTaken} ${plural('time', timesTaken)}`}
+            </Text>
+          </View>
+          <View style={styles.rowContainer}>
+            <Text 
+              style={styles.textDetailLabel}
+              numberOfLines={1}
+            >
+              {'Last'}
+            </Text>
+            <Text 
+              style={styles.textDetail}
+              numberOfLines={1}
+            >
+              {dateLastTaken.fromNow()}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.columnRightContainer}>
+          <View style={styles.rowContainer}>
+            <Text 
+              style={styles.textDetailLabel}
+              numberOfLines={1}
+            >
+              {'Sections'}
+            </Text>
+            <Text 
+              style={styles.textDetail}
+              numberOfLines={1}
+            >
+              {`${sectionCount} ${plural('item', sectionCount)}`}
+            </Text>
+          </View>
+          <View style={styles.rowContainer}>
+            <Text 
+              style={styles.textDetailLabel}
+              numberOfLines={1}
+            >
+              {'Questions'}
+            </Text>
+            <Text 
+              style={styles.textDetail}
+              numberOfLines={1}
+            >
+              {`${questionCount} ${plural('item', questionCount)}`}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+};
+
 export class QuizListItem extends React.Component {
   static styles = StyleSheet.create({
     textDescription: {
@@ -144,6 +254,9 @@ export class QuizListItem extends React.Component {
           </Text>
           {description}
         </Text>
+        <QuizListItemStats
+          {...{quiz}}
+        />
       </ListCard>
     );
   };
