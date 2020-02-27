@@ -14,6 +14,7 @@ import { TransitionWithHeight } from 'app/src/components/TransitionWithHeight';
 
 import { GREY, BLUE } from 'app/src/constants/Colors';
 import { getNextSort, SortKeys } from 'app/src/constants/SortValues';
+import { LIST_SECTION_HEIGHT } from 'app/src/constants/UIValues';
 import { plural } from 'app/src/functions/helpers';
 
 
@@ -63,7 +64,7 @@ export class ListSectionHeader extends React.Component {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      height: 25,
+      height: LIST_SECTION_HEIGHT,
     },
     headerLeftContainer: {
       flex: 1,
@@ -187,7 +188,7 @@ export class ListSectionHeader extends React.Component {
       <Fragment>
         <ActivityIndicator 
           size={"small"}
-          color={BLUE.A700}
+          color={BLUE.A100}
         />
         <Text style={styles.textTitle}>
           {'Loading...'}
@@ -245,7 +246,7 @@ export class ListSectionHeader extends React.Component {
           containerStyle={styles.transitionContainer}
           handlePointerEvents={true}
           unmountWhenHidden={true}
-          heightA={25}
+          heightA={LIST_SECTION_HEIGHT}
         >
           {this._renderCollapsedHeader()}
           <ListSortItems

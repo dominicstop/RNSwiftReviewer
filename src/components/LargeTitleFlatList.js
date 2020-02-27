@@ -2,25 +2,25 @@ import React, { Fragment } from 'react';
 import { Platform, StyleSheet, Text, View, Dimensions, SectionList } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { TB_HEIGHT_ADJ, NAVBAR_NORMAL, NAVBAR_LARGE } from 'app/src/constants/UIValues';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
-import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
+import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
+
 import Animated, { Easing } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
 
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, debug } = Animated;
-
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 const AnimatedBlurView       = Animated.createAnimatedComponent(VibrancyView  );
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
-const EXTRA_HEIGHT  = 30;
-const NAVBAR_NORMAL = HeaderValues.getHeaderHeight     (true);
-const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(true);
+const EXTRA_HEIGHT = 30;
+
 
 export class LargeTitleWithSnap extends React.PureComponent {
   static propTypes = {
@@ -358,10 +358,9 @@ export class LargeTitleWithSnap extends React.PureComponent {
       snapToStart: true,
       //adjust insets + offsets
       scrollIndicatorInsets: { 
-        top: NAVBAR_LARGE + 20,
-        bottom: 100,
+        top   : NAVBAR_LARGE  + 20,
+        bottom: TB_HEIGHT_ADJ + 30,
       },
-      //contentInset: {top: 200}
     });
 
     return(

@@ -3,25 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions,  Clipboard } from
 
 import Reanimated, { Easing, Value, interpolate, concat, Extrapolate} from 'react-native-reanimated';
 
-import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import * as Animatable from 'react-native-animatable';
 import { iOSUIKit } from 'react-native-typography';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
-import { timeout } from 'app/src/functions/helpers';
+import { TB_HEIGHT, BOTTOM_INSET } from 'app/src/constants/UIValues';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
-
-
-//#region tabbar values
-const TB_MARGIN = 10;
-const TB_WIDTH  = (screenWidth - (TB_MARGIN * 2));
-
-const bottomInset = StaticSafeAreaInsets.safeAreaInsetsBottom;
-const bottomMargin = (bottomInset == 0)? TB_MARGIN : bottomInset;
-//#endregion
 
 class TabBarItem extends React.Component {
   static styles = StyleSheet.create({
@@ -33,7 +22,6 @@ class TabBarItem extends React.Component {
     background: {
       position: 'absolute',
       width: '100%',
-      height: '100%',
       backgroundColor: 'rgba(0,0,0, 0.15)',
       borderRadius: 12,
       overflow: 'hidden',
@@ -196,20 +184,22 @@ export class CustomTabBar extends React.Component {
       right: 0,
       //layout
       width: '100%',
+      height: TB_HEIGHT,
       backgroundColor: 'transparent',
       //shadow
       shadowColor: "#000",
-      shadowOpacity: 0.3,
+      shadowOpacity: 0.2,
       shadowRadius: 4.65,
       shadowOffset: {
         width: 0,
-        height: 4,
+        height: -10,
       },
     },
     blurContainer: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
+      paddingBottom: BOTTOM_INSET,
     },
     background: {
       position: 'absolute',
@@ -231,10 +221,6 @@ export class CustomTabBar extends React.Component {
       route     : routes[activeRouteIndex],
       routeIndex: activeRouteIndex,
     };
-
-    //ui values
-    this.routeCount    = routes.length;
-    this.tabWidthEqual = (TB_WIDTH / this.routeCount);
   };
 
   _handleOnPressTab = (route, routeIndex) => {

@@ -7,7 +7,7 @@ import Feather        from '@expo/vector-icons/Feather';
 
 import { iOSUIKit } from 'react-native-typography';
 
-import { GREY, PURPLE, BLUE } from 'app/src/constants/Colors';
+import { GREY, PURPLE, BLUE, INDIGO } from 'app/src/constants/Colors';
 
 
 export const ALIGNMENT = {
@@ -59,7 +59,7 @@ export class ButtonGradient extends React.PureComponent {
     reverseColors: false      ,
     //options - gradient related
     isBgGradient  : false,
-    gradientColors: [BLUE.A700, '#3600ea'],
+    gradientColors: [INDIGO.A700, BLUE.A400],
     //options - style adj/shortcuts
     iconDistance: 7,
     borderRadius: 13,
