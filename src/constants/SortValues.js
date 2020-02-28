@@ -52,3 +52,35 @@ export const SortValuesQuiz = {
   },
 };
 //#endregion
+
+//#region - Exams
+export const SortKeysExam = {
+  'TITLE'   : 'TITLE'   , // sort by exam title
+  'CREATED' : 'CREATED' , // sort by exam date created
+  'MODIFIED': 'MODIFIED', // sort by exam date modified
+  'COUNT'   : 'COUNT'   , // sort by exam number of questions
+};
+
+export const SortValuesExam = {
+  [SortKeysExam.TITLE]: {
+    [SortKeys.TITLE  ]: "Exam Title",
+    [SortKeys.DISPLAY]: "Exam",
+    [SortKeys.DESC   ]: "Sort by the exam title",
+  },
+  [SortKeysExam.CREATED]: {
+    [SortKeys.TITLE  ]: "Date Created",
+    [SortKeys.DISPLAY]: "Created",
+    [SortKeys.DESC   ]: "Sort by exam created date",
+  },
+  [SortKeysExam.MODIFIED]: {
+    [SortKeys.TITLE  ]: "Date Modified",
+    [SortKeys.DISPLAY]: "Modified",
+    [SortKeys.DESC   ]: "Sort by exam modified date",
+  },
+  [SortKeysExam.COUNT]: {
+    [SortKeys.TITLE  ]: "Question Count",
+    [SortKeys.DISPLAY]: "Count",
+    [SortKeys.DESC   ]: "Sort by exam question count",
+  },
+};
+//#endregion
