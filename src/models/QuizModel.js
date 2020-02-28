@@ -9,7 +9,7 @@ export const QuizKeys = {
   quizDesc         : 'quizDesc'         ,
   quizTimesTaken   : 'quizTimesTaken'   ,
   quizDateCreated  : 'quizDateCreated'  ,
-  quizDateLastTaken: 'quizDateCreated'  ,
+  quizDateLastTaken: 'quizDateLastTaken',
   quizQuestionCount: 'quizQuestionCount',
   quizSectionCount : 'quizSectionCount' ,
 };

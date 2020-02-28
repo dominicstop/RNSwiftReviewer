@@ -118,7 +118,7 @@ export default {
       </G>
     ),
   },
-    [SVG_KEYS.SettingsFilled]: {
+  [SVG_KEYS.SettingsFilled]: {
     viewBox: '0 0 512 512',
     svg: (
       <G>

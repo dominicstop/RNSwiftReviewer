@@ -2,8 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, SectionList, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Reanimated from "react-native-reanimated";
-import Ionicon    from '@expo/vector-icons/Ionicons';
+//import EventEmitter from 'events';
+
+import Reanimated   from "react-native-reanimated";
+import Ionicon      from '@expo/vector-icons/Ionicons';
 
 import { Divider  } from "react-native-elements";
 import { iOSUIKit } from 'react-native-typography';
@@ -18,14 +20,15 @@ import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { SortValuesQuiz, SortKeysQuiz } from 'app/src/constants/SortValues';
+import { HeaderValues } from 'app/src/constants/HeaderValues';
+import { TestDataQuiz } from 'app/src/constants/TestData';
 import { GREY } from 'app/src/constants/Colors';
+
+import { QuizKeys } from 'app/src/models/QuizModel';
 
 import { ModalController } from 'app/src/functions/ModalController';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
 import { ButtonGradient } from '../components/ButtonGradient';
-import { HeaderValues } from '../constants/HeaderValues';
-import { TestDataQuiz } from '../constants/TestData';
-
 
 //create reanimated comps
 const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
@@ -36,12 +39,6 @@ export class QuizListScreen extends React.Component {
     rootContainer: {
       flex: 1,
     },
-    headerContainer: {
-      position: 'absolute',
-      backgroundColor: 'red',
-      width: '100%',
-      height: 100,
-    },
     divider: {
       marginTop: 15,
       marginHorizontal: 15,
@@ -49,9 +46,6 @@ export class QuizListScreen extends React.Component {
     headerButton: {
       marginTop: 10,
       marginBottom: 10
-    },
-    scrollview: {
-      flex: 1,
     },
   });
 
@@ -88,6 +82,10 @@ export class QuizListScreen extends React.Component {
   };
 
   //#region - event handlers / callbacks
+  _handleKeyExtractor = (quiz, index) => {
+    return quiz[QuizKeys.quizID];
+  };
+
   // sort pill pressed - cycle through sort options
   _handleOnPressSort = async (isAsc, sortIndex) => {
     await setStateAsync(this, { 
@@ -100,7 +98,7 @@ export class QuizListScreen extends React.Component {
       itemIndex: 0,
       sectionIndex: 0,
       viewPosition: 0,
-      viewOffset: 0,
+      viewOffset: 300,
       animated: true,
     });
 
@@ -174,12 +172,14 @@ export class QuizListScreen extends React.Component {
 
   // item count + sort buttons
   _renderSectionHeader = ({ section }) => {
-    const { sortIndex, isAsc: isAscending } = this.state;
+    const { quizes, sortIndex, isAsc: isAscending } = this.state;
+    const itemCount = quizes.length ?? 0;
+
     return(
       <ListSectionHeader
         sortTypes={SortKeysQuiz}
         sortValues={SortValuesQuiz}
-        {...{sortIndex, isAscending}}
+        {...{sortIndex, isAscending, itemCount}}
         // event handlers
         onSortExpanded={this._handleOnSortExpanded}
         onPressSort={this._handleOnPressSort}
@@ -212,6 +212,7 @@ export class QuizListScreen extends React.Component {
   };
 
   _renderItem = ({item: quiz, index}) => {
+
     return (
       <QuizListItem
         {...{quiz, index}}
@@ -237,7 +238,7 @@ export class QuizListScreen extends React.Component {
             ref={r => this.sectionList = r}
             sections={[{ data: quizes }]}
             renderSectionHeader={this._renderSectionHeader}
-            keyExtractor={(item, index) => item + index}
+            keyExtractor={this._handleKeyExtractor}
             renderItem={this._renderItem}
             {...{scrollEnabled}}
           />
