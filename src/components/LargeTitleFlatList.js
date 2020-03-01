@@ -6,10 +6,11 @@ import { TB_HEIGHT_ADJ, NAVBAR_NORMAL, NAVBAR_LARGE } from 'app/src/constants/UI
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
-import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
+import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { Transitioning, Transition, Easing } from 'react-native-reanimated';
 
-import Animated, { Easing } from 'react-native-reanimated';
+import Animated       from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
 
@@ -20,6 +21,20 @@ const AnimatedBlurView       = Animated.createAnimatedComponent(VibrancyView  );
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 const EXTRA_HEIGHT = 30;
+
+const transition = (
+  <Transition.Sequence>
+    <Transition.Out
+      durationMs={300} 
+      type="fade"
+    />
+    <Transition.Change interpolation="easeInOut" />
+    <Transition.In
+      durationMs={300} 
+      type="fade"
+    />
+  </Transition.Sequence>
+);
 
 
 export class LargeTitleWithSnap extends React.PureComponent {
@@ -209,6 +224,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
     this.setState({enableSnap: true});
   };
 
+  getTransitionRef = () => {
+    return this.transitionRef;
+  };
+
   _handleOnLayoutTitleLarge = ({nativeEvent}) => {
     if(!this._isTitleLargeMeasured){
       const { x, y, width, height } = nativeEvent.layout;
@@ -365,7 +384,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     return(
       <View style={styles.rootContainer}>
-        {ScrollView}
+        <Transitioning.View
+          ref={r => this.transitionRef = r}
+          {...{transition}}
+        >
+          {ScrollView}
+        </Transitioning.View>
         {this._renderHeader()}
       </View>
     );

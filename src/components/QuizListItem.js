@@ -243,29 +243,24 @@ export class QuizListItem extends React.Component {
     const description = quiz[QuizKeys.quizDesc] ?? 'No Description';
 
     return(
-      <AnimatedListItem
-        duration={250}
-        {...{index}}
-      >
-        <ListCard>
-          <QuizListItemHeader
-            {...{quiz, index}}
-          />
-          <QuizListItemStats
-            {...{quiz}}
-          />
-          <Divider style={styles.divider}/>
-          <Text 
-            style={styles.textDescription}
-            numberOfLines={3}
-          >
-            <Text style={styles.textDescriptionLabel}>
-              {'Description: '}
-            </Text>
-            {description}
+      <ListCard>
+        <QuizListItemHeader
+          {...{quiz, index}}
+        />
+        <QuizListItemStats
+          {...{quiz}}
+        />
+        <Divider style={styles.divider}/>
+        <Text 
+          style={styles.textDescription}
+          numberOfLines={3}
+        >
+          <Text style={styles.textDescriptionLabel}>
+            {'Description: '}
           </Text>
-        </ListCard>
-      </AnimatedListItem>
+          {description}
+        </Text>
+      </ListCard>
     );
   };
 };

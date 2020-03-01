@@ -2,6 +2,7 @@
 // Used in ListSortItems and related comps
 // Used for describing possible sort options
 
+
 export const SortKeys = {
   TITLE  : 'TITLE'  , // sort title
   DESC   : 'DESC'   , // sort description
@@ -23,10 +24,10 @@ export function getNextSort(sortByIndex, isAsc, sortKeysType){
 
 //#region - Quizes
 export const SortKeysQuiz = {
-  'TITLE'   : 'TITLE'   , // sort by quiz title
-  'CREATED' : 'CREATED' , // sort by quiz date created
-  'MODIFIED': 'MODIFIED', // sort by quiz date modified
-  'COUNT'   : 'COUNT'   , // sort by quiz number of questions
+  'TITLE'  : 'TITLE'  , // sort by quiz title
+  'CREATED': 'CREATED', // sort by quiz date created
+  'TAKEN'  : 'TAKEN'  , // sort by quiz date modified
+  'COUNT'  : 'COUNT'  , // sort by quiz number of questions
 };
 
 export const SortValuesQuiz = {
@@ -40,10 +41,10 @@ export const SortValuesQuiz = {
     [SortKeys.DISPLAY]: "Created",
     [SortKeys.DESC   ]: "Sort by quiz created date",
   },
-  [SortKeysQuiz.MODIFIED]: {
-    [SortKeys.TITLE  ]: "Date Modified",
-    [SortKeys.DISPLAY]: "Modified",
-    [SortKeys.DESC   ]: "Sort by quiz modified date",
+  [SortKeysQuiz.TAKEN]: {
+    [SortKeys.TITLE  ]: "Date Last Taken",
+    [SortKeys.DISPLAY]: "Taken",
+    [SortKeys.DESC   ]: "Sort by quiz last taken date",
   },
   [SortKeysQuiz.COUNT]: {
     [SortKeys.TITLE  ]: "Question Count",

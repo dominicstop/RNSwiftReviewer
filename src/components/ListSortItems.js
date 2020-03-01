@@ -218,8 +218,8 @@ export class ListSortItems extends React.Component {
           activeOpacity={0.8}
         >
           <Text style={styles.closeButtonText}>
-            {'Cancel'
-          }</Text> 
+            {'Cancel'}
+          </Text> 
         </TouchableOpacity>
       </View>
     );

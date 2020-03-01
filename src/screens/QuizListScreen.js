@@ -29,6 +29,8 @@ import { QuizKeys } from 'app/src/models/QuizModel';
 import { ModalController } from 'app/src/functions/ModalController';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
 import { ButtonGradient } from '../components/ButtonGradient';
+import { sortQuizItems } from '../functions/SortItems';
+
 
 //create reanimated comps
 const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
@@ -87,23 +89,25 @@ export class QuizListScreen extends React.Component {
   };
 
   // sort pill pressed - cycle through sort options
-  _handleOnPressSort = async (isAsc, sortIndex) => {
+  _handleOnPressSort = async (nextIsAsc, nextSortIndex) => {
+    const { quizes } = this.state;
+    const transitionRef = this.largeTitleRef.getTransitionRef();
+
+    const sortType = Object.keys(SortKeysQuiz)[nextSortIndex];
+    const nextQuizes = sortQuizItems(quizes, sortType, nextIsAsc);
+
     await setStateAsync(this, { 
-      isAsc, sortIndex,
+      isAsc: nextIsAsc, 
+      sortIndex: nextSortIndex,
       scrollEnabled: false
     });
 
-    const node = this.sectionList.getNode();
-    node && node.scrollToLocation({
-      itemIndex: 0,
-      sectionIndex: 0,
-      viewPosition: 0,
-      viewOffset: 300,
-      animated: true,
+    transitionRef.animateNextTransition();
+    await setStateAsync(this, {
+      quizes: nextQuizes,
     });
 
-    await timeout(500);
-    
+    await timeout(300);
     await setStateAsync(this, { 
       scrollEnabled: true
     });
@@ -128,11 +132,24 @@ export class QuizListScreen extends React.Component {
   // sort options collapsed/hidden
   _handleOnPressCancel = () => {
     this.setState({ scrollEnabled: true });
+
   };
 
   // sort item has been selected from options
-  _handleOnPressSortOption = () => {
-    this.setState({ scrollEnabled: true });
+  _handleOnPressSortOption = async (nextIsAsc, nextSortIndex) => {
+    const { quizes } = this.state;
+    const transitionRef = this.largeTitleRef.getTransitionRef();
+
+    const sortType = Object.keys(SortKeysQuiz)[nextSortIndex];
+    const nextQuizes = sortQuizItems(quizes, sortType, nextIsAsc);
+
+    transitionRef.animateNextTransition();
+    await setStateAsync(this, { 
+      isAsc: nextIsAsc, 
+      sortIndex: nextSortIndex,
+      scrollEnabled: true,
+      quizes: nextQuizes,
+    });
   };
   //#endregion
 
@@ -212,9 +229,9 @@ export class QuizListScreen extends React.Component {
   };
 
   _renderItem = ({item: quiz, index}) => {
-
     return (
       <QuizListItem
+        onPressQuizItem={this._handleOnPressQuizItem}
         {...{quiz, index}}
       />
     );
@@ -227,6 +244,7 @@ export class QuizListScreen extends React.Component {
     return (
       <View style={styles.rootContainer}>
         <LargeTitleWithSnap
+          ref={r => this.largeTitleRef = r}
           titleText={'Quizes'}
           subtitleText={'Your Quiz Reviewers'}
           showSubtitle={true}
