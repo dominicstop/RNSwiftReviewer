@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { Ionicons } from '@expo/vector-icons';
-
 import { iOSUIKit } from 'react-native-typography';
 
 import { BLUE } from 'app/src/constants/Colors';

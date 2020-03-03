@@ -187,13 +187,13 @@ export class ExamListScreen extends React.Component {
         {...{scrollY, inputRange}}
       >
         <SvgIcon
-          name={SVG_KEYS.NewsPaperOutline}
+          name={SVG_KEYS.NewsPaperFilled}
           size={30}
           fill={'white'}
           stroke={'white'}
         />
         <SvgIcon
-          name={SVG_KEYS.NewsPaperFilled}
+          name={SVG_KEYS.NewsPaperOutline}
           size={30}
           fill={'white'}
           stroke={'white'}
