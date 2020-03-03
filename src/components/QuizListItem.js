@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-
-import * as animatable from "react-native-animatable";
 
 import   moment     from 'moment';
 import   Feather    from '@expo/vector-icons/Feather';
@@ -14,7 +12,6 @@ import { ListItemBadge } from 'app/src/components/ListItemBadge';
 import { GREY, BLUE, INDIGO } from 'app/src/constants/Colors';
 import { QuizKeys } from 'app/src/models/QuizModel';
 import { plural } from '../functions/helpers';
-import { AnimatedListItem } from './AnimatedLiistItem';
 
 class QuizListItemHeader extends React.Component {
   static propTypes = {
@@ -234,6 +231,12 @@ export class QuizListItem extends React.Component {
   static propTypes = {
     quiz : PropTypes.object,
     index: PropTypes.number,
+    onPressQuizItem: PropTypes.func,
+  };
+
+  _handleOnPress = () => {
+    const { quiz, index, onPressQuizItem } = this.props;
+    onPressQuizItem && onPressQuizItem({quiz, index});
   };
 
   render(){
@@ -243,24 +246,29 @@ export class QuizListItem extends React.Component {
     const description = quiz[QuizKeys.quizDesc] ?? 'No Description';
 
     return(
-      <ListCard>
-        <QuizListItemHeader
-          {...{quiz, index}}
-        />
-        <QuizListItemStats
-          {...{quiz}}
-        />
-        <Divider style={styles.divider}/>
-        <Text 
-          style={styles.textDescription}
-          numberOfLines={3}
-        >
-          <Text style={styles.textDescriptionLabel}>
-            {'Description: '}
+      <TouchableOpacity
+        onPress={this._handleOnPress}
+        activeOpacity={0.8}
+      >
+        <ListCard>
+          <QuizListItemHeader
+            {...{quiz, index}}
+          />
+          <QuizListItemStats
+            {...{quiz}}
+          />
+          <Divider style={styles.divider}/>
+          <Text 
+            style={styles.textDescription}
+            numberOfLines={3}
+          >
+            <Text style={styles.textDescriptionLabel}>
+              {'Description: '}
+            </Text>
+            {description}
           </Text>
-          {description}
-        </Text>
-      </ListCard>
+        </ListCard>
+      </TouchableOpacity>
     );
   };
 };

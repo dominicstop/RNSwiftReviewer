@@ -1,18 +1,18 @@
 import { Navigation } from 'react-native-navigation';
-import { RNN_ROUTES } from 'app/src/constants/Routes';
 
 export const showModalOptionKeys = {
   swipeToDismiss: 'swipeToDismiss',
 };
 
 export class ModalController {;  
-  static showModal(options = {}){
+  static showModal({routeName, options, navProps}){
     //extract options
-    const swipeToDismiss = options[showModalOptionKeys.swipeToDismiss] ?? true;
+    const swipeToDismiss = options?.[showModalOptionKeys.swipeToDismiss] ?? true;
 
     Navigation.showModal({
-      component: { 
-        name: RNN_ROUTES.RNNModalViewQuiz,
+      component: {
+        name: routeName,
+        passProps: navProps,
         options: {
           modalPresentationStyle: 'pageSheet',
           modal: { swipeToDismiss },

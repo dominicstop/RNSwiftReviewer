@@ -18,5 +18,6 @@ export const ROUTES = {
 export const RNN_ROUTES = {
   RootReactNavigationRoute: 'RootReactNavigationRoute',
   // modal comps/routes
-  RNNModalViewQuiz: 'RNNModalViewQuiz', 
+  RNNModalViewQuiz  : 'RNNModalViewQuiz'  ,
+  RNNModalCreateQuiz: 'RNNModalCreateQuiz',
 };

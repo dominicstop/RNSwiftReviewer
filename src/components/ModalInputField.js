@@ -1,0 +1,290 @@
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import PropTypes from 'prop-types';
+
+import * as Animatable from 'react-native-animatable';
+import { iOSUIKit } from 'react-native-typography';
+
+import { BLUE, GREY, RED } from '../constants/Colors';
+
+import Reanimated, { Easing }  from 'react-native-reanimated';
+const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
+
+const MODES = {
+  'FOCUSED': 'FOCUSED',
+  'BLURRED': 'BLURRED',
+  'INVALID': 'INVALID',
+};
+
+export class ModalInputField extends React.Component {
+  static propTypes = {
+    title      : PropTypes.string,
+    subtitle   : PropTypes.string,
+    placeholder: PropTypes.string,
+  };
+
+  static defaultProps = {
+    title      : 'Title N/A',
+    subtitle   : 'Subtitle N/A',
+    placeholder: 'Input Text',
+  };
+
+  static styles = StyleSheet.create({
+    inputContainer: {
+      overflow: 'hidden',
+      flexDirection: 'row',
+      borderRadius: 10,
+      marginTop: 5,
+    },
+    inputBackgound: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'white',
+      borderRadius: 10,
+    },
+    inputBorder: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 10,
+      borderColor: BLUE.A700,
+    },
+    iconWrapper: {
+      height: 40,
+      width: 40,
+    },
+    iconContainer: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    textInput: {
+      ...iOSUIKit.bodyObject,
+      flex: 1,
+      alignSelf: 'stretch',
+      marginHorizontal: 10,
+      marginLeft: 0,
+      marginRight: 10,
+    },
+    textTitle: {
+      ...iOSUIKit.title3Object,
+    },
+    textSubtitle: {
+      ...iOSUIKit.subheadObject,
+    },
+  });
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      mode: MODES.BLURRED,
+      textInput: '',
+    };
+
+    this._progress = new Value(0);
+
+    this._bgOpacity = interpolate(this._progress, {
+      inputRange : [0  , 100],
+      outputRange: [0.5, 1],
+    });
+
+    this._iconOpacityActive = interpolate(this._progress, {
+      inputRange : [0, 100],
+      outputRange: [0, 0.75],
+    });
+    
+    this._iconOpacityInactive = interpolate(this._progress, {
+      inputRange : [0  , 100],
+      outputRange: [0.8, 0  ],
+    });
+
+    this._borderOpacity = interpolate(this._progress, {
+      inputRange : [0  , 100],
+      outputRange: [0.4, 0.5],
+    });
+
+    this._borderWidth = interpolate(this._progress, {
+      inputRange : [0, 100],
+      outputRange: [2, 3  ],
+    });
+
+    this._titleFontWeight = floor(
+      interpolate(this._progress, {
+        inputRange : [0, 50],
+        outputRange: [6, 8],
+        extrapolate: Extrapolate.CLAMP
+      })
+    );
+
+    this._titleScale = interpolate(this._progress, {
+      inputRange : [0, 100],
+      outputRange: [1, 1.15],
+    });
+
+    this._titleTransX = interpolate(this._progress, {
+      inputRange : [0, 100],
+      outputRange: [0, 23],
+    });
+
+    this._titleTransY = interpolate(this._progress, {
+      inputRange : [0, 100],
+      outputRange: [0, -1],
+    });
+
+    this._subtitleOpacity = interpolate(this._progress, {
+      inputRange : [0  , 100],
+      outputRange: [0.5, 0.9],
+    });
+  };
+
+  isValid = (animate) => {
+    const { validate } = this.props;
+    const { textInput } = this.state;
+
+    const isValid = validate && validate(textInput);
+    if(!isValid && animate){
+      this.inputContainerRef.shake(750);
+    };
+
+    return isValid;
+  };
+  
+  _handleOnTextFocus = () => {
+    this.setState({mode: MODES.FOCUSED});
+    const animation = timing(this._progress, {
+      duration: 300,
+      toValue : 100,
+      easing  : Easing.inOut(Easing.ease)
+    });
+
+    animation.start();
+    this.inputContainerRef.pulse(750);
+  };
+
+  _handleOnTextBlur = () => {
+    const animation = timing(this._progress, {
+      duration: 300,
+      toValue : 0,
+      easing  : Easing.inOut(Easing.ease)
+    });
+
+    animation.start();
+
+    this.setState({mode: this.isValid(true)
+      ? MODES.BLURRED
+      : MODES.INVALID
+    });
+  };
+
+  _handleOnChangeText = (input) => {
+    this.setState({textInput: input});
+  };
+
+  render(){
+    const { styles } = ModalInputField;
+    const { iconActive, iconInactive, ...props } = this.props;
+    const { mode } = this.state;
+
+    const textInputStyle = (() => {
+      switch (mode) {
+        case MODES.BLURRED: return {
+          color     : GREY[700],
+          fontWeight: '300',
+        };
+        case MODES.FOCUSED: return {
+          color     : BLUE[900],
+          fontWeight: '600',
+        };
+        case MODES.INVALID: return {
+          color     : RED[700],
+          fontWeight: '300',
+        };
+      };
+    })();
+
+    const tintColor = (() => {
+      switch (mode) {
+        case MODES.BLURRED: return BLUE[900];
+        case MODES.FOCUSED: return BLUE.A700;
+        case MODES.INVALID: return RED.A700;
+      };
+    })();
+
+    const inputBackgoundStyle = {
+      opacity: this._bgOpacity,
+    };
+
+    const inputBorder = {
+      opacity: this._borderOpacity,
+      borderWidth: this._borderWidth,
+      color: tintColor,
+    };
+
+    const iconActiveStyle = {
+      opacity: this._iconOpacityActive,
+    };
+
+    const iconInctiveStyle = {
+      opacity: this._iconOpacityInactive,
+    };
+
+    const textTitleStyle = {
+      fontWeight: concat(this._titleFontWeight, '00'),
+      transform: [
+        { scale     : this._titleScale  },
+        { translateX: this._titleTransX },
+        { translateY: this._titleTransY },
+      ],
+    };
+
+   const textSubtitleStyle = {
+     opacity: this._subtitleOpacity,
+     color: (
+       (mode === MODES.BLURRED)? GREY[900] :
+       (mode === MODES.FOCUSED)? BLUE[900] :
+       (mode === MODES.INVALID)? RED [900] : null
+     ),
+   };
+
+   const iconProps = {
+     fill  : tintColor,
+     stroke: tintColor,
+   };
+
+    return(
+      <View>
+        <Reanimated.Text style={[styles.textTitle, textTitleStyle]}>
+          {props.title}
+        </Reanimated.Text>
+        <Reanimated.Text style={[styles.textSubtitle, textSubtitleStyle]}>
+          {props.subtitle}
+        </Reanimated.Text>
+        <Animatable.View 
+          style={styles.inputContainer}
+          ref={r => this.inputContainerRef = r}
+          useNativeDriver={true}
+        >
+          <Reanimated.View style={[styles.inputBackgound, inputBackgoundStyle]}/>
+          <Reanimated.View style={[styles.inputBorder, inputBorder]}/>
+          <View style={styles.iconWrapper}>
+            <Reanimated.View style={[styles.iconContainer, iconActiveStyle]}>
+              {iconActive && React.cloneElement(iconActive, iconProps)}
+            </Reanimated.View>
+            <Reanimated.View style={[styles.iconContainer, iconInctiveStyle]}>
+              {iconInactive && React.cloneElement(iconInactive, iconProps)}
+            </Reanimated.View>
+          </View>
+          <TextInput
+            style={[styles.textInput, textInputStyle]}
+            onFocus={this._handleOnTextFocus}
+            onBlur={this._handleOnTextBlur}
+            onKeyPress={this._handleOnKeyPress}
+            onChangeText={this._handleOnChangeText}
+            placeholder={props.placeholder}
+            maxLength={300}
+            enablesReturnKeyAutomatically={true}
+            returnKeyType={'next'}
+          />
+        </Animatable.View>
+      </View>
+    );
+  };
+};

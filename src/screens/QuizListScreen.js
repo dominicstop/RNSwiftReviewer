@@ -2,10 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, SectionList, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
-//import EventEmitter from 'events';
-
-import Reanimated   from "react-native-reanimated";
-import Ionicon      from '@expo/vector-icons/Ionicons';
+import Reanimated from "react-native-reanimated";
+import Ionicon    from '@expo/vector-icons/Ionicons';
 
 import { Divider  } from "react-native-elements";
 import { iOSUIKit } from 'react-native-typography';
@@ -15,6 +13,7 @@ import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
 import { QuizListItem         } from 'app/src/components/QuizListItem';
+import { ButtonGradient       } from 'app/src/components/ButtonGradient';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -23,13 +22,13 @@ import { SortValuesQuiz, SortKeysQuiz } from 'app/src/constants/SortValues';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { TestDataQuiz } from 'app/src/constants/TestData';
 import { GREY } from 'app/src/constants/Colors';
+import { RNN_ROUTES } from 'app/src/constants/Routes';
 
 import { QuizKeys } from 'app/src/models/QuizModel';
 
 import { ModalController } from 'app/src/functions/ModalController';
+import { sortQuizItems } from 'app/src/functions/SortItems';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
-import { ButtonGradient } from '../components/ButtonGradient';
-import { sortQuizItems } from '../functions/SortItems';
 
 
 //create reanimated comps
@@ -79,13 +78,19 @@ export class QuizListScreen extends React.Component {
     });
   };
 
-  _handleOnPressNavigate = () => {
-    ModalController.showModal();
+  _handleOnPressCreateQuiz = () => {
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalCreateQuiz,
+    });
   };
 
   //#region - event handlers / callbacks
   _handleKeyExtractor = (quiz, index) => {
     return quiz[QuizKeys.quizID];
+  };
+
+  _handleOnPressQuizItem = ({quiz, index}) => {
+    ModalController.showModal();
   };
 
   // sort pill pressed - cycle through sort options
@@ -132,7 +137,6 @@ export class QuizListScreen extends React.Component {
   // sort options collapsed/hidden
   _handleOnPressCancel = () => {
     this.setState({ scrollEnabled: true });
-
   };
 
   // sort item has been selected from options
@@ -169,7 +173,7 @@ export class QuizListScreen extends React.Component {
           containerStyle={styles.headerButton}
           title={'Create Quiz'}
           subtitle={'Create a new quiz item'}
-          onPress={this._handleOnPressButton}
+          onPress={this._handleOnPressCreateQuiz}
           iconType={'ionicon'}
           iconDistance={10}
           isBgGradient={true}
