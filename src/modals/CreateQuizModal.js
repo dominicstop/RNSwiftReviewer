@@ -62,6 +62,7 @@ export class CreateQuizModal extends React.Component {
       >
         <ModalSection showBorderTop={false}>
           <ModalInputField
+            index={0}
             title={'Quiz Title'}
             subtitle={'Give this quiz a title (ex: Math Prelims etc.)'}
             placeholder={'Enter Quiz Title'}
@@ -82,10 +83,23 @@ export class CreateQuizModal extends React.Component {
         </ModalSection>
         <ModalSection showBorderTop={false}>
           <ModalInputField
-            title={'Quiz Description'}
+            index={1}
+            title={'Description'}
             subtitle={'Give this quiz a short description.'}
             placeholder={'Enter Quiz Title'}
             validate={Validate.isNotNullOrWhitespace}
+            iconActive={(
+              <SvgIcon
+                name={SVG_KEYS.BookFilled}
+                size={20}
+              />
+            )}
+            iconInactive={(
+              <SvgIcon
+                name={SVG_KEYS.BookOutlined}
+                size={20}
+              />
+            )}
           />
         </ModalSection>
       </ModalBackground>

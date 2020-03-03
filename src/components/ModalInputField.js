@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import { iOSUIKit } from 'react-native-typography';
 
-import { BLUE, GREY, RED } from '../constants/Colors';
+import { ListItemBadge } from 'app/src/components/ListItemBadge';
+
+import { BLUE, GREY, RED, INDIGO } from '../constants/Colors';
 
 import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
@@ -63,8 +65,13 @@ export class ModalInputField extends React.Component {
       marginLeft: 0,
       marginRight: 10,
     },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
     textTitle: {
       ...iOSUIKit.title3Object,
+      marginLeft: 7,
     },
     textSubtitle: {
       ...iOSUIKit.subheadObject,
@@ -116,17 +123,17 @@ export class ModalInputField extends React.Component {
 
     this._titleScale = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [1, 1.15],
+      outputRange: [1, 1.10],
     });
 
     this._titleTransX = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [0, 23],
+      outputRange: [0, 7],
     });
 
     this._titleTransY = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [0, -1],
+      outputRange: [0, -0.5],
     });
 
     this._subtitleOpacity = interpolate(this._progress, {
@@ -202,7 +209,7 @@ export class ModalInputField extends React.Component {
 
     const tintColor = (() => {
       switch (mode) {
-        case MODES.BLURRED: return BLUE[900];
+        case MODES.BLURRED: return BLUE[800];
         case MODES.FOCUSED: return BLUE.A700;
         case MODES.INVALID: return RED.A700;
       };
@@ -215,7 +222,7 @@ export class ModalInputField extends React.Component {
     const inputBorder = {
       opacity: this._borderOpacity,
       borderWidth: this._borderWidth,
-      color: tintColor,
+      borderColor: tintColor,
     };
 
     const iconActiveStyle = {
@@ -233,13 +240,18 @@ export class ModalInputField extends React.Component {
         { translateX: this._titleTransX },
         { translateY: this._titleTransY },
       ],
+      color: (
+       (mode === MODES.BLURRED)? INDIGO[1100] :
+       (mode === MODES.FOCUSED)? INDIGO[1000] :
+       (mode === MODES.INVALID)? RED   [900 ] : null
+      ),
     };
 
    const textSubtitleStyle = {
      opacity: this._subtitleOpacity,
      color: (
        (mode === MODES.BLURRED)? GREY[900] :
-       (mode === MODES.FOCUSED)? BLUE[900] :
+       (mode === MODES.FOCUSED)? GREY[800] :
        (mode === MODES.INVALID)? RED [900] : null
      ),
    };
@@ -251,9 +263,19 @@ export class ModalInputField extends React.Component {
 
     return(
       <View>
-        <Reanimated.Text style={[styles.textTitle, textTitleStyle]}>
-          {props.title}
-        </Reanimated.Text>
+        <View style={styles.titleContainer}>
+          <ListItemBadge
+            value={props.index + 1}
+            color={(
+              (mode === MODES.BLURRED)? INDIGO.A400 :
+              (mode === MODES.FOCUSED)? INDIGO.A700 :
+              (mode === MODES.INVALID)? RED   .A700 : null
+            )}
+          />
+          <Reanimated.Text style={[styles.textTitle, textTitleStyle]}>
+            {props.title}
+          </Reanimated.Text>
+        </View>
         <Reanimated.Text style={[styles.textSubtitle, textSubtitleStyle]}>
           {props.subtitle}
         </Reanimated.Text>
@@ -282,6 +304,7 @@ export class ModalInputField extends React.Component {
             maxLength={300}
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
+            placeholderTextColor={GREY[700]}
           />
         </Animatable.View>
       </View>
