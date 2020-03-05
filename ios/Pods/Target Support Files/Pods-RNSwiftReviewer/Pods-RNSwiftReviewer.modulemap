@@ -1,0 +1,6 @@
+module Pods_RNSwiftReviewer {
+  umbrella header "Pods-RNSwiftReviewer-umbrella.h"
+
+  export *
+  module * { export * }
+}
