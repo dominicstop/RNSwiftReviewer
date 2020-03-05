@@ -217,6 +217,12 @@ class QuizListItemStats extends React.Component {
 };
 
 export class QuizListItem extends React.Component {
+  static propTypes = {
+    quiz : PropTypes.object,
+    index: PropTypes.number,
+    onPressQuizItem: PropTypes.func,
+  };
+  
   static styles = StyleSheet.create({
     textDescription: {
       ...iOSUIKit.bodyObject,
@@ -230,13 +236,7 @@ export class QuizListItem extends React.Component {
       margin: 10,
     },
   });
-
-  static propTypes = {
-    quiz : PropTypes.object,
-    index: PropTypes.number,
-    onPressQuizItem: PropTypes.func,
-  };
-
+  
   _handleOnPress = () => {
     const { quiz, index, onPressQuizItem } = this.props;
     onPressQuizItem && onPressQuizItem({quiz, index});
@@ -249,11 +249,11 @@ export class QuizListItem extends React.Component {
     const description = quiz[QuizKeys.quizDesc] ?? 'No Description';
 
     return(
-      <TouchableOpacity
-        onPress={this._handleOnPress}
-        activeOpacity={0.8}
-      >
-        <ListCard>
+      <ListCard>
+        <TouchableOpacity
+          onPress={this._handleOnPress}
+          activeOpacity={0.5}
+        >
           <QuizListItemHeader
             {...{quiz, index}}
           />
@@ -270,8 +270,8 @@ export class QuizListItem extends React.Component {
             </Text>
             {description}
           </Text>
-        </ListCard>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </ListCard>
     );
   };
 };
