@@ -75,6 +75,7 @@ export class ModalInputField extends React.Component {
     },
     textSubtitle: {
       ...iOSUIKit.subheadObject,
+      marginBottom: 2,
     },
   });
 
