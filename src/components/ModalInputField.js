@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -142,6 +142,11 @@ export class ModalInputField extends React.Component {
     });
   };
 
+  componentDidMount(){
+    const { inputRef } = this.props;
+    inputRef && inputRef(this.textInputRef);
+  };
+
   isValid = (animate) => {
     const { validate } = this.props;
     const { textInput } = this.state;
@@ -152,6 +157,16 @@ export class ModalInputField extends React.Component {
     };
 
     return isValid;
+  };
+
+  getText = () => {
+    const { textInput } = this.state;
+    return textInput;
+  };
+
+  getProps = () => {
+    const { style, onFocus, onBlur, onSubmitEditing, onChangeText, ...props } = this.props;
+    return props;
   };
   
   _handleOnTextFocus = () => {
@@ -167,6 +182,9 @@ export class ModalInputField extends React.Component {
   };
 
   _handleOnTextBlur = () => {
+    const { onBlur } = this.props;
+    const { textInput } = this.state;
+
     const animation = timing(this._progress, {
       duration: 300,
       toValue : 0,
@@ -175,19 +193,29 @@ export class ModalInputField extends React.Component {
 
     animation.start();
 
-    this.setState({mode: this.isValid(true)
+    const mode = (this.isValid(true)
       ? MODES.BLURRED
       : MODES.INVALID
-    });
+    );
+
+    onBlur && onBlur({textInput, mode});
+    this.setState({mode});
   };
 
   _handleOnChangeText = (input) => {
     this.setState({textInput: input});
   };
 
+  _handleOnSubmitEditing = ({nativeEvent: {text, eventCount, target}}) => {
+    const { onSubmitEditing, index } = this.props;
+    onSubmitEditing && onSubmitEditing(
+      { text, eventCount, target, index }
+    );
+  };
+
   render(){
     const { styles } = ModalInputField;
-    const { iconActive, iconInactive, ...props } = this.props;
+    const { iconActive, iconInactive, ...props } = this.getProps();
     const { mode } = this.state;
 
     const textInputStyle = (() => {
@@ -262,7 +290,7 @@ export class ModalInputField extends React.Component {
    };
 
     return(
-      <View>
+      <Fragment>
         <View style={styles.titleContainer}>
           <ListItemBadge
             value={props.index + 1}
@@ -296,18 +324,20 @@ export class ModalInputField extends React.Component {
           </View>
           <TextInput
             style={[styles.textInput, textInputStyle]}
+            ref={r => this.textInputRef = r}
             onFocus={this._handleOnTextFocus}
             onBlur={this._handleOnTextBlur}
-            onKeyPress={this._handleOnKeyPress}
+            onSubmitEditing={this._handleOnSubmitEditing}
             onChangeText={this._handleOnChangeText}
             placeholder={props.placeholder}
             maxLength={300}
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
             placeholderTextColor={GREY[700]}
+            {...{props}}
           />
         </Animatable.View>
-      </View>
+      </Fragment>
     );
   };
 };

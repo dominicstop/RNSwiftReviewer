@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
+import * as Animatable from 'react-native-animatable';
 import { BlurView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
@@ -99,7 +100,14 @@ export class ModalHeader extends React.Component {
           blurType={'regular'}
         />
         <View style={styles.headerWrapper}>
-          <View style={styles.dragIndicator}/>
+          <Animatable.View 
+            style={styles.dragIndicator}
+            animation={'pulse'}
+            duration={2000}
+            iterationCount={'infinite'}
+            iterationDelay={2000}
+            useNativeDriver={true}
+          />
           <View style={styles.headerContainer}>
             {LeftHeaderIcon}
             <View style={styles.headerTextContainer}>

@@ -6,12 +6,14 @@ import { TB_HEIGHT_ADJ, NAVBAR_NORMAL, NAVBAR_LARGE } from 'app/src/constants/UI
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
-import { iOSUIKit } from 'react-native-typography';
-import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
+
+import { VibrancyView } from "@react-native-community/blur";
 import { Transitioning, Transition, Easing } from 'react-native-reanimated';
 
 import Animated       from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
+
 
 
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, debug } = Animated;
@@ -55,6 +57,9 @@ export class LargeTitleWithSnap extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
       height: screenHeight + EXTRA_HEIGHT,
+    },
+    scrollView: {
+      flex: 1,
     },
     headerContainer: {
       position: "absolute",
@@ -135,18 +140,41 @@ export class LargeTitleWithSnap extends React.PureComponent {
       ])
     }]);
 
-    this._headerHeight = interpolate(this._scrollY, {
-      inputRange      : [0, NAVBAR_NORMAL],
-      outputRange     : [NAVBAR_FHEIGHT, NAVBAR_NORMAL],
-      extrapolateLeft : Extrapolate.CLAMP,
-      extrapolateRight: Extrapolate.CLAMP,
+    this._progress = interpolate(this._scrollY, {
+      inputRange : [0, NAVBAR_NORMAL],
+      outputRange: [0, 100],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this._headerScale = interpolate(this._scrollY, {
+      inputRange : [-150, 0],
+      outputRange: [1.2, 1],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this._headerTransX = interpolate(this._scrollY, {
+      inputRange : [-150, 0],
+      outputRange: [30, 0],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this._headerTransY = interpolate(this._scrollY, {
+      inputRange : [-150, 0],
+      outputRange: [10, 0],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this._headerHeight = interpolate(this._progress, {
+      inputRange : [0, 100],
+      outputRange: [NAVBAR_FHEIGHT, NAVBAR_NORMAL],
+      extrapolate: Extrapolate.CLAMP,
     });
 
     const diff   = (NAVBAR_FHEIGHT - NAVBAR_NORMAL);
     const offset = (diff - NAVBAR_NORMAL);
 
-    this._sectionListTransY = interpolate(this._scrollY, {
-      inputRange : [0, NAVBAR_NORMAL],
+    this._sectionListTransY = interpolate(this._progress, {
+      inputRange : [0, 100],
       outputRange: [offset, 0],
       extrapolate: Extrapolate.CLAMP,
     });
@@ -240,6 +268,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
     };
   };
 
+  _handleOnEndReached = () => {
+    this.listFooterIconRef.show(true);
+  };
+
   _renderSubtitle(){
     const { styles } = LargeTitleWithSnap;
     const { showSubtitle, renderSubtitle, ...props } = this.props;
@@ -274,6 +306,11 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     const headerContainerStyle = {
       height: this._headerHeight,
+      transform: [
+        { scale     : this._headerScale  },
+        { translateX: this._headerTransX },
+        { translateY: this._headerTransY },
+      ],
     };
 
     const backgroundStyle = {
@@ -346,10 +383,27 @@ export class LargeTitleWithSnap extends React.PureComponent {
     );
   };
 
+  _renderListFooter = () => {
+    return(
+      <ListFooterIcon
+        ref={r => this.listFooterIconRef = r}
+      />
+    );
+  };
+
   render(){
     const { styles } = LargeTitleWithSnap;
-    const { children } = this.props;
+    const { children, itemCount, itemSize } = this.props;
     const { enableSnap } = this.state;
+
+    const a = (screenHeight - NAVBAR_NORMAL - itemSize);
+    const b = (a - (itemCount * itemSize));
+    const c = (TB_HEIGHT_ADJ + 200);
+
+    const extraHeight = (
+      (itemCount == 0)? a :
+      (itemCount <  3)? b : c
+    );
 
     const sectionListStyle = {
       paddingTop: NAVBAR_NORMAL,
@@ -359,32 +413,36 @@ export class LargeTitleWithSnap extends React.PureComponent {
     };
 
     let ScrollView = React.cloneElement(children, {
-      style: [sectionListStyle],
+      //pass props to scrollview child
+      style: [styles.scrollview, sectionListStyle],
       contentContainerStyle: { 
-        paddingBottom: EXTRA_HEIGHT + 1000
+        paddingBottom: EXTRA_HEIGHT + extraHeight,
       },
       //render + handlers
       ListHeaderComponent: this._renderListHeader     ,
+      ListFooterComponent: this._renderListFooter     ,
       onScrollEndDrag    : this._handleOnScrollEndDrag,
       onScroll           : this._handleOnScroll       ,
+      onEndReached       : this._handleOnEndReached   ,
       //config scrollview
       scrollEventThrottle: 1,
       disableScrollViewPanResponder: true,
       //snaping behaviour
-      snapToOffsets: (enableSnap? [NAVBAR_NORMAL] : null),
+      snapToOffsets: (enableSnap? [0, NAVBAR_NORMAL] : null),
       snapToEnd: false,
       snapToAlignment: 'center',
       snapToStart: true,
       //adjust insets + offsets
-      scrollIndicatorInsets: { 
-        top   : NAVBAR_LARGE  + 20,
-        bottom: TB_HEIGHT_ADJ + 30,
+      scrollIndicatorInsets: {
+        top   : NAVBAR_LARGE + 20,
+        bottom: TB_HEIGHT_ADJ + EXTRA_HEIGHT,
       },
     });
 
     return(
       <View style={styles.rootContainer}>
         <Transitioning.View
+          style={{flex: 1}}
           ref={r => this.transitionRef = r}
           {...{transition}}
         >

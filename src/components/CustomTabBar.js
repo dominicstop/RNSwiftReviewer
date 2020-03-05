@@ -9,7 +9,7 @@ import { iOSUIKit } from 'react-native-typography';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
-import { TB_HEIGHT, BOTTOM_INSET } from 'app/src/constants/UIValues';
+import { TB_HEIGHT_ADJ, INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 
 class TabBarItem extends React.Component {
@@ -184,22 +184,22 @@ export class CustomTabBar extends React.Component {
       right: 0,
       //layout
       width: '100%',
-      height: TB_HEIGHT,
+      height: TB_HEIGHT_ADJ,
       backgroundColor: 'transparent',
       //shadow
       shadowColor: "#000",
-      shadowOpacity: 0.2,
-      shadowRadius: 4.65,
+      shadowOpacity: 0.15,
+      shadowRadius: 7,
       shadowOffset: {
         width: 0,
-        height: -10,
+        height: -5,
       },
     },
     blurContainer: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      paddingBottom: BOTTOM_INSET,
+      paddingBottom: INSET_BOTTOM,
     },
     background: {
       position: 'absolute',

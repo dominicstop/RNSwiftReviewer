@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, SectionList, Image } from 'react-native';
+import React, { Fragment } from 'react';
+import { StyleSheet, Text, View, SectionList, Image, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Reanimated from "react-native-reanimated";
@@ -12,6 +12,7 @@ import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
+import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
 import { QuizListItem         } from 'app/src/components/QuizListItem';
 import { ButtonGradient       } from 'app/src/components/ButtonGradient';
 
@@ -19,6 +20,8 @@ import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { SortValuesQuiz, SortKeysQuiz } from 'app/src/constants/SortValues';
+import { TB_HEIGHT_ADJ, NAVBAR_LARGE  } from '../constants/UIValues';
+
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { TestDataQuiz } from 'app/src/constants/TestData';
 import { GREY } from 'app/src/constants/Colors';
@@ -29,6 +32,7 @@ import { QuizKeys } from 'app/src/models/QuizModel';
 import { ModalController } from 'app/src/functions/ModalController';
 import { sortQuizItems } from 'app/src/functions/SortItems';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
+const { height: screenHeight } = Dimensions.get('screen');
 
 
 //create reanimated comps
@@ -63,6 +67,10 @@ export class QuizListScreen extends React.Component {
       scrollEnabled: true,
       isAsc: false,
       sortIndex: 0,
+      //quizes: [],
+      //quizes: [testData[0]],
+      //quizes: [testData[0], testData[1]],
+      //quizes: [testData[0], testData[1], testData[2]],
       quizes: testData,
     };
   };
@@ -79,8 +87,13 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressCreateQuiz = () => {
+    const { navigation } = this.props;
+
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalCreateQuiz,
+      navProps: {
+        navigation
+      },
     });
   };
 
@@ -90,7 +103,9 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressQuizItem = ({quiz, index}) => {
-    ModalController.showModal();
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalViewQuiz
+    });
   };
 
   // sort pill pressed - cycle through sort options
@@ -197,16 +212,25 @@ export class QuizListScreen extends React.Component {
     const itemCount = quizes.length ?? 0;
 
     return(
-      <ListSectionHeader
-        sortTypes={SortKeysQuiz}
-        sortValues={SortValuesQuiz}
-        {...{sortIndex, isAscending, itemCount}}
-        // event handlers
-        onSortExpanded={this._handleOnSortExpanded}
-        onPressSort={this._handleOnPressSort}
-        onPressCancel={this._handleOnPressCancel}
-        onPressSortOption={this._handleOnPressSortOption}
-      />
+      <Fragment>
+        <ListSectionHeader
+          sortTypes={SortKeysQuiz}
+          sortValues={SortValuesQuiz}
+          {...{sortIndex, isAscending, itemCount}}
+          // event handlers
+          onSortExpanded={this._handleOnSortExpanded}
+          onPressSort={this._handleOnPressSort}
+          onPressCancel={this._handleOnPressCancel}
+          onPressSortOption={this._handleOnPressSortOption}
+        />
+        {(itemCount == 0) && (
+          <ListCardEmpty
+            imageSource={require('app/assets/icons/pencil_sky.png')}
+            title={"No quizes to show"}
+            subtitle={"Oops, looks like this place is empty! To get started, press the create quiz button to add something here."}
+          />
+        )}
+      </Fragment>
     );
   };
 
@@ -245,6 +269,9 @@ export class QuizListScreen extends React.Component {
     const { styles } = QuizListScreen;
     const { quizes, scrollEnabled } = this.state;
 
+    const itemCount = quizes.length;
+    const itemSize  = 200;
+
     return (
       <View style={styles.rootContainer}>
         <LargeTitleWithSnap
@@ -255,6 +282,7 @@ export class QuizListScreen extends React.Component {
           //render handlers
           renderHeader={this._renderListHeader}
           renderTitleIcon={this._renderTitleIcon}
+          {...{itemCount, itemSize}}
         >
           <RNSectionList
             ref={r => this.sectionList = r}

@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { MODAL_HEADER_HEIGHT, MODAL_BOTTOM_PADDING } from 'app/src/constants/UIValues';
-import { ModalHeader } from 'app/src/components/ModalHeader';
+import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
 
-import { VibrancyView } from "@react-native-community/blur";
+import { VibrancyView, BlurView } from "@react-native-community/blur";
 
 
 const styles = StyleSheet.create({
@@ -18,29 +17,22 @@ const styles = StyleSheet.create({
     top: MODAL_HEADER_HEIGHT,
     left: 0,
     right: 0,
-    bottom: -MODAL_BOTTOM_PADDING,
+    bottom: MODAL_FOOTER_HEIGHT,
   },
   background: {
-    backgroundColor: 'rgba(240,240,240,0.5)',
+    backgroundColor: 'rgba(250,250,250,0.4)',
     //fill space
     position: 'absolute',
     top: MODAL_HEADER_HEIGHT,
     left: 0,
     right: 0,
-    bottom: -MODAL_BOTTOM_PADDING,
+    bottom: MODAL_FOOTER_HEIGHT,
   },
   scrollViewContainer: {
     flex: 1,
   },
   scrollView: {
     flex: 1,
-  },
-  extraFooter: {
-    left: 0,
-    right: 0,
-    bottom: -100,
-    height: 100,
-    backgroundColor: 'white',
   },
 });
 
@@ -50,13 +42,14 @@ export class ModalBackground extends React.PureComponent {
   };
 
   render(){
-    const { modalHeader } = this.props;
+    const { modalHeader, modalFooter } = this.props;
 
     return(
       <View style={styles.rootContainer}>
-        <VibrancyView 
+        <BlurView 
           style={styles.blurBackground}
-          blurType={'regular'}
+          blurType={'light'}
+          blurAmount={100}
         />
         <View style={styles.background}/>
         <View style={styles.scrollViewContainer}>
@@ -68,6 +61,7 @@ export class ModalBackground extends React.PureComponent {
           </ScrollView>
         </View>
         {modalHeader}
+        {modalFooter}
       </View>
     );
   };

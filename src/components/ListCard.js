@@ -10,8 +10,8 @@ export class ListCard extends React.Component {
       marginTop: 15,
       backgroundColor: 'white',
       paddingHorizontal: 10,
-      paddingTop: 10,
-      paddingBottom: 12,
+      paddingTop: 11,
+      paddingBottom: 13,
       borderRadius: 10,
       //shadow style
       shadowColor: "#000",
@@ -26,10 +26,14 @@ export class ListCard extends React.Component {
 
   render(){
     const { styles } = ListCard;
+    const { children, style, ...props } = this.props;
 
     return(
-      <View style={styles.rootContainer}>
-        {this.props.children}
+      <View 
+        style={[styles.rootContainer, style]}
+        {...props}
+      >
+        {children}
       </View>
     );
   };

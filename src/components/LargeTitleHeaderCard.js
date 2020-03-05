@@ -45,6 +45,7 @@ export class LargeTitleHeaderCard  extends React.Component {
     textBody: {
       ...iOSUIKit.subheadObject,
       textAlignVertical: 'center',
+      maxWidth: 275,
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,

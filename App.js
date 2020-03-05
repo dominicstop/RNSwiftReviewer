@@ -35,23 +35,9 @@ const AppStack = createStackNavigator({
   }
 );
 
-const AppModalStack = createStackNavigator({ 
-    [ROUTES.appStackRoute     ]: AppStack     ,
-    [ROUTES.modalViewQuizRoute]: ViewQuizModal,
-  }, {
-    mode: 'modal',
-    headerMode: 'none',
-    defaultNavigationOptions: {
-      ...TransitionPresets.ModalPresentationIOS,
-      gestureEnabled: true,
-      cardOverlayEnabled: true,
-    },
-  }
-);
-
 const rootNavigator = createAnimatedSwitchNavigator({
     [ROUTES.authRoute]: AuthLoadingScreen,
-    [ROUTES.appRoute ]: AppModalStack,
+    [ROUTES.appRoute ]: AppStack,
   },{
     initialRouteName: ROUTES.authRoute,
     transition: (

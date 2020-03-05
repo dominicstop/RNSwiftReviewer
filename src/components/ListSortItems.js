@@ -232,6 +232,7 @@ export class ListSortItems extends React.Component {
 
     return sortItems.map(([sortType, sortValue], index) => (
       <ListSortItem
+        key={`${sortType}-${index}`}
         {...{
           // pass down sortItem map values
           sortType, sortValue, index,

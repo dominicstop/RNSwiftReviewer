@@ -50,7 +50,7 @@ export class ListSectionHeader extends React.Component {
       borderBottomWidth: 1,
       //shadows
       shadowColor: "#000",
-      shadowOpacity: 0.15,
+      shadowOpacity: 0.10,
       shadowRadius: 7,
       shadowOffset: {
         width: 0,
