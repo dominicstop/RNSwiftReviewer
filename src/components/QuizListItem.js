@@ -1,17 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import   moment     from 'moment';
-import   Feather    from '@expo/vector-icons/Feather';
-import { iOSUIKit } from 'react-native-typography';
-import { Divider  } from 'react-native-elements';
+import   moment             from 'moment';
+import   Feather            from '@expo/vector-icons/Feather';
+import { iOSUIKit         } from 'react-native-typography';
+import { Divider          } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 import { ListCard } from 'app/src/components/ListCard';
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 import { GREY, BLUE, INDIGO } from 'app/src/constants/Colors';
 import { QuizKeys } from 'app/src/models/QuizModel';
-import { plural } from '../functions/helpers';
+import { plural } from 'app/src/functions/helpers';
+
 
 class QuizListItemHeader extends React.Component {
   static propTypes = {
