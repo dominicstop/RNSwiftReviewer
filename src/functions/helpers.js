@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import _ from 'lodash';
 
 //wrapper func for setstate that returns a promise

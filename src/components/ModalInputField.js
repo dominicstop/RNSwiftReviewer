@@ -149,11 +149,14 @@ export class ModalInputField extends React.Component {
 
   isValid = (animate) => {
     const { validate } = this.props;
-    const { textInput } = this.state;
+    const { textInput,mode } = this.state;
 
     const isValid = validate && validate(textInput);
     if(!isValid && animate){
       this.inputContainerRef.shake(750);
+      this.setState({
+        mode: MODES.INVALID
+      });
     };
 
     return isValid;

@@ -54,8 +54,8 @@ export class CreateQuizModal extends React.Component {
   _handleOnPressButtonLeft = async () => {
     const { navigation, componentId } = this.props;
 
-    const isValidTitle    = this.inputFieldRefTitle.isValid(true);
-    const isValidSubtitle = this.inputFieldRefDesc .isValid(true);
+    const isValidTitle    = this.inputFieldRefTitle.isValid(false);
+    const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
 
     if(isValidTitle && isValidSubtitle){
       navigation && navigation.navigate(
@@ -68,6 +68,16 @@ export class CreateQuizModal extends React.Component {
       
       //close modal
       Navigation.dismissModal(componentId);
+
+    } else {
+      await Helpers.asyncAlert({
+        title: 'Invalid Input',
+        desc : 'Oops, please fill out the required forms to continue.'
+      });
+
+      //animate shake
+      this.inputFieldRefTitle.isValid(true);
+      this.inputFieldRefDesc .isValid(true);
     };
   };
 
