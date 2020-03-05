@@ -14,6 +14,8 @@ import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
 
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
+import { SNPCreateQuiz } from 'app/src/constants/NavParams';
+
 
 import { BLUE } from 'app/src/constants/Colors';
 
@@ -58,9 +60,11 @@ export class CreateQuizModal extends React.Component {
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
 
     if(isValidTitle && isValidSubtitle){
-      navigation && navigation.navigate(
-        ROUTES.createQuizRoute
-      );
+      navigation.navigate(ROUTES.createQuizRoute, {
+        // pass as nav params to CreateQuizScreen
+        [SNPCreateQuiz.quizTitle]: this.inputFieldRefTitle.getText(),
+        [SNPCreateQuiz.quizDesc ]: this.inputFieldRefDesc .getText(),
+      });
 
       await Promise.all([
         Helpers.timeout(500),

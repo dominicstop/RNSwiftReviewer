@@ -5,6 +5,7 @@ import * as COLORS  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { ROUTES } from 'app/src/constants/Routes';
+import { SNPCreateQuiz } from 'app/src/constants/NavParams';
 
 export class CreateQuizScreen extends Component {
   static navigationOptions = {
@@ -20,6 +21,15 @@ export class CreateQuizScreen extends Component {
       backgroundColor: COLORS.INDIGO.A700
     },
   });
+
+  componentDidMount(){
+    const { navigation } = this.props;
+    const { params } = navigation.state;
+
+    const title = params[SNPCreateQuiz.quizTitle];
+    const desc  = params[SNPCreateQuiz.quizDesc ];
+    
+  };
 
   render() {
     const { styles } = CreateQuizScreen;
