@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Keyboard } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
+import LottieView from 'lottie-react-native';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBackground   } from 'app/src/components/ModalBackground';
@@ -12,10 +13,8 @@ import { ModalSection      } from 'app/src/components/ModalSection';
 import { ModalInputField   } from 'app/src/components/ModalInputField';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
 
-
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz } from 'app/src/constants/NavParams';
-
 
 import { BLUE } from 'app/src/constants/Colors';
 
@@ -42,7 +41,28 @@ export class CreateQuizModal extends React.Component {
     headerContainer: {
       paddingVertical: 10,
     },
+    overlayContainer: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'rgba(255,255,255,0.4)'
+    },
+    overlay: {
+    },
   });
+
+  constructor(props){
+    super(props);
+
+    this.progress = new Animated.Value(0);
+
+    this._opacity = this.progress.interpolate({
+      inputRange : [0, 0.25],
+      outputRange: [0, 1  ],
+    });
+
+    this.lottieSource = require('app/assets/lottie/check_done.json');
+  };
 
   _handleOnSubmitEditing = ({index}) => {
     if(index == 0){
@@ -66,10 +86,17 @@ export class CreateQuizModal extends React.Component {
         [SNPCreateQuiz.quizDesc ]: this.inputFieldRefDesc .getText(),
       });
 
-      await Promise.all([
-        Helpers.timeout(500),
-      ]);
-      
+      const animation = Animated.timing(this.progress, {
+        toValue : 1,
+        duration: 1000,
+      });
+
+      await new Promise(resolve => {
+        animation.start(() => {
+          resolve();
+        });
+      });
+
       //close modal
       Navigation.dismissModal(componentId);
 
@@ -95,6 +122,10 @@ export class CreateQuizModal extends React.Component {
 
   render(){
     const { styles } = CreateQuizModal;
+
+    const overlayContainerStyle = {
+      opacity: this._opacity,
+    };
 
     const modalHeader = (
       <ModalHeader
@@ -122,9 +153,22 @@ export class CreateQuizModal extends React.Component {
       </ModalFooter>
     );
 
+    const overlay = (
+      <Animated.View 
+        style={[styles.overlayContainer, overlayContainerStyle]}
+        pointerEvents={'none'}
+      >
+        <LottieView
+          ref={r => this.lottieRef = r}
+          progress={this.progress}
+          source={this.lottieSource}
+        />
+      </Animated.View>
+    );
+
     return (
       <ModalBackground
-        {...{modalHeader, modalFooter}}
+        {...{modalHeader, modalFooter, overlay}}
       >
         <ModalSection showBorderTop={false}>
           <ModalInputField

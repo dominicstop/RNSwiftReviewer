@@ -42,7 +42,7 @@ export class ModalBackground extends React.PureComponent {
   };
 
   render(){
-    const { modalHeader, modalFooter } = this.props;
+    const { modalHeader, modalFooter, overlay } = this.props;
 
     return(
       <View style={styles.rootContainer}>
@@ -62,6 +62,7 @@ export class ModalBackground extends React.PureComponent {
         </View>
         {modalHeader}
         {modalFooter}
+        {overlay}
       </View>
     );
   };
