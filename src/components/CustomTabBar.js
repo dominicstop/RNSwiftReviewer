@@ -186,6 +186,9 @@ export class CustomTabBar extends React.Component {
       width: '100%',
       height: TB_HEIGHT_ADJ,
       backgroundColor: 'transparent',
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      paddingBottom: INSET_BOTTOM,
       //shadow
       shadowColor: "#000",
       shadowOpacity: 0.15,
@@ -195,19 +198,12 @@ export class CustomTabBar extends React.Component {
         height: -5,
       },
     },
-    blurContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      paddingBottom: INSET_BOTTOM,
+    blurBackground: {
+      ...StyleSheet.absoluteFillObject,
     },
     background: {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      opacity: 0.7,
+      ...StyleSheet.absoluteFillObject,
+      opacity: 0.8,
     }
   });
 
@@ -276,19 +272,18 @@ export class CustomTabBar extends React.Component {
         ref={r => this.rootContainer = r}
         useNativeDriver={true}
       >
-        <BlurView
-          style={styles.blurContainer}
+        <VibrancyView
+          style={styles.blurBackground}
           blurType={"light"}
-          blurAmount={100}
-        >
-          <LinearGradient
-            style={[styles.background]}
-            colors={[INDIGO[700], BLUE[500]]}
-            start={{x: 0, y: 1}} 
-            end  ={{x: 1, y: 0}}
-          />
-          {routes.map(this._renderTabs)}
-        </BlurView>
+          intensity={100}
+        />
+        <LinearGradient
+          style={[styles.background]}
+          colors={[INDIGO.A700, BLUE.A700]}
+          start={{x: 0, y: 1}} 
+          end  ={{x: 1, y: 0}}
+        />
+        {routes.map(this._renderTabs)}
       </Animatable.View>
     );
   };

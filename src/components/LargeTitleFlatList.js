@@ -99,7 +99,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     titleContainer: {
       //backgroundColor: 'orange',
       alignItems: 'center',
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       marginLeft: 10,
     },
     titleLarge: {
@@ -112,7 +112,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
       fontSize: 20,
       fontWeight: '400',
       color: 'white',
-
     },
     listHeader: {
       width: '100%', 
@@ -348,7 +347,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
         />
         <AnimatedLinearGradient
           style={[styles.background, backgroundStyle]}
-          colors={[INDIGO[700], BLUE[500]]}
+          colors={[INDIGO.A700, BLUE.A700]}
           start={{x: 0, y: 1}} 
           end  ={{x: 1, y: 0}}
         />

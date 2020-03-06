@@ -40,7 +40,7 @@ export class ModalFooterButton extends React.PureComponent {
       marginBottom: (10 + INSET_BOTTOM),
       //shadow
       shadowColor: "#000",
-      shadowOpacity: 0.5,
+      shadowOpacity: 0.3,
       shadowRadius: 3.84,
       shadowOffset: {
         width: 0,
@@ -82,6 +82,7 @@ export class ModalFooterButton extends React.PureComponent {
     },
     textButtonSubtitle: {
       ...iOSUIKit.subheadObject,
+      marginTop: -2,
       color: 'rgba(255,255,255,0.75)',
     },
   });

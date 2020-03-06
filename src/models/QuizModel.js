@@ -2,7 +2,7 @@ import { IS_DEBUG } from "app/src/constants/Options";
 import { createObjectFromKeys } from "app/src/functions/helpers";
 
 
-// property names
+// property names for quiz
 export const QuizKeys = {
   quizID           : 'quizID'           ,
   quizTitle        : 'quizTitle'        ,
@@ -22,11 +22,11 @@ export class QuizModel {
     quizID           : '',
     quizTitle        : '',
     quizDesc         : '',
-    quizTimesTaken   : -1,
-    quizDateCreated  : -1,
-    quizDateLastTaken: -1,
-    quizQuestionCount: -1,
-    quizSectionCount : -1,
+    quizTimesTaken   : 0 ,
+    quizDateCreated  : 0 ,
+    quizDateLastTaken: 0 ,
+    quizQuestionCount: 0 ,
+    quizSectionCount : 0 ,
   };
 
   static wrap(object = QuizModel.stucture){

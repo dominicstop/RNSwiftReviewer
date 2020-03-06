@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   textTitle: {
-    ...iOSUIKit.title3EmphasizedObject,
+    ...iOSUIKit.bodyEmphasizedObject,
+    fontSize: 20,
     fontWeight: '800',
     color: INDIGO[1000],
   },

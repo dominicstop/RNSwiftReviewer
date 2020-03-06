@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
 
 import * as COLORS  from 'app/src/constants/Colors';
@@ -19,6 +19,7 @@ export class AuthLoadingScreen extends Component {
 
   async componentDidMount(){
     const { navigation } = this.props;
+    StatusBar.setBarStyle("light-content");
 
     await Promise.all([
       Helpers.timeout(750),
