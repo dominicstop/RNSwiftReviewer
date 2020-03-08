@@ -4,7 +4,7 @@ import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 
 export class HeaderValues {
   static Constants = {
-    headerHeight     : 64 , //Full: 64 , w/o inset: 44
+    headerHeight     : 50 , //Full: 64 , w/o inset: 44
     headerHeightLarge: 115, //Full: 115, w/o inset: 95
   };
 

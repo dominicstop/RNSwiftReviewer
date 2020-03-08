@@ -276,7 +276,7 @@ export class QuizListScreen extends React.Component {
       <View style={styles.rootContainer}>
         <LargeTitleWithSnap
           ref={r => this.largeTitleRef = r}
-          titleText={'Quizes'}
+          titleText={'Quizzes'}
           subtitleText={'Your Quiz Reviewers'}
           showSubtitle={true}
           //render handlers

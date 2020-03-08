@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions,  Clipboard } from
 
 import Reanimated, { Easing, Value, interpolate, concat, Extrapolate} from 'react-native-reanimated';
 
-import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { VibrancyView } from "@react-native-community/blur";
 import * as Animatable from 'react-native-animatable';
 import { iOSUIKit } from 'react-native-typography';
 import LinearGradient from 'react-native-linear-gradient';

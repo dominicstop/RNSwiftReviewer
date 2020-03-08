@@ -6,19 +6,18 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz } from 'app/src/constants/NavParams';
+import { NavHeader } from 'app/src/components/NavHeader';
+
 
 export class CreateQuizScreen extends Component {
   static navigationOptions = {
-    title: 'Home',
+    title     : 'Create Quiz',
     headerMode: 'float',
   };
 
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: COLORS.INDIGO.A700
     },
   });
 
@@ -35,9 +34,9 @@ export class CreateQuizScreen extends Component {
     const { styles } = CreateQuizScreen;
 
     return (
-      <View style={styles.rootContainer}>
-        <Text>CreateQuizScreen</Text>
-      </View>
+      <NavHeader>
+        
+      </NavHeader>
     );
   };
 };

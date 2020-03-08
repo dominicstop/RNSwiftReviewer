@@ -45,7 +45,7 @@ export class CreateQuizModal extends React.Component {
       ...StyleSheet.absoluteFillObject,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'rgba(255,255,255,0.4)'
+      backgroundColor: 'rgba(255,255,255,0.5)'
     },
     overlay: {
     },
@@ -88,7 +88,7 @@ export class CreateQuizModal extends React.Component {
 
       const animation = Animated.timing(this.progress, {
         toValue : 1,
-        duration: 1000,
+        duration: 750,
       });
 
       await new Promise(resolve => {
