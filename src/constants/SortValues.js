@@ -23,7 +23,7 @@ export function getNextSort(sortByIndex, isAsc, sortKeysType){
 };
 
 //#region - Quizes
-export const SortKeysQuiz = {
+export const SortTypesQuiz = {
   'TITLE'  : 'TITLE'  , // sort by quiz title
   'CREATED': 'CREATED', // sort by quiz date created
   'TAKEN'  : 'TAKEN'  , // sort by quiz date modified
@@ -31,22 +31,22 @@ export const SortKeysQuiz = {
 };
 
 export const SortValuesQuiz = {
-  [SortKeysQuiz.TITLE]: {
+  [SortTypesQuiz.TITLE]: {
     [SortKeys.TITLE  ]: "Quiz Title",
     [SortKeys.DISPLAY]: "Quiz",
     [SortKeys.DESC   ]: "Sort by the quiz title",
   },
-  [SortKeysQuiz.CREATED]: {
+  [SortTypesQuiz.CREATED]: {
     [SortKeys.TITLE  ]: "Date Created",
     [SortKeys.DISPLAY]: "Created",
     [SortKeys.DESC   ]: "Sort by quiz created date",
   },
-  [SortKeysQuiz.TAKEN]: {
+  [SortTypesQuiz.TAKEN]: {
     [SortKeys.TITLE  ]: "Date Last Taken",
     [SortKeys.DISPLAY]: "Taken",
     [SortKeys.DESC   ]: "Sort by quiz last taken date",
   },
-  [SortKeysQuiz.COUNT]: {
+  [SortTypesQuiz.COUNT]: {
     [SortKeys.TITLE  ]: "Question Count",
     [SortKeys.DISPLAY]: "Count",
     [SortKeys.DESC   ]: "Sort by quiz question count",

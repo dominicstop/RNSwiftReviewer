@@ -19,7 +19,7 @@ import { ButtonGradient       } from 'app/src/components/ButtonGradient';
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
-import { SortValuesQuiz, SortKeysQuiz } from 'app/src/constants/SortValues';
+import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
 import { TB_HEIGHT_ADJ, NAVBAR_LARGE  } from '../constants/UIValues';
 
 import { HeaderValues } from 'app/src/constants/HeaderValues';
@@ -113,7 +113,7 @@ export class QuizListScreen extends React.Component {
     const { quizes } = this.state;
     const transitionRef = this.largeTitleRef.getTransitionRef();
 
-    const sortType = Object.keys(SortKeysQuiz)[nextSortIndex];
+    const sortType = Object.keys(SortTypesQuiz)[nextSortIndex];
     const nextQuizes = sortQuizItems(quizes, sortType, nextIsAsc);
 
     await setStateAsync(this, { 
@@ -159,7 +159,7 @@ export class QuizListScreen extends React.Component {
     const { quizes } = this.state;
     const transitionRef = this.largeTitleRef.getTransitionRef();
 
-    const sortType = Object.keys(SortKeysQuiz)[nextSortIndex];
+    const sortType = Object.keys(SortTypesQuiz)[nextSortIndex];
     const nextQuizes = sortQuizItems(quizes, sortType, nextIsAsc);
 
     transitionRef.animateNextTransition();
@@ -214,7 +214,7 @@ export class QuizListScreen extends React.Component {
     return(
       <Fragment>
         <ListSectionHeader
-          sortTypes={SortKeysQuiz}
+          sortTypes={SortTypesQuiz}
           sortValues={SortValuesQuiz}
           {...{sortIndex, isAscending, itemCount}}
           // event handlers

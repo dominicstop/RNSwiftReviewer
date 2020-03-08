@@ -1,5 +1,7 @@
 ## Todo
 
+- [ ] Refactor SortKeysQuiz to SortTypesQuiz
+
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar
 - [x] Remove react-native-ionicons

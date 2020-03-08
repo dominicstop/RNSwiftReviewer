@@ -1,11 +1,11 @@
 import { QuizKeys } from 'app/src/models/QuizModel';
-import { SortKeysQuiz } from 'app/src/constants/SortValues';
+import { SortTypesQuiz } from 'app/src/constants/SortValues';
 
 const SortKeyMapQuiz = {
-  [SortKeysQuiz.TITLE  ]: QuizKeys.quizTitle        ,
-  [SortKeysQuiz.CREATED]: QuizKeys.quizDateCreated  ,
-  [SortKeysQuiz.TAKEN  ]: QuizKeys.quizDateLastTaken,
-  [SortKeysQuiz.COUNT  ]: QuizKeys.quizQuestionCount,
+  [SortTypesQuiz.TITLE  ]: QuizKeys.quizTitle        ,
+  [SortTypesQuiz.CREATED]: QuizKeys.quizDateCreated  ,
+  [SortTypesQuiz.TAKEN  ]: QuizKeys.quizDateLastTaken,
+  [SortTypesQuiz.COUNT  ]: QuizKeys.quizQuestionCount,
 };
 
 export function sortItemsByString(items = [], key = '', isAsc){
@@ -28,12 +28,12 @@ export function sortItemsByNumber(items = [], key = '', isAsc){
 export function sortQuizItems(items = [], sortBy = '', isAsc = false){
   switch (sortBy) {
     //string
-    case SortKeysQuiz.TITLE: 
+    case SortTypesQuiz.TITLE: 
       return sortItemsByString(items, SortKeyMapQuiz[sortBy], isAsc);
     //number
-    case SortKeysQuiz.CREATED:
-    case SortKeysQuiz.TAKEN  :
-    case SortKeysQuiz.COUNT  :
+    case SortTypesQuiz.CREATED:
+    case SortTypesQuiz.TAKEN  :
+    case SortTypesQuiz.COUNT  :
       return sortItemsByNumber(items, SortKeyMapQuiz[sortBy], isAsc);
   };
 };
