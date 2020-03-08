@@ -17,7 +17,7 @@ import { ExamListItem         } from 'app/src/components/ExamListItem';
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
-import { SortValuesExam, SortKeysExam } from 'app/src/constants/SortValues';
+import { SortValuesExam, SortTypesExam } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
 
 import { ModalController } from 'app/src/functions/ModalController';
@@ -166,7 +166,7 @@ export class ExamListScreen extends React.Component {
 
     return(
       <ListSectionHeader
-        sortTypes={SortKeysExam}
+        sortTypes={SortTypesExam}
         sortValues={SortValuesExam}
         {...{sortIndex, isAscending, itemCount}}
         // event handlers
