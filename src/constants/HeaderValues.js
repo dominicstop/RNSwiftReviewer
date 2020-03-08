@@ -1,19 +1,19 @@
-//import { Header } from 'react-navigation-stack';
+import { Header } from 'react-navigation-stack';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 
 
 export class HeaderValues {
   static Constants = {
-    headerHeight     : 50 , //Full: 64 , w/o inset: 44
-    headerHeightLarge: 115, //Full: 115, w/o inset: 95
+    headerHeight     : Header.HEIGHT     , //Full: 64 , w/o inset: 44
+    headerHeightLarge: Header.HEIGHT + 51, //Full: 115, w/o inset: 95
   };
 
   static getHeaderHeight(withInset = false) {
     const { headerHeight } = HeaderValues.Constants;
 
     return(withInset
-      ? headerHeight + StaticSafeAreaInsets.safeAreaInsetsTop
-      : headerHeight 
+      ? headerHeight 
+      : headerHeight - StaticSafeAreaInsets.safeAreaInsetsTop
     );
   };
 
@@ -21,8 +21,8 @@ export class HeaderValues {
     const { headerHeightLarge } = HeaderValues.Constants;
     
     return(withInset
-      ? headerHeightLarge + StaticSafeAreaInsets.safeAreaInsetsTop
-      : headerHeightLarge
+      ? headerHeightLarge
+      : headerHeightLarge - StaticSafeAreaInsets.safeAreaInsetsTop
     );
   };
 };

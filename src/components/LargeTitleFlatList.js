@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Platform, StyleSheet, Text, View, Dimensions, SectionList } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { TB_HEIGHT_ADJ, NAVBAR_NORMAL, NAVBAR_LARGE } from 'app/src/constants/UIValues';
+import { TB_HEIGHT_ADJ, INSET_TOP } from 'app/src/constants/UIValues';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
@@ -14,15 +14,15 @@ import { Transitioning, Transition, Easing } from 'react-native-reanimated';
 import Animated       from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
-
-
-const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, debug } = Animated;
+const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, sub, debug } = Animated;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
-const AnimatedBlurView       = Animated.createAnimatedComponent(VibrancyView  );
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
-const EXTRA_HEIGHT = 30;
+const NAVBAR_NORMAL = HeaderValues.getHeaderHeight     (false);
+const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(false);
+const DEBUG_COLORS  = false;
+const EXTRA_HEIGHT  = 30;
 
 const transition = (
   <Transition.Sequence>
@@ -50,7 +50,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
   };
 
   static defaultProps = {
-    subtitleHeight: 30,
+    subtitleHeight: 35,
     titleText: 'Large Title',
   };
 
@@ -61,52 +61,60 @@ export class LargeTitleWithSnap extends React.PureComponent {
     scrollView: {
       flex: 1,
     },
+    headerWrapper: {
+      position: "absolute",
+      width: '100%',
+    },
     headerContainer: {
       position: "absolute",
       width: '100%',
       overflow: 'hidden',
+      marginTop: INSET_TOP,
     },
-    headerContentContainer: {
-      flex: 1,
-      flexDirection: 'row', 
+    headerBGContainer: {
+      ...StyleSheet.absoluteFillObject,
     },
     background: {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
+      ...StyleSheet.absoluteFillObject,
     },
     subtitleContainer: {
-      //backgroundColor: 'green',
       position: 'absolute',
       width: '100%',
       marginLeft: 10,
-      overflow: 'hidden',
-      bottom: 5,
+      bottom: 0,
+      ...(DEBUG_COLORS && 
+        { backgroundColor: 'green' }
+      ),
     },
     titleIconContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 5,
     },
     //controls horizontal alignment
     titleWrapper: {
-      //backgroundColor: 'blue',
       position: "absolute",
       alignItems: 'center',
       justifyContent: 'flex-end',
+      ...(DEBUG_COLORS && 
+        { backgroundColor: 'blue' }
+      ),
     },
     //controls vertical alignment
     titleContainer: {
-      //backgroundColor: 'orange',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       marginLeft: 10,
+      ...(DEBUG_COLORS && 
+        { backgroundColor: 'orange' }
+      ),
     },
     titleLarge: {
-      //backgroundColor: 'yellow',
       fontSize: 34,
       fontWeight: '900',
       color: 'white',
+      ...(DEBUG_COLORS && 
+        { backgroundColor: 'yellow' }
+      ),
     },
     subtitleText: {
       fontSize: 20,
@@ -126,7 +134,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
     };
 
     const subtitleHeight = (props.showSubtitle? props.subtitleHeight : 0);
-    const NAVBAR_FHEIGHT = (NAVBAR_LARGE + subtitleHeight);
 
     this._titleLargeWidth  = new Value(-1);
     this._titleLargeHeight = new Value(-1);
@@ -146,35 +153,35 @@ export class LargeTitleWithSnap extends React.PureComponent {
     });
 
     this._headerScale = interpolate(this._scrollY, {
-      inputRange : [-150, 0],
+      inputRange : [-200, 0],
       outputRange: [1.2, 1],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._headerTransX = interpolate(this._scrollY, {
-      inputRange : [-150, 0],
+      inputRange : [-200, 0],
       outputRange: [30, 0],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._headerTransY = interpolate(this._scrollY, {
-      inputRange : [-150, 0],
-      outputRange: [10, 0],
+      inputRange : [-200, 0],
+      outputRange: [0, 0],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._headerHeight = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [NAVBAR_FHEIGHT, NAVBAR_NORMAL],
+      outputRange: [NAVBAR_LARGE, NAVBAR_NORMAL],
       extrapolate: Extrapolate.CLAMP,
     });
 
-    const diff   = (NAVBAR_FHEIGHT - NAVBAR_NORMAL);
-    const offset = (diff - NAVBAR_NORMAL);
+    const diff   = (NAVBAR_LARGE - NAVBAR_NORMAL);
+    const offset = (diff - NAVBAR_NORMAL) + INSET_TOP;
 
     this._sectionListTransY = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [offset, 0],
+      outputRange: [offset, INSET_TOP],
       extrapolate: Extrapolate.CLAMP,
     });
 
@@ -209,7 +216,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
       extrapolate: Extrapolate.CLAMP,
     });
 
-    const titleMargin      = 10;
     const titleWidthMidIn  = (NAVBAR_NORMAL / 1.35);
     const titleWidthMidOut = divide(add(this._titleLargeWidth, screenWidth), 1.35);
     
@@ -222,20 +228,20 @@ export class LargeTitleWithSnap extends React.PureComponent {
     const NAVBAR_ADJ = HeaderValues.getHeaderHeight(false);
     this._titleContainerHeight = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
-      outputRange: [add(this._titleLargeHeight, titleMargin), NAVBAR_ADJ],
+      outputRange: [this._titleLargeHeight, NAVBAR_ADJ],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._titleTransScale = interpolate(this._scrollY, {
       inputRange : [0, NAVBAR_NORMAL],
-      outputRange: [1, 0.65],
+      outputRange: [1, 0.55],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._titleFontWeight = floor(
       interpolate(this._scrollY, {
         inputRange : [0, (NAVBAR_NORMAL/4), NAVBAR_NORMAL],
-        outputRange: [9, 9, 4],
+        outputRange: [9, 9, 5],
         extrapolate: Extrapolate.CLAMP,
       })
     );
@@ -303,13 +309,20 @@ export class LargeTitleWithSnap extends React.PureComponent {
     const { styles } = LargeTitleWithSnap;
     const { renderTitleIcon } = this.props;
 
-    const headerContainerStyle = {
-      height: this._headerHeight,
+    const headerWrapperStyle = {
       transform: [
         { scale     : this._headerScale  },
         { translateX: this._headerTransX },
         { translateY: this._headerTransY },
       ],
+    };
+
+    const headerBGContainerStyle = {
+      height: add(this._headerHeight, INSET_TOP),
+    };
+
+    const headerContainerStyle = {
+      height: this._headerHeight,
     };
 
     const backgroundStyle = {
@@ -318,7 +331,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     //controls horizontal alignment
     const titleWrapperStyle = {
-      height       : this._headerHeight    ,
+      height       : this._headerHeight,
       width        : this._headerTitleWidth,
       paddingBottom: this._subtitleHeight  ,
     };
@@ -339,19 +352,21 @@ export class LargeTitleWithSnap extends React.PureComponent {
     };
 
     return(
-      <Animated.View style={[styles.headerContainer, headerContainerStyle]}>
-        <VibrancyView
-          style={styles.background}
-          blurType={"light"}
-          intensity={100}
-        />
-        <AnimatedLinearGradient
-          style={[styles.background, backgroundStyle]}
-          colors={[INDIGO.A700, BLUE.A700]}
-          start={{x: 0, y: 1}} 
-          end  ={{x: 1, y: 0}}
-        />
-        <View style={styles.headerContentContainer}>
+      <Animated.View style={[styles.headerWrapper, headerWrapperStyle]}>
+        <Animated.View style={[styles.headerBGContainer, headerBGContainerStyle]}>
+          <VibrancyView
+            style={styles.background}
+            blurType={"light"}
+            intensity={100}
+          />
+          <AnimatedLinearGradient
+            style={[styles.background, backgroundStyle]}
+            colors={[INDIGO.A700, BLUE.A700]}
+            start={{x: 0, y: 1}} 
+            end  ={{x: 1, y: 0}}
+          />
+        </Animated.View>
+        <Animated.View style={[styles.headerContainer, headerContainerStyle]}>
           <Animated.View style={[styles.titleWrapper, titleWrapperStyle]}>
             <Animated.View style={[styles.titleContainer, titleContainer]}>
               <View 
@@ -366,7 +381,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
             </Animated.View>
           </Animated.View>
           {this._renderSubtitle()}
-        </View>
+        </Animated.View>
       </Animated.View>
     );
   };
@@ -407,7 +422,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     const sectionListStyle = {
       paddingTop: NAVBAR_NORMAL,
       transform : [
-        {translateY: this._sectionListTransY}
+        { translateY: this._sectionListTransY }
       ]
     };
 

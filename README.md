@@ -1,6 +1,7 @@
 ## Todo
 
-- [ ] Refactor SortKeysQuiz to SortTypesQuiz
+- [x] Refactor SortKeysQuiz to SortTypesQuiz
+- [x] Refactor SortKeysExam to SortTypesExam
 
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar

@@ -4,8 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { VibrancyView } from "@react-native-community/blur";
 
-import { NAVBAR_NORMAL } from 'app/src/constants/UIValues';
+import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
+
 
 
 export class NavHeader extends Component {
@@ -18,7 +19,7 @@ export class NavHeader extends Component {
     rootContainer: {
       position: 'absolute',
       width: '100%',
-      height: NAVBAR_NORMAL,
+      height: HeaderValues.getHeaderHeight(true),
     },
     blurBackground: {
       ...StyleSheet.absoluteFillObject,
