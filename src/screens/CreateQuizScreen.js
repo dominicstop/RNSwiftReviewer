@@ -10,8 +10,8 @@ import { SNPCreateQuiz } from 'app/src/constants/NavParams';
 
 export class CreateQuizScreen extends Component {
   static navigationOptions = {
-    title     : 'Create Quiz',
-    headerMode: 'float',
+    title: 'Create Quiz',
+    headerShown: false,
   };
 
   static styles = StyleSheet.create({

@@ -135,7 +135,7 @@ class ListSortItem extends React.Component {
               iterationCount={'infinite'}
               delay={1000}
               duration={3000}
-              iterationDelay={2000}
+              iterationDelay={1000}
               useNativeDriver={true}
             />
           )}
