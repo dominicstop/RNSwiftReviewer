@@ -25,10 +25,7 @@ import { setStateAsync, timeout } from 'app/src/functions/helpers';
 import { ButtonGradient } from '../components/ButtonGradient';
 import { HeaderValues } from '../constants/HeaderValues';
 import { TestDataExam } from '../constants/TestData';
-
-
-//create reanimated comps
-const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
+import { REASectionList } from '../components/ReanimatedComps';
 
 
 export class ExamListScreen extends React.Component {
@@ -225,7 +222,7 @@ export class ExamListScreen extends React.Component {
           renderHeader={this._renderListHeader}
           renderTitleIcon={this._renderTitleIcon}
         >
-          <RNSectionList
+          <REASectionList
             ref={r => this.sectionList = r}
             sections={[{ data: exams }]}
             renderSectionHeader={this._renderSectionHeader}

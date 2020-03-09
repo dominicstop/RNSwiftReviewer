@@ -2,8 +2,7 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, SectionList, Image, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Reanimated from "react-native-reanimated";
-import Ionicon    from '@expo/vector-icons/Ionicons';
+import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Divider  } from "react-native-elements";
 import { iOSUIKit } from 'react-native-typography';
@@ -15,28 +14,23 @@ import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
 import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
 import { QuizListItem         } from 'app/src/components/QuizListItem';
 import { ButtonGradient       } from 'app/src/components/ButtonGradient';
+import { REASectionList       } from 'app/src/components/ReanimatedComps';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
-import { TB_HEIGHT_ADJ, NAVBAR_LARGE  } from '../constants/UIValues';
+import { GREY } from 'app/src/constants/Colors';
 
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { TestDataQuiz } from 'app/src/constants/TestData';
-import { GREY } from 'app/src/constants/Colors';
-import { RNN_ROUTES } from 'app/src/constants/Routes';
+import { RNN_ROUTES   } from 'app/src/constants/Routes';
 
 import { QuizKeys } from 'app/src/models/QuizModel';
 
-import { ModalController } from 'app/src/functions/ModalController';
-import { sortQuizItems } from 'app/src/functions/SortItems';
-import { setStateAsync, timeout } from 'app/src/functions/helpers';
-const { height: screenHeight } = Dimensions.get('screen');
-
-
-//create reanimated comps
-const RNSectionList = Reanimated.createAnimatedComponent(SectionList);
+import * as Helpers           from 'app/src/functions/helpers';
+import    { ModalController } from 'app/src/functions/ModalController';
+import    { sortQuizItems   } from 'app/src/functions/SortItems';
 
 
 export class QuizListScreen extends React.Component {
@@ -75,17 +69,6 @@ export class QuizListScreen extends React.Component {
     };
   };
 
-  componentDidMount = async () => {
-    await timeout(100);
-    const node = this.sectionList.getNode();
-    node && node.scrollToLocation({
-      itemIndex: 0,
-      sectionIndex: 0,
-      viewPosition: 0,
-      animated: false,
-    });
-  };
-
   _handleOnPressCreateQuiz = () => {
     const { navigation } = this.props;
 
@@ -116,19 +99,19 @@ export class QuizListScreen extends React.Component {
     const sortType = Object.keys(SortTypesQuiz)[nextSortIndex];
     const nextQuizes = sortQuizItems(quizes, sortType, nextIsAsc);
 
-    await setStateAsync(this, { 
+    await Helpers.setStateAsync(this, { 
       isAsc: nextIsAsc, 
       sortIndex: nextSortIndex,
       scrollEnabled: false
     });
 
     transitionRef.animateNextTransition();
-    await setStateAsync(this, {
+    await Helpers.setStateAsync(this, {
       quizes: nextQuizes,
     });
 
-    await timeout(300);
-    await setStateAsync(this, { 
+    await Helpers.timeout(300);
+    await Helpers.setStateAsync(this, { 
       scrollEnabled: true
     });
   };
@@ -163,7 +146,7 @@ export class QuizListScreen extends React.Component {
     const nextQuizes = sortQuizItems(quizes, sortType, nextIsAsc);
 
     transitionRef.animateNextTransition();
-    await setStateAsync(this, { 
+    await Helpers.setStateAsync(this, { 
       isAsc: nextIsAsc, 
       sortIndex: nextSortIndex,
       scrollEnabled: true,
@@ -284,7 +267,7 @@ export class QuizListScreen extends React.Component {
           renderTitleIcon={this._renderTitleIcon}
           {...{itemCount, itemSize}}
         >
-          <RNSectionList
+          <REASectionList
             ref={r => this.sectionList = r}
             sections={[{ data: quizes }]}
             renderSectionHeader={this._renderSectionHeader}

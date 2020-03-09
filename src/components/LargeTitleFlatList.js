@@ -6,18 +6,16 @@ import { TB_HEIGHT_ADJ, INSET_TOP } from 'app/src/constants/UIValues';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
-import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
+import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
+import { REALinearGradient } from 'app/src/components/ReanimatedComps';
 
 import { VibrancyView } from "@react-native-community/blur";
 import { Transitioning, Transition, Easing } from 'react-native-reanimated';
 
-import Animated       from 'react-native-reanimated';
-import LinearGradient from 'react-native-linear-gradient';
-
+import Animated from 'react-native-reanimated';
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, sub, debug } = Animated;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
-const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 const NAVBAR_NORMAL = HeaderValues.getHeaderHeight     (false);
 const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(false);
@@ -255,6 +253,14 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
   componentDidMount = () => {
     this.setState({enableSnap: true});
+
+    const node = this.sectionListRef.getNode();
+    node && node.scrollToLocation({
+      itemIndex: 0,
+      sectionIndex: 0,
+      viewPosition: 0,
+      animated: false,
+    });
   };
 
   getTransitionRef = () => {
@@ -359,7 +365,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
             blurType={"light"}
             intensity={100}
           />
-          <AnimatedLinearGradient
+          <REALinearGradient
             style={[styles.background, backgroundStyle]}
             colors={[INDIGO.A700, BLUE.A700]}
             start={{x: 0, y: 1}} 
@@ -407,9 +413,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
   render(){
     const { styles } = LargeTitleWithSnap;
-    const { children, itemCount, itemSize } = this.props;
+    const { itemCount, itemSize, ...props } = this.props;
     const { enableSnap } = this.state;
 
+    //temp fix
     const a = (screenHeight - NAVBAR_NORMAL - itemSize);
     const b = (a - (itemCount * itemSize));
     const c = (TB_HEIGHT_ADJ + 200);
@@ -426,8 +433,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
       ]
     };
 
-    let ScrollView = React.cloneElement(children, {
-      //pass props to scrollview child
+    //get sectionList child
+    const children     = React.Children.toArray(props.children);
+    const sectionList  = children[0];
+
+    //pass props to sectionList child comp
+    let SectionList = React.cloneElement(sectionList, {
       style: [styles.scrollview, sectionListStyle],
       contentContainerStyle: { 
         paddingBottom: EXTRA_HEIGHT + extraHeight,
@@ -451,6 +462,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
         top   : NAVBAR_LARGE + 20,
         bottom: TB_HEIGHT_ADJ + EXTRA_HEIGHT,
       },
+      //get and store ref to this comp
+      ref: (node) => {
+        const { ref } = sectionList;
+        this.sectionListRef = node;
+        ref && ref(node);
+      },
     });
 
     return(
@@ -460,7 +477,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
           ref={r => this.transitionRef = r}
           {...{transition}}
         >
-          {ScrollView}
+          {SectionList}
         </Transitioning.View>
         {this._renderHeader()}
       </View>
