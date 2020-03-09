@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator, HeaderStyleInterpolators, TransitionPresets } from 'react-navigation-stack';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator, HeaderStyleInterpolators } from 'react-navigation-stack';
 import { Transition } from 'react-native-reanimated';
 
 import { ROUTES } from 'app/src/constants/Routes';
 import { INDIGO } from 'app/src/constants/Colors';
 
+import { NavHeader } from 'app/src/components/NavHeader';
+
 import { AuthLoadingScreen } from 'app/src/screens/AuthLoadingScreen';
 import { HomeScreen        } from 'app/src/screens/HomeScreen';
 import { CreateQuizScreen  } from 'app/src/screens/CreateQuizScreen';
-
-import { ViewQuizModal } from 'app/src/modals/ViewQuizModal';
 
 import { useScreens } from 'react-native-screens';
 useScreens();
@@ -26,11 +25,12 @@ const AppStack = createStackNavigator({
     mode: 'card',
     defaultNavigationOptions: {
       headerMode: 'float',
-      headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
+      headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
       headerTransparent: true,
       cardStyle: {
         backgroundColor: INDIGO[50],
       },
+      headerBackground: (<NavHeader/>),
       headerTintColor: 'white',
     },
   }

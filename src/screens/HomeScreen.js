@@ -89,11 +89,10 @@ HomeScreen.navigationOptions = ({navigation}) => {
   const { routeName } = state.routes[state.index];
   const options = getNavigationOptionFromRoute(routeName);
 
-  //Clipboard.setString(JSON.stringify(state.routes[state.index]));
-
   return {
     title: options.headerTitle,
     headerTitle: null,
+    headerShown: false,
   };
 };
 

@@ -55,7 +55,7 @@ export class QuizListScreen extends React.Component {
   });
 
   static navigationOptions = {
-    title: 'Quiz'
+    title: 'Quiz',
   };
 
   constructor(props){

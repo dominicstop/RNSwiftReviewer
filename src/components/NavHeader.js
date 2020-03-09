@@ -8,7 +8,6 @@ import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
 
-
 export class NavHeader extends Component {
   static navigationOptions = {
     title     : 'Create Quiz',
@@ -17,7 +16,6 @@ export class NavHeader extends Component {
 
   static styles = StyleSheet.create({
     rootContainer: {
-      position: 'absolute',
       width: '100%',
       height: HeaderValues.getHeaderHeight(true),
     },

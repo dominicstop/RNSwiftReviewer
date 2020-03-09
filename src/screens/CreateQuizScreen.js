@@ -6,7 +6,6 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz } from 'app/src/constants/NavParams';
-import { NavHeader } from 'app/src/components/NavHeader';
 
 
 export class CreateQuizScreen extends Component {
@@ -34,9 +33,7 @@ export class CreateQuizScreen extends Component {
     const { styles } = CreateQuizScreen;
 
     return (
-      <NavHeader>
-        
-      </NavHeader>
+      null
     );
   };
 };
