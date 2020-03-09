@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
-
 import * as Animatable from 'react-native-animatable';
 
 import { iOSUIKit } from 'react-native-typography';
@@ -28,11 +27,18 @@ class ListSortItem extends React.Component {
     //#region --- Render Item Styles
     itemContainer: {
       flexDirection: 'row',
-      paddingVertical: 7,
+      paddingVertical: 10,
+      marginHorizontal: 10,
       alignItems: 'center',
     },
+    background: {
+      ...StyleSheet.absoluteFillObject,
+      left: -10,
+      right: -10,
+      backgroundColor: BLUE[50],
+    },
     itemSeperator: {
-      borderColor: 'rgba(0,0,0,0.2)',
+      borderColor: 'rgba(0,0,0,0.15)',
       borderTopWidth: 1,
     },
     itemTitleContainer: {
@@ -89,7 +95,7 @@ class ListSortItem extends React.Component {
 
     const sortTitle = sortValue[SortKeys.TITLE] ?? 'Sort Type';
     const sortDesc  = sortValue[SortKeys.DESC ] ?? 'Sort Desc';
-          
+
     const RadioButton = (isSelected? (
       <Animatable.View
         animation={'pulse'}
@@ -122,6 +128,17 @@ class ListSortItem extends React.Component {
         {...props}
       >
         <View style={[styles.itemContainer, (!isFirst && styles.itemSeperator)]}>
+          {isSelected && (
+            <Animatable.View 
+              style={styles.background}
+              animation={'breathe'}
+              iterationCount={'infinite'}
+              delay={1000}
+              duration={3000}
+              iterationDelay={2000}
+              useNativeDriver={true}
+            />
+          )}
           {RadioButton}
           <View style={styles.itemTitleContainer}>
             <Text style={styles.itemTitle}>
@@ -196,10 +213,8 @@ export class ListSortItems extends React.Component {
     },
     //#endregion
     divider: {
-      margin: 10,
-    },
-    sortItemsContainer: {
-      paddingHorizontal: 10,
+      marginHorizontal: 10,
+      marginTop: 10,
     },
   });
 
@@ -249,9 +264,7 @@ export class ListSortItems extends React.Component {
       <Fragment>
         {this._renderHeader()}
         <Divider style={styles.divider}/>
-        <View style={styles.sortItemsContainer}>
-          {this._renderItems()}
-        </View>
+        {this._renderItems()}
       </Fragment>
     );
   };

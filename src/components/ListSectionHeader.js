@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import throttle from "lodash/throttle";
 
-import * as Animatable from 'react-native-animatable';
-import { iOSUIKit } from 'react-native-typography';
-import { Feather } from '@expo/vector-icons';
+import * as Animatable  from 'react-native-animatable';
+import { iOSUIKit     } from 'react-native-typography';
+import { Feather      } from '@expo/vector-icons';
+import { BlurView     } from "@react-native-community/blur";
+
 
 import { ListSortItems        } from 'app/src/components/ListSortItems';
 import { ListSortButton       } from 'app/src/components/ListSortButton';
@@ -41,7 +43,6 @@ export class ListSectionHeader extends React.Component {
 
   static styles = StyleSheet.create({
     rootContainer: {
-      backgroundColor: 'white',
       paddingVertical: 8,
       marginBottom: 0,
       //borders
@@ -56,6 +57,12 @@ export class ListSectionHeader extends React.Component {
         width: 0,
         height: 7,
       },
+    },
+    blurBackground: {
+      ...StyleSheet.absoluteFillObject,
+    },
+    background: {
+      ...StyleSheet.absoluteFillObject,
     },
     transitionContainer: {
       flexDirection: 'row',
@@ -72,13 +79,20 @@ export class ListSectionHeader extends React.Component {
       alignItems: 'center',
       marginLeft: 10,
     },
+    iconContainer: {
+      padding: 5,
+      backgroundColor: BLUE[50],
+      borderRadius: 5,
+    },
     textTitle: {
       ...iOSUIKit.subheadObject,
+      fontWeight: '700',
       textAlignVertical: 'center',
       marginLeft: 7,
     },
     textCount: {
-      ...iOSUIKit.subheadEmphasizedObject,
+      fontWeight: '400',
+      color: GREY[800],
     },
     sortButton: {
       marginRight: 10,
@@ -90,6 +104,7 @@ export class ListSectionHeader extends React.Component {
 
     this.state = {
       isSorting: false,
+      isExpanded: false,
     };
   };
 
@@ -126,6 +141,7 @@ export class ListSectionHeader extends React.Component {
   _handleOnLongPressSort = throttle(() => {
     const { onSortExpanded } = this.props;
 
+    this.setState({ isExpanded: true });
     this.transitoner.transition(true);
     onSortExpanded && onSortExpanded();
   }, 750);
@@ -138,6 +154,7 @@ export class ListSectionHeader extends React.Component {
       props.sortTypes,
     );
 
+    this.setState({ isExpanded: false });
     await this.transitoner.transition(false);
 
     // transiton to loading
@@ -163,6 +180,7 @@ export class ListSectionHeader extends React.Component {
   _handleOnPressCancel = throttle(() => {
     const { onPressCancel } = this.props;
 
+    this.setState({ isExpanded: false });
     this.transitoner.transition(false);
     onPressCancel && onPressCancel();
 
@@ -196,11 +214,17 @@ export class ListSectionHeader extends React.Component {
       </Fragment>
     ):(
       <Fragment>
-        <Feather
-          name={'list'}
-          size={20}
-          color={BLUE[800]}
-        />
+        <TouchableOpacity 
+          style={styles.iconContainer}
+          onPress={this._handleOnLongPressSort}
+          activeOpacity={0.75}
+        >
+          <Feather
+            name={'list'}
+            size={18}
+            color={BLUE[700]}
+          />
+        </TouchableOpacity>
         <Text style={styles.textTitle}>
           {'Showing: '}
           <Text style={styles.textCount}>
@@ -234,6 +258,14 @@ export class ListSectionHeader extends React.Component {
   render(){
     const { styles } = ListSectionHeader;
     const { sortTypes, sortValues, sortIndex, isAscending } = this.props;
+    const { isExpanded } = this.state;
+
+    const backgroundStyle = {
+      backgroundColor: (isExpanded
+        ? 'white'
+        : 'rgba(255,255,255,0.8)'
+      ),
+    };
 
     return(
       <Animatable.View 
@@ -241,6 +273,12 @@ export class ListSectionHeader extends React.Component {
         ref={r => this.rootContainer = r}
         useNativeDriver={true}
       >
+        <BlurView
+          style={styles.blurBackground}
+          blurType={"light"}
+          intensity={100}
+        />
+        <View style={[styles.background, backgroundStyle]}/>
         <TransitionWithHeight
           ref={r => this.transitoner = r}
           containerStyle={styles.transitionContainer}

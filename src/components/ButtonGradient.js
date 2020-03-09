@@ -72,11 +72,20 @@ export class ButtonGradient extends React.PureComponent {
     },
     shadow: {
       shadowColor: "#000",
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
+      shadowOpacity: 0.15,
+      shadowRadius: 3.5,
       shadowOffset: {
         width: 1,
-        height: 4,
+        height: 3,
+      },
+    },
+    iconContainer: {
+      shadowColor: "white",
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      shadowOffset: {
+        width: 0,
+        height: 2,
       },
     },
     gradient: {
@@ -140,6 +149,7 @@ export class ButtonGradient extends React.PureComponent {
   };
 
   _renderContent(){
+    const { styles } = ButtonGradient;
     const props = this.props;
 
     const alignment = this.getAlignment();
@@ -153,10 +163,11 @@ export class ButtonGradient extends React.PureComponent {
     return(
       <Fragment>
         {props.showIcon && (
-          <View style={[props.iconContainerStyle, iconContainerStyle]}>
+          <View style={[styles.iconContainer, props.iconContainerStyle, iconContainerStyle]}>
             {props.leftIcon}
           </View>
         )}
+        <View/>
         {this._renderMiddle()}
         {props.showChevron && <Feather
           //pass down icon props

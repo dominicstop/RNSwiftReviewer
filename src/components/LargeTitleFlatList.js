@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { Platform, StyleSheet, Text, View, Dimensions, SectionList } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
+import * as Helpers from 'app/src/functions/helpers';
 import { TB_HEIGHT_ADJ, INSET_TOP } from 'app/src/constants/UIValues';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
@@ -13,6 +14,7 @@ import { VibrancyView } from "@react-native-community/blur";
 import { Transitioning, Transition, Easing } from 'react-native-reanimated';
 
 import Animated from 'react-native-reanimated';
+
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, sub, debug } = Animated;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
@@ -113,6 +115,14 @@ export class LargeTitleWithSnap extends React.PureComponent {
       ...(DEBUG_COLORS && 
         { backgroundColor: 'yellow' }
       ),
+      //glow
+      shadowColor: "white",
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
     },
     subtitleText: {
       fontSize: 20,
@@ -175,11 +185,11 @@ export class LargeTitleWithSnap extends React.PureComponent {
     });
 
     const diff   = (NAVBAR_LARGE - NAVBAR_NORMAL);
-    const offset = (diff - NAVBAR_NORMAL) + INSET_TOP;
+    const offset = (diff - NAVBAR_NORMAL);
 
     this._sectionListTransY = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [offset, INSET_TOP],
+      outputRange: [offset, 0],
       extrapolate: Extrapolate.CLAMP,
     });
 
@@ -251,8 +261,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
     };
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     this.setState({enableSnap: true});
+
+    await Helpers.timeout(100);
 
     const node = this.sectionListRef.getNode();
     node && node.scrollToLocation({
@@ -427,15 +439,15 @@ export class LargeTitleWithSnap extends React.PureComponent {
     );
 
     const sectionListStyle = {
-      paddingTop: NAVBAR_NORMAL,
+      paddingTop: NAVBAR_NORMAL + INSET_TOP,
       transform : [
         { translateY: this._sectionListTransY }
       ]
     };
 
     //get sectionList child
-    const children     = React.Children.toArray(props.children);
-    const sectionList  = children[0];
+    const children    = React.Children.toArray(props.children);
+    const sectionList = children[0];
 
     //pass props to sectionList child comp
     let SectionList = React.cloneElement(sectionList, {

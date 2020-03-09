@@ -50,6 +50,7 @@ class QuizListItemHeader extends React.Component {
     textDateCreatedLast: {
       ...iOSUIKit.subheadObject,
       color: GREY[600],
+      opacity: 0.75,
     },
   });
 
@@ -89,7 +90,7 @@ class QuizListItemHeader extends React.Component {
     return(
       <View style={styles.titleContainer}>
         <ListItemBadge
-          size={20}
+          size={22}
           value={(index + 1)}
           marginRight={7}
         />
