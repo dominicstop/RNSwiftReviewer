@@ -10,7 +10,8 @@
 - [x] fix LargeTitleSectionList extra bottom padding
 - [x] handle list extra padding for LargeTitle
 - [x] implement sorting logic
-- [ ] fix sort animation
+- [ ] fix sort animation header
+- [ ] fix scroll to top sorting behaviour
 - [x] Test whether or not RN and RNN can be combined togther in a single project
   * Use RNN for modals, and use RN for everything else
   * Test whether or not RNS can be used

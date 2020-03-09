@@ -23,6 +23,7 @@ import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
 
 import { HeaderValues } from 'app/src/constants/HeaderValues';
+import { INSET_TOP    } from 'app/src/constants/UIValues';
 import { TestDataQuiz } from 'app/src/constants/TestData';
 import { RNN_ROUTES   } from 'app/src/constants/Routes';
 
@@ -127,7 +128,7 @@ export class QuizListScreen extends React.Component {
       itemIndex: 0,
       sectionIndex: 0,
       viewPosition: 0,
-      viewOffset: headerHeight,
+      viewOffset: headerHeight + INSET_TOP,
       animated: true,
     });
   };
