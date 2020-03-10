@@ -21,8 +21,10 @@ import * as Helpers from 'app/src/functions/helpers';
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
-import { ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz } from 'app/src/constants/NavParams';
+import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
+import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
+
+import { ModalController } from 'app/src/functions/ModalController';
 
 
 class QuizDetails extends React.Component {
@@ -110,25 +112,44 @@ export class CreateQuizScreen extends React.Component {
   constructor(props){
     super(props);
 
+    const { params } = props.navigation.state;
+
+    const quizTitle = params[SNPCreateQuiz.quizTitle];
+    const quizDesc  = params[SNPCreateQuiz.quizDesc ];
+
     this.state = {
+      quizTitle, quizDesc,
       scrollEnabled: true,
       isAsc: false,
       sortIndex: 0,
     };
   };
 
-  //todo
-  _handleOnPressCreateQuiz = () => {
-    const { navigation } = this.props;
+  _handleOnEditModalClose = ({title, desc}) => {
+    this.setState({
+      quizTitle: title,
+      quizDesc : desc,
+    });
+  };
 
+  _handleOnPressEditQuiz = () => {
+    const { navigation } = this.props;
+    const { quizTitle, quizDesc } = this.state;
+    
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalCreateQuiz,
       navProps: {
-        navigation
+        [MNPCreateQuiz.navigation]: navigation,
+        [MNPCreateQuiz.isEditing ]: true     ,
+        [MNPCreateQuiz.quizTitle ]: quizTitle,
+        [MNPCreateQuiz.quizDesc  ]: quizDesc ,
+        //modal close event
+        [MNPCreateQuiz.onModalClose]: this._handleOnEditModalClose,
       },
     });
   };
 
+  //todo
   //#region - event handlers / callbacks
   _handleKeyExtractor = (quiz, index) => {
     return quiz[QuizKeys.quizID];
@@ -147,12 +168,7 @@ export class CreateQuizScreen extends React.Component {
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
     const { styles } = CreateQuizScreen;
-
-    const { navigation } = this.props;
-    const { params } = navigation.state;
-
-    const quizTitle = params[SNPCreateQuiz.quizTitle];
-    const quizDesc  = params[SNPCreateQuiz.quizDesc ];
+    const { quizTitle, quizDesc } = this.state;
 
     const textBody = Helpers.sizeSelectSimple({
       normal: 'Quizes are a collection of sections, which in turn, holds related questions together.',
@@ -174,7 +190,7 @@ export class CreateQuizScreen extends React.Component {
           containerStyle={styles.headerButton}
           title={'Edit Quiz Details'}
           subtitle={'Modify the quiz title and description'}
-          onPress={this._handleOnPressCreateQuiz}
+          onPress={this._handleOnPressEditQuiz}
           iconType={'ionicon'}
           iconDistance={10}
           isBgGradient={true}

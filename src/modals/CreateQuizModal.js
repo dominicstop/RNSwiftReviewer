@@ -14,7 +14,7 @@ import { ModalInputField   } from 'app/src/components/ModalInputField';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz } from 'app/src/constants/NavParams';
+import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
 
 import { BLUE } from 'app/src/constants/Colors';
 
@@ -74,16 +74,22 @@ export class CreateQuizModal extends React.Component {
   };
 
   _handleOnPressButtonLeft = async () => {
-    const { navigation, componentId } = this.props;
+    const { navigation, componentId, ...props } = this.props;
+
+    const isEditing    = props[MNPCreateQuiz.isEditing   ];
+    const onModalClose = props[MNPCreateQuiz.onModalClose];
 
     const isValidTitle    = this.inputFieldRefTitle.isValid(false);
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
 
     if(isValidTitle && isValidSubtitle){
-      navigation.navigate(ROUTES.createQuizRoute, {
+      const title = this.inputFieldRefTitle.getText();
+      const desc  = this.inputFieldRefDesc .getText()
+
+      !isEditing && navigation.navigate(ROUTES.createQuizRoute, {
         // pass as nav params to CreateQuizScreen
-        [SNPCreateQuiz.quizTitle]: this.inputFieldRefTitle.getText(),
-        [SNPCreateQuiz.quizDesc ]: this.inputFieldRefDesc .getText(),
+        [SNPCreateQuiz.quizTitle]: title,
+        [SNPCreateQuiz.quizDesc ]: desc,
       });
 
       const animation = Animated.timing(this.progress, {
@@ -96,6 +102,8 @@ export class CreateQuizModal extends React.Component {
           resolve();
         });
       });
+
+      onModalClose && onModalClose({title, desc});
 
       //close modal
       Navigation.dismissModal(componentId);
@@ -122,6 +130,9 @@ export class CreateQuizModal extends React.Component {
 
   render(){
     const { styles } = CreateQuizModal;
+    const props = this.props;
+
+    const isEditing = props[MNPCreateQuiz.isEditing];
 
     const overlayContainerStyle = {
       opacity: this._opacity,
@@ -129,8 +140,14 @@ export class CreateQuizModal extends React.Component {
 
     const modalHeader = (
       <ModalHeader
-        title={'Create New Quiz'}
-        subtitle={"Press 'Create Quiz' when done."}
+        title={(isEditing
+          ? 'Edit Quiz Details'
+          : 'Create New Quiz'
+        )}
+        subtitle={(isEditing
+          ? "Modify quiz title and description"
+          : "Enter the quiz title and description"
+        )}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
@@ -145,8 +162,11 @@ export class CreateQuizModal extends React.Component {
     const modalFooter = (
       <ModalFooter>
         <ModalFooterButton
-          buttonLeftTitle={'Done'}
-          buttonLeftSubtitle={'Create new quiz'}
+          buttonLeftTitle={(isEditing? 'Save' : 'Done')}
+          buttonLeftSubtitle={(isEditing
+            ? 'Update quiz details'
+            : 'Create new quiz'
+          )}
           onPressButtonLeft={this._handleOnPressButtonLeft}
           onPressButtonRight={this._handleOnPressButtonRight}
         />
@@ -178,6 +198,7 @@ export class CreateQuizModal extends React.Component {
             title={'Quiz Title'}
             subtitle={'Give this quiz a title (ex: Math Prelims etc.)'}
             placeholder={'Enter Quiz Title'}
+            initialValue={props[MNPCreateQuiz.quizTitle]}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
@@ -202,6 +223,7 @@ export class CreateQuizModal extends React.Component {
             title={'Description'}
             subtitle={'Give this quiz a short description.'}
             placeholder={'Enter Quiz Title'}
+            initialValue={props[MNPCreateQuiz.quizDesc]}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
               <SvgIcon

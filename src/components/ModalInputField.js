@@ -20,9 +20,10 @@ const MODES = {
 
 export class ModalInputField extends React.Component {
   static propTypes = {
-    title      : PropTypes.string,
-    subtitle   : PropTypes.string,
-    placeholder: PropTypes.string,
+    title       : PropTypes.string,
+    subtitle    : PropTypes.string,
+    placeholder : PropTypes.string,
+    initialValue: PropTypes.string,
   };
 
   static defaultProps = {
@@ -84,7 +85,7 @@ export class ModalInputField extends React.Component {
 
     this.state = {
       mode: MODES.BLURRED,
-      textInput: '',
+      textInput: props.initialValue ?? '',
     };
 
     this._progress = new Value(0);
@@ -220,7 +221,7 @@ export class ModalInputField extends React.Component {
   render(){
     const { styles } = ModalInputField;
     const { iconActive, iconInactive, ...props } = this.getProps();
-    const { mode } = this.state;
+    const { mode, textInput: value } = this.state;
 
     const textInputStyle = (() => {
       switch (mode) {
@@ -338,7 +339,7 @@ export class ModalInputField extends React.Component {
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
             placeholderTextColor={GREY[700]}
-            {...{props}}
+            {...{value, props}}
           />
         </Animatable.View>
       </Fragment>

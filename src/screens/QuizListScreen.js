@@ -22,16 +22,18 @@ import { SVG_KEYS } from 'app/src/components/SvgIcons';
 import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
 
-import { HeaderValues } from 'app/src/constants/HeaderValues';
-import { TestDataQuiz } from 'app/src/constants/TestData';
-import { INSET_TOP    } from 'app/src/constants/UIValues';
-import { RNN_ROUTES   } from 'app/src/constants/Routes';
+import { HeaderValues  } from 'app/src/constants/HeaderValues';
+import { TestDataQuiz  } from 'app/src/constants/TestData';
+import { INSET_TOP     } from 'app/src/constants/UIValues';
+import { RNN_ROUTES    } from 'app/src/constants/Routes';
+import { MNPCreateQuiz } from 'app/src/constants/NavParams';
 
 import { QuizKeys } from 'app/src/models/QuizModel';
 
-import * as Helpers           from 'app/src/functions/helpers';
-import    { ModalController } from 'app/src/functions/ModalController';
-import    { sortQuizItems   } from 'app/src/functions/SortItems';
+import * as Helpers from 'app/src/functions/helpers';
+
+import { ModalController } from 'app/src/functions/ModalController';
+import { sortQuizItems   } from 'app/src/functions/SortItems';
 
 
 export class QuizListScreen extends React.Component {
@@ -76,7 +78,10 @@ export class QuizListScreen extends React.Component {
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalCreateQuiz,
       navProps: {
-        navigation
+        [MNPCreateQuiz.navigation]: navigation,
+        [MNPCreateQuiz.isEditing ]: false     ,
+        [MNPCreateQuiz.quizTitle ]: null      ,
+        [MNPCreateQuiz.quizDesc  ]: null      ,
       },
     });
   };
