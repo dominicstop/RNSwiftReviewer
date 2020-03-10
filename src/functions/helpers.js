@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import deviceSize from 'react-native-device-size';
 import _ from 'lodash';
 
 //wrapper func for setstate that returns a promise
@@ -200,4 +201,24 @@ export function createObjectFromKeys(keys = {}){
   });
 
   return newObject;
+};
+
+export function sizeSelectVerbose({xsmall, small, normal, large, xlarge}){
+  switch (deviceSize) {
+    case 'xsmall': return xsmall;
+    case 'small' : return small ;
+    case 'normal': return normal;
+    case 'large' : return large ;
+    case 'xlarge': return xlarge;
+  };
+};
+
+export function sizeSelectSimple({normal, large}){
+  switch (deviceSize) {
+    case 'xsmall':
+    case 'small' :
+    case 'normal': return normal;
+    case 'large' :
+    case 'xlarge': return large;
+  };
 };

@@ -23,8 +23,8 @@ import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
 
 import { HeaderValues } from 'app/src/constants/HeaderValues';
-import { INSET_TOP    } from 'app/src/constants/UIValues';
 import { TestDataQuiz } from 'app/src/constants/TestData';
+import { INSET_TOP    } from 'app/src/constants/UIValues';
 import { RNN_ROUTES   } from 'app/src/constants/Routes';
 
 import { QuizKeys } from 'app/src/models/QuizModel';
@@ -164,6 +164,7 @@ export class QuizListScreen extends React.Component {
     return(
       <LargeTitleHeaderCard
         imageSource={require('app/assets/icons/circle_paper_pencil.png')}
+        isTitleAnimated={true}
         textTitle={'Your Quizes'}
         {...{scrollY, inputRange}}
       >

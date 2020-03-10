@@ -30,8 +30,10 @@ const AppStack = createStackNavigator({
       cardStyle: {
         backgroundColor: INDIGO[50],
       },
-      headerBackground: (<NavHeader/>),
       headerTintColor: 'white',
+      headerBackground: (
+        <NavHeader/>
+      ),
     },
   }
 );

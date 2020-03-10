@@ -5951,6 +5951,11 @@ react-native-animatable@^1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-device-size@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-size/-/react-native-device-size-0.1.0.tgz#e611007084d3d9fb80922923d7eeaeb5931dbc78"
+  integrity sha1-5hEAcITT2fuAkikj1+6utZMdvHg=
+
 react-native-elements@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.2.7.tgz#1eca2db715c41722aeb67aea62bd2a4621adb134"

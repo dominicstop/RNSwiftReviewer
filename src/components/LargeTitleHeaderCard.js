@@ -5,12 +5,26 @@ import PropTypes from 'prop-types';
 import Reanimated, { Extrapolate } from "react-native-reanimated";
 import { iOSUIKit } from 'react-native-typography';
 
+import * as Helpers from 'app/src/functions/helpers';
+
+
+const iconSize = Helpers.sizeSelectVerbose({
+  xsmall: 60, small : 65, normal: 70,
+  large : 85, xlarge: 85,
+});
+
+const spacerSize = Helpers.sizeSelectVerbose({
+  xsmall: 12, small : 12, normal: 15,
+  large : 17, xlarge: 17,
+});
+
 
 export class LargeTitleHeaderCard  extends React.Component {
   static propTypes = {
-    imageSource: PropTypes.number,
-    textBody   : PropTypes.string,
-    textTitle  : PropTypes.string,
+    textBody       : PropTypes.string,
+    textTitle      : PropTypes.string,
+    imageSource    : PropTypes.number,
+    isTitleAnimated: PropTypes.bool  ,
     //receive from LargeTitleFlatList
     scrollY   : PropTypes.object,
     inputRange: PropTypes.object,
@@ -35,17 +49,17 @@ export class LargeTitleHeaderCard  extends React.Component {
     },
     titleBodyContainer: {
       flex: 1,
-      marginLeft: 15,
+      marginLeft: spacerSize,
       justifyContent: 'center',
     },
     iconImage: {
-      width: 75,
-      height: 75,
+      width: iconSize,
+      aspectRatio: 1,
     },
     textBody: {
       ...iOSUIKit.subheadObject,
       textAlignVertical: 'center',
-      maxWidth: 275,
+      maxWidth: 290,
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,
@@ -56,74 +70,97 @@ export class LargeTitleHeaderCard  extends React.Component {
   constructor(props){
     super(props);
 
-    this._titleHeight = Reanimated.interpolate(props.scrollY, {
-      inputRange : props.inputRange,
-      outputRange: [0, 23],
-      extrapolate: Extrapolate.CLAMP,
-    });
-
-    const inputEnd = props.inputRange[1];
-    this._titleOpacity = Reanimated.interpolate(props.scrollY, {
-      inputRange : [(inputEnd / 1.5), inputEnd],
-      outputRange: [0, 1],
-      extrapolate: Extrapolate.CLAMP,
-    });
-    
-    this._titleScale = Reanimated.interpolate(props.scrollY, {
-      inputRange : props.inputRange,
-      outputRange: [0.75, 1],
-      extrapolate: Extrapolate.CLAMP,
-    });
-
-    this._titleTransX = Reanimated.interpolate(props.scrollY, {
-      inputRange : props.inputRange,
-      outputRange: [-50, 0],
-      extrapolate: Extrapolate.CLAMP,
-    });
-  };
-
-  _renderAnimatedTitle(){
-    const { styles } = LargeTitleHeaderCard;
-
-    const style = {
-      height: this._titleHeight,
-      opacity: this._titleOpacity,
-      transform: [
-        { scale: this._titleScale },
-        { translateX: this._titleTransX },
-      ],
-    };
-
-    return(
-      <Reanimated.View style={style}>
-        <Text style={styles.textTitle}>
-          {this.props.textTitle}
-        </Text>
-      </Reanimated.View>
+    this.isTitleAnimated = (
+      props.isTitleAnimated &&
+      props.inputRange      &&
+      props.scrollY          
     );
+
+    if(this.isTitleAnimated){
+      this._iconScale = Reanimated.interpolate(props.scrollY, {
+        inputRange : props.inputRange,
+        outputRange: [0.95, 1.05],
+        extrapolate: Extrapolate.CLAMP,
+      });
+
+      this._titleHeight = Reanimated.interpolate(props.scrollY, {
+        inputRange : props.inputRange,
+        outputRange: [0, 23],
+        extrapolate: Extrapolate.CLAMP,
+      });
+
+      const inputEnd = props.inputRange[1];
+      this._titleOpacity = Reanimated.interpolate(props.scrollY, {
+        inputRange : [(inputEnd / 1.5), inputEnd],
+        outputRange: [0, 1],
+        extrapolate: Extrapolate.CLAMP,
+      });
+      
+      this._titleScale = Reanimated.interpolate(props.scrollY, {
+        inputRange : props.inputRange,
+        outputRange: [0.75, 1],
+        extrapolate: Extrapolate.CLAMP,
+      });
+
+      this._titleTransX = Reanimated.interpolate(props.scrollY, {
+        inputRange : props.inputRange,
+        outputRange: [-50, 0],
+        extrapolate: Extrapolate.CLAMP,
+      });
+    };
   };
 
   render(){
     const { styles } = LargeTitleHeaderCard;
-    const props = this.props;
+    const { customBody , ...props } = this.props;
 
-    const hasAnimatedValues = (
-      props.scrollY && props.inputRange
-    );
+    const CompIcon = (this.isTitleAnimated? (
+      <Reanimated.Image
+        source={props.imageSource}
+        style={[styles.iconImage, {
+          transform: [
+            { scale: this._iconScale },
+          ],
+        }]}
+      />
+    ):(
+      <Image
+        style={styles.iconImage}
+        source={props.imageSource}
+      />
+    ))
+
+    const CompTitle = (this.isTitleAnimated? (
+      <Reanimated.View style={{
+        height: this._titleHeight,
+        opacity: this._titleOpacity,
+        transform: [
+          { scale: this._titleScale },
+          { translateX: this._titleTransX },
+        ],
+      }}>
+        <Text style={styles.textTitle}>
+          {props.textTitle}
+        </Text>
+      </Reanimated.View>
+    ):(
+      <Text style={styles.textTitle}>
+        {props.textTitle}
+      </Text>
+    ));
 
     return(
       <View style={styles.rootContainer}>
         <View style={styles.topContentContainer}>
           <View style={styles.imageTextContainer}>
-            <Image
-              style={styles.iconImage}
-              source={props.imageSource}
-            />
+            {CompIcon}
             <View style={styles.titleBodyContainer}>
-              {hasAnimatedValues && this._renderAnimatedTitle()}
+              {CompTitle}
+              {customBody ?? (
               <Text style={styles.textBody}>
                 {props.textBody}
               </Text>
+            )}
             </View>
           </View>
         </View>
