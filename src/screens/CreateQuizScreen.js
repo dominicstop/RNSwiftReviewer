@@ -34,6 +34,30 @@ class QuizDetails extends React.Component {
       marginTop: 12,
       marginHorizontal: 12,
     },
+    detailsContainer: {
+      flexDirection: 'row',
+      marginVertical: 2,
+    },
+    columnLeftContainer: {
+      flex: 1,
+      marginRight: 5,
+    },
+    columnRightContainer: {
+      flex: 1,
+      marginLeft: 5,
+    },
+    rowContainer: {
+      flexDirection: 'row',
+    },
+    textDetailLabel: {
+      ...iOSUIKit.bodyEmphasizedObject,
+      flex: 1,
+      color: Colors.GREY[900]
+    },
+    textDetail: {
+      ...iOSUIKit.bodyObject,
+      color: Colors.GREY[800]
+    },
     titleContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -47,12 +71,11 @@ class QuizDetails extends React.Component {
     },
     textLabel: {
       ...iOSUIKit.bodyEmphasizedObject,
-      fontSize: 19,
-      fontWeight: '500',
+      fontWeight: '600',
+      color: Colors.GREY[900],
     },
     textBody: {
       ...iOSUIKit.bodyObject,
-      fontSize: 17,
       color: Colors.GREY[800],
     },
   });
@@ -60,6 +83,43 @@ class QuizDetails extends React.Component {
   render(){
     const { styles } = QuizDetails;
     const props = this.props;
+
+    const StatsComp = (
+      <View style={styles.detailsContainer}>
+        <View style={styles.columnLeftContainer}>
+          <View style={styles.rowContainer}>
+            <Text 
+              style={styles.textDetailLabel}
+              numberOfLines={1}
+            >
+              {'Sections'}
+            </Text>
+            <Text 
+              style={styles.textDetail}
+              numberOfLines={1}
+            >
+              {`0 Items`}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.columnRightContainer}>
+          <View style={styles.rowContainer}>
+            <Text 
+              style={styles.textDetailLabel}
+              numberOfLines={1}
+            >
+              {'Questions'}
+            </Text>
+            <Text 
+              style={styles.textDetail}
+              numberOfLines={1}
+            >
+              {`0 Items`}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
 
     return(
       <View style={styles.rootContainer}>
@@ -74,9 +134,10 @@ class QuizDetails extends React.Component {
             {props.quizTitle}
           </Text>
         </View>
+        {StatsComp}
         <Text numberOfLines={3}>
           <Text style={styles.textLabel}>
-            {'Description: '}
+            {'Quiz Description: '}
           </Text>
           <Text style={styles.textBody}>
             {props.quizDesc}
@@ -179,6 +240,7 @@ export class CreateQuizScreen extends React.Component {
       <LargeTitleHeaderCard
         imageSource={require('app/assets/icons/lbw-book-tent.png')}
         isTitleAnimated={true}
+        addShadow={true}
         textTitle={'Create A New Quiz'}
         {...{scrollY, inputRange, textBody}}
       >

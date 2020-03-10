@@ -2,6 +2,11 @@
 
 - [x] Refactor SortKeysQuiz to SortTypesQuiz
 - [x] Refactor SortKeysExam to SortTypesExam
+- [ ] Refactor to use Immutability helper for nested state
+- [ ] Bugfix: Fix scroll offset bug when on production build
+- [ ] Sort: Record scroll pos + Don't scroll to top when sorting if below threshold
+- [ ] Record header height + Add snap to offset for header
+- [ ] CreateQuizModal: replace input icons
 
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar

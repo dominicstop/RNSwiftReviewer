@@ -39,6 +39,17 @@ export class LargeTitleHeaderCard  extends React.Component {
     rootContainer: {
       backgroundColor: 'white',
     },
+    shadow: {
+      //shadows
+      paddingBottom: 5,
+      shadowColor: "#000",
+      shadowOpacity: 0.10,
+      shadowRadius: 7,
+      shadowOffset: {
+        width: 0,
+        height: 7,
+      },
+    },
     topContentContainer: {
       paddingHorizontal: 10,
       paddingTop: 15,
@@ -150,7 +161,7 @@ export class LargeTitleHeaderCard  extends React.Component {
     ));
 
     return(
-      <View style={styles.rootContainer}>
+      <View style={[styles.rootContainer, props.addShadow && styles.shadow]}>
         <View style={styles.topContentContainer}>
           <View style={styles.imageTextContainer}>
             {CompIcon}
