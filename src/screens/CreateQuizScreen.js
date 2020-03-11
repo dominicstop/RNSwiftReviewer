@@ -10,11 +10,10 @@ import { iOSUIKit } from 'react-native-typography';
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
-import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
 import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
 import { ButtonGradient       } from 'app/src/components/ButtonGradient';
-import { QuizListItem         } from 'app/src/components/QuizListItem';
 import { REASectionList       } from 'app/src/components/ReanimatedComps';
+import { ScreenFooter         } from 'app/src/components/ScreenFooter';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -208,28 +207,8 @@ export class CreateQuizScreen extends React.Component {
     };
   };
 
-  _handleOnEditModalClose = ({title, desc}) => {
-    this.setState({
-      quizTitle: title,
-      quizDesc : desc,
-    });
-  };
-
-  _handleOnPressEditQuiz = () => {
-    const { navigation } = this.props;
-    const { quizTitle, quizDesc } = this.state;
-    
-    ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalCreateQuiz,
-      navProps: {
-        [MNPCreateQuiz.navigation]: navigation,
-        [MNPCreateQuiz.isEditing ]: true     ,
-        [MNPCreateQuiz.quizTitle ]: quizTitle,
-        [MNPCreateQuiz.quizDesc  ]: quizDesc ,
-        //modal close event
-        [MNPCreateQuiz.onModalClose]: this._handleOnEditModalClose,
-      },
-    });
+  _handleOnPressAddSection = () => {
+    this.footerRef.setVisibilty(true);
   };
 
   //todo
@@ -281,7 +260,7 @@ export class CreateQuizScreen extends React.Component {
             iconType={'ionicon'}
             iconDistance={10}
             isBgGradient={true}
-            showChevron={true}
+            showChevron={false}
             showIcon={true}
             leftIcon={(
               <Ionicon
@@ -301,10 +280,11 @@ export class CreateQuizScreen extends React.Component {
           >
             <ButtonGradient
               containerStyle={styles.headerButton}
-              bgColor={Colors.BLUE.A400}
+              bgColor={Colors.BLUE[100]}
+              fgColor={Colors.BLUE[800]}
               alignment={'CENTER'}
               title={'Add New Section'}
-              onPress={this._handleOnPressEditQuiz}
+              onPress={this._handleOnPressAddSection}
               iconDistance={10}
               isBgGradient={false}
               addShadow={false}
@@ -312,7 +292,7 @@ export class CreateQuizScreen extends React.Component {
               leftIcon={(
                 <Ionicon
                   name={'ios-add-circle'}
-                  color={'white'}
+                  color={Colors.BLUE['A700']}
                   size={25}
                 />
               )}
@@ -380,6 +360,26 @@ export class CreateQuizScreen extends React.Component {
             {...{scrollEnabled}}
           />
         </LargeTitleWithSnap>
+        <ScreenFooter ref={r => this.footerRef = r}>
+          <ButtonGradient
+            containerStyle={styles.headerButton}
+            title={'Finish Quiz'}
+            subtitle={'Create and save the current quiz'}
+            onPress={this._handleOnPressDone}
+            gradientColors={[Colors.INDIGO.A400, Colors.BLUE.A700]}
+            iconDistance={15}
+            isBgGradient={true}
+            showChevron={true}
+            showIcon={true}
+            leftIcon={(
+              <Ionicon
+                name={'ios-checkmark-circle'}
+                color={'white'}
+                size={27}
+              />
+            )}
+          />
+        </ScreenFooter>
       </View>
     );
   };

@@ -183,7 +183,6 @@ export class CustomTabBar extends React.Component {
       left: 0,
       right: 0,
       //layout
-      width: '100%',
       height: TB_HEIGHT_ADJ,
       backgroundColor: 'transparent',
       flexDirection: 'row',
@@ -270,6 +269,10 @@ export class CustomTabBar extends React.Component {
       <Animatable.View
         style={styles.rootContainer}
         ref={r => this.rootContainer = r}
+        animation={'slideInUp'}
+        duration={300}
+        delay={750}
+        easing={'ease-in-out'}
         useNativeDriver={true}
       >
         <VibrancyView
