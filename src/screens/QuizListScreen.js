@@ -165,54 +165,39 @@ export class QuizListScreen extends React.Component {
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
     const { styles } = QuizListScreen;
+    const { quizes } = this.state;
 
-    return(
-      <LargeTitleHeaderCard
-        imageSource={require('app/assets/icons/circle_paper_pencil.png')}
-        isTitleAnimated={true}
-        textTitle={'Your Quizes'}
-        {...{scrollY, inputRange}}
-      >
-        <Divider style={styles.divider}/>
-        <ButtonGradient
-          containerStyle={styles.headerButton}
-          title={'Create Quiz'}
-          subtitle={'Create a new quiz item'}
-          onPress={this._handleOnPressCreateQuiz}
-          iconType={'ionicon'}
-          iconDistance={10}
-          isBgGradient={true}
-          showChevron={true}
-          showIcon={true}
-          leftIcon={(
-            <Ionicon
-              name={'ios-add-circle'}
-              color={'white'}
-              size={22}
-            />
-          )}
-        />
-      </LargeTitleHeaderCard>
-    );
-  };
-
-  // item count + sort buttons
-  _renderSectionHeader = ({ section }) => {
-    const { quizes, sortIndex, isAsc: isAscending } = this.state;
     const itemCount = quizes.length ?? 0;
+    const addShadow = (itemCount == 0);
 
     return(
       <Fragment>
-        <ListSectionHeader
-          sortTypes={SortTypesQuiz}
-          sortValues={SortValuesQuiz}
-          {...{sortIndex, isAscending, itemCount}}
-          // event handlers
-          onSortExpanded={this._handleOnSortExpanded}
-          onPressSort={this._handleOnPressSort}
-          onPressCancel={this._handleOnPressCancel}
-          onPressSortOption={this._handleOnPressSortOption}
-        />
+        <LargeTitleHeaderCard
+          imageSource={require('app/assets/icons/circle_paper_pencil.png')}
+          isTitleAnimated={true}
+          textTitle={'Your Quizes'}
+          {...{scrollY, inputRange, addShadow}}
+        >
+          <Divider style={styles.divider}/>
+          <ButtonGradient
+            containerStyle={styles.headerButton}
+            title={'Create Quiz'}
+            subtitle={'Create a new quiz item'}
+            onPress={this._handleOnPressCreateQuiz}
+            iconType={'ionicon'}
+            iconDistance={10}
+            isBgGradient={true}
+            showChevron={true}
+            showIcon={true}
+            leftIcon={(
+              <Ionicon
+                name={'ios-add-circle'}
+                color={'white'}
+                size={22}
+              />
+            )}
+          />
+        </LargeTitleHeaderCard>
         {(itemCount == 0) && (
           <ListCardEmpty
             imageSource={require('app/assets/icons/pencil_sky.png')}
@@ -221,6 +206,27 @@ export class QuizListScreen extends React.Component {
           />
         )}
       </Fragment>
+    );
+  };
+
+  // item count + sort buttons
+  _renderSectionHeader = ({ section }) => {
+    const { quizes, sortIndex, isAsc: isAscending } = this.state;
+    const itemCount = quizes.length ?? 0;
+
+    if(itemCount == 0) return;
+
+    return(
+      <ListSectionHeader
+        sortTypes={SortTypesQuiz}
+        sortValues={SortValuesQuiz}
+        {...{sortIndex, isAscending, itemCount}}
+        // event handlers
+        onSortExpanded={this._handleOnSortExpanded}
+        onPressSort={this._handleOnPressSort}
+        onPressCancel={this._handleOnPressCancel}
+        onPressSortOption={this._handleOnPressSortOption}
+      />
     );
   };
 

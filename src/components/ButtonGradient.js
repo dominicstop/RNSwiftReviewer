@@ -124,6 +124,9 @@ export class ButtonGradient extends React.PureComponent {
       ...((props.showChevron || alignment == ALIGNMENT.LEFT) && {
         flex: 1,
       }),
+      ...((alignment == ALIGNMENT.CENTER) &&
+        { marginVertical: 7 }
+      ),
     };
 
     const textStyle = {
@@ -217,7 +220,9 @@ export class ButtonGradient extends React.PureComponent {
             {this._renderContent()}
           </LinearGradient>
         ):(
-          this._renderContent()
+          <View style={[styles.gradient, containerStyle]}>
+            {this._renderContent()}
+          </View>
         )}
       </TouchableOpacity>
     );

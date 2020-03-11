@@ -22,6 +22,9 @@ export class ListCardEmpty extends React.Component {
 
   static styles = StyleSheet.create({
     rootContainer: {
+      paddingHorizontal: 0,
+    },
+    imageTextContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 13,
@@ -37,12 +40,11 @@ export class ListCardEmpty extends React.Component {
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,
-      fontSize: iOSUIKit.bodyEmphasizedObject.fontSize + 1,
       fontWeight: '700',
       marginBottom: 1,
     },
     textSubtitle: {
-      ...iOSUIKit.bodyObject,
+      ...iOSUIKit.subheadObject,
       maxWidth: 275,
     },
   });
@@ -62,25 +64,28 @@ export class ListCardEmpty extends React.Component {
         delay={750}
         useNativeDriver={true}
       >
-        <ListCard style={styles.rootContainer}>
-          <Animatable.Image
-            style={[styles.image, imageStyle]}
-            source={props.imageSource}
-            animation={'pulse'}
-            duration={7000}
-            iterationCount={'infinite'}
-            iterationDelay={1500}
-            delay={1000}
-            useNativeDriver={true}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.textTitle}>
-              {props.title}
-            </Text>
-            <Text style={styles.textSubtitle}>
-              {props.subtitle}
-            </Text>
+        <ListCard style={[styles.rootContainer, props.containerStyle]}>
+          <View style={styles.imageTextContainer}>
+            <Animatable.Image
+              style={[styles.image, imageStyle]}
+              source={props.imageSource}
+              animation={'pulse'}
+              duration={7000}
+              iterationCount={'infinite'}
+              iterationDelay={1500}
+              delay={1000}
+              useNativeDriver={true}
+            />
+            <View style={styles.textContainer}>
+              <Text style={styles.textTitle}>
+                {props.title}
+              </Text>
+              <Text style={styles.textSubtitle}>
+                {props.subtitle}
+              </Text>
+            </View>
           </View>
+          {this.props.children}
         </ListCard>
       </Animatable.View>
     );

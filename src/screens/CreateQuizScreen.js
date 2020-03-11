@@ -6,13 +6,14 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import { Divider  } from "react-native-elements";
 import { iOSUIKit } from 'react-native-typography';
 
+
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
 import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
-import { QuizListItem         } from 'app/src/components/QuizListItem';
 import { ButtonGradient       } from 'app/src/components/ButtonGradient';
+import { QuizListItem         } from 'app/src/components/QuizListItem';
 import { REASectionList       } from 'app/src/components/ReanimatedComps';
 
 import * as Colors  from 'app/src/constants/Colors';
@@ -27,6 +28,19 @@ import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
 import { ModalController } from 'app/src/functions/ModalController';
 import { QuizModel, QuizKeys } from '../models/QuizModel';
 
+
+const TextConstants = {
+  // LargeTitleHeaderCard textBody
+  HeaderBody: Helpers.sizeSelectSimple({
+    normal: 'Quizes are a collection of sections, which in turn, holds related questions together.',
+    large : 'Quizes are a collection of different sections, which in turn, holds several related questions that are grouped together.',
+  }),
+  // ListCardEmpty subtitle
+  EmptyText: Helpers.sizeSelectSimple({
+    normal: "This place is looking a bit sparse. Add a new section to get things started!",
+    large : "This place is looking a bit sparse, don't you think? Go and add a new section to get things started!",
+  }),
+};
 
 class QuizDetails extends React.Component {
   static styles = StyleSheet.create({
@@ -174,9 +188,9 @@ export class CreateQuizScreen extends React.Component {
   constructor(props){
     super(props);
 
-    this.quiz = new QuizModel();
-
     const { params } = props.navigation.state;
+
+    this.quiz = new QuizModel();
     
     // save passed nav params from prev. screen to model
     this.quiz.title = params[SNPCreateQuiz.quizTitle];
@@ -219,7 +233,7 @@ export class CreateQuizScreen extends React.Component {
   };
 
   //todo
-  //#region - event handlers / callbacks
+  // #region - event handlers / callbacks
   _handleKeyExtractor = (quiz, index) => {
     return quiz[QuizKeys.quizID];
   };
@@ -232,8 +246,7 @@ export class CreateQuizScreen extends React.Component {
   };
   //#endregion
 
-  //todo - active
-  //#region - render functions
+  // #region - render functions
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
     const { styles } = CreateQuizScreen;
@@ -246,18 +259,6 @@ export class CreateQuizScreen extends React.Component {
     const sections  = this.state[QuizKeys.quizSections];
     const itemCount = sections?.length ?? 0;
 
-    // LargeTitleHeaderCard textBody
-    const textBody = Helpers.sizeSelectSimple({
-      normal: 'Quizes are a collection of sections, which in turn, holds related questions together.',
-      large : 'Quizes are a collection of different sections, which in turn, holds several related questions that are grouped together.',
-    });
-
-    // ListCardEmpty subtitle
-    const subtitle = Helpers.sizeSelectSimple({
-      normal: "This place is looking a bit sparse. Add a new section to get things started!",
-      large : "This place is looking a bit sparse, don't you think? Go and add a new section to get things started!",
-    });
-
     return(
       <Fragment>
         <LargeTitleHeaderCard
@@ -265,7 +266,8 @@ export class CreateQuizScreen extends React.Component {
           isTitleAnimated={true}
           addShadow={true}
           textTitle={'Create A New Quiz'}
-          {...{scrollY, inputRange, textBody}}
+          textBody={TextConstants.HeaderBody}
+          {...{scrollY, inputRange}}
         >
           <Divider style={styles.divider}/>
           <QuizDetails
@@ -292,10 +294,30 @@ export class CreateQuizScreen extends React.Component {
         </LargeTitleHeaderCard>
         {(itemCount == 0) && (
           <ListCardEmpty
+            containerStyle={{ paddingBottom: 5 }}
             imageSource={require('app/assets/icons/e-pen-paper-stack.png')}
             title={"No sections to show"}
-            {...{subtitle}}
-          />
+            subtitle={TextConstants.EmptyText}
+          >
+            <ButtonGradient
+              containerStyle={styles.headerButton}
+              bgColor={Colors.BLUE.A400}
+              alignment={'CENTER'}
+              title={'Add New Section'}
+              onPress={this._handleOnPressEditQuiz}
+              iconDistance={10}
+              isBgGradient={false}
+              addShadow={false}
+              showIcon={true}
+              leftIcon={(
+                <Ionicon
+                  name={'ios-add-circle'}
+                  color={'white'}
+                  size={25}
+                />
+              )}
+            />
+          </ListCardEmpty>
         )}
       </Fragment>
     );

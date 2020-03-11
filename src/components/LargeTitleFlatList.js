@@ -264,12 +264,13 @@ export class LargeTitleWithSnap extends React.PureComponent {
   componentDidMount = async () => {
     this.setState({enableSnap: true});
 
-    await Helpers.timeout(100);
+    await Helpers.timeout(250);
 
     const node = this.sectionListRef.getNode();
     node && node.scrollToLocation({
       itemIndex: 0,
       sectionIndex: 0,
+      viewOffset: 1000,
       viewPosition: 0,
       animated: false,
     });
@@ -471,7 +472,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
       snapToStart: true,
       //adjust insets + offsets
       scrollIndicatorInsets: {
-        top   : NAVBAR_LARGE + 20,
+        top   : NAVBAR_LARGE + 10,
         bottom: TB_HEIGHT_ADJ + EXTRA_HEIGHT,
       },
       //get and store ref to this comp
