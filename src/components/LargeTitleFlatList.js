@@ -417,10 +417,15 @@ export class LargeTitleWithSnap extends React.PureComponent {
   };
 
   _renderListFooter = () => {
+    const { renderFooter } = this.props;
+
     return(
-      <ListFooterIcon
-        ref={r => this.listFooterIconRef = r}
-      />
+      <Fragment>
+        {renderFooter && renderFooter()}
+        <ListFooterIcon
+          ref={r => this.listFooterIconRef = r}
+        />
+      </Fragment>
     );
   };
 
