@@ -7,6 +7,7 @@ export const QuizKeys = {
   quizID           : 'quizID'           ,
   quizTitle        : 'quizTitle'        ,
   quizDesc         : 'quizDesc'         ,
+  quizSections     : 'quizSections'     ,
   quizTimesTaken   : 'quizTimesTaken'   ,
   quizDateCreated  : 'quizDateCreated'  ,
   quizDateLastTaken: 'quizDateLastTaken',
@@ -18,10 +19,12 @@ export const QuizKeys = {
 const defaultValues = IS_DEBUG && createObjectFromKeys(QuizKeys);
 
 export class QuizModel {
+  // default values
   static stucture = {
     quizID           : '',
     quizTitle        : '',
     quizDesc         : '',
+    quizSections     : [],
     quizTimesTaken   : 0 ,
     quizDateCreated  : 0 ,
     quizDateLastTaken: 0 ,
@@ -37,5 +40,28 @@ export class QuizModel {
       // pass down object
       ...(object ?? {}),
     });
+  };
+
+  constructor(values = {}){
+    this.values = {
+      ...QuizModel.stucture,
+      ...values,
+    };
+  };
+
+  set title(title = ''){
+    this.values[QuizKeys.quizTitle] = title;
+  };
+
+  set desc(desc = ''){
+    this.values[QuizKeys.quizTitle] = desc;
+  };
+
+  setDateCreated(){
+    // get timestamp today
+    const date = new Date();
+    const ts   = date.getTime();
+
+    this.values[QuizKeys.quizDateCreated] = ts;
   };
 };

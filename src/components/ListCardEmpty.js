@@ -10,23 +10,29 @@ import { ListCard } from 'app/src/components/ListCard';
 
 export class ListCardEmpty extends React.Component {
   static propTypes = {
-    imageSource: PropTypes.object,
     title      : PropTypes.string,
     subtitle   : PropTypes.string,
+    imageSource: PropTypes.number,
+    imageSize  : PropTypes.number,
+  };
+
+  static defaultProps = {
+    imageSize: 77,
   };
 
   static styles = StyleSheet.create({
     rootContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      paddingHorizontal: 13,
     },
     image: {
       width: 85,
-      height: 85,
+      aspectRatio: 1,
     },
     textContainer: {
       flex: 1,
-      marginLeft: 10,
+      marginLeft: 15,
       paddingVertical: 5,
     },
     textTitle: {
@@ -45,27 +51,38 @@ export class ListCardEmpty extends React.Component {
     const { styles } = ListCardEmpty;
     const props = this.props;
 
+    const imageStyle = {
+      width: props.imageSize,
+    };
+
     return(
-      <ListCard style={styles.rootContainer}>
-        <Animatable.Image
-          style={styles.image}
-          source={props.imageSource}
-          animation={'pulse'}
-          duration={7000}
-          iterationCount={'infinite'}
-          iterationDelay={1500}
-          delay={1000}
-          useNativeDriver={true}
-        />
-        <View style={styles.textContainer}>
-          <Text style={styles.textTitle}>
-            {props.title}
-          </Text>
-          <Text style={styles.textSubtitle}>
-            {props.subtitle}
-          </Text>
-        </View>
-      </ListCard>
+      <Animatable.View
+        animation={'fadeInUp'}
+        duration={300}
+        delay={750}
+        useNativeDriver={true}
+      >
+        <ListCard style={styles.rootContainer}>
+          <Animatable.Image
+            style={[styles.image, imageStyle]}
+            source={props.imageSource}
+            animation={'pulse'}
+            duration={7000}
+            iterationCount={'infinite'}
+            iterationDelay={1500}
+            delay={1000}
+            useNativeDriver={true}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>
+              {props.title}
+            </Text>
+            <Text style={styles.textSubtitle}>
+              {props.subtitle}
+            </Text>
+          </View>
+        </ListCard>
+      </Animatable.View>
     );
   };
 };

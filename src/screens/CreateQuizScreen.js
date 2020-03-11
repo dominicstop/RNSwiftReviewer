@@ -25,6 +25,7 @@ import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
 
 import { ModalController } from 'app/src/functions/ModalController';
+import { QuizModel, QuizKeys } from '../models/QuizModel';
 
 
 class QuizDetails extends React.Component {
@@ -173,16 +174,23 @@ export class CreateQuizScreen extends React.Component {
   constructor(props){
     super(props);
 
-    const { params } = props.navigation.state;
+    this.quiz = new QuizModel();
 
-    const quizTitle = params[SNPCreateQuiz.quizTitle];
-    const quizDesc  = params[SNPCreateQuiz.quizDesc ];
+    const { params } = props.navigation.state;
+    
+    // save passed nav params from prev. screen to model
+    this.quiz.title = params[SNPCreateQuiz.quizTitle];
+    this.quiz.desc  = params[SNPCreateQuiz.quizDesc ];
+
+    // init date created
+    this.quiz.setDateCreated();
 
     this.state = {
-      quizTitle, quizDesc,
       scrollEnabled: true,
       isAsc: false,
       sortIndex: 0,
+      // pass down def. values from quizes
+      ...this.quiz.values,
     };
   };
 
@@ -229,62 +237,64 @@ export class CreateQuizScreen extends React.Component {
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
     const { styles } = CreateQuizScreen;
-    const { quizTitle, quizDesc } = this.state;
+    
+    // get quiz title/desc from state
+    const quizTitle = this.state[QuizKeys.quizTitle] ?? 'Title N/A';
+    const quizDesc  = this.state[QuizKeys.quizDesc ] ?? 'No Description to show.';
+    
+    // get section item count
+    const sections  = this.state[QuizKeys.quizSections];
+    const itemCount = sections?.length ?? 0;
 
+    // LargeTitleHeaderCard textBody
     const textBody = Helpers.sizeSelectSimple({
       normal: 'Quizes are a collection of sections, which in turn, holds related questions together.',
       large : 'Quizes are a collection of different sections, which in turn, holds several related questions that are grouped together.',
     });
 
-    return(
-      <LargeTitleHeaderCard
-        imageSource={require('app/assets/icons/lbw-book-tent.png')}
-        isTitleAnimated={true}
-        addShadow={true}
-        textTitle={'Create A New Quiz'}
-        {...{scrollY, inputRange, textBody}}
-      >
-        <Divider style={styles.divider}/>
-        <QuizDetails
-          {...{quizTitle, quizDesc}}
-        />
-        <ButtonGradient
-          containerStyle={styles.headerButton}
-          title={'Edit Quiz Details'}
-          subtitle={'Modify the quiz title and description'}
-          onPress={this._handleOnPressEditQuiz}
-          iconType={'ionicon'}
-          iconDistance={10}
-          isBgGradient={true}
-          showChevron={true}
-          showIcon={true}
-          leftIcon={(
-            <Ionicon
-              name={'ios-create'}
-              color={'white'}
-              size={27}
-            />
-          )}
-        />
-      </LargeTitleHeaderCard>
-    );
-  };
-
-  //todo
-  // item count + sort buttons
-  _renderSectionHeader = ({ section }) => {
-    //const { quizes, sortIndex, isAsc: isAscending } = this.state;
-
-    return;
+    // ListCardEmpty subtitle
+    const subtitle = Helpers.sizeSelectSimple({
+      normal: "This place is looking a bit sparse. Add a new section to get things started!",
+      large : "This place is looking a bit sparse, don't you think? Go and add a new section to get things started!",
+    });
 
     return(
       <Fragment>
-
+        <LargeTitleHeaderCard
+          imageSource={require('app/assets/icons/lbw-book-tent.png')}
+          isTitleAnimated={true}
+          addShadow={true}
+          textTitle={'Create A New Quiz'}
+          {...{scrollY, inputRange, textBody}}
+        >
+          <Divider style={styles.divider}/>
+          <QuizDetails
+            {...{quizTitle, quizDesc}}
+          />
+          <ButtonGradient
+            containerStyle={styles.headerButton}
+            title={'Edit Quiz Details'}
+            subtitle={'Modify the quiz title and description'}
+            onPress={this._handleOnPressEditQuiz}
+            iconType={'ionicon'}
+            iconDistance={10}
+            isBgGradient={true}
+            showChevron={true}
+            showIcon={true}
+            leftIcon={(
+              <Ionicon
+                name={'ios-create'}
+                color={'white'}
+                size={27}
+              />
+            )}
+          />
+        </LargeTitleHeaderCard>
         {(itemCount == 0) && (
           <ListCardEmpty
-            imageSource={require('app/assets/icons/pencil_sky.png')}
-            title={"No quizes to show"}
-            subtitle={"Oops, looks like this place is empty! To get started, press the create quiz button to add something here."}
+            imageSource={require('app/assets/icons/e-pen-paper-stack.png')}
+            title={"No sections to show"}
+            {...{subtitle}}
           />
         )}
       </Fragment>
@@ -324,11 +334,6 @@ export class CreateQuizScreen extends React.Component {
     const { styles } = CreateQuizScreen;
     const { scrollEnabled } = this.state;
 
-    const { navigation } = this.props;
-    const { params } = navigation.state;
-
-    const quizTitle = params[SNPCreateQuiz.quizTitle];
-
     const itemCount = 0;
     const itemSize  = 200;
 
@@ -347,7 +352,6 @@ export class CreateQuizScreen extends React.Component {
           <REASectionList
             ref={r => this.sectionList = r}
             sections={[{ data: [] }]}
-            renderSectionHeader={this._renderSectionHeader}
             keyExtractor={this._handleKeyExtractor}
             renderItem={this._renderItem}
             contentOffset={{y: -100}}
