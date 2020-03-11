@@ -8,6 +8,7 @@
 - [ ] Record header height + Add snap to offset for header
 - [ ] CreateQuizModal: replace input icons
 - [ ] Refactor: rename ListCardEmpty to ListCardImageTitleBody
+- [ ] Bugfix: Dark Apperance affects blur views
 
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar

@@ -98,7 +98,8 @@ export class ModalHeader extends React.Component {
       <View style={styles.rootContainer}>
         <BlurView
           style={styles.blurBackground}
-          blurType={'regular'}
+          blurAmount={50}
+          blurType={'light'}
         />
         <View style={styles.headerWrapper}>
           <Animatable.View 

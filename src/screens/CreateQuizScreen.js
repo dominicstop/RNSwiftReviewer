@@ -66,6 +66,33 @@ export class CreateQuizScreen extends React.Component {
     };
   };
 
+  _handleOnEditModalClose = ({title, desc}) => {
+    this.setState({
+      quizTitle: title,
+      quizDesc : desc,
+    });
+  };
+
+  _handleOnPressEditQuiz = () => {
+    const { navigation } = this.props;
+
+    // get quiz title/desc from state
+    const quizTitle = this.state[QuizKeys.quizTitle];
+    const quizDesc  = this.state[QuizKeys.quizDesc ];
+    
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalCreateQuiz,
+      navProps: {
+        [MNPCreateQuiz.navigation]: navigation,
+        [MNPCreateQuiz.isEditing ]: true     ,
+        [MNPCreateQuiz.quizTitle ]: quizTitle,
+        [MNPCreateQuiz.quizDesc  ]: quizDesc ,
+        //modal close event
+        [MNPCreateQuiz.onModalClose]: this._handleOnEditModalClose,
+      },
+    });
+  };
+
   _handleOnPressAddSection = () => {
     this.footerRef.setVisibilty(true);
 
@@ -94,17 +121,18 @@ export class CreateQuizScreen extends React.Component {
     // get quiz title/desc from state
     const quizTitle = state[QuizKeys.quizTitle] ?? 'Title N/A';
     const quizDesc  = state[QuizKeys.quizDesc ] ?? 'No Description to show.';
-    
+
     // get section item count
-    const sections  = state[QuizKeys.quizSections];
-    const itemCount = sections?.length ?? 0;
+    const sections       = state[QuizKeys.quizSections];
+    const countSection   = sections?.length ?? 0;
+    const countQuestions = 0;
 
     return(
       <CreateQuizListHeader
         onPressEditQuiz={this._handleOnPressEditQuiz}
         onPressAddSection={this._handleOnPressAddSection}
         // pass down as props
-        {...{quizTitle, quizDesc, itemCount}}
+        {...{quizTitle, quizDesc, countSection, countQuestions}}
         // pass down LargeTitleWithSnap params
         {...{scrollY, inputRange}}
       />

@@ -54,7 +54,7 @@ export class QuizModel {
   };
 
   set desc(desc = ''){
-    this.values[QuizKeys.quizTitle] = desc;
+    this.values[QuizKeys.quizDesc] = desc;
   };
 
   setDateCreated(){

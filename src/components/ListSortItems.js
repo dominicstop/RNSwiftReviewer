@@ -164,7 +164,7 @@ class ListSortItem extends React.Component {
                 style={{ marginTop: 2 }}
                 name={(props.isAscending? 'md-arrow-up' : 'md-arrow-down')}
                 type={'feather'}
-                color={BLUE[800]}
+                color={BLUE['A700']}
                 size={20}
               />
             </Animatable.View>
@@ -204,11 +204,11 @@ export class ListSortItems extends React.Component {
       paddingHorizontal: 12,
       paddingVertical: 4,
       borderRadius: 15,
-      backgroundColor: BLUE.A100
+      backgroundColor: BLUE[100]
     },
     closeButtonText: {
       ...iOSUIKit.subheadEmphasized,
-      color: BLUE[900],
+      color: BLUE['A700'],
       fontWeight: '900',
     },
     //#endregion

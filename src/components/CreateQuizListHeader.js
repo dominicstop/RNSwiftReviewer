@@ -70,7 +70,7 @@ class QuizDetails extends React.Component {
       marginLeft: 5,
       fontSize: 20,
       fontWeight: '800',
-      color: Colors.BLUE['900'],
+      color: Colors.BLUE['A700'],
     },
     textLabel: {
       ...iOSUIKit.bodyEmphasizedObject,
@@ -85,7 +85,7 @@ class QuizDetails extends React.Component {
 
   render(){
     const { styles } = QuizDetails;
-    const props = this.props;
+    const { countSection, countQuestions, ...props } = this.props;
 
     const StatsComp = (
       <View style={styles.detailsContainer}>
@@ -101,7 +101,7 @@ class QuizDetails extends React.Component {
               style={styles.textDetail}
               numberOfLines={1}
             >
-              {`0 Items`}
+              {`${countSection} ${Helpers.plural('item', countSection)}`}
             </Text>
           </View>
         </View>
@@ -117,7 +117,7 @@ class QuizDetails extends React.Component {
               style={styles.textDetail}
               numberOfLines={1}
             >
-              {`0 Items`}
+              {`${countQuestions} ${Helpers.plural('item', countQuestions)}`}
             </Text>
           </View>
         </View>
@@ -153,9 +153,13 @@ class QuizDetails extends React.Component {
 
 export class CreateQuizListHeader extends React.Component {
   static propTypes = {
-    itemCount : PropTypes.number,
     scrollY   : PropTypes.object,
     inputRange: PropTypes.array ,
+    // quiz data
+    quizTitle     : PropTypes.string,
+    quizDesc      : PropTypes.string,
+    countSection  : PropTypes.number,
+    countQuestions: PropTypes.number,
     //event handlers
     onPressEditQuiz  : PropTypes.func,
     onPressAddSection: PropTypes.func,
@@ -194,7 +198,7 @@ export class CreateQuizListHeader extends React.Component {
           <ButtonGradient
             containerStyle={styles.sectionButton}
             bgColor={Colors.BLUE[100]}
-            fgColor={Colors.BLUE[800]}
+            fgColor={Colors.BLUE['A700']}
             alignment={'CENTER'}
             title={'Add New Section'}
             onPress={props.onPressAddSection}
@@ -227,8 +231,11 @@ export class CreateQuizListHeader extends React.Component {
         >
           <Divider style={styles.divider}/>
           <QuizDetails
-            quizTitle={props.quizTitle}
-            quizDesc ={props.quizDesc }
+            // pass down props 
+            quizTitle     ={props.quizTitle     }
+            quizDesc      ={props.quizDesc      }
+            countSection  ={props.countSection  }
+            countQuestions={props.countQuestions}
           />
           <ButtonGradient
             containerStyle={styles.headerButton}
@@ -249,7 +256,7 @@ export class CreateQuizListHeader extends React.Component {
             )}
           />
         </LargeTitleHeaderCard>
-        {(props.itemCount == 0) && EmptyCard}
+        {(props.countSection == 0) && EmptyCard}
       </Fragment>
     );
   };

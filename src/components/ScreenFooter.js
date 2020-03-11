@@ -1,14 +1,9 @@
 import React, { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
 
-import { VibrancyView } from "@react-native-community/blur";
-
-import * as Colors  from 'app/src/constants/Colors';
-import * as Helpers from 'app/src/functions/helpers';
+import { BlurView } from "@react-native-community/blur";
 
 import { INSET_BOTTOM } from 'app/src/constants/UIValues';
 
@@ -31,7 +26,7 @@ const styles = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
-    opacity: 0.75,
+    opacity: 0.6,
   },
 });
 
@@ -68,7 +63,7 @@ export class ScreenFooter extends React.Component {
         duration={1250}
         useNativeDriver={true}
       >
-        <VibrancyView
+        <BlurView
           style={styles.blurBackground}
           blurType={"light"}
           intensity={100}
