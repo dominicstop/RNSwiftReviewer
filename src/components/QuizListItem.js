@@ -8,12 +8,13 @@ import { iOSUIKit         } from 'react-native-typography';
 import { Divider          } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
 
-import { ListCard } from 'app/src/components/ListCard';
+import { ListCard      } from 'app/src/components/ListCard';
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
-import { GREY, BLUE, INDIGO } from 'app/src/constants/Colors';
+
 import { QuizKeys } from 'app/src/models/QuizModel';
-import { plural } from 'app/src/functions/helpers';
 
 
 class QuizListItemHeader extends React.Component {
@@ -41,15 +42,15 @@ class QuizListItemHeader extends React.Component {
     },
     textDateCreatedLabel: {
       ...iOSUIKit.subheadEmphasized,
-      color: GREY[900],
+      color: Colors.GREY[900],
     },
     textDateCreatedMiddle: {
       ...iOSUIKit.subheadObject,
-      color: GREY[800],
+      color: Colors.GREY[800],
     },
     textDateCreatedLast: {
       ...iOSUIKit.subheadObject,
-      color: GREY[600],
+      color: Colors.GREY[600],
       opacity: 0.75,
     },
   });
@@ -68,7 +69,7 @@ class QuizListItemHeader extends React.Component {
         <Feather
           name={'clock'}
           size={14}
-          color={GREY[800]}
+          color={Colors.GREY[800]}
         />
         <Text
           style={styles.textDateCreated}
@@ -135,7 +136,7 @@ class QuizListItemStats extends React.Component {
     },
     textDetail: {
       ...iOSUIKit.subheadObject,
-      color: GREY[800]
+      color: Colors.GREY[800]
     },
   });
 
@@ -164,7 +165,7 @@ class QuizListItemStats extends React.Component {
               style={styles.textDetail}
               numberOfLines={1}
             >
-              {`${timesTaken} ${plural('time', timesTaken)}`}
+              {`${timesTaken} ${Helpers.plural('time', timesTaken)}`}
             </Text>
           </View>
           <View style={styles.rowContainer}>
@@ -194,7 +195,7 @@ class QuizListItemStats extends React.Component {
               style={styles.textDetail}
               numberOfLines={1}
             >
-              {`${sectionCount} ${plural('item', sectionCount)}`}
+              {`${sectionCount} ${Helpers.plural('item', sectionCount)}`}
             </Text>
           </View>
           <View style={styles.rowContainer}>
@@ -208,7 +209,7 @@ class QuizListItemStats extends React.Component {
               style={styles.textDetail}
               numberOfLines={1}
             >
-              {`${questionCount} ${plural('item', questionCount)}`}
+              {`${questionCount} ${Helpers.plural('item', questionCount)}`}
             </Text>
           </View>
         </View>
@@ -227,11 +228,11 @@ export class QuizListItem extends React.Component {
   static styles = StyleSheet.create({
     textDescription: {
       ...iOSUIKit.bodyObject,
-      color: GREY[800],
+      color: Colors.GREY[800],
     },
     textDescriptionLabel: {
       ...iOSUIKit.bodyEmphasizedObject,
-      color: GREY[900]
+      color: Colors.GREY[900]
     },
     divider: {
       margin: 10,

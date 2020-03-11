@@ -14,6 +14,7 @@ import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
 import { ButtonGradient       } from 'app/src/components/ButtonGradient';
 import { REASectionList       } from 'app/src/components/ReanimatedComps';
 import { ScreenFooter         } from 'app/src/components/ScreenFooter';
+import { CreateQuizListItem   } from 'app/src/components/CreateQuizListItem';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -209,6 +210,9 @@ export class CreateQuizScreen extends React.Component {
 
   _handleOnPressAddSection = () => {
     this.footerRef.setVisibilty(true);
+
+    this.quiz.addSection({});
+    this.setState({ ...this.quiz.values });
   };
 
   //todo
@@ -218,10 +222,10 @@ export class CreateQuizScreen extends React.Component {
   };
 
   //todo
-  _handleOnPressQuizItem = ({quiz, index}) => {
-    ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalViewQuiz
-    });
+  _handleOnPressSectionItem = ({section, index}) => {
+    //ModalController.showModal({
+    //  routeName: RNN_ROUTES.RNNModalViewQuiz
+    //});
   };
   //#endregion
 
@@ -325,19 +329,22 @@ export class CreateQuizScreen extends React.Component {
     );
   };
 
-  //todo
-  _renderItem = ({item: quiz, index}) => {
+  //todo - active
+  _renderItem = ({item: section, index}) => {
     return (
-      null
+      <CreateQuizListItem
+        onPressSectionItem={this._handleOnPressSectionItem}
+        {...{section, index}}
+      />
     );
   };
 
   render() {
     const { styles } = CreateQuizScreen;
-    const { scrollEnabled } = this.state;
+    const { scrollEnabled, ...state } = this.state;
 
-    const itemCount = 0;
-    const itemSize  = 200;
+    const sections  = state[QuizKeys.quizSections] ?? [];
+    const itemCount = state[QuizKeys.quizSectionCount];
 
     return (
       <View style={styles.rootContainer}>
@@ -346,14 +353,15 @@ export class CreateQuizScreen extends React.Component {
           titleText={'Create Quiz'}
           subtitleText={"Create a new quiz reviewer"}
           showSubtitle={true}
+          itemSize={200}
           //render handlers
           renderHeader={this._renderListHeader}
           renderTitleIcon={this._renderTitleIcon}
-          {...{itemCount, itemSize}}
+          {...{itemCount}}
         >
           <REASectionList
             ref={r => this.sectionList = r}
-            sections={[{ data: [] }]}
+            sections={[{ data: sections }]}
             keyExtractor={this._handleKeyExtractor}
             renderItem={this._renderItem}
             contentOffset={{y: -100}}

@@ -51,7 +51,7 @@ export class ScreenFooter extends React.Component {
     if(didChange && isVisible){
       this.setState({  mount: true });
       await Helpers.timeout(300);
-      await this.rootContainerRef.pulse(300);
+      await this.rootContainerRef.pulse(500);
       
     } else if(didChange && !isVisible){
       await this.rootContainerRef.slideInDown(300);

@@ -64,4 +64,12 @@ export class QuizModel {
 
     this.values[QuizKeys.quizDateCreated] = ts;
   };
+
+  addSection(section = {}){
+    const oldSections = this.values[QuizKeys.quizSections];
+    const newSections = [ ...oldSections,  section ];
+
+    this.values[QuizKeys.quizSections    ] = newSections;
+    this.values[QuizKeys.quizSectionCount] = newSections?.length ?? 0;
+  };
 };
