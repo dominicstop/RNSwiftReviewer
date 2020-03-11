@@ -2,25 +2,17 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, SectionList, Image, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
-
-import { Divider  } from "react-native-elements";
-import { iOSUIKit } from 'react-native-typography';
-
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
-import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
-import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
 import { QuizListItem         } from 'app/src/components/QuizListItem';
-import { ButtonGradient       } from 'app/src/components/ButtonGradient';
+import { QuizListHeader       } from 'app/src/components/QuizListHeader';
 import { REASectionList       } from 'app/src/components/ReanimatedComps';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
-import { GREY } from 'app/src/constants/Colors';
 
 import { HeaderValues  } from 'app/src/constants/HeaderValues';
 import { TestDataQuiz  } from 'app/src/constants/TestData';
@@ -40,14 +32,6 @@ export class QuizListScreen extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
-    },
-    divider: {
-      marginTop: 15,
-      marginHorizontal: 15,
-    },
-    headerButton: {
-      marginTop: 10,
-      marginBottom: 10
     },
   });
 
@@ -168,44 +152,12 @@ export class QuizListScreen extends React.Component {
     const { quizes } = this.state;
 
     const itemCount = quizes.length ?? 0;
-    const addShadow = (itemCount == 0);
 
     return(
-      <Fragment>
-        <LargeTitleHeaderCard
-          imageSource={require('app/assets/icons/circle_paper_pencil.png')}
-          isTitleAnimated={true}
-          textTitle={'Your Quizes'}
-          {...{scrollY, inputRange, addShadow}}
-        >
-          <Divider style={styles.divider}/>
-          <ButtonGradient
-            containerStyle={styles.headerButton}
-            title={'Create Quiz'}
-            subtitle={'Create a new quiz item'}
-            onPress={this._handleOnPressCreateQuiz}
-            iconType={'ionicon'}
-            iconDistance={10}
-            isBgGradient={true}
-            showChevron={true}
-            showIcon={true}
-            leftIcon={(
-              <Ionicon
-                name={'ios-add-circle'}
-                color={'white'}
-                size={22}
-              />
-            )}
-          />
-        </LargeTitleHeaderCard>
-        {(itemCount == 0) && (
-          <ListCardEmpty
-            imageSource={require('app/assets/icons/pencil_sky.png')}
-            title={"No quizes to show"}
-            subtitle={"Oops, looks like this place is empty! To get started, press the create quiz button to add something here."}
-          />
-        )}
-      </Fragment>
+      <QuizListHeader
+        onPressCreateQuiz={this._handleOnPressCreateQuiz}
+        {...{scrollY, inputRange, itemCount}}
+      />
     );
   };
 
