@@ -15,7 +15,7 @@ export class QuizListHeader extends React.Component {
   static propTypes = {
     itemCount : PropTypes.number,
     scrollY   : PropTypes.object,
-    inputRange: PropTypes.object,
+    inputRange: PropTypes.array ,
     // events
     onPressCreateQuiz: PropTypes.func,
   };
