@@ -10,6 +10,7 @@ import { REASectionList       } from 'app/src/components/ReanimatedComps';
 import { ScreenFooter         } from 'app/src/components/ScreenFooter';
 import { CreateQuizListItem   } from 'app/src/components/CreateQuizListItem';
 import { CreateQuizListHeader } from 'app/src/components/CreateQuizListHeader';
+import { CreateQuizListFooter } from 'app/src/components/CreateQuizListFooter';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -32,10 +33,6 @@ export class CreateQuizScreen extends React.Component {
     divider: {
       marginTop: 15,
       marginHorizontal: 15,
-    },
-    headerButton: {
-      marginTop: 10,
-      marginBottom: 10
     },
   });
 
@@ -92,13 +89,14 @@ export class CreateQuizScreen extends React.Component {
 
   // #region - render functions
   _renderListHeader = ({scrollY, inputRange}) => {
+    const state = this.state;
 
     // get quiz title/desc from state
-    const quizTitle = this.state[QuizKeys.quizTitle] ?? 'Title N/A';
-    const quizDesc  = this.state[QuizKeys.quizDesc ] ?? 'No Description to show.';
+    const quizTitle = state[QuizKeys.quizTitle] ?? 'Title N/A';
+    const quizDesc  = state[QuizKeys.quizDesc ] ?? 'No Description to show.';
     
     // get section item count
-    const sections  = this.state[QuizKeys.quizSections];
+    const sections  = state[QuizKeys.quizSections];
     const itemCount = sections?.length ?? 0;
 
     return(
@@ -115,7 +113,19 @@ export class CreateQuizScreen extends React.Component {
 
   // section list footer card
   _renderListFooter = () => {
+    const state = this.state;
 
+    // get section item count
+    const sections  = state[QuizKeys.quizSections];
+    const itemCount = sections?.length ?? 0;
+
+    if(itemCount == 0) return;
+
+    return(
+      <CreateQuizListFooter
+        onPressAddSection={this._handleOnPressAddSection}
+      />
+    );
   };
   
   // receives params from LargeTitleWithSnap comp
@@ -182,7 +192,6 @@ export class CreateQuizScreen extends React.Component {
         </LargeTitleWithSnap>
         <ScreenFooter ref={r => this.footerRef = r}>
           <ButtonGradient
-            containerStyle={styles.headerButton}
             title={'Finish Quiz'}
             subtitle={'Create and save the current quiz'}
             onPress={this._handleOnPressDone}

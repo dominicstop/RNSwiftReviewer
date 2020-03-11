@@ -58,36 +58,29 @@ export class ListCardEmpty extends React.Component {
     };
 
     return(
-      <Animatable.View
-        animation={'fadeInUp'}
-        duration={300}
-        delay={750}
-        useNativeDriver={true}
-      >
-        <ListCard style={[styles.rootContainer, props.containerStyle]}>
-          <View style={styles.imageTextContainer}>
-            <Animatable.Image
-              style={[styles.image, imageStyle]}
-              source={props.imageSource}
-              animation={'pulse'}
-              duration={7000}
-              iterationCount={'infinite'}
-              iterationDelay={1500}
-              delay={1000}
-              useNativeDriver={true}
-            />
-            <View style={styles.textContainer}>
-              <Text style={styles.textTitle}>
-                {props.title}
-              </Text>
-              <Text style={styles.textSubtitle}>
-                {props.subtitle}
-              </Text>
-            </View>
+      <ListCard style={[styles.rootContainer, props.containerStyle]}>
+        <View style={styles.imageTextContainer}>
+          <Animatable.Image
+            style={[styles.image, imageStyle]}
+            source={props.imageSource}
+            animation={'pulse'}
+            duration={7000}
+            iterationCount={'infinite'}
+            iterationDelay={1500}
+            delay={1000}
+            useNativeDriver={true}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>
+              {props.title}
+            </Text>
+            <Text style={styles.textSubtitle}>
+              {props.subtitle}
+            </Text>
           </View>
-          {this.props.children}
-        </ListCard>
-      </Animatable.View>
+        </View>
+        {this.props.children}
+      </ListCard>
     );
   };
 };

@@ -2,10 +2,12 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import * as Animatable from 'react-native-animatable';
+
 import   Ionicon    from '@expo/vector-icons/Ionicons';
 import { iOSUIKit } from 'react-native-typography';
 
-import { Divider  } from "react-native-elements";
+import { Divider } from "react-native-elements";
 
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
@@ -165,8 +167,10 @@ export class CreateQuizListHeader extends React.Component {
       marginHorizontal: 15,
     },
     headerButton: {
-      marginTop: 10,
-      marginBottom: 5,
+      marginVertical: 12,
+    },
+    sectionButton: {
+      marginBottom: 0,
     },
   });
 
@@ -175,31 +179,39 @@ export class CreateQuizListHeader extends React.Component {
     const props = this.props;
 
     const EmptyCard = (
-      <ListCardEmpty
-        imageSource={require('app/assets/icons/e-pen-paper-stack.png')}
-        title={"No sections to show"}
-        subtitle={TextConstants.EmptyText}
+      <Animatable.View
+        animation={'fadeInUp'}
+        duration={300}
+        delay={750}
+        useNativeDriver={true}
       >
-        <ButtonGradient
-          containerStyle={styles.headerButton}
-          bgColor={Colors.BLUE[100]}
-          fgColor={Colors.BLUE[800]}
-          alignment={'CENTER'}
-          title={'Add New Section'}
-          onPress={props.onPressAddSection}
-          iconDistance={10}
-          isBgGradient={false}
-          addShadow={false}
-          showIcon={true}
-          leftIcon={(
-            <Ionicon
-              name={'ios-add-circle'}
-              color={Colors.BLUE['A700']}
-              size={25}
-            />
-          )}
-        />
-      </ListCardEmpty>
+        <ListCardEmpty
+          imageSource={require('app/assets/icons/e-pen-paper-stack.png')}
+          title={"No sections to show"}
+          subtitle={TextConstants.EmptyText}
+        >
+          <Divider style={styles.divider}/>
+          <ButtonGradient
+            containerStyle={styles.sectionButton}
+            bgColor={Colors.BLUE[100]}
+            fgColor={Colors.BLUE[800]}
+            alignment={'CENTER'}
+            title={'Add New Section'}
+            onPress={props.onPressAddSection}
+            iconDistance={10}
+            isBgGradient={false}
+            addShadow={false}
+            showIcon={true}
+            leftIcon={(
+              <Ionicon
+                name={'ios-add-circle'}
+                color={Colors.BLUE['A700']}
+                size={25}
+              />
+            )}
+          />
+        </ListCardEmpty>
+      </Animatable.View>
     );
 
     return(

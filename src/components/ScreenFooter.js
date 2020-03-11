@@ -10,7 +10,7 @@ import { VibrancyView } from "@react-native-community/blur";
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { TB_HEIGHT_ADJ, INSET_BOTTOM } from 'app/src/constants/UIValues';
+import { INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 
 const styles = StyleSheet.create({
@@ -50,8 +50,6 @@ export class ScreenFooter extends React.Component {
 
     if(didChange && isVisible){
       this.setState({  mount: true });
-      await Helpers.timeout(300);
-      await this.rootContainerRef.pulse(500);
       
     } else if(didChange && !isVisible){
       await this.rootContainerRef.slideInDown(300);
@@ -66,9 +64,8 @@ export class ScreenFooter extends React.Component {
       <Animatable.View
         style={styles.rootContainer}
         ref={r => this.rootContainerRef = r}
-        animation={'slideInUp'}
-        duration={300}
-        easing={'ease-in-out'}
+        animation={'bounceInUp'}
+        duration={1250}
         useNativeDriver={true}
       >
         <VibrancyView
