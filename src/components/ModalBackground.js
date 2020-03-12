@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
-
+import * as Animatable from 'react-native-animatable';
 import { VibrancyView, BlurView } from "@react-native-community/blur";
+
+import * as Helpers from 'app/src/functions/helpers';
+import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
 
 
 const styles = StyleSheet.create({
@@ -41,8 +43,22 @@ export class ModalBackground extends React.PureComponent {
     modalHeader: PropTypes.element,
   };
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      mount: false,
+    };
+  };
+
+  async componentDidMount(){
+    await Helpers.timeout(250);
+    this.setState({ mount: true });
+  };
+
   render(){
     const { modalHeader, modalFooter, overlay } = this.props;
+    const { mount } = this.state;
 
     return(
       <View style={styles.rootContainer}>
@@ -57,7 +73,15 @@ export class ModalBackground extends React.PureComponent {
             style={styles.scrollView}
             contentInset={{top: MODAL_HEADER_HEIGHT}}
           >
-            {this.props.children}
+            {mount && (
+              <Animatable.View
+                animation={'fadeInUp'}
+                duration={250}
+                useNativeDriver={true}
+              >
+                {this.props.children}  
+              </Animatable.View>
+            )}
           </ScrollView>
         </View>
         {modalHeader}

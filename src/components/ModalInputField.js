@@ -71,8 +71,11 @@ export class ModalInputField extends React.Component {
       alignItems: 'center',
     },
     textTitle: {
-      ...iOSUIKit.title3Object,
+      ...iOSUIKit.bodyObject,
+      fontSize: 20,
       marginLeft: 7,
+      textAlignVertical: 'center',
+      marginBottom: 1,
     },
     textSubtitle: {
       ...iOSUIKit.subheadObject,
@@ -130,7 +133,7 @@ export class ModalInputField extends React.Component {
 
     this._titleTransX = interpolate(this._progress, {
       inputRange : [0, 100],
-      outputRange: [0, 7],
+      outputRange: [0, 20],
     });
 
     this._titleTransY = interpolate(this._progress, {
@@ -266,16 +269,19 @@ export class ModalInputField extends React.Component {
       opacity: this._iconOpacityInactive,
     };
 
-    const textTitleStyle = {
-      fontWeight: concat(this._titleFontWeight, '00'),
+    const titleContainerStyle = {
       transform: [
         { scale     : this._titleScale  },
         { translateX: this._titleTransX },
         { translateY: this._titleTransY },
       ],
+    };
+
+    const textTitleStyle = {
+      fontWeight: concat(this._titleFontWeight, '00'),
       color: (
        (mode === MODES.BLURRED)? INDIGO[1100] :
-       (mode === MODES.FOCUSED)? INDIGO[1000] :
+       (mode === MODES.FOCUSED)? INDIGO[900] :
        (mode === MODES.INVALID)? RED   [900 ] : null
       ),
     };
@@ -296,9 +302,10 @@ export class ModalInputField extends React.Component {
 
     return(
       <Fragment>
-        <View style={styles.titleContainer}>
+        <Reanimated.View style={[styles.titleContainer, titleContainerStyle]}>
           <ListItemBadge
             value={props.index + 1}
+            size={18}
             color={(
               (mode === MODES.BLURRED)? INDIGO.A400 :
               (mode === MODES.FOCUSED)? INDIGO.A700 :
@@ -308,7 +315,7 @@ export class ModalInputField extends React.Component {
           <Reanimated.Text style={[styles.textTitle, textTitleStyle]}>
             {props.title}
           </Reanimated.Text>
-        </View>
+        </Reanimated.View>
         <Reanimated.Text style={[styles.textSubtitle, textSubtitleStyle]}>
           {props.subtitle}
         </Reanimated.Text>

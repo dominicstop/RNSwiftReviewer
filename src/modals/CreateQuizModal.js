@@ -132,6 +132,7 @@ export class CreateQuizModal extends React.Component {
     const { styles } = CreateQuizModal;
     const props = this.props;
 
+
     const isEditing = props[MNPCreateQuiz.isEditing];
 
     const overlayContainerStyle = {
@@ -227,13 +228,13 @@ export class CreateQuizModal extends React.Component {
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
               <SvgIcon
-                name={SVG_KEYS.BookFilled}
+                name={SVG_KEYS.ReceiptsFilled}
                 size={20}
               />
             )}
             iconInactive={(
               <SvgIcon
-                name={SVG_KEYS.BookOutlined}
+                name={SVG_KEYS.ReceiptsOutlined}
                 size={20}
               />
             )}
