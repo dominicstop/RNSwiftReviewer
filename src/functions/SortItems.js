@@ -1,5 +1,6 @@
-import { QuizKeys } from 'app/src/models/QuizModel';
+import { QuizKeys } from 'app/src/constants/PropKeys';
 import { SortTypesQuiz } from 'app/src/constants/SortValues';
+
 
 const SortKeyMapQuiz = {
   [SortTypesQuiz.TITLE  ]: QuizKeys.quizTitle        ,

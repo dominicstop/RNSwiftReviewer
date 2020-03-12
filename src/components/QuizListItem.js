@@ -14,7 +14,8 @@ import * as Helpers from 'app/src/functions/helpers';
 import { ListCard      } from 'app/src/components/ListCard';
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import { QuizKeys } from 'app/src/models/QuizModel';
+import { QuizKeys } from 'app/src/constants/PropKeys';
+
 
 
 class QuizListItemHeader extends React.Component {

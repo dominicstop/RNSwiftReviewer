@@ -20,9 +20,11 @@ import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
+import { QuizKeys } from 'app/src/constants/PropKeys';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { QuizModel, QuizKeys } from 'app/src/models/QuizModel';
+import { QuizModel } from 'app/src/models/QuizModel';
+
 
 
 export class CreateQuizScreen extends React.Component {

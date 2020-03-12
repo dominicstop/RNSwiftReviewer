@@ -1,22 +1,12 @@
+import * as Helpers from "app/src/functions/helpers";
+
 import { IS_DEBUG } from "app/src/constants/Options";
-import { createObjectFromKeys } from "app/src/functions/helpers";
+import { QuizKeys } from 'app/src/constants/PropKeys';
 
 
-// property names for quiz
-export const QuizKeys = {
-  quizID           : 'quizID'           ,
-  quizTitle        : 'quizTitle'        ,
-  quizDesc         : 'quizDesc'         ,
-  quizSections     : 'quizSections'     ,
-  quizTimesTaken   : 'quizTimesTaken'   ,
-  quizDateCreated  : 'quizDateCreated'  ,
-  quizDateLastTaken: 'quizDateLastTaken',
-  quizQuestionCount: 'quizQuestionCount',
-  quizSectionCount : 'quizSectionCount' ,
-};
 
 // create object with keys and ass. null values
-const defaultValues = IS_DEBUG && createObjectFromKeys(QuizKeys);
+const defaultValues = IS_DEBUG && Helpers.createObjectFromKeys(QuizKeys);
 
 export class QuizModel {
   // default values
@@ -65,9 +55,23 @@ export class QuizModel {
     this.values[QuizKeys.quizDateCreated] = ts;
   };
 
+  setQuizID(){
+    const quizTitle = this.values[QuizKeys.quizTitle];
+    const quizDesc  = this.values[QuizKeys.quizDesc];
+    const tsCreated = this.values[QuizKeys.quizDateCreated];
+
+    const hashCode = Helpers.stringHash(
+      (quizTitle + quizDesc)
+    );
+
+    this.values[QuizKeys.quizID] = (
+      `quiz-${tsCreated}-${hashCode}`
+    );
+  };
+
   addSection(section = {}){
     const oldSections = this.values[QuizKeys.quizSections];
-    const newSections = [ ...oldSections,  section ];
+    const newSections = [ ...oldSections, section ];
 
     this.values[QuizKeys.quizSections    ] = newSections;
     this.values[QuizKeys.quizSectionCount] = newSections?.length ?? 0;

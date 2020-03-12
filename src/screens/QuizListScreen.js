@@ -20,7 +20,7 @@ import { INSET_TOP     } from 'app/src/constants/UIValues';
 import { RNN_ROUTES    } from 'app/src/constants/Routes';
 import { MNPCreateQuiz } from 'app/src/constants/NavParams';
 
-import { QuizKeys } from 'app/src/models/QuizModel';
+import { QuizKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from 'app/src/functions/helpers';
 
