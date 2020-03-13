@@ -9,11 +9,11 @@ export const SNPCreateQuiz = {
 
 // CreateQuizModal open modal params
 export const MNPCreateQuiz = {
-  navigation  : 'navigation'  ,
-  isEditing   : 'isEditing'   ,
-  quizTitle   : 'quizTitle'   ,
-  quizDesc    : 'quizDesc'    ,
-  onModalClose: 'onModalClose',
+  navigation : 'navigation' ,
+  isEditing  : 'isEditing'  ,
+  quizTitle  : 'quizTitle'  ,
+  quizDesc   : 'quizDesc'   ,
+  onPressDone: 'onPressDone',
 };
 
 // CreateQuizAddSectionModal open modal params
@@ -23,6 +23,6 @@ export const MNPQuizAddSection = {
   sectionTitle: 'sectionTitle',
   sectionDesc : 'sectionDesc' ,
   sectionType : 'sectionType' ,
-  onModalClose: 'onModalClose',
+  onPressDone : 'onPressDone' ,
 };
 

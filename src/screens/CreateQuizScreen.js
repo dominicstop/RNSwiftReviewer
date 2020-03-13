@@ -81,7 +81,7 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
-  _handleOnAddSectionModalClose = () => {
+  _handleOnAddSectionPressDone = () => {
     this.footerRef.setVisibilty(true);
 
     const section = new QuizSectionModel();
@@ -111,8 +111,8 @@ export class CreateQuizScreen extends React.Component {
         [MNPCreateQuiz.isEditing ]: true     ,
         [MNPCreateQuiz.quizTitle ]: quizTitle,
         [MNPCreateQuiz.quizDesc  ]: quizDesc ,
-        //modal close event
-        [MNPCreateQuiz.onModalClose]: this._handleOnQuizEditModalClose,
+        //modal: attach onPress done/save event
+        [MNPCreateQuiz.onPressDone]: this._handleOnQuizEditModalClose,
       },
     });
   };
@@ -129,8 +129,8 @@ export class CreateQuizScreen extends React.Component {
         [MNPQuizAddSection.sectionTitle]: null ,
         [MNPQuizAddSection.sectionDesc ]: null ,
         [MNPQuizAddSection.sectionType ]: null ,
-        //attach modal close event
-        [MNPCreateQuiz.onModalClose]: this._handleOnAddSectionModalClose,
+        //modal: attach onPress done/save event
+        [MNPCreateQuiz.onPressDone]: this._handleOnAddSectionPressDone,
       },
     });
   };

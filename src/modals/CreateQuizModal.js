@@ -76,8 +76,8 @@ export class CreateQuizModal extends React.Component {
   _handleOnPressButtonLeft = async () => {
     const { navigation, componentId, ...props } = this.props;
 
-    const isEditing    = props[MNPCreateQuiz.isEditing   ];
-    const onModalClose = props[MNPCreateQuiz.onModalClose];
+    const isEditing   = props[MNPCreateQuiz.isEditing  ];
+    const onPressDone = props[MNPCreateQuiz.onPressDone];
 
     const isValidTitle    = this.inputFieldRefTitle.isValid(false);
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
@@ -103,7 +103,8 @@ export class CreateQuizModal extends React.Component {
         });
       });
 
-      onModalClose && onModalClose({title, desc});
+      // trigger event callback
+      onPressDone && onPressDone({title, desc});
 
       //close modal
       Navigation.dismissModal(componentId);
