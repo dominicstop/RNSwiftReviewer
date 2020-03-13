@@ -222,3 +222,18 @@ export function sizeSelectSimple({normal, large}){
     case 'xlarge': return large;
   };
 };
+
+export function stringHash(string = '') {
+    let hash = 0, length = string.length, char;
+
+    if (length === 0) return hash;
+
+    while (length--) {
+      char = string.charCodeAt(length);
+      hash = ((hash << 5) - hash) + char;
+      // Convert to 32bit integer
+      hash |= 0; 
+    };
+
+    return hash;
+  };

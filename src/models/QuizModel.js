@@ -1,7 +1,7 @@
 import * as Helpers from "app/src/functions/helpers";
 
 import { IS_DEBUG } from "app/src/constants/Options";
-import { QuizKeys } from 'app/src/constants/PropKeys';
+import { QuizKeys, SectionKeys } from 'app/src/constants/PropKeys';
 
 
 
@@ -67,11 +67,19 @@ export class QuizModel {
     this.values[QuizKeys.quizID] = (
       `quiz-${tsCreated}-${hashCode}`
     );
+
+    alert(hashCode);
   };
 
   addSection(section = {}){
+    const quizID      = this.values[QuizKeys.quizID];
     const oldSections = this.values[QuizKeys.quizSections];
-    const newSections = [ ...oldSections, section ];
+
+    const newSections = [ ...oldSections, {
+      ...section,
+      //pass down quiz id to section
+      [SectionKeys.quizID]: quizID,
+    }];
 
     this.values[QuizKeys.quizSections    ] = newSections;
     this.values[QuizKeys.quizSectionCount] = newSections?.length ?? 0;

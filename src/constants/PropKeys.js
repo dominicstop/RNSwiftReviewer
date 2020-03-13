@@ -11,3 +11,14 @@ export const QuizKeys = {
   quizQuestionCount: 'quizQuestionCount',
   quizSectionCount : 'quizSectionCount' ,
 };
+
+// property names for section
+export const SectionKeys = {
+  quizID              : 'quizID'              ,
+  sectionID           : 'sectionID'           ,
+  sectionTitle        : 'sectionTitle'        ,
+  sectionDesc         : 'sectionDesc'         ,
+  sectionType         : 'sectionType'         ,
+  sectionDateCreated  : 'sectionDateCreated'  ,
+  sectionQuestionCount: 'sectionQuestionCount',
+};

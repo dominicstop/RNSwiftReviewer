@@ -20,11 +20,12 @@ import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
-import { QuizKeys } from 'app/src/constants/PropKeys';
+import { QuizKeys, SectionKeys } from 'app/src/constants/PropKeys';
+
+import { QuizModel        } from 'app/src/models/QuizModel';
+import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { QuizModel } from 'app/src/models/QuizModel';
-
 
 
 export class CreateQuizScreen extends React.Component {
@@ -56,8 +57,8 @@ export class CreateQuizScreen extends React.Component {
     this.quiz.title = params[SNPCreateQuiz.quizTitle];
     this.quiz.desc  = params[SNPCreateQuiz.quizDesc ];
 
-    // init date created
     this.quiz.setDateCreated();
+    this.quiz.setQuizID();
 
     this.state = {
       scrollEnabled: true,
@@ -66,6 +67,11 @@ export class CreateQuizScreen extends React.Component {
       // pass down def. values from quizes
       ...this.quiz.values,
     };
+  };
+
+  // #region - event handlers / callbacks
+  _handleKeyExtractor = (section, index) => {
+    return section[SectionKeys.sectionID];
   };
 
   _handleOnEditModalClose = ({title, desc}) => {
@@ -98,14 +104,16 @@ export class CreateQuizScreen extends React.Component {
   _handleOnPressAddSection = () => {
     this.footerRef.setVisibilty(true);
 
-    this.quiz.addSection({});
-    this.setState({ ...this.quiz.values });
-  };
+    const section = new QuizSectionModel();
 
-  //todo
-  // #region - event handlers / callbacks
-  _handleKeyExtractor = (quiz, index) => {
-    return quiz[QuizKeys.quizID];
+    section.title = 'new section';
+    section.desc  = 'new section';
+
+    section.setDateCreated();
+    section.setSectionID();
+
+    this.quiz.addSection(section.values);
+    this.setState({ ...this.quiz.values });
   };
 
   //todo
