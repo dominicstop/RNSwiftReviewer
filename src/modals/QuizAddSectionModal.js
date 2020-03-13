@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated, Image } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import * as Animatable from 'react-native-animatable';
+
+import Ionicon    from '@expo/vector-icons/Ionicons';
 import LottieView from 'lottie-react-native';
+
+import { Divider    } from 'react-native-elements';
+import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBackground   } from 'app/src/components/ModalBackground';
@@ -12,20 +17,156 @@ import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
 import { ModalSection      } from 'app/src/components/ModalSection';
 import { ModalInputField   } from 'app/src/components/ModalInputField';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
+import { ListItemBadge     } from 'app/src/components/ListItemBadge';
+
+import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
 
-import { BLUE } from 'app/src/constants/Colors';
-
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
+import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
+import { SectionTypes } from 'app/src/models/QuizSectionModel';
 
+
+const sectionListItems = {
+  [SectionTypes.IDENTIFICATION]: {
+    [RadioListKeys.type    ]: SectionTypes.IDENTIFICATION,
+    [RadioListKeys.title   ]: 'Identification',
+    [RadioListKeys.desc    ]: 'Type the answer to the question',
+    [RadioListKeys.descLong]: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'
+  }, 
+  [SectionTypes.MATCHING_TYPE]: {
+    [RadioListKeys.type    ]: SectionTypes.MATCHING_TYPE,
+    [RadioListKeys.title   ]: 'Matching Type',
+    [RadioListKeys.desc    ]: 'Match the correct answer from a list',
+    [RadioListKeys.descLong]: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut.'
+  },
+  [SectionTypes.MULTIPLE_CHOICE]: {
+    [RadioListKeys.type    ]: SectionTypes.MULTIPLE_CHOICE,
+    [RadioListKeys.title   ]: 'Multiple Choice',
+    [RadioListKeys.desc    ]: 'Choose the correct answer from choices',
+    [RadioListKeys.descLong]: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
+  },
+  [SectionTypes.TRUE_OR_FALSE]: {
+    [RadioListKeys.type    ]: SectionTypes.TRUE_OR_FALSE,
+    [RadioListKeys.title   ]: 'True or False',
+    [RadioListKeys.desc    ]: 'Answer the statement a true/false response',
+    [RadioListKeys.descLong]: 'Nullam quis risus eget urna mollis ornare vel eu leo.'
+
+  }
+};
+
+class QuizSectionHeader extends React.Component {
+  static styles = StyleSheet.create({
+    rootContainer: {
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    imageTextContainer: {
+      flexDirection: 'row',
+      marginTop: 12,
+      justifyContent: 'center',
+    },
+    leftImage: {
+      aspectRatio: 1,
+      width: Helpers.sizeSelectSimple({
+        normal: 75,
+        large : 85,
+      }),
+    },
+    textTitle: {
+      ...iOSUIKit.bodyObject,
+      fontSize: 20,
+      fontWeight: '600',
+      marginLeft: 7,
+      textAlignVertical: 'center',
+      marginBottom: 1,
+    },
+    textSubtitle: {
+      ...iOSUIKit.subheadObject,
+      color: Colors.GREY[900],
+      opacity: 0.7,
+    },
+    titleDescContainer: {
+      flex: 1,
+      marginLeft: 15,
+      justifyContent: 'center',
+    },
+    textSectionTitle: {
+      ...iOSUIKit.bodyEmphasizedObject,
+    },
+    textSectionDesc: {
+      ...iOSUIKit.subheadObject,
+      color: Colors.GREY[800],
+      maxWidth: 400,
+    },
+  });
+
+  componentDidUpdate(prevProps){
+    const { selectedType } = this.props;
+
+    if(selectedType != prevProps.selectedType){
+      this.rootContainerRef.pulse(300);
+    };
+  };
+
+  render(){
+    const { styles } = QuizSectionHeader;
+    const { listItems, selectedType } = this.props;
+    
+    const selectedSection = listItems[selectedType];
+
+    return(
+      <View style={styles.rootContainer}>
+        <View style={styles.titleContainer}>
+          <ListItemBadge
+            value={3}
+            size={18}
+            color={Colors.INDIGO.A400}
+          />
+          <Text style={styles.textTitle}>
+            {'Section Type'}
+          </Text>
+        </View>
+        <Text style={styles.textSubtitle}>
+          {'Choose a section type from the list'}
+        </Text>
+        <Animatable.View 
+          style={styles.imageTextContainer}
+          ref={r => this.rootContainerRef = r}
+          useNativeDriver={true}
+        >
+          <Animatable.Image
+            style={styles.leftImage}
+            source={require('app/assets/icons/lbw-usb.png')}
+            animation={'pulse'}
+            duration={6000}
+            iterationCount={'infinite'}
+            iterationDelay={1000}
+            useNativeDriver={true}
+          />
+          <View style={styles.titleDescContainer}>
+            <Text style={styles.textSectionTitle}>
+              {selectedSection[RadioListKeys.title]}
+            </Text>
+            <Text style={styles.textSectionDesc}>
+              {selectedSection[RadioListKeys.descLong]}
+            </Text>
+          </View>
+        </Animatable.View>
+      </View>
+    );
+  };
+};
 
 export class QuizAddSectionModal extends React.Component {
   static options() {
@@ -40,6 +181,10 @@ export class QuizAddSectionModal extends React.Component {
     },
     headerContainer: {
       paddingVertical: 10,
+    },
+    divider: {
+      marginTop: 12,
+      marginHorizontal: 12,
     },
     overlayContainer: {
       ...StyleSheet.absoluteFillObject,
@@ -60,8 +205,18 @@ export class QuizAddSectionModal extends React.Component {
       inputRange : [0, 0.25],
       outputRange: [0, 1  ],
     });
+    
+    this.state = {
+      selectedSectionType: SectionTypes.IDENTIFICATION,
+    };
 
     this.lottieSource = require('app/assets/lottie/check_done.json');
+  };
+
+  _handleOnPressSectionItem = ({type}) => {
+    this.setState({
+      selectedSectionType: type,
+    });
   };
 
   _handleOnSubmitEditing = ({index}) => {
@@ -74,7 +229,9 @@ export class QuizAddSectionModal extends React.Component {
   };
 
   _handleOnPressButtonLeft = async () => {
-    const { navigation, componentId, ...props } = this.props;
+    const { componentId, ...props } = this.props;
+    const { selectedSectionType } = this.state;
+
 
     const isEditing   = props[MNPCreateQuiz.isEditing  ];
     const onPressDone = props[MNPCreateQuiz.onPressDone];
@@ -85,12 +242,6 @@ export class QuizAddSectionModal extends React.Component {
     if(isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
       const desc  = this.inputFieldRefDesc .getText()
-
-      !isEditing && navigation.navigate(ROUTES.createQuizRoute, {
-        // pass as nav params to CreateQuizScreen
-        [SNPCreateQuiz.quizTitle]: title,
-        [SNPCreateQuiz.quizDesc ]: desc,
-      });
 
       const animation = Animated.timing(this.progress, {
         toValue : 1,
@@ -104,7 +255,10 @@ export class QuizAddSectionModal extends React.Component {
       });
 
       // trigger callback event
-      onPressDone && onPressDone({title, desc});
+      onPressDone && onPressDone({
+        title, desc,
+        sectionType: selectedSectionType,
+      });
 
       // close modal
       Navigation.dismissModal(componentId);
@@ -132,6 +286,7 @@ export class QuizAddSectionModal extends React.Component {
   render(){
     const { styles } = QuizAddSectionModal;
     const props = this.props;
+    const state = this.state;
 
     const isEditing = props[MNPCreateQuiz.isEditing];
 
@@ -147,13 +302,12 @@ export class QuizAddSectionModal extends React.Component {
         )}
         subtitle={(isEditing
           ? "Modify section title and description"
-          : "Enter the section title and description"
+          : "Enter section details (title, description, etc.)"
         )}
         headerIcon={(
           <Ionicon
-            style={{marginTop: 3}}
-            name={'ios-book'}
-            size={24}
+            name={'ios-albums'}
+            size={22}
             color={'white'}
           />
         )}
@@ -216,7 +370,7 @@ export class QuizAddSectionModal extends React.Component {
             )}
           />
         </ModalSection>
-        <ModalSection showBorderTop={false}>
+        <ModalSection>
           <ModalInputField
             index={1}
             ref={r => this.inputFieldRefDesc = r}
@@ -238,6 +392,20 @@ export class QuizAddSectionModal extends React.Component {
                 size={20}
               />
             )}
+          />
+        </ModalSection>
+        <ModalSection paddingBottom={0}>
+          <QuizSectionHeader
+            listItems={sectionListItems}
+            selectedType={state.selectedSectionType}
+          />
+          <Divider style={styles.divider}/>
+          <RadioList
+            //containerStyle={}
+            enumTypes={SectionTypes}
+            selectedType={state.selectedSectionType}
+            listItems={sectionListItems}
+            onPressListItem={this._handleOnPressSectionItem}
           />
         </ModalSection>
         <ListFooterIcon

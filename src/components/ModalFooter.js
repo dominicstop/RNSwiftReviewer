@@ -35,16 +35,6 @@ const styles = StyleSheet.create({
 });
 
 export class ModalFooter extends React.Component {
-  static propTypes = {
-    title   : PropTypes.string,
-    subtitle: PropTypes.string,
-  };
-
-  static defaultProps = {
-    title   : 'Title N/A',
-    subtitle: 'Subtitle N/A',
-  };
-
   render(){
     const { headerIcon, ...props } = this.props;
     

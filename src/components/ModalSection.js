@@ -21,12 +21,14 @@ export class ModalSection extends React.PureComponent {
 
   static defaultProps = {
     showBorderTop: true,
+    paddingBottom: 15,
   };
 
   render(){
-    const { showBorderTop } = this.props;
+    const { showBorderTop, ...props } = this.props;
 
     const containerStyle = {
+      paddingBottom: props.paddingBottom,
       ...(showBorderTop && { borderTopWidth: 1 }),
     };
 

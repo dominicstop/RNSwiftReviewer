@@ -53,12 +53,12 @@ class QuizDetails extends React.Component {
       flexDirection: 'row',
     },
     textDetailLabel: {
-      ...iOSUIKit.bodyEmphasizedObject,
+      ...iOSUIKit.subheadEmphasizedObject,
       flex: 1,
       color: Colors.GREY[900]
     },
     textDetail: {
-      ...iOSUIKit.bodyObject,
+      ...iOSUIKit.subheadObject,
       color: Colors.GREY[800]
     },
     titleContainer: {
@@ -73,12 +73,12 @@ class QuizDetails extends React.Component {
       color: Colors.BLUE['A700'],
     },
     textLabel: {
-      ...iOSUIKit.bodyEmphasizedObject,
+      ...iOSUIKit.subheadEmphasizedObject,
       fontWeight: '600',
       color: Colors.GREY[900],
     },
     textBody: {
-      ...iOSUIKit.bodyObject,
+      ...iOSUIKit.subheadObject,
       color: Colors.GREY[800],
     },
   });

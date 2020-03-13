@@ -81,13 +81,14 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
-  _handleOnAddSectionPressDone = () => {
+  _handleOnAddSectionPressDone = ({title, desc, sectionType}) => {
     this.footerRef.setVisibilty(true);
 
     const section = new QuizSectionModel();
 
-    section.title = 'new section';
-    section.desc  = 'new section';
+    section.title = title;
+    section.desc  = desc;
+    section.type  = sectionType;
 
     section.setDateCreated();
     section.setSectionID();
@@ -190,7 +191,7 @@ export class CreateQuizScreen extends React.Component {
   _renderTitleIcon = ({scrollY, inputRange}) => {
     return(
       <LargeTitleFadeIcon 
-        style={{marginTop: 3, marginRight: 5,}}
+        style={{marginTop: 0, marginRight: 3}}
         {...{scrollY, inputRange}}
       >
         <SvgIcon
@@ -231,7 +232,7 @@ export class CreateQuizScreen extends React.Component {
           titleText={'Create Quiz'}
           subtitleText={"Create a new quiz reviewer"}
           showSubtitle={true}
-          itemSize={200}
+          itemSize={100}
           //render handlers
           renderHeader={this._renderListHeader}
           renderFooter={this._renderListFooter}

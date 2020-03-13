@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollviewContent: {
+    paddingBottom: MODAL_FOOTER_HEIGHT,
+  },
 });
 
 export class ModalBackground extends React.PureComponent {
@@ -71,7 +74,11 @@ export class ModalBackground extends React.PureComponent {
         <View style={styles.scrollViewContainer}>
           <ScrollView 
             style={styles.scrollView}
-            contentInset={{top: MODAL_HEADER_HEIGHT}}
+            contentContainerStyle={styles.scrollviewContent}
+            contentInset={{
+              top   : MODAL_HEADER_HEIGHT,
+              bottom: MODAL_FOOTER_HEIGHT,
+            }}
           >
             {mount && (
               <Animatable.View

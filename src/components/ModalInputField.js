@@ -143,7 +143,7 @@ export class ModalInputField extends React.Component {
 
     this._subtitleOpacity = interpolate(this._progress, {
       inputRange : [0  , 100],
-      outputRange: [0.5, 0.9],
+      outputRange: [0.7, 1],
     });
   };
 
@@ -289,8 +289,8 @@ export class ModalInputField extends React.Component {
    const textSubtitleStyle = {
      opacity: this._subtitleOpacity,
      color: (
-       (mode === MODES.BLURRED)? GREY[900] :
-       (mode === MODES.FOCUSED)? GREY[800] :
+       (mode === MODES.BLURRED)? GREY[800] :
+       (mode === MODES.FOCUSED)? GREY[900] :
        (mode === MODES.INVALID)? RED [900] : null
      ),
    };

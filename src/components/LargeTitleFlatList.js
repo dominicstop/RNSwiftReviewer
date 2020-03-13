@@ -52,6 +52,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
   static defaultProps = {
     subtitleHeight: 35,
     titleText: 'Large Title',
+    extraHeight: 0,
   };
 
   static styles = StyleSheet.create({
@@ -249,7 +250,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     this._titleFontWeight = floor(
       interpolate(this._scrollY, {
         inputRange : [0, (NAVBAR_NORMAL/4), NAVBAR_NORMAL],
-        outputRange: [9, 9, 5],
+        outputRange: [8, 8, 5],
         extrapolate: Extrapolate.CLAMP,
       })
     );
@@ -459,7 +460,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     let SectionList = React.cloneElement(sectionList, {
       style: [styles.scrollview, sectionListStyle],
       contentContainerStyle: { 
-        paddingBottom: EXTRA_HEIGHT + extraHeight,
+        paddingBottom: EXTRA_HEIGHT + extraHeight + props.extraHeight,
       },
       //render + handlers
       ListHeaderComponent: this._renderListHeader     ,
