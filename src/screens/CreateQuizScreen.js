@@ -19,7 +19,7 @@ import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
+import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
 import { QuizKeys, SectionKeys } from 'app/src/constants/PropKeys';
 
 import { QuizModel        } from 'app/src/models/QuizModel';
@@ -74,34 +74,14 @@ export class CreateQuizScreen extends React.Component {
     return section[SectionKeys.sectionID];
   };
 
-  _handleOnEditModalClose = ({title, desc}) => {
+  _handleOnQuizEditModalClose = ({title, desc}) => {
     this.setState({
       quizTitle: title,
       quizDesc : desc,
     });
   };
 
-  _handleOnPressEditQuiz = () => {
-    const { navigation } = this.props;
-
-    // get quiz title/desc from state
-    const quizTitle = this.state[QuizKeys.quizTitle];
-    const quizDesc  = this.state[QuizKeys.quizDesc ];
-    
-    ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalCreateQuiz,
-      navProps: {
-        [MNPCreateQuiz.navigation]: navigation,
-        [MNPCreateQuiz.isEditing ]: true     ,
-        [MNPCreateQuiz.quizTitle ]: quizTitle,
-        [MNPCreateQuiz.quizDesc  ]: quizDesc ,
-        //modal close event
-        [MNPCreateQuiz.onModalClose]: this._handleOnEditModalClose,
-      },
-    });
-  };
-
-  _handleOnPressAddSection = () => {
+  _handleOnAddSectionModalClose = () => {
     this.footerRef.setVisibilty(true);
 
     const section = new QuizSectionModel();
@@ -114,6 +94,45 @@ export class CreateQuizScreen extends React.Component {
 
     this.quiz.addSection(section.values);
     this.setState({ ...this.quiz.values });
+  };
+
+  _handleOnPressEditQuiz = () => {
+    const { navigation } = this.props;
+
+    // get quiz title/desc from state
+    const quizTitle = this.state[QuizKeys.quizTitle];
+    const quizDesc  = this.state[QuizKeys.quizDesc ];
+    
+    // open CreateQuizModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalCreateQuiz,
+      navProps: {
+        [MNPCreateQuiz.navigation]: navigation,
+        [MNPCreateQuiz.isEditing ]: true     ,
+        [MNPCreateQuiz.quizTitle ]: quizTitle,
+        [MNPCreateQuiz.quizDesc  ]: quizDesc ,
+        //modal close event
+        [MNPCreateQuiz.onModalClose]: this._handleOnQuizEditModalClose,
+      },
+    });
+  };
+
+  _handleOnPressAddSection = () => {
+    const { navigation } = this.props;
+
+    // open QuizAddSectionModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalQuizAddSection,
+      navProps: {
+        [MNPQuizAddSection.navigation  ]: navigation,
+        [MNPQuizAddSection.isEditing   ]: false,
+        [MNPQuizAddSection.sectionTitle]: null ,
+        [MNPQuizAddSection.sectionDesc ]: null ,
+        [MNPQuizAddSection.sectionType ]: null ,
+        //attach modal close event
+        [MNPCreateQuiz.onModalClose]: this._handleOnAddSectionModalClose,
+      },
+    });
   };
 
   //todo

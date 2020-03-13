@@ -67,8 +67,6 @@ export class QuizModel {
     this.values[QuizKeys.quizID] = (
       `quiz-${tsCreated}-${hashCode}`
     );
-
-    alert(hashCode);
   };
 
   addSection(section = {}){
