@@ -6,15 +6,15 @@ import * as Animatable from 'react-native-animatable';
 import   Ionicon    from '@expo/vector-icons/Ionicons';
 import { Divider  } from "react-native-elements";
 
-import { ListCardEmpty  } from 'app/src/components/ListCardEmpty';
-import { ButtonGradient } from 'app/src/components/ButtonGradient';
+import { ButtonGradient         } from 'app/src/components/ButtonGradient';
+import { ImageTitleSubtitleCard } from 'app/src/components/ImageTitleSubtitleCard';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 
 const TextConstants = {
-  // ListCardEmpty subtitle
+  // ImageTitleSubtitleCard subtitle
   EmptyText: Helpers.sizeSelectSimple({
     normal: "There are different types of sections. (Example: matching type, multiple choice etc.)",
     large : "There are different types of sections with different answer methods (Example: matching type, multiple choice etc.)",
@@ -54,7 +54,7 @@ export class CreateQuizListFooter extends React.Component {
         duration={300}
         useNativeDriver={true}
       >
-        <ListCardEmpty
+        <ImageTitleSubtitleCard
           imageSource={require('app/assets/icons/e-window-msg.png')}
           title={"Insert New Section"}
           subtitle={TextConstants.EmptyText}
@@ -79,7 +79,7 @@ export class CreateQuizListFooter extends React.Component {
               />
             )}
           />
-        </ListCardEmpty>
+        </ImageTitleSubtitleCard>
       </Animatable.View>
     );
   };

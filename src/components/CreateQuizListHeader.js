@@ -9,9 +9,10 @@ import { iOSUIKit } from 'react-native-typography';
 
 import { Divider } from "react-native-elements";
 
-import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
-import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
-import { ButtonGradient       } from 'app/src/components/ButtonGradient';
+import { LargeTitleHeaderCard   } from 'app/src/components/LargeTitleHeaderCard';
+import { ImageTitleSubtitleCard } from 'app/src/components/ImageTitleSubtitleCard';
+import { ButtonGradient         } from 'app/src/components/ButtonGradient';
+import { TableLabelValue        } from 'app/src/components/TableLabelValue';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -23,7 +24,7 @@ const TextConstants = {
     normal: 'Quizes are a collection of sections, which in turn, holds related questions together.',
     large : 'Quizes are a collection of different sections, which in turn, holds several related questions that are grouped together.',
   }),
-  // ListCardEmpty subtitle
+  // ImageTitleSubtitleCard subtitle
   EmptyText: Helpers.sizeSelectSimple({
     normal: "This place is looking a bit sparse. Add a new section to get things started!",
     large : "This place is looking a bit sparse, don't you think? Go and add a new section to get things started!",
@@ -36,30 +37,6 @@ class QuizDetails extends React.Component {
       flex: 1,
       marginTop: 12,
       marginHorizontal: 12,
-    },
-    detailsContainer: {
-      flexDirection: 'row',
-      marginVertical: 2,
-    },
-    columnLeftContainer: {
-      flex: 1,
-      marginRight: 5,
-    },
-    columnRightContainer: {
-      flex: 1,
-      marginLeft: 5,
-    },
-    rowContainer: {
-      flexDirection: 'row',
-    },
-    textDetailLabel: {
-      ...iOSUIKit.subheadEmphasizedObject,
-      flex: 1,
-      color: Colors.GREY[900]
-    },
-    textDetail: {
-      ...iOSUIKit.subheadObject,
-      color: Colors.GREY[800]
     },
     titleContainer: {
       flexDirection: 'row',
@@ -87,43 +64,6 @@ class QuizDetails extends React.Component {
     const { styles } = QuizDetails;
     const { countSection, countQuestions, ...props } = this.props;
 
-    const StatsComp = (
-      <View style={styles.detailsContainer}>
-        <View style={styles.columnLeftContainer}>
-          <View style={styles.rowContainer}>
-            <Text 
-              style={styles.textDetailLabel}
-              numberOfLines={1}
-            >
-              {'Sections'}
-            </Text>
-            <Text 
-              style={styles.textDetail}
-              numberOfLines={1}
-            >
-              {`${countSection} ${Helpers.plural('item', countSection)}`}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.columnRightContainer}>
-          <View style={styles.rowContainer}>
-            <Text 
-              style={styles.textDetailLabel}
-              numberOfLines={1}
-            >
-              {'Questions'}
-            </Text>
-            <Text 
-              style={styles.textDetail}
-              numberOfLines={1}
-            >
-              {`${countQuestions} ${Helpers.plural('item', countQuestions)}`}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-
     return(
       <View style={styles.rootContainer}>
         <View style={styles.titleContainer}>
@@ -137,7 +77,13 @@ class QuizDetails extends React.Component {
             {props.quizTitle}
           </Text>
         </View>
-        {StatsComp}
+        <TableLabelValue
+          containerStyle={styles.labelValueContainer}
+          labelValueMap={[
+            ['Sections' , `${countSection  } ${Helpers.plural('item', countSection  )}`],
+            ['Questions', `${countQuestions} ${Helpers.plural('item', countQuestions)}`],
+          ]}
+        />
         <Text numberOfLines={3}>
           <Text style={styles.textLabel}>
             {'Quiz Description: '}
@@ -189,7 +135,7 @@ export class CreateQuizListHeader extends React.Component {
         delay={750}
         useNativeDriver={true}
       >
-        <ListCardEmpty
+        <ImageTitleSubtitleCard
           imageSource={require('app/assets/icons/e-pen-paper-stack.png')}
           title={"No sections to show"}
           subtitle={TextConstants.EmptyText}
@@ -214,7 +160,7 @@ export class CreateQuizListHeader extends React.Component {
               />
             )}
           />
-        </ListCardEmpty>
+        </ImageTitleSubtitleCard>
       </Animatable.View>
     );
 

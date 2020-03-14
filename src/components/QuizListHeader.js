@@ -6,9 +6,9 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Divider  } from "react-native-elements";
 
-import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
-import { ListCardEmpty        } from 'app/src/components/ListCardEmpty';
-import { ButtonGradient       } from 'app/src/components/ButtonGradient';
+import { LargeTitleHeaderCard   } from 'app/src/components/LargeTitleHeaderCard';
+import { ImageTitleSubtitleCard } from 'app/src/components/ImageTitleSubtitleCard';
+import { ButtonGradient         } from 'app/src/components/ButtonGradient';
 
 
 export class QuizListHeader extends React.Component {
@@ -68,7 +68,7 @@ export class QuizListHeader extends React.Component {
           />
         </LargeTitleHeaderCard>
         {(itemCount == 0) && (
-          <ListCardEmpty
+          <ImageTitleSubtitleCard
             imageSource={require('app/assets/icons/pencil_sky.png')}
             title={"No quizes to show"}
             subtitle={"Oops, looks like this place is empty! To get started, press the create quiz button to add something here."}
