@@ -77,15 +77,15 @@ export class QuizSectionModel {
 
   setSectionID(){
     const quizID  = this.values[QuizSectionKeys.quizID];
-    const created = this.values[QuizSectionKeys.sectionDateCreated];
     const title   = this.values[QuizSectionKeys.sectionTitle];
     const desc    = this.values[QuizSectionKeys.sectionDesc];
     const type    = this.values[QuizSectionKeys.sectionType];
+    const created = this.values[QuizSectionKeys.sectionDateCreated];
 
     const hashCode = Helpers.stringHash(title + desc);
 
-    this.values[QuizSectionKeys.quizID] = (
-      `section-${type}-${created}-${hashCode}-${quizID}`
+    this.values[QuizSectionKeys.sectionID] = (
+      `section-type:${type}-date:${created}-hash:${hashCode}-quiz:${quizID}`
     );
   };
 

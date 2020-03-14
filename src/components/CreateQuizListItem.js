@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+
+import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { iOSUIKit         } from 'react-native-typography';
 import { Divider          } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -17,14 +18,112 @@ import { QuizSectionKeys } from 'app/src/constants/PropKeys';
 
 import { SectionTypeTitles } from 'app/src/models/QuizSectionModel';
 
+class LeftRightButton extends React.Component {
+  static styles = StyleSheet.create({
+    rootContainer: {
+      flexDirection: 'row',
+    },
+    buttonContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      paddingLeft: 10,
+      paddingRight: 5,
+      paddingVertical: 7,
+      alignItems: 'center',
+    },
+    buttonLeftContainer: {
+      borderTopLeftRadius: 12,
+      borderBottomLeftRadius: 12,
+      backgroundColor: Colors.BLUE[100],
+    },
+    buttonRightContainer: {
+      borderTopRightRadius: 12,
+      borderBottomRightRadius: 12,
+      backgroundColor: Colors.INDIGO[100],
+    },
+    labelSubtitleContainer: {
+      marginLeft: 10,
+      justifyContent: 'center',
+    },
+    textButtonLabel: {
+      ...iOSUIKit.subheadEmphasizedObject,
+      fontWeight: '800',
+      marginBottom: -2,
+    },
+    textButtonLeftLabel: {
+      color: Colors.BLUE[600]
+    },
+    textButtonRightLabel: {
+      color: Colors.INDIGO[600]
+    },
+    textButtonSubtitle: {
+      ...iOSUIKit.subheadObject,
+    },
+    textButtonLeftSubtitle: {
+      color: Colors.BLUE[900]
+    },
+    textButtonRightSubtitle: {
+      color: Colors.INDIGO[900]
+    },
+  });
 
+  render(){
+    const { styles} = LeftRightButton;
+    const props = this.props;
+
+    return (
+      <View style={styles.rootContainer}>
+        <TouchableOpacity 
+          style={[styles.buttonLeftContainer, styles.buttonContainer]}
+          onPress={props.onPressLeftButton}
+          activeOpacity={0.8}
+        >
+          <Ionicon
+            name={'ios-cut'}
+            size={24}
+            color={Colors.BLUE[700]}
+          />
+          <View style={styles.labelSubtitleContainer}>
+            <Text style={[styles.textButtonLabel, styles.textButtonLeftLabel]}>
+              {'Edit'}
+            </Text>
+            <Text style={[styles.textButtonSubtitle, styles.textButtonLeftSubtitle]}>
+              {'Modify details'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.buttonRightContainer, styles.buttonContainer]}
+          onPress={props.onPressRightButton}
+          activeOpacity={0.8}
+        >
+          <Ionicon
+            name={'ios-filing'}
+            size={24}
+            color={Colors.INDIGO[700]}
+          />
+          <View style={styles.labelSubtitleContainer}>
+            <Text style={[styles.textButtonLabel, styles.textButtonRightLabel]}>
+              {'Add'}
+            </Text>
+            <Text style={[styles.textButtonSubtitle, styles.textButtonRightSubtitle]}>
+              {'Insert Questions'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+};
 
 export class CreateQuizListItem extends React.Component {
   static propTypes = {
-    // note: QuizSectionKeys is passed down as props
-    index: PropTypes.number,
+    index  : PropTypes.number,
+    section: PropTypes.object,
     // events
-    onPressSectionItem: PropTypes.func,
+    onPressSectionEdit  : PropTypes.func,
+    onPressSectionAdd   : PropTypes.func,
+    onPressSectionDelete: PropTypes.func,
   };
   
   static styles = StyleSheet.create({
@@ -37,7 +136,16 @@ export class CreateQuizListItem extends React.Component {
       ...iOSUIKit.bodyEmphasizedObject,
       color: Colors.GREY[900],
       fontWeight: '800',
+      flex: 1,
       marginLeft: 7,
+    },
+    closeContainer: {
+      aspectRatio: 1,
+      width: 27,
+      backgroundColor: Colors.RED[100],
+      borderRadius: 27/2,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     labelValueContainer: {
       marginBottom: 3,
@@ -55,21 +163,30 @@ export class CreateQuizListItem extends React.Component {
       margin: 10,
     },
   });
-  
-  _handleOnPress = () => {
-    const { section, index, onPressSectionItem } = this.props;
-    onPressSectionItem && onPressSectionItem({section, index});
+
+  _handleOnPressDelete = () => {
+    const { index, onPressSectionDelete, section } = this.props;
+    onPressSectionDelete && onPressSectionDelete({section, index});
+  };
+
+  _handleOnPressLeftButton = () => {
+    const { index, onPressSectionEdit, section } = this.props;
+    onPressSectionEdit && onPressSectionEdit({section, index});
+  };
+
+  _handleOnPressRightButton = () => {
+    const { index, onPressSectionAdd, section } = this.props;
+    onPressSectionAdd && onPressSectionAdd({section, index});
   };
 
   render(){
     const { styles } = CreateQuizListItem;
-    const props = this.props;
+    const { section, ...props } = this.props;
 
-
-    const sectionType   = props[QuizSectionKeys.sectionType         ];
-    const sectionTitle  = props[QuizSectionKeys.sectionTitle        ];
-    const sectionDesc   = props[QuizSectionKeys.sectionDesc         ];
-    const questionCount = props[QuizSectionKeys.sectionQuestionCount];
+    const sectionType   = section[QuizSectionKeys.sectionType         ];
+    const sectionTitle  = section[QuizSectionKeys.sectionTitle        ];
+    const sectionDesc   = section[QuizSectionKeys.sectionDesc         ];
+    const questionCount = section[QuizSectionKeys.sectionQuestionCount];
 
     // get the readable string of the section type
     const displaySectionType   = SectionTypeTitles[sectionType];
@@ -77,37 +194,47 @@ export class CreateQuizListItem extends React.Component {
 
     return(
       <ListCard>
-        <TouchableOpacity
-          onPress={this._handleOnPress}
-          activeOpacity={0.5}
-        >
-          <View style={styles.titleContainer}>
-            <ListItemBadge
-              value={(props.index + 1)}
-              size={19}
-              color={Colors.INDIGO['A200']}
-            />
-            <Text style={styles.textTitle}>
-              {sectionTitle}
-            </Text>
-          </View>
-          <TableLabelValue
-            containerStyle={styles.labelValueContainer}
-            labelValueMap={[
-              ['Type'     , displaySectionType  ],
-              ['Questions', displayQuestionCount],
-            ]}
+        <View style={styles.titleContainer}>
+          <ListItemBadge
+            value={(props.index + 1)}
+            size={19}
+            color={Colors.INDIGO['A200']}
           />
-          <Text numberOfLines={3}>
-            <Text style={styles.textDescLabel}>
-              {'Description: '}
-            </Text>
-            <Text style={styles.textDescBody}>
-              {sectionDesc}
-            </Text>
+          <Text style={styles.textTitle}>
+            {sectionTitle}
           </Text>
-          <Divider style={styles.divider}/>
-        </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.closeContainer}
+            onPress={this._handleOnPressDelete}
+            activeOpacity={0.75}
+          >
+            <Ionicon
+              name={'ios-close'}
+              size={28}
+              color={Colors.RED[700]}
+            />
+          </TouchableOpacity>
+        </View>
+        <TableLabelValue
+          containerStyle={styles.labelValueContainer}
+          labelValueMap={[
+            ['Type'     , displaySectionType  ],
+            ['Questions', displayQuestionCount],
+          ]}
+        />
+        <Text numberOfLines={3}>
+          <Text style={styles.textDescLabel}>
+            {'Description: '}
+          </Text>
+          <Text style={styles.textDescBody}>
+            {sectionDesc}
+          </Text>
+        </Text>
+        <Divider style={styles.divider}/>
+        <LeftRightButton
+          onPressLeftButton ={this._handleOnPressLeftButton }
+          onPressRightButton={this._handleOnPressRightButton}
+        />
       </ListCard>
     );
   };

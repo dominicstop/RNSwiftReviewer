@@ -67,7 +67,7 @@ export class TableLabelValue extends React.Component {
     },
     textDetail: {
       ...iOSUIKit.subheadObject,
-      color: Colors.GREY[800]
+      color: Colors.GREY[700]
     },
   });
 
@@ -80,20 +80,28 @@ export class TableLabelValue extends React.Component {
     return(
       <View style={props.containerStyle}>
         {labelValueItems.map((row, indexRow) => (
-          <View style={styles.rowContainer}>
+          <View 
+            key={`row-${indexRow}`}
+            style={styles.rowContainer}
+          >
             {row.map((col, indexCol) => (
-              <View style={[
-                styles.textDetailContainer, 
-                (indexCol == 0) && styles.columnLeftContainer ,
-                (indexCol == 1) && styles.columnRightContainer,
-              ]}>
+              <View
+                key={`row-${indexRow}-col-${indexCol}`}
+                style={[
+                  styles.textDetailContainer, 
+                  (indexCol == 0) && styles.columnLeftContainer ,
+                  (indexCol == 1) && styles.columnRightContainer,
+                ]}
+              >
                 <Text
+                  key={`label-${indexRow}-${indexCol}`}
                   style={styles.textDetailLabel}
                   numberOfLines={1}
                 >
                   {col[0]}
                 </Text>
                 <Text
+                  key={`detail-${indexRow}-${indexCol}`}
                   style={styles.textDetail}
                   numberOfLines={1}
                 >

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+ 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
@@ -84,11 +85,13 @@ export class CreateQuizScreen extends React.Component {
   _handleOnAddSectionPressDone = ({title, desc, sectionType}) => {
     this.footerRef.setVisibilty(true);
 
+    const quizID = this.quiz.values[QuizKeys.quizID];
     const section = new QuizSectionModel();
 
-    section.title = title;
-    section.desc  = desc;
-    section.type  = sectionType;
+    section.title  = title;
+    section.desc   = desc;
+    section.type   = sectionType;
+    section.quizID = quizID;
 
     section.setDateCreated();
     section.setSectionID();
@@ -97,7 +100,7 @@ export class CreateQuizScreen extends React.Component {
     this.setState({ ...this.quiz.values });
   };
 
-  _handleOnPressEditQuiz = () => {
+  _handleOnPressEditQuiz = ({section, index}) => {
     const { navigation } = this.props;
 
     // get quiz title/desc from state
@@ -136,11 +139,16 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
-  //todo
-  _handleOnPressSectionItem = ({section, index}) => {
-    //ModalController.showModal({
-    //  routeName: RNN_ROUTES.RNNModalViewQuiz
-    //});
+  _handleOnPressSectionEdit = ({section, index}) => {
+    alert('edit');
+  };
+
+  _handleOnPressSectionAdd = ({section, index}) => {
+    alert('add');
+  };
+
+  _handleOnPressSectionDelete = () => {
+    alert('delete');
   };
   //#endregion
 
@@ -212,8 +220,10 @@ export class CreateQuizScreen extends React.Component {
   _renderItem = ({item: section, index}) => {
     return (
       <CreateQuizListItem
-        onPressSectionItem={this._handleOnPressSectionItem}
-        {...{index, ...section}}
+        onPressSectionEdit  ={this._handleOnPressSectionEdit  }
+        onPressSectionAdd   ={this._handleOnPressSectionAdd   }
+        onPressSectionDelete={this._handleOnPressSectionDelete}
+        {...{index, section}}
       />
     );
   };
