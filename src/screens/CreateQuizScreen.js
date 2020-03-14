@@ -19,7 +19,7 @@ import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
+import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection, MNPQuizAddQuestion } from 'app/src/constants/NavParams';
 import { QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
 
 import { QuizModel        } from 'app/src/models/QuizModel';
@@ -74,31 +74,6 @@ export class CreateQuizScreen extends React.Component {
     return section[QuizSectionKeys.sectionID];
   };
 
-  _handleOnQuizEditModalClose = ({title, desc}) => {
-    this.setState({
-      quizTitle: title,
-      quizDesc : desc,
-    });
-  };
-
-  _handleOnAddSectionPressDone = ({title, desc, sectionType}) => {
-    this.footerRef.setVisibilty(true);
-
-    const quizID = this.quiz.values[QuizKeys.quizID];
-    const section = new QuizSectionModel();
-
-    section.title  = title;
-    section.desc   = desc;
-    section.type   = sectionType;
-    section.quizID = quizID;
-
-    section.setDateCreated();
-    section.setSectionID();
-
-    this.quiz.addSection(section.values);
-    this.setState({ ...this.quiz.values });
-  };
-
   _handleOnPressEditQuiz = ({section, index}) => {
     const { navigation } = this.props;
 
@@ -115,7 +90,7 @@ export class CreateQuizScreen extends React.Component {
         [MNPCreateQuiz.quizTitle ]: quizTitle,
         [MNPCreateQuiz.quizDesc  ]: quizDesc ,
         //modal: attach onPress done/save event
-        [MNPCreateQuiz.onPressDone]: this._handleOnQuizEditModalClose,
+        [MNPCreateQuiz.onPressDone]: this._handleCreateQuizModalOnPressDone,
       },
     });
   };
@@ -133,7 +108,7 @@ export class CreateQuizScreen extends React.Component {
         [MNPQuizAddSection.sectionDesc ]: null ,
         [MNPQuizAddSection.sectionType ]: null ,
         //modal: attach onPress done/save event
-        [MNPCreateQuiz.onPressDone]: this._handleOnAddSectionPressDone,
+        [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressDone,
       },
     });
   };
@@ -151,7 +126,7 @@ export class CreateQuizScreen extends React.Component {
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
       navProps: {
-
+        [MNPQuizAddQuestion.onPressDone]: this._handleQuizAddSectionModalOnPressDone,
       },
     });
   };
@@ -161,6 +136,39 @@ export class CreateQuizScreen extends React.Component {
     alert('delete');
   };
   //#endregion
+
+  // #region - modal handlers / callbacks
+  // modal callback: CreateQuizModal
+  _handleCreateQuizModalOnPressDone = ({title, desc}) => {
+    this.setState({
+      quizTitle: title,
+      quizDesc : desc,
+    });
+  };
+
+  // modal callback: QuizAddSectionModal
+  _handleAddSectionModalOnPressDone = ({title, desc, sectionType}) => {
+    this.footerRef.setVisibilty(true);
+
+    const quizID = this.quiz.values[QuizKeys.quizID];
+    const section = new QuizSectionModel();
+
+    section.title  = title;
+    section.desc   = desc;
+    section.type   = sectionType;
+    section.quizID = quizID;
+
+    section.setDateCreated();
+    section.setSectionID();
+
+    this.quiz.addSection(section.values);
+    this.setState({ ...this.quiz.values });
+  };
+
+  _handleQuizAddSectionModalOnPressDone = () => {
+    alert();
+  };
+  // #endregion
 
   // #region - render functions
   _renderListHeader = ({scrollY, inputRange}) => {
@@ -226,7 +234,6 @@ export class CreateQuizScreen extends React.Component {
     );
   };
 
-  //todo - active
   _renderItem = ({item: section, index}) => {
     return (
       <CreateQuizListItem

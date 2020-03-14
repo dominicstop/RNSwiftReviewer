@@ -13,7 +13,7 @@ import { ModalSection      } from 'app/src/components/ModalSection';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
-import { } from 'app/src/constants/NavParams';
+import { MNPQuizAddQuestion } from 'app/src/constants/NavParams';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -51,28 +51,21 @@ export class QuizAddQuestionModal extends React.Component {
 
   constructor(props){
     super(props);
+  };
 
-    this.progress = new Animated.Value(0);
+  _handleOnPressButtonLeft = () => {
+    const { componentId, ...props } = this.props;
 
-    this._opacity = this.progress.interpolate({
-      inputRange : [0, 0.25],
-      outputRange: [0, 1  ],
+    const onPressDone = props[MNPQuizAddQuestion.onPressDone];
+
+    alert();
+
+    // trigger callback event
+    onPressDone && onPressDone({
     });
 
-    this.lottieSource = require('app/assets/lottie/check_done.json');
-  };
-
-  _handleOnSubmitEditing = ({index}) => {
-    if(index == 0){
-      this.inputRefDesc.focus();
-
-    } else if(index == 1){
-      Keyboard.dismiss();
-    };
-  };
-
-  _handleOnPressButtonLeft = async () => {
-
+    // close modal
+    Navigation.dismissModal(componentId);
   };
 
   _handleOnPressButtonRight = async () => {
@@ -89,12 +82,12 @@ export class QuizAddQuestionModal extends React.Component {
 
     const modalHeader = (
       <ModalHeader
-        title={'WIP'}
-        subtitle={'WIP'}
+        title={'Add Questions'}
+        subtitle={"Add/Edit this section's questions"}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
-            name={'ios-book'}
+            name={'ios-bookmarks'}
             size={24}
             color={'white'}
           />
@@ -105,8 +98,9 @@ export class QuizAddQuestionModal extends React.Component {
     const modalFooter = (
       <ModalFooter>
         <ModalFooterButton
-          buttonLeftTitle={'WIP'}
-          buttonLeftSubtitle={'WIP'}
+          buttonLeftTitle={'Save'}
+          buttonLeftSubtitle={'Confirm changes'}
+          buttonRightSubtitle={'Discard Changes'}
           onPressButtonLeft={this._handleOnPressButtonLeft}
           onPressButtonRight={this._handleOnPressButtonRight}
         />
@@ -118,7 +112,6 @@ export class QuizAddQuestionModal extends React.Component {
         {...{modalHeader, modalFooter}}
       >
         <ModalSection showBorderTop={false}>
-
         </ModalSection>
         <ListFooterIcon
           show={true}

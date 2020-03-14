@@ -18,14 +18,17 @@ const MARGIN_HORIZONTAL = 7;
 
 export class ModalFooterButton extends React.PureComponent {
   static propTypes = {
-    buttonLeftTitle   : PropTypes.string,
-    buttonLeftSubtitle: PropTypes.string,
-    onPressButtonLeft : PropTypes.func,
-    onPressButtonRight: PropTypes.func,
+    buttonLeftTitle    : PropTypes.string,
+    buttonLeftSubtitle : PropTypes.string,
+    buttonRightTitle   : PropTypes.string,
+    buttonRightSubtitle: PropTypes.string,
+    onPressButtonLeft  : PropTypes.func,
+    onPressButtonRight : PropTypes.func,
   };
 
   static defaultProps = {
-
+    buttonRightTitle   : 'Cancel',
+    buttonRightSubtitle: 'Close this modal',
   };
 
   static styles = StyleSheet.create({
@@ -159,10 +162,10 @@ export class ModalFooterButton extends React.PureComponent {
               />
               <View style={styles.buttonTextContainer}>
                 <Text style={styles.textButtonTitle}>
-                  {'Cancel'}
+                  {props.buttonRightTitle}
                 </Text>
                 <Text style={styles.textButtonSubtitle}>
-                  {'Close this modal'}
+                  {props.buttonRightSubtitle}
                 </Text>
               </View>
             </LinearGradient>
