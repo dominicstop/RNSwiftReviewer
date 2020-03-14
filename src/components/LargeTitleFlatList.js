@@ -53,6 +53,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     subtitleHeight: 35,
     titleText: 'Large Title',
     extraHeight: 0,
+    headerHeight: 300,
   };
 
   static styles = StyleSheet.create({
@@ -436,7 +437,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
     const { enableSnap } = this.state;
 
     //temp fix
-    const a = (screenHeight - NAVBAR_NORMAL - itemSize);
+    const a = (screenHeight - NAVBAR_NORMAL - props.headerHeight);
     const b = (a - (itemCount * itemSize));
     const c = (TB_HEIGHT_ADJ + 200);
 
