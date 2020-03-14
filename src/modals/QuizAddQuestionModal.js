@@ -5,12 +5,14 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import LottieView from 'lottie-react-native';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground   } from 'app/src/components/ModalBackground';
-import { ModalHeader       } from 'app/src/components/ModalHeader';
-import { ModalFooter       } from 'app/src/components/ModalFooter';
-import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
-import { ModalSection      } from 'app/src/components/ModalSection';
-import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
+import { ModalBackground    } from 'app/src/components/ModalBackground';
+import { ModalHeader        } from 'app/src/components/ModalHeader';
+import { ModalFooter        } from 'app/src/components/ModalFooter';
+import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
+import { ModalSection       } from 'app/src/components/ModalSection';
+import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
+import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
+import { ButtonGradient     } from 'app/src/components/ButtonGradient';
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizAddQuestion } from 'app/src/constants/NavParams';
@@ -23,6 +25,9 @@ import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
+import { QuizSectionKeys } from '../constants/PropKeys';
+import { QuizSectionModel } from '../models/QuizSectionModel';
+import { Divider } from 'react-native-elements';
 
 
 export class QuizAddQuestionModal extends React.Component {
@@ -32,33 +37,31 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   static styles = StyleSheet.create({
-    rootContainer: {
-      flex: 1,
-      backgroundColor: 'transparent',
+    buttonAddSectionEmpty: {
+      paddingHorizontal: 0,
+      margin: 0,
     },
-    headerContainer: {
-      paddingVertical: 10,
-    },
-    overlayContainer: {
-      ...StyleSheet.absoluteFillObject,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'rgba(255,255,255,0.5)'
-    },
-    overlay: {
-    },
+    divider: {
+      margin: 12,
+    }
   });
 
   constructor(props){
     super(props);
+
+    // get section from nav props
+    const section = props[MNPQuizAddQuestion.quizSection];
+    this.quizSection = new QuizSectionModel(section);
+
+    this.state = {
+      ...this.quizSection.values,
+    };
   };
 
   _handleOnPressButtonLeft = () => {
     const { componentId, ...props } = this.props;
 
     const onPressDone = props[MNPQuizAddQuestion.onPressDone];
-
-    alert();
 
     // trigger callback event
     onPressDone && onPressDone({
@@ -78,7 +81,9 @@ export class QuizAddQuestionModal extends React.Component {
 
   render(){
     const { styles } = QuizAddQuestionModal;
-    const props = this.props;
+    const state = this.props;
+
+    const sectionTitle = state[QuizSectionKeys.sectionTitle];
 
     const modalHeader = (
       <ModalHeader
@@ -111,8 +116,36 @@ export class QuizAddQuestionModal extends React.Component {
       <ModalBackground
         {...{modalHeader, modalFooter}}
       >
-        <ModalSection showBorderTop={false}>
-        </ModalSection>
+        {true && (
+          <ModalSection showBorderTop={false}>
+            <ImageTitleSubtitle
+              containerStyle={styles.buttonAddSectionEmpty}
+              title={'Looks A Bit Empty'}
+              subtitle={`${sectionTitle} doesn't have any questions yet. Add some to get started.`}
+              imageSource={require('app/assets/icons/lbw-spacecraft-laptop.png')}
+            />
+            <Divider style={styles.divider}/>
+            <ButtonGradient
+              containerStyle={styles.buttonAddSectionEmpty}
+              bgColor={Colors.BLUE[100]}
+              fgColor={Colors.BLUE['A700']}
+              alignment={'CENTER'}
+              title={'Add New Questions'}
+              //onPress={props.onPressAddSection}
+              iconDistance={10}
+              isBgGradient={false}
+              addShadow={false}
+              showIcon={true}
+              leftIcon={(
+                <Ionicon
+                  name={'ios-add-circle'}
+                  color={Colors.BLUE['A700']}
+                  size={25}
+                />
+              )}
+            />
+          </ModalSection>
+        )}
         <ListFooterIcon
           show={true}
           marginTop={0}

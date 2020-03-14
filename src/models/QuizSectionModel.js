@@ -32,23 +32,21 @@ export class QuizSectionModel {
     sectionType         : '',
     sectionDateCreated  : '',
     sectionQuestionCount: 0 ,
+    sectionQuestions    : [],
   };
 
   static wrap(object = QuizSectionModel.stucture){
     return ({
       // helps vscode infer types
       ...(IS_DEBUG && QuizSectionModel.stucture),
-      ...(IS_DEBUG && defaultValues     ),
+      ...(IS_DEBUG && defaultValues),
       // pass down object
       ...(object ?? {}),
     });
   };
 
   constructor(values = {}){
-    this.values = {
-      ...QuizSectionModel.stucture,
-      ...values,
-    };
+    this.values = QuizSectionModel.wrap(values);
   };
 
   set quizID(id = ''){

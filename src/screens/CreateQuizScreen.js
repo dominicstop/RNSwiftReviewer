@@ -107,7 +107,7 @@ export class CreateQuizScreen extends React.Component {
         [MNPQuizAddSection.sectionTitle]: null ,
         [MNPQuizAddSection.sectionDesc ]: null ,
         [MNPQuizAddSection.sectionType ]: null ,
-        //modal: attach onPress done/save event
+        //event: attach onPress done/save handler
         [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressDone,
       },
     });
@@ -120,12 +120,12 @@ export class CreateQuizScreen extends React.Component {
 
   // CreateQuizListItem - add
   _handleOnPressSectionAdd = ({section, index}) => {
-    const { navigation } = this.props;
 
     // open CreateQuizModal
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
       navProps: {
+        [MNPQuizAddQuestion.quizSection]: section,
         [MNPQuizAddQuestion.onPressDone]: this._handleQuizAddSectionModalOnPressDone,
       },
     });

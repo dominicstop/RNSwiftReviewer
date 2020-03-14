@@ -1,3 +1,5 @@
+// enum declaration for object properties names
+// used for defining a model's property names
 
 // property names for quiz
 export const QuizKeys = {
@@ -20,5 +22,6 @@ export const QuizSectionKeys = {
   sectionDesc         : 'sectionDesc'         ,
   sectionType         : 'sectionType'         ,
   sectionDateCreated  : 'sectionDateCreated'  ,
+  sectionQuestions    : 'sectionQuestions'    ,
   sectionQuestionCount: 'sectionQuestionCount',
 };
