@@ -20,7 +20,7 @@ import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
-import { QuizKeys, SectionKeys } from 'app/src/constants/PropKeys';
+import { QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
 
 import { QuizModel        } from 'app/src/models/QuizModel';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
@@ -71,7 +71,7 @@ export class CreateQuizScreen extends React.Component {
 
   // #region - event handlers / callbacks
   _handleKeyExtractor = (section, index) => {
-    return section[SectionKeys.sectionID];
+    return section[QuizSectionKeys.sectionID];
   };
 
   _handleOnQuizEditModalClose = ({title, desc}) => {
@@ -213,7 +213,7 @@ export class CreateQuizScreen extends React.Component {
     return (
       <CreateQuizListItem
         onPressSectionItem={this._handleOnPressSectionItem}
-        {...{section, index}}
+        {...{index, ...section}}
       />
     );
   };

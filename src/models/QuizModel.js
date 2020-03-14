@@ -1,7 +1,7 @@
 import * as Helpers from "app/src/functions/helpers";
 
 import { IS_DEBUG } from "app/src/constants/Options";
-import { QuizKeys, SectionKeys } from 'app/src/constants/PropKeys';
+import { QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
 
 
 
@@ -76,7 +76,7 @@ export class QuizModel {
     const newSections = [ ...oldSections, {
       ...section,
       //pass down quiz id to section
-      [SectionKeys.quizID]: quizID,
+      [QuizSectionKeys.quizID]: quizID,
     }];
 
     this.values[QuizKeys.quizSections    ] = newSections;

@@ -13,7 +13,7 @@ export const QuizKeys = {
 };
 
 // property names for section
-export const SectionKeys = {
+export const QuizSectionKeys = {
   quizID              : 'quizID'              ,
   sectionID           : 'sectionID'           ,
   sectionTitle        : 'sectionTitle'        ,
