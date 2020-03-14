@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import { VibrancyView, BlurView } from "@react-native-community/blur";
 
+import { AnimatedListItem } from 'app/src/components/AnimatedLiistItem';
+
 import * as Helpers from 'app/src/functions/helpers';
 import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
 
@@ -60,9 +62,22 @@ export class ModalBackground extends React.PureComponent {
   };
 
   render(){
-    const { modalHeader, modalFooter, overlay } = this.props;
+    const { modalHeader, modalFooter, overlay, ...props } = this.props;
     const { mount } = this.state;
 
+    const children = React.Children.map(props.children,
+      (child, index) => (
+        <AnimatedListItem
+          animation={'fadeInUp'}
+          duration={300}
+          last={4}
+          {...{index}}
+        >
+          {child}
+        </AnimatedListItem>
+      )
+    );
+    
     return(
       <View style={styles.rootContainer}>
         <BlurView 
@@ -80,15 +95,7 @@ export class ModalBackground extends React.PureComponent {
               bottom: MODAL_FOOTER_HEIGHT,
             }}
           >
-            {mount && (
-              <Animatable.View
-                animation={'fadeInUp'}
-                duration={250}
-                useNativeDriver={true}
-              >
-                {this.props.children}  
-              </Animatable.View>
-            )}
+            {mount && children}
           </ScrollView>
         </View>
         {modalHeader}
