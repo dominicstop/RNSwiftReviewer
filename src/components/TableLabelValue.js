@@ -78,7 +78,7 @@ export class TableLabelValue extends React.Component {
     let labelValueItems = transformLabelValueMap(props.labelValueMap);
 
     return(
-      <View>
+      <View style={props.containerStyle}>
         {labelValueItems.map((row, indexRow) => (
           <View style={styles.rowContainer}>
             {row.map((col, indexCol) => (

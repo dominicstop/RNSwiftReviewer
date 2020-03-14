@@ -31,6 +31,7 @@ export class CreateQuizListItem extends React.Component {
     titleContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      marginBottom: 5,
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,
@@ -38,13 +39,17 @@ export class CreateQuizListItem extends React.Component {
       fontWeight: '800',
       marginLeft: 7,
     },
-    textDescription: {
-      ...iOSUIKit.bodyObject,
-      color: Colors.GREY[800],
+    labelValueContainer: {
+      marginBottom: 3,
     },
-    textDescriptionLabel: {
-      ...iOSUIKit.bodyEmphasizedObject,
-      color: Colors.GREY[900]
+    textDescLabel: {
+      ...iOSUIKit.subheadEmphasizedObject,
+      fontWeight: '600',
+      color: Colors.GREY[900],
+    },
+    textDescBody: {
+      ...iOSUIKit.subheadObject,
+      color: Colors.GREY[800],
     },
     divider: {
       margin: 10,
@@ -61,8 +66,9 @@ export class CreateQuizListItem extends React.Component {
     const props = this.props;
 
 
-    const sectionTitle  = props[QuizSectionKeys.sectionTitle        ];
     const sectionType   = props[QuizSectionKeys.sectionType         ];
+    const sectionTitle  = props[QuizSectionKeys.sectionTitle        ];
+    const sectionDesc   = props[QuizSectionKeys.sectionDesc         ];
     const questionCount = props[QuizSectionKeys.sectionQuestionCount];
 
     // get the readable string of the section type
@@ -86,13 +92,21 @@ export class CreateQuizListItem extends React.Component {
             </Text>
           </View>
           <TableLabelValue
+            containerStyle={styles.labelValueContainer}
             labelValueMap={[
               ['Type'     , displaySectionType  ],
               ['Questions', displayQuestionCount],
             ]}
           />
+          <Text numberOfLines={3}>
+            <Text style={styles.textDescLabel}>
+              {'Description: '}
+            </Text>
+            <Text style={styles.textDescBody}>
+              {sectionDesc}
+            </Text>
+          </Text>
           <Divider style={styles.divider}/>
-
         </TouchableOpacity>
       </ListCard>
     );
