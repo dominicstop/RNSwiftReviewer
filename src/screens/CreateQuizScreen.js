@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
- 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
@@ -139,14 +138,25 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
+  // CreateQuizListItem - edit
   _handleOnPressSectionEdit = ({section, index}) => {
     alert('edit');
   };
 
+  // CreateQuizListItem - add
   _handleOnPressSectionAdd = ({section, index}) => {
-    alert('add');
+    const { navigation } = this.props;
+
+    // open CreateQuizModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
+      navProps: {
+
+      },
+    });
   };
 
+  // CreateQuizListItem - delete
   _handleOnPressSectionDelete = () => {
     alert('delete');
   };

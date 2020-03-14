@@ -26,3 +26,7 @@ export const MNPQuizAddSection = {
   onPressDone : 'onPressDone' ,
 };
 
+// QuizAddQuestionModal
+export const MNPQuizAddQuestion = {
+};
+
