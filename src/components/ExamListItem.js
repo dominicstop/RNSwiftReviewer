@@ -14,7 +14,7 @@ import { ListItemBadge } from 'app/src/components/ListItemBadge';
 import { GREY, BLUE, INDIGO } from 'app/src/constants/Colors';
 import { ExamKeys } from 'app/src/models/ExamModel';
 import { plural } from '../functions/helpers';
-import { AnimatedListItem } from './AnimatedLiistItem';
+import { AnimatedListItem } from './AnimatedListItem';
 
 class ExamListItemHeader extends React.Component {
   static propTypes = {

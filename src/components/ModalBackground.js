@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import { VibrancyView, BlurView } from "@react-native-community/blur";
 
-import { AnimatedListItem } from 'app/src/components/AnimatedLiistItem';
+import { AnimatedListItem } from 'app/src/components/AnimatedListItem';
 
 import * as Helpers from 'app/src/functions/helpers';
 import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
