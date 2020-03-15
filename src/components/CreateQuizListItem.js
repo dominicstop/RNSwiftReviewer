@@ -183,10 +183,10 @@ export class CreateQuizListItem extends React.Component {
     const { styles } = CreateQuizListItem;
     const { section, ...props } = this.props;
 
-    const sectionType   = section[QuizSectionKeys.sectionType         ];
-    const sectionTitle  = section[QuizSectionKeys.sectionTitle        ];
-    const sectionDesc   = section[QuizSectionKeys.sectionDesc         ];
-    const questionCount = section[QuizSectionKeys.sectionQuestionCount];
+    const sectionType   = section[QuizSectionKeys.sectionType         ] ?? 'N/A';
+    const sectionTitle  = section[QuizSectionKeys.sectionTitle        ] ?? 'Title N/A';
+    const sectionDesc   = section[QuizSectionKeys.sectionDesc         ] ?? 'Description N/A';
+    const questionCount = section[QuizSectionKeys.sectionQuestionCount] ?? 0;
 
     // get the readable string of the section type
     const displaySectionType   = SectionTypeTitles[sectionType];

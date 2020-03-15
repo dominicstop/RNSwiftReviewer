@@ -30,7 +30,7 @@ import { QuizSectionModel } from '../models/QuizSectionModel';
 import { Divider } from 'react-native-elements';
 
 
-export class QuizAddQuestionModal extends React.Component {
+export class QuizCreateQuestionModal extends React.Component {
   static options() {
     return {
     };
@@ -82,28 +82,23 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   _handleOnPressAddNewQuestion = () => {
-    ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
-      navProps: {
-        
-      },
-    });
+    alert();
   };
 
   render(){
-    const { styles } = QuizAddQuestionModal;
+    const { styles } = QuizCreateQuestionModal;
     const state = this.props;
 
     const sectionTitle = state[QuizSectionKeys.sectionTitle];
 
     const modalHeader = (
       <ModalHeader
-        title={'Add Questions'}
-        subtitle={"Add/Edit this section's questions"}
+        title={'New Question'}
+        subtitle={"Create and add a new question"}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
-            name={'ios-bookmarks'}
+            name={'ios-add-circle'}
             size={24}
             color={'white'}
           />
@@ -114,8 +109,8 @@ export class QuizAddQuestionModal extends React.Component {
     const modalFooter = (
       <ModalFooter>
         <ModalFooterButton
-          buttonLeftTitle={'Save'}
-          buttonLeftSubtitle={'Confirm changes'}
+          buttonLeftTitle={'Create Quiz'}
+          buttonLeftSubtitle={'Save this Quiz'}
           buttonRightSubtitle={'Discard Changes'}
           onPressButtonLeft={this._handleOnPressButtonLeft}
           onPressButtonRight={this._handleOnPressButtonRight}
@@ -127,36 +122,8 @@ export class QuizAddQuestionModal extends React.Component {
       <ModalBackground
         {...{modalHeader, modalFooter}}
       >
-        {true && (
-          <ModalSection showBorderTop={false}>
-            <ImageTitleSubtitle
-              containerStyle={styles.buttonAddSectionEmpty}
-              title={'Looks A Bit Empty'}
-              subtitle={`${sectionTitle} doesn't have any questions yet. Add some to get started.`}
-              imageSource={require('app/assets/icons/lbw-spacecraft-laptop.png')}
-            />
-            <Divider style={styles.divider}/>
-            <ButtonGradient
-              containerStyle={styles.buttonAddSectionEmpty}
-              bgColor={Colors.BLUE[100]}
-              fgColor={Colors.BLUE['A700']}
-              alignment={'CENTER'}
-              title={'Add New Questions'}
-              onPress={this._handleOnPressAddNewQuestion}
-              iconDistance={10}
-              isBgGradient={false}
-              addShadow={false}
-              showIcon={true}
-              leftIcon={(
-                <Ionicon
-                  name={'ios-add-circle'}
-                  color={Colors.BLUE['A700']}
-                  size={25}
-                />
-              )}
-            />
-          </ModalSection>
-        )}
+        <ModalSection showBorderTop={false}>
+        </ModalSection>
         <ListFooterIcon
           show={true}
           marginTop={0}

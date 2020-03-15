@@ -7,7 +7,7 @@ import { BlurView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
 import { MODAL_HEADER_HEIGHT } from 'app/src/constants/UIValues';
-import { BLUE, INDIGO, GREY } from '../constants/Colors';
+import * as Colors from 'app/src/constants/Colors';
 
 
 const styles = StyleSheet.create({
@@ -33,8 +33,9 @@ const styles = StyleSheet.create({
   dragIndicator: {
     width: 40,
     height: 6,
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    backgroundColor: Colors.BLUE[900],
     borderRadius: 10,
+    opacity: 0.25,
   },
   headerContainer: {
     flex: 1,
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40/2,
-    backgroundColor: INDIGO.A700,
+    backgroundColor: Colors.INDIGO.A700,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -64,11 +65,11 @@ const styles = StyleSheet.create({
     ...iOSUIKit.bodyEmphasizedObject,
     fontSize: 20,
     fontWeight: '800',
-    color: INDIGO[1000],
+    color: Colors.INDIGO[1000],
   },
   textSubtitle: {
     ...iOSUIKit.subheadObject,
-    color: GREY[800],
+    color: Colors.GREY[800],
   },
 });
 
