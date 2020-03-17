@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    paddingTop: MODAL_HEADER_HEIGHT,
   },
   scrollviewContent: {
     paddingBottom: MODAL_FOOTER_HEIGHT,
@@ -90,10 +91,8 @@ export class ModalBackground extends React.PureComponent {
           <ScrollView 
             style={styles.scrollView}
             contentContainerStyle={styles.scrollviewContent}
-            contentInset={{
-              top   : MODAL_HEADER_HEIGHT,
-              bottom: MODAL_FOOTER_HEIGHT,
-            }}
+            contentInset={{ bottom: MODAL_FOOTER_HEIGHT }}
+            {...this.props}
           >
             {mount && children}
           </ScrollView>
