@@ -27,7 +27,7 @@
   * both rnn modals and rn's modals supports the native ios 12 modalPresentation style, but rnn impl. is more customizable and concise. Both has support for scroll view drag to close.
   * Use RNN modal in situations where swipeDown gesture needs to be disabled.
 
-  ### Bugs
+### Bugs
 - [ ] Bugfix: Dark Apperance affects blur views
 - [ ] Bugfix: Fix scroll offset bug when on production build
 - [ ] Bugfix: fix sort animation header
