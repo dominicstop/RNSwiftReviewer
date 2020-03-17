@@ -21,14 +21,14 @@
   * Use RNN for modals, and use RN for everything else
   * Test whether or not RNS can be used
 
-- [] Migrate wix/react-native-navigation modals to use the built in modal comp.
+- [ ] Migrate wix/react-native-navigation modals to use the built in modal comp.
   * Everytime a new modal is presented, the comps are wrapped inside a new, seperate react-native instance w/ it's own VC.
   * For every modal opened, there's about 5 to 10% increase in cpu usage (Tested: Release build, iPhone XR/6S). Could be a bug, or i configured rnn wrong.
   * both rnn modals and rn's modals supports the native ios 12 modalPresentation style, but rnn impl. is more customizable and concise. Both has support for scroll view drag to close.
-  * 
+  * Use RNN modal in situations where swipeDown gesture needs to be disabled.
 
   ### Bugs
 - [ ] Bugfix: Dark Apperance affects blur views
 - [ ] Bugfix: Fix scroll offset bug when on production build
-- [ ] fix sort animation header
-- [ ] fix scroll to top sorting behaviour
+- [ ] Bugfix: fix sort animation header
+- [ ] Bugfix: fix scroll to top sorting behaviour
