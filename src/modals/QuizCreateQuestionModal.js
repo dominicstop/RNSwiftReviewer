@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
+import { StyleSheet, Text, View, Animated } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
-import LottieView from 'lottie-react-native';
+import LottieView        from 'lottie-react-native';
+import Ionicon           from '@expo/vector-icons/Ionicons';
+import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
+
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground    } from 'app/src/components/ModalBackground';
-import { ModalHeader        } from 'app/src/components/ModalHeader';
-import { ModalFooter        } from 'app/src/components/ModalFooter';
-import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
-import { ModalSection       } from 'app/src/components/ModalSection';
-import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
-import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
-import { ButtonGradient     } from 'app/src/components/ButtonGradient';
+import { ModalBackground     } from 'app/src/components/ModalBackground';
+import { ModalHeader         } from 'app/src/components/ModalHeader';
+import { ModalFooter         } from 'app/src/components/ModalFooter';
+import { ModalFooterButton   } from 'app/src/components/ModalFooterButton';
+import { ModalSection        } from 'app/src/components/ModalSection';
+import { ModalInputField     } from 'app/src/components/ModalInputField';
+import { ListFooterIcon      } from 'app/src/components/ListFooterIcon';
+import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
+import { ButtonGradient      } from 'app/src/components/ButtonGradient';
+import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
+import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
+
+
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizAddQuestion } from 'app/src/constants/NavParams';
@@ -43,7 +50,7 @@ export class QuizCreateQuestionModal extends React.Component {
     },
     divider: {
       margin: 12,
-    }
+    },
   });
 
   constructor(props){
@@ -120,9 +127,53 @@ export class QuizCreateQuestionModal extends React.Component {
 
     return (
       <ModalBackground
+        stickyHeaderIndices={[0, 2]}
         {...{modalHeader, modalFooter}}
       >
+        <ModalSectionHeader
+          title={'Question'}
+          showTopBorder={false}
+          titleIcon={(
+            <MaterialCommunity
+              name={'format-letter-case'}
+              size={24}
+              color={Colors.INDIGO.A400}
+            />
+          )}
+        />
         <ModalSection showBorderTop={false}>
+          <ModalInputMultiline
+            index={0}
+            ref={r => this.inputFieldRefQuestion = r}
+            inputRef={r => this.inputRefTitle = r}
+            subtitle={'Enter the question you want to ask'}
+            placeholder={'Input Question Text'}
+            //initialValue={props[MNPCreateQuiz.quizTitle]}
+            onSubmitEditing={this._handleOnSubmitEditing}
+            validate={Validate.isNotNullOrWhitespace}
+          />
+        </ModalSection>
+        <ModalSectionHeader
+          title={'Answer'}
+          titleIcon={(
+            <Ionicon
+              name={'ios-list'}
+              size={24}
+              color={Colors.INDIGO.A400}
+            />
+          )}
+        />
+        <ModalSection showBorderTop={false}>
+          <ModalInputMultiline
+            index={1}
+            ref={r => this.inputFieldRefQuestion = r}
+            inputRef={r => this.inputRefTitle = r}
+            subtitle={"Enter the question's answer"}
+            placeholder={'Input Answer Text'}
+            //initialValue={props[MNPCreateQuiz.quizTitle]}
+            onSubmitEditing={this._handleOnSubmitEditing}
+            validate={Validate.isNotNullOrWhitespace}
+          />
         </ModalSection>
         <ListFooterIcon
           show={true}

@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
-import { VibrancyView, BlurView } from "@react-native-community/blur";
+import {  BlurView } from "@react-native-community/blur";
 
 import { AnimatedListItem } from 'app/src/components/AnimatedListItem';
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingTop: MODAL_HEADER_HEIGHT,
   },
   scrollviewContent: {
-    paddingBottom: MODAL_FOOTER_HEIGHT,
+    paddingBottom: MODAL_FOOTER_HEIGHT + 200,
   },
 });
 
@@ -84,14 +84,17 @@ export class ModalBackground extends React.PureComponent {
         <BlurView 
           style={styles.blurBackground}
           blurType={'light'}
-          blurAmount={100}
+          blurAmount={75}
         />
         <View style={styles.background}/>
         <View style={styles.scrollViewContainer}>
           <ScrollView 
             style={styles.scrollView}
             contentContainerStyle={styles.scrollviewContent}
-            contentInset={{ bottom: MODAL_FOOTER_HEIGHT }}
+            scrollIndicatorInsets={{ 
+              top   : MODAL_HEADER_HEIGHT,
+              bottom: MODAL_FOOTER_HEIGHT
+            }}
             {...this.props}
           >
             {mount && children}

@@ -346,7 +346,7 @@ export class ModalInputField extends React.Component {
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
             placeholderTextColor={GREY[700]}
-            {...{value, props}}
+            {...{value, ...props}}
           />
         </Animatable.View>
       </Fragment>
