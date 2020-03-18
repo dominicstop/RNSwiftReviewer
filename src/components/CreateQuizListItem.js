@@ -14,9 +14,8 @@ import { ListCard        } from 'app/src/components/ListCard';
 import { ListItemBadge   } from 'app/src/components/ListItemBadge';
 import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
-import { QuizSectionKeys } from 'app/src/constants/PropKeys';
-
-import { SectionTypeTitles } from 'app/src/models/QuizSectionModel';
+import { QuizSectionKeys   } from 'app/src/constants/PropKeys';
+import { SectionTypeTitles } from 'app/src/constants/SectionTypes';
 
 class LeftRightButton extends React.Component {
   static styles = StyleSheet.create({
