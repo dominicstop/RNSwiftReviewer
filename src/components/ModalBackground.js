@@ -67,20 +67,37 @@ export class ModalBackground extends React.PureComponent {
     this.setState({ mount: true });
   };
 
-  render(){
-    const { modalHeader, modalFooter, overlay, ...props } = this.props;
+  _renderScrollView(){
+    const props = this.props;
     const { mount } = this.state;
 
-    const children = (props.animateAsGroup? (
-      <Animatable.View
-        animation={'fadeInUp'}
-        duration={300}
-        useNativeDriver={true}
-      >
-        {props.children}
-      </Animatable.View>
-    ):(
-      React.Children.map(props.children, (child, index) => (
+    const scrollViewProps = {
+      ...props,
+      style: styles.scrollView,
+      contentContainerStyle: styles.scrollviewContent,
+      scrollIndicatorInsets: { 
+        top   : MODAL_HEADER_HEIGHT,
+        bottom: MODAL_FOOTER_HEIGHT,
+      },
+    };
+
+    if(props.animateAsGroup){
+      if(!mount) return null;
+      return(
+        <Animatable.View
+          style={{flex: 1}}
+          animation={'fadeInUp'}
+          duration={300}
+          useNativeDriver={true}
+        >
+          <ScrollView {...scrollViewProps}>
+            {props.children}
+          </ScrollView>
+        </Animatable.View>
+      );
+
+    } else {
+      const children = React.Children.map(props.children, (child, index) => (
         <AnimatedListItem
           animation={'fadeInUp'}
           duration={300}
@@ -89,8 +106,18 @@ export class ModalBackground extends React.PureComponent {
         >
           {child}
         </AnimatedListItem>
-      ))
-    ));
+      ));
+
+      return (
+        <ScrollView {...scrollViewProps}>
+          {mount && children}
+        </ScrollView>
+      );
+    };
+  };
+
+  render(){
+    const { modalHeader, modalFooter, overlay, ...props } = this.props;
     
     return(
       <View style={styles.rootContainer}>
@@ -101,17 +128,7 @@ export class ModalBackground extends React.PureComponent {
         />
         <View style={styles.background}/>
         <View style={styles.scrollViewContainer}>
-          <ScrollView 
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollviewContent}
-            scrollIndicatorInsets={{ 
-              top   : MODAL_HEADER_HEIGHT,
-              bottom: MODAL_FOOTER_HEIGHT
-            }}
-            {...this.props}
-          >
-            {mount && children}
-          </ScrollView>
+          {this._renderScrollView()}
         </View>
         {modalHeader}
         {modalFooter}
