@@ -12,7 +12,7 @@ import { ModalHeader         } from 'app/src/components/ModalHeader';
 import { ModalFooter         } from 'app/src/components/ModalFooter';
 import { ModalFooterButton   } from 'app/src/components/ModalFooterButton';
 import { ModalSection        } from 'app/src/components/ModalSection';
-import { ModalInputField     } from 'app/src/components/ModalInputField';
+import { ModalOverlayCheck   } from 'app/src/components/ModalOverlayCheck';
 import { ListFooterIcon      } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
 import { ButtonGradient      } from 'app/src/components/ButtonGradient';
@@ -83,17 +83,19 @@ export class QuizCreateQuestionModal extends React.Component {
 
     const onPressDone = props[MNPQuizCreateQuestion.onPressDone];
 
-    // extract question values from state
-    const question = QuizQuestionModel.extract(this.state);
-
     const isValidTitle    = this.inputFieldRefQuestion.isValid(false);
     const isValidSubtitle = this.inputFieldRefAnswer  .isValid(false);
 
     if(isValidTitle && isValidSubtitle){
+      // extract question values from state
+      const question = QuizQuestionModel.extract(this.state);
+      
       // trigger callback event
       onPressDone && onPressDone({
         question,
       });
+
+      await this.overlay.start();
 
       // close modal
       Navigation.dismissModal(componentId);
@@ -159,11 +161,17 @@ export class QuizCreateQuestionModal extends React.Component {
       </ModalFooter>
     );
 
+    const overlay = (
+      <ModalOverlayCheck
+        ref={r => this.overlay = r}
+      />
+    );
+
     return (
       <ModalBackground
         stickyHeaderIndices={[0, 1, 3]}
         animateAsGroup={true}
-        {...{modalHeader, modalFooter}}
+        {...{modalHeader, modalFooter, overlay}}
       >
         <ModalSection containerStyle={{ padding: 0 }}>
           <ImageTitleSubtitle

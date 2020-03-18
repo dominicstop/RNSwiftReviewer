@@ -80,6 +80,7 @@ export class QuizAddQuestionModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
+  // Add New Question button press
   _handleOnPressAddNewQuestion = () => {
     const state = this.state;
     
@@ -96,9 +97,9 @@ export class QuizAddQuestionModal extends React.Component {
     });
   };
 
-  // QuizCreateQuestionModal
-  _handleOnPressDoneQuizCreateQuestionModal = () => {
-    console.log('Test Test');
+  // QuizCreateQuestionModal: onPress Done
+  _handleOnPressDoneQuizCreateQuestionModal = ({question}) => {
+    console.log(JSON.stringify(question));
   };
 
   render(){
@@ -152,7 +153,7 @@ export class QuizAddQuestionModal extends React.Component {
               bgColor={Colors.BLUE[100]}
               fgColor={Colors.BLUE['A700']}
               alignment={'CENTER'}
-              title={'Add New Questions'}
+              title={'Add New Question'}
               onPress={this._handleOnPressAddNewQuestion}
               iconDistance={10}
               isBgGradient={false}
