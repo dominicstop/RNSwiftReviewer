@@ -32,3 +32,9 @@ export const MNPQuizAddQuestion = {
   onPressDone: 'onPressDone',
 };
 
+// QuizCreateQuestionModal
+export const MNPQuizCreateQuestion = {
+  quizSection: 'quizSection',
+  onPressDone: 'onPressDone',
+};
+

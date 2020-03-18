@@ -15,7 +15,7 @@ import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { ButtonGradient     } from 'app/src/components/ButtonGradient';
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
-import { MNPQuizAddQuestion } from 'app/src/constants/NavParams';
+import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -82,17 +82,29 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   _handleOnPressAddNewQuestion = () => {
+    const state = this.state;
+    
+    // extract/isolate section values from stata
+    const section = QuizSectionModel.extract(state);
+
+    // open QuizCreateQuestionModal
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
       navProps: {
-        
+        [MNPQuizCreateQuestion.quizSection]: section,
+        [MNPQuizCreateQuestion.onPressDone]: this._handleOnPressDoneQuizCreateQuestionModal,
       },
     });
   };
 
+  // QuizCreateQuestionModal
+  _handleOnPressDoneQuizCreateQuestionModal = () => {
+    console.log('Test Test');
+  };
+
   render(){
     const { styles } = QuizAddQuestionModal;
-    const state = this.props;
+    const state = this.state;
 
     const sectionTitle = state[QuizSectionKeys.sectionTitle];
 

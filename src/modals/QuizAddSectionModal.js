@@ -32,31 +32,31 @@ import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { SectionTypes } from 'app/src/models/QuizSectionModel';
+import { SectionTypes, SectionTypeTitles } from 'app/src/models/QuizSectionModel';
 
-
+// Radio List Object Map
 const sectionListItems = {
   [SectionTypes.IDENTIFICATION]: {
     [RadioListKeys.type    ]: SectionTypes.IDENTIFICATION,
-    [RadioListKeys.title   ]: 'Identification',
+    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.IDENTIFICATION],
     [RadioListKeys.desc    ]: 'Type the answer to the question',
     [RadioListKeys.descLong]: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'
   }, 
   [SectionTypes.MATCHING_TYPE]: {
     [RadioListKeys.type    ]: SectionTypes.MATCHING_TYPE,
-    [RadioListKeys.title   ]: 'Matching Type',
+    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.MATCHING_TYPE],
     [RadioListKeys.desc    ]: 'Match the correct answer from a list',
     [RadioListKeys.descLong]: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut.'
   },
   [SectionTypes.MULTIPLE_CHOICE]: {
     [RadioListKeys.type    ]: SectionTypes.MULTIPLE_CHOICE,
-    [RadioListKeys.title   ]: 'Multiple Choice',
+    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.MULTIPLE_CHOICE],
     [RadioListKeys.desc    ]: 'Choose the correct answer from choices',
     [RadioListKeys.descLong]: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
   },
   [SectionTypes.TRUE_OR_FALSE]: {
     [RadioListKeys.type    ]: SectionTypes.TRUE_OR_FALSE,
-    [RadioListKeys.title   ]: 'True or False',
+    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.TRUE_OR_FALSE],
     [RadioListKeys.desc    ]: 'Answer the statement a true/false response',
     [RadioListKeys.descLong]: 'Nullam quis risus eget urna mollis ornare vel eu leo.'
 
@@ -319,8 +319,8 @@ export class QuizAddSectionModal extends React.Component {
         <ModalFooterButton
           buttonLeftTitle={(isEditing? 'Save' : 'Done')}
           buttonLeftSubtitle={(isEditing
-            ? 'Update section details'
-            : 'Create new section'
+            ? 'Update section'
+            : 'Create section'
           )}
           onPressButtonLeft={this._handleOnPressButtonLeft}
           onPressButtonRight={this._handleOnPressButtonRight}

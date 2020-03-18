@@ -45,6 +45,17 @@ export class QuizSectionModel {
     });
   };
 
+  static extract(values){
+    let   copy = QuizSectionModel.wrap({});
+    const keys = Object.keys(QuizSectionKeys);
+
+    for (const key of keys) {
+      copy[key] = values[key];
+    };
+
+    return copy;
+  };
+
   constructor(values = {}){
     this.values = QuizSectionModel.wrap(values);
   };
@@ -86,5 +97,4 @@ export class QuizSectionModel {
       `section-type:${type}-date:${created}-hash:${hashCode}-quiz:${quizID}`
     );
   };
-
 };

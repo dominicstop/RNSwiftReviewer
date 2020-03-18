@@ -26,6 +26,11 @@ export class ImageTitleSubtitle extends React.Component {
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 13,
+      paddingVertical: 5,
+    },
+    rootContainerNoPadding: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     image: {
       width: 85,
@@ -34,7 +39,6 @@ export class ImageTitleSubtitle extends React.Component {
     textContainer: {
       flex: 1,
       marginLeft: 15,
-      paddingVertical: 5,
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,
@@ -50,8 +54,9 @@ export class ImageTitleSubtitle extends React.Component {
 
   static defaultProps = {
     imageSize: 77,
-    title    : 'Cursus Commodo',
-    subtitle : 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.',
+    title     : 'Cursus Commodo',
+    subtitle  : 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.',
+    hasPadding: true,
   };
 
   render(){
@@ -62,8 +67,13 @@ export class ImageTitleSubtitle extends React.Component {
       width: props.imageSize,
     };
 
+    const rootContainerStyle = (props.hasPadding
+      ? styles.rootContainer
+      : styles.rootContainerNoPadding
+    );
+
     return(
-      <View style={[styles.rootContainer, props.containerStyle]}>
+      <View style={[rootContainerStyle, props.containerStyle]}>
         <Animatable.Image
           style={[styles.image, imageStyle]}
           source={props.imageSource}

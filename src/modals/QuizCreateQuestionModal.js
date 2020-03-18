@@ -19,10 +19,8 @@ import { ButtonGradient      } from 'app/src/components/ButtonGradient';
 import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
 import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
 
-
-
 import { RNN_ROUTES } from 'app/src/constants/Routes';
-import { MNPQuizAddQuestion } from 'app/src/constants/NavParams';
+import { MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -33,9 +31,16 @@ import * as Helpers  from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
 import { QuizSectionKeys } from '../constants/PropKeys';
-import { QuizSectionModel } from '../models/QuizSectionModel';
+import { QuizSectionModel, SectionTypeTitles, SectionTypes } from '../models/QuizSectionModel';
 import { Divider } from 'react-native-elements';
 
+
+const SectionTypeDescs = {
+  [SectionTypes.TRUE_OR_FALSE  ]: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam.'  ,
+  [SectionTypes.MATCHING_TYPE  ]: 'Fusce dapibus, tellus ac cursus commodo, tortorjusto sit amet risus.'  ,
+  [SectionTypes.IDENTIFICATION ]: 'Morbi leo risus, porta ac consectetur ac, vestibulum at eros.' ,
+  [SectionTypes.MULTIPLE_CHOICE]: 'Cum sociis natoque penatibus et magnis dis parturient montes',
+};
 
 export class QuizCreateQuestionModal extends React.Component {
   static options() {
@@ -55,21 +60,13 @@ export class QuizCreateQuestionModal extends React.Component {
 
   constructor(props){
     super(props);
-
-    // get section from nav props
-    const section = props[MNPQuizAddQuestion.quizSection];
-    this.quizSection = new QuizSectionModel(section);
-
-    this.state = {
-      ...this.quizSection.values,
-    };
   };
 
   // ModalFooter: save button
   _handleOnPressButtonLeft = () => {
     const { componentId, ...props } = this.props;
 
-    const onPressDone = props[MNPQuizAddQuestion.onPressDone];
+    const onPressDone = props[MNPQuizCreateQuestion.onPressDone];
 
     // trigger callback event
     onPressDone && onPressDone({
@@ -88,20 +85,22 @@ export class QuizCreateQuestionModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
-  _handleOnPressAddNewQuestion = () => {
-    alert();
-  };
-
   render(){
     const { styles } = QuizCreateQuestionModal;
-    const state = this.props;
+    const props = this.props;
 
-    const sectionTitle = state[QuizSectionKeys.sectionTitle];
+    const section = props[MNPQuizCreateQuestion.quizSection];
+
+    const sectionTitle = section[QuizSectionKeys.sectionTitle];
+    const sectionType  = section[QuizSectionKeys.sectionType];
+
+    const displaySectionType = SectionTypeTitles[sectionType];
+    const displaySectionDesc = SectionTypeDescs [sectionType];
 
     const modalHeader = (
       <ModalHeader
         title={'New Question'}
-        subtitle={"Create and add a new question"}
+        subtitle={`Create a new question for ${sectionTitle}`}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
@@ -127,9 +126,18 @@ export class QuizCreateQuestionModal extends React.Component {
 
     return (
       <ModalBackground
-        stickyHeaderIndices={[0, 2]}
+        stickyHeaderIndices={[1, 3]}
+        animateAsGroup={true}
         {...{modalHeader, modalFooter}}
       >
+        <ModalSection containerStyle={{ padding: 0 }}>
+          <ImageTitleSubtitle
+            title={`New ${displaySectionType} item`}
+            subtitle={displaySectionDesc}
+            imageSource={require('app/assets/icons/e-book-computer.png')}
+            hasPadding={false}
+          />
+        </ModalSection>
         <ModalSectionHeader
           title={'Question'}
           showTopBorder={false}

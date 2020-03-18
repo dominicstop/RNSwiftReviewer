@@ -46,7 +46,12 @@ const styles = StyleSheet.create({
 
 export class ModalBackground extends React.PureComponent {
   static propTypes = {
-    modalHeader: PropTypes.element,
+    modalHeader   : PropTypes.element,
+    animateAsGroup: PropTypes.bool   ,
+  };
+
+  static defaultProps = {
+    animateAsGroup: false,
   };
 
   constructor(props){
@@ -66,8 +71,16 @@ export class ModalBackground extends React.PureComponent {
     const { modalHeader, modalFooter, overlay, ...props } = this.props;
     const { mount } = this.state;
 
-    const children = React.Children.map(props.children,
-      (child, index) => (
+    const children = (props.animateAsGroup? (
+      <Animatable.View
+        animation={'fadeInUp'}
+        duration={300}
+        useNativeDriver={true}
+      >
+        {props.children}
+      </Animatable.View>
+    ):(
+      React.Children.map(props.children, (child, index) => (
         <AnimatedListItem
           animation={'fadeInUp'}
           duration={300}
@@ -76,8 +89,8 @@ export class ModalBackground extends React.PureComponent {
         >
           {child}
         </AnimatedListItem>
-      )
-    );
+      ))
+    ));
     
     return(
       <View style={styles.rootContainer}>
