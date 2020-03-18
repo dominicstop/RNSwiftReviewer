@@ -3,8 +3,7 @@ import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated, Image
 
 import * as Animatable from 'react-native-animatable';
 
-import Ionicon    from '@expo/vector-icons/Ionicons';
-import LottieView from 'lottie-react-native';
+import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Divider    } from 'react-native-elements';
 import { iOSUIKit   } from 'react-native-typography';
@@ -14,6 +13,7 @@ import { ModalBackground   } from 'app/src/components/ModalBackground';
 import { ModalHeader       } from 'app/src/components/ModalHeader';
 import { ModalFooter       } from 'app/src/components/ModalFooter';
 import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
+import { ModalOverlayCheck } from 'app/src/components/ModalOverlayCheck';
 import { ModalSection      } from 'app/src/components/ModalSection';
 import { ModalInputField   } from 'app/src/components/ModalInputField';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
@@ -243,16 +243,7 @@ export class QuizAddSectionModal extends React.Component {
       const title = this.inputFieldRefTitle.getText();
       const desc  = this.inputFieldRefDesc .getText()
 
-      const animation = Animated.timing(this.progress, {
-        toValue : 1,
-        duration: 750,
-      });
-
-      await new Promise(resolve => {
-        animation.start(() => {
-          resolve();
-        });
-      });
+      await this.overlay.start();
 
       // trigger callback event
       onPressDone && onPressDone({
@@ -329,16 +320,9 @@ export class QuizAddSectionModal extends React.Component {
     );
 
     const overlay = (
-      <Animated.View 
-        style={[styles.overlayContainer, overlayContainerStyle]}
-        pointerEvents={'none'}
-      >
-        <LottieView
-          ref={r => this.lottieRef = r}
-          progress={this.progress}
-          source={this.lottieSource}
-        />
-      </Animated.View>
+      <ModalOverlayCheck
+        ref={r => this.overlay = r}
+      />
     );
 
     return (

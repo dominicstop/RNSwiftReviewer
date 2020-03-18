@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
-import LottieView from 'lottie-react-native';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBackground    } from 'app/src/components/ModalBackground';

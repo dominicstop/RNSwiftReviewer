@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
-import LottieView from 'lottie-react-native';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBackground   } from 'app/src/components/ModalBackground';
@@ -10,6 +9,7 @@ import { ModalHeader       } from 'app/src/components/ModalHeader';
 import { ModalFooter       } from 'app/src/components/ModalFooter';
 import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
 import { ModalSection      } from 'app/src/components/ModalSection';
+import { ModalOverlayCheck } from 'app/src/components/ModalOverlayCheck';
 import { ModalInputField   } from 'app/src/components/ModalInputField';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
 
@@ -27,7 +27,7 @@ import * as Helpers  from 'app/src/functions/helpers';
 import { ModalController } from 'app/src/functions/ModalController';
 
 
-export class CreateQuizModal extends React.Component {
+export class CreateQuizModal extends React.PureComponent {
   static options() {
     return {
     };
@@ -41,27 +41,10 @@ export class CreateQuizModal extends React.Component {
     headerContainer: {
       paddingVertical: 10,
     },
-    overlayContainer: {
-      ...StyleSheet.absoluteFillObject,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'rgba(255,255,255,0.5)'
-    },
-    overlay: {
-    },
   });
 
   constructor(props){
     super(props);
-
-    this.progress = new Animated.Value(0);
-
-    this._opacity = this.progress.interpolate({
-      inputRange : [0, 0.25],
-      outputRange: [0, 1  ],
-    });
-
-    this.lottieSource = require('app/assets/lottie/check_done.json');
   };
 
   _handleOnSubmitEditing = ({index}) => {
@@ -92,16 +75,7 @@ export class CreateQuizModal extends React.Component {
         [SNPCreateQuiz.quizDesc ]: desc,
       });
 
-      const animation = Animated.timing(this.progress, {
-        toValue : 1,
-        duration: 750,
-      });
-
-      await new Promise(resolve => {
-        animation.start(() => {
-          resolve();
-        });
-      });
+      await this.overlay.start();
 
       // trigger event callback
       onPressDone && onPressDone({title, desc});
@@ -135,10 +109,6 @@ export class CreateQuizModal extends React.Component {
 
 
     const isEditing = props[MNPCreateQuiz.isEditing];
-
-    const overlayContainerStyle = {
-      opacity: this._opacity,
-    };
 
     const modalHeader = (
       <ModalHeader
@@ -176,16 +146,9 @@ export class CreateQuizModal extends React.Component {
     );
 
     const overlay = (
-      <Animated.View 
-        style={[styles.overlayContainer, overlayContainerStyle]}
-        pointerEvents={'none'}
-      >
-        <LottieView
-          ref={r => this.lottieRef = r}
-          progress={this.progress}
-          source={this.lottieSource}
-        />
-      </Animated.View>
+      <ModalOverlayCheck
+        ref={r => this.overlay = r}
+      />
     );
 
     return (
