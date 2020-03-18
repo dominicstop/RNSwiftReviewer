@@ -1,23 +1,8 @@
-import { IS_DEBUG } from "app/src/constants/Options";
-import * as Helpers from "app/src/functions/helpers";
-
+import { IS_DEBUG        } from "app/src/constants/Options";
 import { QuizSectionKeys } from 'app/src/constants/PropKeys';
 
-// section types enum
-export const SectionTypes = {
-  TRUE_OR_FALSE  : 'TRUE_OR_FALSE'  ,
-  MATCHING_TYPE  : 'MATCHING_TYPE'  ,
-  IDENTIFICATION : 'IDENTIFICATION' ,
-  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
-};
+import * as Helpers from "app/src/functions/helpers";
 
-// display title string
-export const SectionTypeTitles = {
-  [SectionTypes.TRUE_OR_FALSE  ]: 'True or False'  ,
-  [SectionTypes.MATCHING_TYPE  ]: 'Matching Type'  ,
-  [SectionTypes.IDENTIFICATION ]: 'Identification' ,
-  [SectionTypes.MULTIPLE_CHOICE]: 'Multiple Choice',
-};
 
 // create object with keys and ass. null values
 const defaultValues = IS_DEBUG && Helpers.createObjectFromKeys(QuizSectionKeys);

@@ -23,6 +23,7 @@ import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
+import { SectionTypes, SectionTypeTitles } from 'app/src/constants/SectionTypes';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -32,7 +33,6 @@ import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { SectionTypes, SectionTypeTitles } from 'app/src/models/QuizSectionModel';
 
 // Radio List Object Map
 const sectionListItems = {
