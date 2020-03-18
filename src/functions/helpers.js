@@ -224,7 +224,8 @@ export function sizeSelectSimple({normal, large}){
 };
 
 export function stringHash(string = '') {
-    let hash = 0, length = string.length, char;
+    let length = string?.length ?? 0;
+    let hash = 0, char;
 
     if (length === 0) return hash;
 
