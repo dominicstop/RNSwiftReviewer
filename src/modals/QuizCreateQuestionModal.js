@@ -29,9 +29,14 @@ import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
+import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
+import { SectionTypes, SectionTypeTitles } from 'app/src/constants/SectionTypes';
+
+
+import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+
+
 import { ModalController } from 'app/src/functions/ModalController';
-import { QuizSectionKeys } from '../constants/PropKeys';
-import { QuizSectionModel, SectionTypeTitles, SectionTypes } from '../models/QuizSectionModel';
 import { Divider } from 'react-native-elements';
 
 
@@ -60,20 +65,49 @@ export class QuizCreateQuestionModal extends React.Component {
 
   constructor(props){
     super(props);
+
+    // get section from props
+    const section = props[MNPQuizCreateQuestion.quizSection];
+
+    let question = new QuizQuestionModel();
+    question.initFromSection(section);
+
+    this.state = {
+      ...question.values,
+    };
   };
 
   // ModalFooter: save button
-  _handleOnPressButtonLeft = () => {
+  _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
 
     const onPressDone = props[MNPQuizCreateQuestion.onPressDone];
 
-    // trigger callback event
-    onPressDone && onPressDone({
-    });
+    // extract question values from state
+    const question = QuizQuestionModel.extract(this.state);
 
-    // close modal
-    Navigation.dismissModal(componentId);
+    const isValidTitle    = this.inputFieldRefQuestion.isValid(false);
+    const isValidSubtitle = this.inputFieldRefAnswer  .isValid(false);
+
+    if(isValidTitle && isValidSubtitle){
+      // trigger callback event
+      onPressDone && onPressDone({
+        question,
+      });
+
+      // close modal
+      Navigation.dismissModal(componentId);
+
+    } else {
+      await Helpers.asyncAlert({
+        title: 'Invalid Input',
+        desc : 'Oops, please fill out the required forms to continue.'
+      });
+
+      //animate shake
+      this.inputFieldRefQuestion.isValid(true);
+      this.inputFieldRefAnswer  .isValid(true);
+    };
   };
 
   // ModalFooter: cancel button
@@ -88,6 +122,7 @@ export class QuizCreateQuestionModal extends React.Component {
   render(){
     const { styles } = QuizCreateQuestionModal;
     const props = this.props;
+    const state = this.state;
 
     const section = props[MNPQuizCreateQuestion.quizSection];
 
@@ -126,7 +161,7 @@ export class QuizCreateQuestionModal extends React.Component {
 
     return (
       <ModalBackground
-        stickyHeaderIndices={[1, 3]}
+        stickyHeaderIndices={[0, 1, 3]}
         animateAsGroup={true}
         {...{modalHeader, modalFooter}}
       >
@@ -153,10 +188,10 @@ export class QuizCreateQuestionModal extends React.Component {
           <ModalInputMultiline
             index={0}
             ref={r => this.inputFieldRefQuestion = r}
-            inputRef={r => this.inputRefTitle = r}
+            inputRef={r => this.inputRefQuestion = r}
             subtitle={'Enter the question you want to ask'}
             placeholder={'Input Question Text'}
-            //initialValue={props[MNPCreateQuiz.quizTitle]}
+            //initialValue={state[QuizQuestionKeys.questionText] ?? ''}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
           />
@@ -174,11 +209,11 @@ export class QuizCreateQuestionModal extends React.Component {
         <ModalSection showBorderTop={false}>
           <ModalInputMultiline
             index={1}
-            ref={r => this.inputFieldRefQuestion = r}
-            inputRef={r => this.inputRefTitle = r}
+            ref={r => this.inputFieldRefAnswer = r}
+            inputRef={r => this.inputRefAnswer = r}
             subtitle={"Enter the question's answer"}
             placeholder={'Input Answer Text'}
-            //initialValue={props[MNPCreateQuiz.quizTitle]}
+            //initialValue={state[QuizQuestionKeys.questionAnswer] ?? ''}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
           />

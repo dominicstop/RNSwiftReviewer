@@ -3,6 +3,7 @@
 
 - [ ] Refactor to use Immutability helper for nested state
 - [ ] Refactor wrap on press handlers inside debounce to prevent multiple invocations
+- [ ] Refactor: move model extract method to helpers (reduce duplicated code)
 - [ ] Sort: Record scroll pos + Don't scroll to top when sorting if below threshold
 - [ ] Record header height + Add snap to offset for header
 - [ ] CreateQuizModal: replace input icons

@@ -126,6 +126,21 @@ export class ModalInputMultiline extends React.Component {
     });
   };
 
+  isValid = (animate) => {
+    const { validate } = this.props;
+    const { textInput,mode } = this.state;
+
+    const isValid = validate && validate(textInput);
+    if(!isValid && animate){
+      this.inputContainerRef.shake(750);
+      this.setState({
+        mode: MODES.INVALID
+      });
+    };
+
+    return isValid;
+  };
+
   _handleOnTextFocus = () => {
     this.setState({mode: MODES.FOCUSED});
     const animation = timing(this._progress, {
@@ -205,7 +220,7 @@ export class ModalInputMultiline extends React.Component {
         <Reanimated.View style={[styles.subtitleContainer, subtitleContainerStyle]}>
           <ListItemBadge
             value={props.index + 1}
-            size={15}
+            size={17}
             initFontSize={12}
             color={values.colorItemBadge}
           />

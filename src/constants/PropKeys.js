@@ -1,7 +1,7 @@
-// enum declaration for object properties names
-// used for defining a model's property names
+// enum declaration for object property names
+// used for defining a model's property key
 
-// property names for quiz
+// property names for QuizModel
 export const QuizKeys = {
   quizID           : 'quizID'           ,
   quizTitle        : 'quizTitle'        ,
@@ -14,7 +14,7 @@ export const QuizKeys = {
   quizSectionCount : 'quizSectionCount' ,
 };
 
-// property names for section
+// property names for QuizSectionModel
 export const QuizSectionKeys = {
   quizID              : 'quizID'              ,
   sectionID           : 'sectionID'           ,
@@ -24,4 +24,15 @@ export const QuizSectionKeys = {
   sectionDateCreated  : 'sectionDateCreated'  ,
   sectionQuestions    : 'sectionQuestions'    ,
   sectionQuestionCount: 'sectionQuestionCount',
+};
+
+// property names for QuizQuestionModel
+export const QuizQuestionKeys = {
+  quizID         : 'quizID'         ,
+  sectionID      : 'sectionID'      ,
+  sectionType    : 'sectionType'    ,
+  questionID     : 'questionID'     ,
+  questionText   : 'questionText'   ,
+  questionAnswer : 'questionAnswer' ,
+  questionChoices: 'questionChoices',
 };
