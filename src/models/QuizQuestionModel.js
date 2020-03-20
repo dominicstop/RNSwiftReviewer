@@ -56,12 +56,12 @@ export class QuizQuestionModel {
     this.values[QuizQuestionKeys.sectionType] = type;
   };
 
-  set questionText(title = ''){
-    this.values[QuizQuestionKeys.sectionTitle] = title;
+  set questionText(text = ''){
+    this.values[QuizQuestionKeys.questionText] = text;
   };
 
-  set question(desc = ''){
-    this.values[QuizQuestionKeys.sectionDesc] = desc;
+  set answer(answer = ''){
+    this.values[QuizQuestionKeys.questionAnswer] = answer;
   };
 
   setDateCreated(){

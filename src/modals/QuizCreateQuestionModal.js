@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
-import LottieView        from 'lottie-react-native';
 import Ionicon           from '@expo/vector-icons/Ionicons';
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -71,6 +70,7 @@ export class QuizCreateQuestionModal extends React.Component {
 
     let question = new QuizQuestionModel();
     question.initFromSection(section);
+    this.question = question;
 
     this.state = {
       ...question.values,
@@ -87,12 +87,15 @@ export class QuizCreateQuestionModal extends React.Component {
     const isValidSubtitle = this.inputFieldRefAnswer  .isValid(false);
 
     if(isValidTitle && isValidSubtitle){
+      this.question.questionText = this.inputFieldRefQuestion.getTextValue();
+      this.question.answer       = this.inputFieldRefAnswer  .getTextValue();
+
       // extract question values from state
       const question = QuizQuestionModel.extract(this.state);
-      
+
       // trigger callback event
       onPressDone && onPressDone({
-        question,
+        question: this.question.values,
       });
 
       await this.overlay.start();

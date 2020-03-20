@@ -1,5 +1,5 @@
-import { IS_DEBUG        } from "app/src/constants/Options";
-import { QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { IS_DEBUG } from "app/src/constants/Options";
+import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from "app/src/functions/helpers";
 
@@ -81,5 +81,18 @@ export class QuizSectionModel {
     this.values[QuizSectionKeys.sectionID] = (
       `section-type:${type}-date:${created}-hash:${hashCode}-quiz:${quizID}`
     );
+  };
+
+  addQuestion(question = {}){
+    const questions = this.values?.[QuizSectionKeys.sectionQuestions] ?? [];
+    
+    const newQuestions = [ ...questions, {
+      ...question,
+      [QuizQuestionKeys.quizID   ]: this.values[QuizSectionKeys.quizID   ],
+      [QuizQuestionKeys.sectionID]: this.values[QuizSectionKeys.sectionID],
+    }];
+
+    this.values[QuizSectionKeys.sectionQuestions    ] = newQuestions;
+    this.values[QuizSectionKeys.sectionQuestionCount] = newQuestions.length;
   };
 };
