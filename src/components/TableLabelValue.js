@@ -2,14 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { iOSUIKit         } from 'react-native-typography';
-import { Divider          } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { iOSUIKit } from 'react-native-typography';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-
+// converts: [['label', 'value'], ['label', 'value'], ...]
 function transformLabelValueMap(labelValueMap){
   let labelValueItems = labelValueMap.slice();
 
@@ -38,8 +36,9 @@ function transformLabelValueMap(labelValueMap){
   return rows;
 };
 
-
-export class TableLabelValue extends React.Component {
+// displays a row/col of: 
+// (Label:  value  Label: value) elements
+export class TableLabelValue extends React.PureComponent {
   static propTypes = {
     labelValueMap: PropTypes.array,
   };

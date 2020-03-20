@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, SectionList, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-
-export class ListCard extends React.Component {
+// wraps children inside a card w/ shadow
+export class ListCard extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
       marginHorizontal: 10,

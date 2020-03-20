@@ -7,7 +7,7 @@ import { iOSUIKit } from 'react-native-typography';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import * as Colors from 'app/src/constants/Colors';
+import * as Colors  from 'app/src/constants/Colors';
 
 import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
@@ -21,8 +21,8 @@ const MODES = {
 
 function deriveStateFromMode(mode){
   switch (mode) {
-    case MODES.INITIAL:
-    case MODES.BLURRED: return {
+    case MODES.BLURRED:
+    case MODES.INITIAL: return {
       colorBorder     : Colors.BLUE[800],
       colorInput      : Colors.GREY[600],
       colorSubtitle   : Colors.GREY[900],
@@ -49,7 +49,7 @@ function deriveStateFromMode(mode){
   };
 };
 
-export class ModalInputMultiline extends React.Component {
+export class ModalInputMultiline extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
     },
@@ -128,7 +128,7 @@ export class ModalInputMultiline extends React.Component {
 
   isValid = (animate) => {
     const { validate } = this.props;
-    const { textInput,mode } = this.state;
+    const { textInput, mode } = this.state;
 
     const isValid = validate && validate(textInput);
     if(!isValid && animate){
@@ -141,8 +141,14 @@ export class ModalInputMultiline extends React.Component {
     return isValid;
   };
 
+  getTextValue = () => {
+    const { textInput } = this.state;
+    return textInput;
+  };
+
   _handleOnTextFocus = () => {
     this.setState({mode: MODES.FOCUSED});
+
     const animation = timing(this._progress, {
       duration: 300,
       toValue : 100,
@@ -182,7 +188,7 @@ export class ModalInputMultiline extends React.Component {
 
   render(){
     const { styles } = ModalInputMultiline;
-    const { mode } = this.state;
+    const { mode, ...state } = this.state;
     const props = this.props;
     
     const values = deriveStateFromMode(mode);
@@ -245,6 +251,7 @@ export class ModalInputMultiline extends React.Component {
             returnKeyType={'default'}
             multiline={true}
             blurOnSubmit={false}
+            value={state.textInput}
             {...props}
           />
         </Animatable.View>

@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
   },
 });
 
+// used in conjuction w/ components/ModalSection
+// used inside of ModalBackground
+// displays an icon + title/subtitle w/ a blurred bg
 export class ModalSectionHeader extends React.PureComponent {
   static propTypes = {
     title    : PropTypes.string,
@@ -86,9 +89,16 @@ export class ModalSectionHeader extends React.PureComponent {
         />
         <View style={styles.background}/>
         <View style={[styles.titleContainer, titleContainerStyle]}>
-          <View style={styles.titleIconContainer}>
+          <Animatable.View 
+            style={styles.titleIconContainer}
+            animation={'pulse'}
+            duration={10000}
+            iterationCount={'infinite'}
+            delay={1000}
+            useNativeDriver={true}
+          >
             {props.titleIcon}
-          </View>
+          </Animatable.View>
           <Text style={[styles.textTitle, textTitleStyle]}>
             {props.title}
           </Text>

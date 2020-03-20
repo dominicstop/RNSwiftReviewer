@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
@@ -44,14 +44,21 @@ const styles = StyleSheet.create({
   },
 });
 
+// Used for creating modals
+// Used as a root comp. as a wrapper
+// blurred background + header/footer support
 export class ModalBackground extends React.PureComponent {
   static propTypes = {
-    modalHeader   : PropTypes.element,
-    animateAsGroup: PropTypes.bool   ,
+    overlay         : PropTypes.element,
+    modalHeader     : PropTypes.element,
+    modalFooter     : PropTypes.element,
+    animateAsGroup  : PropTypes.bool   ,
+    wrapInScrollView: PropTypes.bool   ,
   };
 
   static defaultProps = {
-    animateAsGroup: false,
+    animateAsGroup  : false,
+    wrapInScrollView: true ,
   };
 
   constructor(props){
@@ -127,9 +134,27 @@ export class ModalBackground extends React.PureComponent {
           blurAmount={75}
         />
         <View style={styles.background}/>
-        <View style={styles.scrollViewContainer}>
-          {this._renderScrollView()}
-        </View>
+        {props.wrapInScrollView? (
+          <View style={styles.scrollViewContainer}>
+            {this._renderScrollView()}
+          </View>
+        ):(
+          <Animatable.View
+            style={{flex: 1}}
+            animation={'fadeInUp'}
+            duration={300}
+            useNativeDriver={true}
+          >
+            {React.cloneElement(props.children, {
+              style: styles.scrollView,
+              contentContainerStyle: styles.scrollviewContent,
+              scrollIndicatorInsets: { 
+                top   : MODAL_HEADER_HEIGHT,
+                bottom: MODAL_FOOTER_HEIGHT,
+              },
+            })}
+          </Animatable.View>
+        )}
         {modalHeader}
         {modalFooter}
         {overlay}

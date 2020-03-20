@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
   },
 });
 
+// used in components/ModalBackground as prop for modalOverlay
+// shows a check overlay animation
 export class ModalOverlayCheck extends React.PureComponent {
   constructor(props){
     super(props);
@@ -28,7 +30,7 @@ export class ModalOverlayCheck extends React.PureComponent {
     this.lottieSource = require('app/assets/lottie/check_done.json');
   };
 
-  start = async (duration = 500) => {
+  start = async (duration = 750) => {
     const animation = Animated.timing(this.progress, {
       duration,
       toValue: 1

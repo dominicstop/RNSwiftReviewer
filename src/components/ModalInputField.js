@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import React, { Fragment } from 'react';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
@@ -7,7 +7,7 @@ import { iOSUIKit } from 'react-native-typography';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import { BLUE, GREY, RED, INDIGO } from '../constants/Colors';
+import * as Colors from '../constants/Colors';
 
 import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
@@ -18,7 +18,7 @@ const MODES = {
   'INVALID': 'INVALID',
 };
 
-export class ModalInputField extends React.Component {
+export class ModalInputField extends React.PureComponent {
   static propTypes = {
     title       : PropTypes.string,
     subtitle    : PropTypes.string,
@@ -47,7 +47,7 @@ export class ModalInputField extends React.Component {
     inputBorder: {
       ...StyleSheet.absoluteFillObject,
       borderRadius: 10,
-      borderColor: BLUE.A700,
+      borderColor: Colors.BLUE.A700,
     },
     iconWrapper: {
       height: 40,
@@ -229,15 +229,15 @@ export class ModalInputField extends React.Component {
     const textInputStyle = (() => {
       switch (mode) {
         case MODES.BLURRED: return {
-          color     : GREY[700],
+          color     : Colors.GREY[700],
           fontWeight: '300',
         };
         case MODES.FOCUSED: return {
-          color     : BLUE[900],
+          color     : Colors.BLUE[900],
           fontWeight: '600',
         };
         case MODES.INVALID: return {
-          color     : RED[700],
+          color     : Colors.RED[700],
           fontWeight: '300',
         };
       };
@@ -245,9 +245,9 @@ export class ModalInputField extends React.Component {
 
     const tintColor = (() => {
       switch (mode) {
-        case MODES.BLURRED: return BLUE[800];
-        case MODES.FOCUSED: return BLUE.A700;
-        case MODES.INVALID: return RED.A700;
+        case MODES.BLURRED: return Colors.BLUE[800];
+        case MODES.FOCUSED: return Colors.BLUE.A700;
+        case MODES.INVALID: return Colors.RED.A700;
       };
     })();
 
@@ -280,18 +280,18 @@ export class ModalInputField extends React.Component {
     const textTitleStyle = {
       fontWeight: concat(this._titleFontWeight, '00'),
       color: (
-       (mode === MODES.BLURRED)? INDIGO[1100] :
-       (mode === MODES.FOCUSED)? INDIGO[900] :
-       (mode === MODES.INVALID)? RED   [900 ] : null
+       (mode === MODES.BLURRED)? Colors.INDIGO[1100] :
+       (mode === MODES.FOCUSED)? Colors.INDIGO[900 ] :
+       (mode === MODES.INVALID)? Colors.RED   [900 ] : null
       ),
     };
 
    const textSubtitleStyle = {
      opacity: this._subtitleOpacity,
      color: (
-       (mode === MODES.BLURRED)? GREY[800] :
-       (mode === MODES.FOCUSED)? GREY[900] :
-       (mode === MODES.INVALID)? RED [900] : null
+       (mode === MODES.BLURRED)? Colors.GREY[800] :
+       (mode === MODES.FOCUSED)? Colors.GREY[900] :
+       (mode === MODES.INVALID)? Colors.RED [900] : null
      ),
    };
 
@@ -307,9 +307,9 @@ export class ModalInputField extends React.Component {
             value={props.index + 1}
             size={18}
             color={(
-              (mode === MODES.BLURRED)? INDIGO.A400 :
-              (mode === MODES.FOCUSED)? INDIGO.A700 :
-              (mode === MODES.INVALID)? RED   .A700 : null
+              (mode === MODES.BLURRED)? Colors.INDIGO.A400 :
+              (mode === MODES.FOCUSED)? Colors.INDIGO.A700 :
+              (mode === MODES.INVALID)? Colors.RED   .A700 : null
             )}
           />
           <Reanimated.Text style={[styles.textTitle, textTitleStyle]}>
@@ -345,7 +345,7 @@ export class ModalInputField extends React.Component {
             maxLength={300}
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
-            placeholderTextColor={GREY[700]}
+            placeholderTextColor={Colors.GREY[700]}
             {...{value, ...props}}
           />
         </Animatable.View>

@@ -21,8 +21,10 @@ const TextConstants = {
   }),
 };
 
-
-export class CreateQuizListFooter extends React.Component {
+// Used in screens/CreateQuizScreen
+// LargeTitleWithSnap: renderFooter comp
+// shows a "Insert Section" button at the bottom of the list
+export class CreateQuizListFooter extends React.PureComponent {
   static propTypes = {
 
   };

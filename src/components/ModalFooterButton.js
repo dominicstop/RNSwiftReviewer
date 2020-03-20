@@ -1,21 +1,22 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { MODAL_FOOTER_HEIGHT, MODAL_BOTTOM_PADDING, INSET_BOTTOM } from 'app/src/constants/UIValues';
+import { MODAL_FOOTER_HEIGHT, INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 import * as Animatable from 'react-native-animatable';
+
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicon         from '@expo/vector-icons/Ionicons';
 
 import { iOSUIKit } from 'react-native-typography';
 
-import { GREY, PURPLE, BLUE, INDIGO, RED } from 'app/src/constants/Colors';
+import * as Colors from 'app/src/constants/Colors';
 
 const RADIUS = 12;
-const MARGIN_VERTICAL   = 10;
-const MARGIN_HORIZONTAL = 7;
 
+// Used in modalFooter as children
+// Shows a accept/decline button
 export class ModalFooterButton extends React.PureComponent {
   static propTypes = {
     buttonLeftTitle    : PropTypes.string,
@@ -123,7 +124,7 @@ export class ModalFooterButton extends React.PureComponent {
           >
             <LinearGradient
               style={[styles.leftButtonGradient, styles.buttonContainer]}
-              colors={[BLUE.A700, BLUE.A400]}
+              colors={[Colors.BLUE.A700, Colors.BLUE.A400]}
               start={{ x: 0, y: 1 }}
               end  ={{ x: 1, y: 1 }}
             >
@@ -150,7 +151,7 @@ export class ModalFooterButton extends React.PureComponent {
           >
             <LinearGradient
               style={[styles.rightButtonGradient, styles.buttonContainer]}
-              colors={[RED.A700, RED.A400]}
+              colors={[Colors.RED.A700, Colors.RED.A400]}
               start={{ x: 0, y: 1 }}
               end  ={{ x: 1, y: 1 }}
             >

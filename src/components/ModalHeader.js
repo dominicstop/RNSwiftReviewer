@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
@@ -73,10 +73,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export class ModalHeader extends React.Component {
+// Used in ModalBackground props: modalHeader
+// Displays a Icon, title/subtitle on the top of the modal
+export class ModalHeader extends React.PureComponent {
   static propTypes = {
-    title   : PropTypes.string,
-    subtitle: PropTypes.string,
+    title         : PropTypes.string ,
+    subtitle      : PropTypes.string ,
+    LeftHeaderIcon: PropTypes.element,
   };
 
   static defaultProps = {

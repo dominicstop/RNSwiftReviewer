@@ -115,6 +115,9 @@ class LeftRightButton extends React.Component {
   };
 };
 
+// used in screens/CreateQuizScreen
+// SectionList: renderItem component
+// shows section details (name, type, etc.)
 export class CreateQuizListItem extends React.Component {
   static propTypes = {
     index  : PropTypes.number,

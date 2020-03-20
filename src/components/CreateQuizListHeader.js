@@ -84,7 +84,10 @@ class QuizDetails extends React.Component {
             ['Questions', `${countQuestions} ${Helpers.plural('item', countQuestions)}`],
           ]}
         />
-        <Text numberOfLines={3}>
+        <Text
+          style={{marginTop: 2}}
+          numberOfLines={3}
+        >
           <Text style={styles.textLabel}>
             {'Quiz Description: '}
           </Text>
@@ -96,7 +99,9 @@ class QuizDetails extends React.Component {
     );
   };
 };
-
+ 
+// used in screens/CreateQuizScreen
+// LargeTitleWithSnap: renderHeader component
 export class CreateQuizListHeader extends React.Component {
   static propTypes = {
     scrollY   : PropTypes.object,

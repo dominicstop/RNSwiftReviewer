@@ -1,3 +1,5 @@
+// used in CreateQuizScreen
+
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -18,7 +20,7 @@ import { QuizKeys } from 'app/src/constants/PropKeys';
 
 
 
-class QuizListItemHeader extends React.Component {
+class QuizListItemHeader extends React.PureComponent {
   static propTypes = {
     quiz : PropTypes.object,
     index: PropTypes.number,
@@ -110,7 +112,7 @@ class QuizListItemHeader extends React.Component {
   };
 };
 
-class QuizListItemStats extends React.Component {
+class QuizListItemStats extends React.PureComponent {
   static propTypes = {
     quiz: PropTypes.object,
   };
@@ -219,7 +221,10 @@ class QuizListItemStats extends React.Component {
   };
 };
 
-export class QuizListItem extends React.Component {
+// used in screens/QuizListScreen
+// sectionList: renderItem comp
+// displays quiz details: title, desc, etc.
+export class QuizListItem extends React.PureComponent {
   static propTypes = {
     quiz : PropTypes.object,
     index: PropTypes.number,

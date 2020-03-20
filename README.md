@@ -7,6 +7,7 @@
 - [ ] Sort: Record scroll pos + Don't scroll to top when sorting if below threshold
 - [ ] Record header height + Add snap to offset for header
 - [ ] CreateQuizModal: replace input icons
+- [ ] Refactor:  QuizListItem - pass down quizes as props, and use PropKeys to access them
 - [x] Refactor: rename ListCardEmpty to ListCardImageTitleBody
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar

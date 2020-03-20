@@ -10,8 +10,10 @@ import { LargeTitleHeaderCard   } from 'app/src/components/LargeTitleHeaderCard'
 import { ImageTitleSubtitleCard } from 'app/src/components/ImageTitleSubtitleCard';
 import { ButtonGradient         } from 'app/src/components/ButtonGradient';
 
-
-export class QuizListHeader extends React.Component {
+// used in components/QuizListScreen
+// LargeTitleWithSnap: renderHeader comp
+// shows button for create quiz, displays empty card when no items
+export class QuizListHeader extends React.PureComponent {
   static propTypes = {
     itemCount : PropTypes.number,
     scrollY   : PropTypes.object,

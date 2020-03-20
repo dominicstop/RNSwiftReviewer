@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { BlurView } from "@react-native-community/blur";
-import { iOSUIKit } from 'react-native-typography';
 
 import { MODAL_FOOTER_HEIGHT, MODAL_BOTTOM_PADDING } from 'app/src/constants/UIValues';
-import { BLUE, INDIGO, GREY } from '../constants/Colors';
 
 
 const styles = StyleSheet.create({
@@ -34,10 +32,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export class ModalFooter extends React.Component {
+// Used in ModalBackground props: modalFooter
+// accepts ModalFooterButton as children
+export class ModalFooter extends React.PureComponent {
   render(){
-    const { headerIcon, ...props } = this.props;
-    
     return(
       <View style={styles.rootContainer}>
         <BlurView

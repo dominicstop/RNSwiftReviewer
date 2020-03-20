@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
   },
 });
 
+// used as children in: components/ModalBackground
+// used for displaying a ModalBackground item
+// Wraps element and adds a bg + border
 export class ModalSection extends React.PureComponent {
   static propTypes = {
     showBorderTop: PropTypes.bool,
