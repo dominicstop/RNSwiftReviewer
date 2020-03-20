@@ -23,7 +23,7 @@ import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
-import { SectionTypes, SectionTypeTitles } from 'app/src/constants/SectionTypes';
+import { SectionTypes, SectionTypesRadioValuesMap } from 'app/src/constants/SectionTypes';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -32,36 +32,6 @@ import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
-import { ModalController } from 'app/src/functions/ModalController';
-
-// Radio List Object Map
-const sectionListItems = {
-  [SectionTypes.IDENTIFICATION]: {
-    [RadioListKeys.type    ]: SectionTypes.IDENTIFICATION,
-    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.IDENTIFICATION],
-    [RadioListKeys.desc    ]: 'Type the answer to the question',
-    [RadioListKeys.descLong]: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'
-  }, 
-  [SectionTypes.MATCHING_TYPE]: {
-    [RadioListKeys.type    ]: SectionTypes.MATCHING_TYPE,
-    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.MATCHING_TYPE],
-    [RadioListKeys.desc    ]: 'Match the correct answer from a list',
-    [RadioListKeys.descLong]: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut.'
-  },
-  [SectionTypes.MULTIPLE_CHOICE]: {
-    [RadioListKeys.type    ]: SectionTypes.MULTIPLE_CHOICE,
-    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.MULTIPLE_CHOICE],
-    [RadioListKeys.desc    ]: 'Choose the correct answer from choices',
-    [RadioListKeys.descLong]: 'Maecenas sed diam eget risus varius blandit sit amet non magna.'
-  },
-  [SectionTypes.TRUE_OR_FALSE]: {
-    [RadioListKeys.type    ]: SectionTypes.TRUE_OR_FALSE,
-    [RadioListKeys.title   ]: SectionTypeTitles[SectionTypes.TRUE_OR_FALSE],
-    [RadioListKeys.desc    ]: 'Answer the statement a true/false response',
-    [RadioListKeys.descLong]: 'Nullam quis risus eget urna mollis ornare vel eu leo.'
-
-  }
-};
 
 class QuizSectionHeader extends React.Component {
   static styles = StyleSheet.create({
@@ -380,7 +350,7 @@ export class QuizAddSectionModal extends React.Component {
         </ModalSection>
         <ModalSection paddingBottom={0}>
           <QuizSectionHeader
-            listItems={sectionListItems}
+            listItems={SectionTypesRadioValuesMap}
             selectedType={state.selectedSectionType}
           />
           <Divider style={styles.divider}/>
@@ -388,7 +358,7 @@ export class QuizAddSectionModal extends React.Component {
             //containerStyle={}
             enumTypes={SectionTypes}
             selectedType={state.selectedSectionType}
-            listItems={sectionListItems}
+            listItems={SectionTypesRadioValuesMap}
             onPressListItem={this._handleOnPressSectionItem}
           />
         </ModalSection>

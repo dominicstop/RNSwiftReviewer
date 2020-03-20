@@ -29,22 +29,13 @@ import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { SectionTypes, SectionTypeTitles } from 'app/src/constants/SectionTypes';
-
+import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
-
 
 import { ModalController } from 'app/src/functions/ModalController';
 import { Divider } from 'react-native-elements';
 
-
-const SectionTypeDescs = {
-  [SectionTypes.TRUE_OR_FALSE  ]: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam.'  ,
-  [SectionTypes.MATCHING_TYPE  ]: 'Fusce dapibus, tellus ac cursus commodo, tortorjusto sit amet risus.'  ,
-  [SectionTypes.IDENTIFICATION ]: 'Morbi leo risus, porta ac consectetur ac, vestibulum at eros.' ,
-  [SectionTypes.MULTIPLE_CHOICE]: 'Cum sociis natoque penatibus et magnis dis parturient montes',
-};
 
 export class QuizCreateQuestionModal extends React.Component {
   static options() {
