@@ -23,7 +23,7 @@ export const SectionTypeTitles = {
 // descriptions for each section type
 export const SectionTypeDescs = {
   [SectionTypes.TRUE_OR_FALSE  ]: 'Questions created in this section are answered by either choosing true or false.',
-  [SectionTypes.MATCHING_TYPE  ]: 'Questions are answered by choosing the corresponding answer from a list. The list is shared amongst all the questions in this section.',
+  [SectionTypes.MATCHING_TYPE  ]: 'Questions are answered by choosing the corresponding answer from a list. The list is shared amongst all the questions',
   [SectionTypes.IDENTIFICATION ]: 'Questions created in this section are answered by typing out the correct words.' ,
   [SectionTypes.MULTIPLE_CHOICE]: 'Each question in this section is answered by choosing the correct answer among the choices provided.',
 };

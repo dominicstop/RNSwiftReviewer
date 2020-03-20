@@ -14,27 +14,19 @@ import { ModalSection        } from 'app/src/components/ModalSection';
 import { ModalOverlayCheck   } from 'app/src/components/ModalOverlayCheck';
 import { ListFooterIcon      } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
-import { ButtonGradient      } from 'app/src/components/ButtonGradient';
 import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
 import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
 
-import { RNN_ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
-
-import   SvgIcon    from 'app/src/components/SvgIcon';
-import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
-import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
+import { QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
-
-import { ModalController } from 'app/src/functions/ModalController';
-import { Divider } from 'react-native-elements';
 
 
 export class QuizCreateQuestionModal extends React.Component {

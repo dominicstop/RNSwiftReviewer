@@ -94,7 +94,7 @@ export class ModalBackground extends React.PureComponent {
         <Animatable.View
           style={{flex: 1}}
           animation={'fadeInUp'}
-          duration={300}
+          duration={250}
           useNativeDriver={true}
         >
           <ScrollView {...scrollViewProps}>
@@ -107,7 +107,7 @@ export class ModalBackground extends React.PureComponent {
       const children = React.Children.map(props.children, (child, index) => (
         <AnimatedListItem
           animation={'fadeInUp'}
-          duration={300}
+          duration={250}
           last={4}
           {...{index}}
         >

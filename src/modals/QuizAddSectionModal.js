@@ -9,15 +9,16 @@ import { Divider    } from 'react-native-elements';
 import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground   } from 'app/src/components/ModalBackground';
-import { ModalHeader       } from 'app/src/components/ModalHeader';
-import { ModalFooter       } from 'app/src/components/ModalFooter';
-import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
-import { ModalOverlayCheck } from 'app/src/components/ModalOverlayCheck';
-import { ModalSection      } from 'app/src/components/ModalSection';
-import { ModalInputField   } from 'app/src/components/ModalInputField';
-import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
-import { ListItemBadge     } from 'app/src/components/ListItemBadge';
+import { ModalBackground    } from 'app/src/components/ModalBackground';
+import { ModalHeader        } from 'app/src/components/ModalHeader';
+import { ModalFooter        } from 'app/src/components/ModalFooter';
+import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
+import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
+import { ModalSection       } from 'app/src/components/ModalSection';
+import { ModalInputField    } from 'app/src/components/ModalInputField';
+import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
+import { ListItemBadge      } from 'app/src/components/ListItemBadge';
+import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 
 import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
@@ -33,7 +34,7 @@ import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 
-class QuizSectionHeader extends React.Component {
+class SectionTypeHeader extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
     },
@@ -42,16 +43,11 @@ class QuizSectionHeader extends React.Component {
       alignItems: 'center',
     },
     imageTextContainer: {
-      flexDirection: 'row',
       marginTop: 12,
-      justifyContent: 'center',
     },
     leftImage: {
       aspectRatio: 1,
-      width: Helpers.sizeSelectSimple({
-        normal: 75,
-        large : 85,
-      }),
+      //width: ,
     },
     textTitle: {
       ...iOSUIKit.bodyObject,
@@ -90,7 +86,7 @@ class QuizSectionHeader extends React.Component {
   };
 
   render(){
-    const { styles } = QuizSectionHeader;
+    const { styles } = SectionTypeHeader;
     const { listItems, selectedType } = this.props;
     
     const selectedSection = listItems[selectedType];
@@ -115,23 +111,17 @@ class QuizSectionHeader extends React.Component {
           ref={r => this.rootContainerRef = r}
           useNativeDriver={true}
         >
-          <Animatable.Image
-            style={styles.leftImage}
-            source={require('app/assets/icons/lbw-usb.png')}
-            animation={'pulse'}
-            duration={6000}
-            iterationCount={'infinite'}
-            iterationDelay={1000}
-            useNativeDriver={true}
+          <ImageTitleSubtitle
+            imageSource={require('app/assets/icons/lbw-usb.png')}
+            title={selectedSection[RadioListKeys.title]}
+            subtitle={selectedSection[RadioListKeys.descLong]}
+            hasPadding={false}
+            imageSize={Helpers.sizeSelectSimple({
+              normal: 75,
+              large : 85,
+            })}
+            //containerStyle={''}
           />
-          <View style={styles.titleDescContainer}>
-            <Text style={styles.textSectionTitle}>
-              {selectedSection[RadioListKeys.title]}
-            </Text>
-            <Text style={styles.textSectionDesc}>
-              {selectedSection[RadioListKeys.descLong]}
-            </Text>
-          </View>
         </Animatable.View>
       </View>
     );
@@ -349,7 +339,7 @@ export class QuizAddSectionModal extends React.Component {
           />
         </ModalSection>
         <ModalSection paddingBottom={0}>
-          <QuizSectionHeader
+          <SectionTypeHeader
             listItems={SectionTypesRadioValuesMap}
             selectedType={state.selectedSectionType}
           />
