@@ -10,7 +10,7 @@ import * as Colors   from 'app/src/constants/Colors';
 
 // used in modals/QuizAddQuestionModal
 // renderItem component, question item
-export class ModalQuizAddQuestionItem extends React.PureComponent {
+export class QuizAddQuestionModalItem extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
       paddingTop: 7,
@@ -37,7 +37,7 @@ export class ModalQuizAddQuestionItem extends React.PureComponent {
   });
 
   render(){
-    const { styles } = ModalQuizAddQuestionItem;
+    const { styles } = QuizAddQuestionModalItem;
     const { index, ...props } = this.props;
 
     const question = props[QuizQuestionKeys.questionText];

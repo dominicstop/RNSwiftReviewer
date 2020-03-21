@@ -14,7 +14,7 @@ import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { ButtonGradient     } from 'app/src/components/ButtonGradient';
 
-import { ModalQuizAddQuestionItem } from 'app/src/components/ModalQuizAddQuestionItem';
+import { QuizAddQuestionModalItem } from 'app/src/components/QuizAddQuestionModalItem';
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
@@ -208,7 +208,7 @@ export class QuizAddQuestionModal extends React.Component {
     const isLast    = (index == (questions.length - 1));
 
     return (
-      <ModalQuizAddQuestionItem
+      <QuizAddQuestionModalItem
         {...{index, isLast, ...question}}
       />
     );
