@@ -12,6 +12,11 @@ import * as Colors   from 'app/src/constants/Colors';
 // renderItem component, question item
 export class ModalQuizAddQuestionItem extends React.PureComponent {
   static styles = StyleSheet.create({
+    rootContainer: {
+      paddingTop: 7,
+      paddingBottom: 7,
+      paddingHorizontal: 12,
+    },
     textQuestionIndicator: {
       ...iOSUIKit.subheadEmphasizedObject,
       fontWeight: '700',
@@ -22,9 +27,12 @@ export class ModalQuizAddQuestionItem extends React.PureComponent {
     },
     textAnswer: {
       ...iOSUIKit.subheadObject,
+      color: Colors.GREY[800],
     },
     textAnswerLabel: {
       ...iOSUIKit.subheadEmphasizedObject,
+      color: Colors.BLUE[1100],
+      fontWeight: '600',
     },
   });
 
@@ -36,8 +44,12 @@ export class ModalQuizAddQuestionItem extends React.PureComponent {
     const answer   = props[QuizQuestionKeys.questionAnswer];
 
     return(
-      <ModalSection>
-        <Text numberOfLines={3}>
+      <ModalSection 
+        containerStyle={styles.rootContainer}
+        hasMarginBottom={props.isLast}
+        showBorderTop={false}
+      >
+        <Text numberOfLines={5}>
           <Text style={styles.textQuestionIndicator}>
             {`${index + 1}. `}
           </Text>

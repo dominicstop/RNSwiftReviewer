@@ -241,10 +241,6 @@ export class QuizAddSectionModal extends React.Component {
 
     const isEditing = props[MNPCreateQuiz.isEditing];
 
-    const overlayContainerStyle = {
-      opacity: this._opacity,
-    };
-
     const modalHeader = (
       <ModalHeader
         title={(isEditing
@@ -345,7 +341,6 @@ export class QuizAddSectionModal extends React.Component {
           />
           <Divider style={styles.divider}/>
           <RadioList
-            //containerStyle={}
             enumTypes={SectionTypes}
             selectedType={state.selectedSectionType}
             listItems={SectionTypesRadioValuesMap}

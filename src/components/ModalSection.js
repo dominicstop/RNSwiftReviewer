@@ -6,8 +6,6 @@ const styles = StyleSheet.create({
   rootContainer: {
     paddingHorizontal: 10,
     paddingTop: 12,
-    paddingBottom: 15,
-    marginBottom: 20,
     backgroundColor: 'rgba(255,255,255,0.6)',
     borderColor: 'rgba(0,0,0,0.2)',
     borderBottomWidth: 1,
@@ -23,8 +21,10 @@ export class ModalSection extends React.PureComponent {
   };
 
   static defaultProps = {
-    showBorderTop: true,
-    paddingBottom: 15,
+    showBorderTop  : true,
+    hasMarginBottom: true,
+    paddingBottom  : 15,
+    marginBottom   : 20,
   };
 
   render(){
@@ -32,11 +32,14 @@ export class ModalSection extends React.PureComponent {
 
     const containerStyle = {
       paddingBottom: props.paddingBottom,
-      ...(showBorderTop && { borderTopWidth: 1 }),
+      ...(showBorderTop   && { borderTopWidth: 1 }),
+      ...(props.hasMarginBottom && { 
+        marginBottom : props.marginBottom,
+      }),
     };
 
     return(
-      <View style={[styles.rootContainer, containerStyle]}>
+      <View style={[styles.rootContainer, containerStyle, props.containerStyle]}>
         {this.props.children}
       </View>
     );

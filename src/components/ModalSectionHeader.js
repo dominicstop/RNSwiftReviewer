@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   titleIconContainer: {
-    width: 23,
+  },
+  titleSubtitleContainer: {
+    marginHorizontal: 10,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -36,12 +38,12 @@ const styles = StyleSheet.create({
     ...iOSUIKit.subheadEmphasizedObject,
     fontSize: 18,
     textAlignVertical: 'center',
+    fontWeight: '700',
     color: Colors.GREY[900]
   },
   textSubtitle: {
     ...iOSUIKit.subheadObject,
     color: Colors.GREY[700],
-    marginHorizontal: 10,
     marginBottom: 7,
   },
 });
@@ -75,9 +77,9 @@ export class ModalSectionHeader extends React.PureComponent {
       }),
     };
 
-    const textTitleStyle = {
+    const titleSubtitleContainerStyle = {
       ...(props.titleIcon && {
-        marginLeft: 7
+        marginLeft: 12,
       }),
     };
     
@@ -97,17 +99,21 @@ export class ModalSectionHeader extends React.PureComponent {
             delay={1000}
             useNativeDriver={true}
           >
-            {props.titleIcon}
+            {React.cloneElement(props.titleIcon, 
+              { color: Colors.INDIGO.A400 }
+            )}
           </Animatable.View>
-          <Text style={[styles.textTitle, textTitleStyle]}>
-            {props.title}
-          </Text>
+          <View style={[styles.titleSubtitleContainer, titleSubtitleContainerStyle]}>
+            <Text style={styles.textTitle}>
+              {props.title}
+            </Text>
+            {props.subtitle && (
+              <Text style={styles.textSubtitle}>
+                {props.subtitle}
+              </Text>
+            )}
+          </View>
         </View>
-        {props.subtitle && (
-          <Text style={styles.textSubtitle}>
-            {props.subtitle}
-          </Text>
-        )}
       </View>
     );
   };

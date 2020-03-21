@@ -5,6 +5,7 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBackground    } from 'app/src/components/ModalBackground';
+import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
@@ -178,10 +179,37 @@ export class QuizAddQuestionModal extends React.Component {
     );
   };
 
+  _renderSectionHeader = ({section}) => {
+    const state = this.state;
+
+    const questions = state[QuizSectionKeys.sectionQuestions] ?? [];
+    const count     = questions.length
+
+    if(count == 0) return null;
+
+    return(
+      <ModalSectionHeader
+        title={'Questions'}
+        subtitle={`Currently showing ${count} ${Helpers.plural('item', count)}`}
+        titleIcon={(
+          <Ionicon
+            name={'ios-bookmarks'}
+            size={24}
+          />
+        )}
+      />
+    );
+  };
+
   _renderItem = ({item: question, index}) => {
+    const state = this.state;
+    
+    const questions = state[QuizSectionKeys.sectionQuestions] ?? [];
+    const isLast    = (index == (questions.length - 1));
+
     return (
       <ModalQuizAddQuestionItem
-        {...{index, ...question}}
+        {...{index, isLast, ...question}}
       />
     );
   };
@@ -229,6 +257,7 @@ export class QuizAddQuestionModal extends React.Component {
           sections={[{ data: questions }]}
           keyExtractor={this._handleKeyExtractor}
           renderItem={this._renderItem}
+          renderSectionHeader={this._renderSectionHeader}
           ListHeaderComponent={this._renderListHeader}
           ListFooterComponent={this._renderListFooter}
         />

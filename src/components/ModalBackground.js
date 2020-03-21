@@ -82,6 +82,8 @@ export class ModalBackground extends React.PureComponent {
       ...props,
       style: styles.scrollView,
       contentContainerStyle: styles.scrollviewContent,
+      keyboardShouldPersistTaps: 'never',
+      keyboardDismissMode: 'interactive',
       scrollIndicatorInsets: { 
         top   : MODAL_HEADER_HEIGHT,
         bottom: MODAL_FOOTER_HEIGHT,
