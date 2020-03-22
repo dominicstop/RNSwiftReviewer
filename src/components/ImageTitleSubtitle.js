@@ -15,6 +15,7 @@ export class ImageTitleSubtitle extends React.Component {
     subtitle   : PropTypes.string,
     imageSource: PropTypes.number,
     imageSize  : PropTypes.number,
+    hasPadding : PropTypes.bool  ,
     //style props
     containerStyle: PropTypes.object,
     titleStyle    : PropTypes.object,

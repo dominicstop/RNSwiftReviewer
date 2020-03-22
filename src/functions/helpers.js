@@ -153,6 +153,20 @@ export function asyncAlert({title, desc}){
   ));
 };
 
+export function asyncAlertInput({
+  title  = ''  ,
+  desc   = ''  , 
+  value  = ''  , 
+  okText = 'Ok',
+}){
+  return new Promise((resolve, reject) => 
+    Alert.prompt(title, desc, [
+      { text: 'Cancel', style: "cancel", onPress: ()     => reject ()     },
+      { text: okText  , style: null    , onPress: (text) => resolve(text) },
+    ], "plain-text", value, 'ascii-capable')
+  );
+};
+
 
 export function countOccurences(item = '', items = []){
   return items.filter(i => i === item).length;

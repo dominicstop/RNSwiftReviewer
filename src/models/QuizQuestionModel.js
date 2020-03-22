@@ -1,5 +1,6 @@
 import { IS_DEBUG } from "app/src/constants/Options";
 import { QuizQuestionKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { SectionTypes } from 'app/src/constants/SectionTypes';
 
 import * as Helpers from "app/src/functions/helpers";
 
@@ -16,7 +17,7 @@ export class QuizQuestionModel {
     questionID     : '',
     questionText   : '',
     questionAnswer : '',
-    questionChoices: [],
+    questionChoices: [], // used in multpiple choice
   };
 
   static wrap(object = QuizQuestionModel.stucture){
@@ -92,5 +93,39 @@ export class QuizQuestionModel {
 
     this.setDateCreated();
     this.setQuestionID();
+  };
+
+  addChoice(choice = ''){
+    const type = this.values[QuizQuestionKeys.sectionType];
+    
+    if(type === SectionTypes.MULTIPLE_CHOICE){
+      const choices = this.values[QuizQuestionKeys.questionChoices];
+
+      this.values[QuizQuestionKeys.questionChoices] = [
+        ...(choices ?? []), choice
+      ];
+
+    } else {
+      console.log(
+        `Cannot add choice. SectionType is ${type}`
+      );
+    };
+  };
+
+  addChoices(chocies = []){
+    const type = this.values[QuizQuestionKeys.sectionType];
+    
+    if(type === SectionTypes.MULTIPLE_CHOICE){
+      const choices = this.values[QuizQuestionKeys.questionChoices];
+
+      this.values[QuizQuestionKeys.questionChoices] = [
+        ...(choices ?? []), ...chocies
+      ];
+
+    } else {
+      console.log(
+        `Cannot add choice. SectionType is ${type}`
+      );
+    };
   };
 };

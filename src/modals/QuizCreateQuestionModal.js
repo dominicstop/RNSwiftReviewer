@@ -1,10 +1,16 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { Fragment } from 'react';
+import { StyleSheet, View, Text, Alert, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 
 import Ionicon           from '@expo/vector-icons/Ionicons';
 import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
 
+import * as Animatable from 'react-native-animatable';
+
 import { Navigation } from 'react-native-navigation';
+import { Divider } from 'react-native-elements';
+import { iOSUIKit } from 'react-native-typography';
+
 
 import { ModalBackground     } from 'app/src/components/ModalBackground';
 import { ModalHeader         } from 'app/src/components/ModalHeader';
@@ -12,10 +18,12 @@ import { ModalFooter         } from 'app/src/components/ModalFooter';
 import { ModalFooterButton   } from 'app/src/components/ModalFooterButton';
 import { ModalSection        } from 'app/src/components/ModalSection';
 import { ModalOverlayCheck   } from 'app/src/components/ModalOverlayCheck';
+import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
+import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
 import { ListFooterIcon      } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
-import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
-import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
+import { ButtonGradient      } from 'app/src/components/ButtonGradient';
+import { ListItemBadge       } from 'app/src/components/ListItemBadge';
 
 import { MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
 
@@ -24,10 +32,290 @@ import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { QuizSectionKeys } from 'app/src/constants/PropKeys';
-import { SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
+import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
+
+function getTitleSubtitle(choiceCount){
+  const suffix = Helpers.plural('choice', choiceCount);
+
+  return ((choiceCount <= 0)? {
+    title   : 'No Choices Yet',
+    subtitle: 'You need to create a minimium of at least two choices first!',
+  }:(choiceCount <= 0)? {
+    title   : 'Add at least one more!',
+    subtitle: 'You need to create a minimium of at least two choices first!',
+  }:(choiceCount <= 3)? {
+    title   : `Showing ${choiceCount} ${suffix}`,
+    subtitle: 'You can add up to a maximum of 4 choices. The selected choice is the correct answer for this question.',
+  }:{
+    title   : `Showing ${choiceCount} ${suffix}`,
+    subtitle: "Sorry, you can't add any more choices. The selected choice is the correct answer for this question.",
+  });
+};
+
+class ChoiceItem extends React.PureComponent {
+  static styles = StyleSheet.create({
+    divider: {
+      margin: 10,
+    },
+    borderTop: {
+      borderTopWidth: 1,
+      borderColor: 'rgba(0,0,0,0.1)',
+    },
+    choiceContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingTop: 8,
+      paddingBottom: 8,
+    },
+    choiceText: {
+      ...iOSUIKit.bodyObject,
+      marginLeft: 10,
+    },
+    choiceTextSelected: {
+      ...iOSUIKit.bodyEmphasizedObject,
+      marginLeft: 10,
+      color: Colors.GREEN.A700,
+      fontWeight: '700',
+    },
+  });
+
+  _handleOnPressChoice = () => {
+    const { onPressChoice, selectedIndex, index, choice } = this.props;
+    const isSelected = (selectedIndex == index);
+
+    this.containerRef.pulse(300);
+
+    if(!isSelected){
+      onPressChoice && onPressChoice(
+        { index, choice }
+      );
+    };
+  };
+
+  render(){
+    const { styles } = ChoiceItem;
+    const { index, selectedIndex, choice, isLast } = this.props;
+
+    const isSelected = (selectedIndex == index);
+    const isFirst    = (index == 0);
+    
+    return(
+      <Fragment>
+        <Animatable.View
+          ref={r => this.containerRef = r}
+          useNativeDriver={true}
+        >
+          <TouchableOpacity
+            onPress={this._handleOnPressChoice}
+            activeOpacity={0.9}
+            style={[styles.choiceContainer, {
+              ...(!isFirst && styles.borderTop    ),
+              ...(isFirst  && { paddingTop   : 0 }),
+              ...(isLast   && { paddingBottom: 0 }),
+            }]}
+          >
+            <ListItemBadge
+              value={Helpers.getLetter(index)}
+              size={20}
+              color={(isSelected
+                ? Colors.GREEN .A700
+                : Colors.INDIGO.A200
+              )}
+            />
+            <Text style={(isSelected
+              ? styles.choiceTextSelected
+              : styles.choiceText
+            )}>
+              {choice}
+            </Text>
+          </TouchableOpacity>
+        </Animatable.View>
+      </Fragment>
+    );
+  };
+};
+
+class SectionMultipleChoice extends React.Component {
+  static propTypes = {
+    onAddChoice: PropTypes.onAddChoice,
+  };
+
+  static styles = StyleSheet.create({
+    buttonCreateChoice: {
+      marginHorizontal: 0, 
+      marginVertical: 0
+    },
+    divider: {
+      marginTop: 10,
+      marginBottom: 12,
+    },
+    choicesContainer: {
+      marginTop: 12,
+    },
+  });
+
+  constructor(props){
+    super(props);
+    
+    this.state = {
+      choices: [],
+      selectedIndex: 0,
+    };
+  };
+
+  addChoice = async (choice = '') => {
+    this.rootContainerRef.pulse(750);
+    await this.headerRef.fadeOut(250);
+
+    this.setState((prevState) => ({
+      choices: [
+        ...(prevState.choices ?? []),
+        choice
+      ],
+    }));
+
+    await this.headerRef.fadeIn(250);
+  };
+
+  getChoices = () => {
+    const { choices, selectedIndex } = this.state;
+    
+    let newChoices = [];
+    choices.forEach((choice, index) => {
+      if(selectedIndex != index){
+        newChoices.push(choice);
+      };
+    });
+    
+    return ({ 
+      choices: newChoices, 
+      answer : choices[selectedIndex],
+    });
+  };
+
+  validate = (animate) => {
+    const { choices } = this.state;
+    const choiceCount = choices?.length ?? 0;
+
+    const isValid = (choiceCount >= 2);
+    if(animate){
+      this.rootContainerRef.shake(750);
+    };
+
+    return isValid;
+  };
+
+  _handleOnPressAddChoice = async () => {
+    const { onAddChoice } = this.props;
+    const { choices } = this.state;
+
+    const choiceCount = choices?.length ?? 0;
+    if(choiceCount >= 4){
+      Alert.alert(
+        "Max Reached",
+        "Cannot add any more choices, sorry."
+      );
+      return;
+    };
+
+    try {
+      const textInput = await Helpers.asyncAlertInput({
+        title : 'New Choice Item',
+        desc  : 'Type out the choice to be added.',
+        okText: 'Add'
+      });
+
+      if(!Validate.isNotNullOrWhitespace(textInput)){
+        Alert.alert(
+          'Invalid Input', 
+          'Cannot create choice with the given input value, please try again.'
+        );
+      
+      } else {
+        await this.addChoice(textInput);
+
+        // call callback
+        onAddChoice && onAddChoice(textInput);
+      };
+    } catch(error){
+      console.log('Cancel pressed.');
+    };
+  };
+
+  // ChoiceItem: onPress callback
+  _handleOnPressChoice = ({choice, index}) => {
+    this.setState({
+      selectedIndex: index,
+    });
+  };
+
+  render(){
+    const { styles } = SectionMultipleChoice;
+    const { choices, selectedIndex } = this.state;
+    const props = this.props;
+
+    const choiceCount = choices?.length ?? 0;
+    const imageTitleSubtitleProps = getTitleSubtitle(choiceCount);
+
+    return (
+      <Animatable.View
+        ref={r => this.rootContainerRef = r}
+        useNativeDriver={true}
+      >
+        <ModalSection showBorderTop={false}>
+          <Animatable.View
+            ref={r => this.headerRef = r}
+            useNativeDriver={true}
+          >
+            <ImageTitleSubtitle
+              imageSource={require('app/assets/icons/lbw-laptop-construction.png')}
+              hasPadding={false}
+              {...imageTitleSubtitleProps}
+            />
+          </Animatable.View>
+          {(choiceCount > 0) && (
+            <Animatable.View 
+              style={styles.choicesContainer}
+              ref={r => this.choicesContainerRef = r}
+              useNativeDriver={true}
+            >
+              {choices.map((choice, index) =>
+                <ChoiceItem
+                  isLast={(index == (choiceCount - 1))}
+                  onPressChoice={this._handleOnPressChoice}
+                  {...{choice, index, selectedIndex}}
+                />
+              )}
+            </Animatable.View>
+          )}
+          <Divider style={styles.divider}/>
+          <ButtonGradient
+            containerStyle={styles.buttonCreateChoice}
+            bgColor={Colors.BLUE[100]}
+            fgColor={Colors.BLUE['A700']}
+            alignment={'CENTER'}
+            title={'Create Choice Item'}
+            onPress={this._handleOnPressAddChoice}
+            iconDistance={10}
+            isBgGradient={false}
+            addShadow={false}
+            showIcon={true}
+            leftIcon={(
+              <Ionicon
+                name={'ios-add-circle'}
+                color={Colors.BLUE['A700']}
+                size={25}
+              />
+            )}
+          />
+        </ModalSection>
+      </Animatable.View>
+    );
+  };
+};
 
 export class QuizCreateQuestionModal extends React.Component {
   static options() {
@@ -60,42 +348,76 @@ export class QuizCreateQuestionModal extends React.Component {
     };
   };
 
+  validate(animate = false){
+    const props = this.props;
+
+    const section     = props  [MNPQuizCreateQuestion.quizSection];
+    const sectionType = section[QuizSectionKeys.sectionType];
+
+    let isValid = false;
+    const isValidQuestion = this.inputFieldRefQuestion.isValid(animate);
+
+    if(sectionType == SectionTypes.IDENTIFICATION){
+      const isValidSubtitle = this.inputFieldRefAnswer.isValid(false);
+      isValid = (isValidQuestion && isValidSubtitle);
+      animate && this.inputFieldRefAnswer.isValid(true);
+
+    } else if(sectionType == SectionTypes.MULTIPLE_CHOICE){
+      const isValidChoices = this.multipleChoiceRef.validate(false)
+      isValid = (isValidQuestion && isValidChoices);
+      animate && this.multipleChoiceRef.validate(true);
+    };
+
+    return(isValid);
+  };
+
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
 
-    const onPressDone = props[MNPQuizCreateQuestion.onPressDone];
+    const section     = props  [MNPQuizCreateQuestion.quizSection];
+    const onPressDone = props  [MNPQuizCreateQuestion.onPressDone];
+    const sectionType = section[QuizSectionKeys.sectionType];
 
-    const isValidTitle    = this.inputFieldRefQuestion.isValid(false);
-    const isValidSubtitle = this.inputFieldRefAnswer  .isValid(false);
-
-    if(isValidTitle && isValidSubtitle){
-      this.question.questionText = this.inputFieldRefQuestion.getTextValue();
-      this.question.answer       = this.inputFieldRefAnswer  .getTextValue();
-
-      // extract question values from state
-      const question = QuizQuestionModel.extract(this.state);
-
-      // trigger callback event
-      onPressDone && onPressDone({
-        question: this.question.values,
-      });
-
-      await this.overlay.start();
-
-      // close modal
-      Navigation.dismissModal(componentId);
-
-    } else {
+    const isValid = this.validate(false);
+    if(!isValid){
       await Helpers.asyncAlert({
         title: 'Invalid Input',
-        desc : 'Oops, please fill out the required forms to continue.'
+        desc : 'Oops, please fill out the required items to continue.'
       });
 
       //animate shake
-      this.inputFieldRefQuestion.isValid(true);
-      this.inputFieldRefAnswer  .isValid(true);
+      this.validate(true);
+      //early exit
+      return;
     };
+
+    // set question text
+    const questionText = this.inputFieldRefQuestion.getTextValue();
+    this.question.questionText = questionText;
+
+    switch (sectionType) {
+      case SectionTypes.IDENTIFICATION:
+        const answerText = this.inputFieldRefAnswer.getTextValue();
+        this.question.answer = answerText;
+        break;
+    
+      case SectionTypes.IDENTIFICATION:
+        const { answer, choices } = this.multipleChoiceRef.getChoices();
+        this.question.answer = answer;
+        this.question.addChoices(choices);
+        break;
+    };
+
+    // trigger callback event
+    onPressDone && onPressDone({
+      question: this.question.values,
+    });
+
+    await this.overlay.start();
+
+    // close modal
+    Navigation.dismissModal(componentId);
   };
 
   // ModalFooter: cancel button
@@ -105,6 +427,35 @@ export class QuizCreateQuestionModal extends React.Component {
     // close modal
     await Helpers.timeout(200);
     Navigation.dismissModal(componentId);
+  };
+
+  _renderSectionAnswer(){
+    const props = this.props;
+
+    const section  = props[MNPQuizCreateQuestion.quizSection];
+    const sectionType  = section[QuizSectionKeys.sectionType];
+
+    switch (sectionType) {
+      case SectionTypes.IDENTIFICATION: return (
+        <ModalSection showBorderTop={false}>
+          <ModalInputMultiline
+            index={1}
+            ref={r => this.inputFieldRefAnswer = r}
+            inputRef={r => this.inputRefAnswer = r}
+            subtitle={"Enter the question's answer"}
+            placeholder={'Input Answer Text'}
+            //initialValue={state[QuizQuestionKeys.questionAnswer] ?? ''}
+            onSubmitEditing={this._handleOnSubmitEditing}
+            validate={Validate.isNotNullOrWhitespace}
+          />
+        </ModalSection>
+      );
+      case SectionTypes.MULTIPLE_CHOICE: return (
+        <SectionMultipleChoice
+          ref={r => this.multipleChoiceRef = r}
+        />
+      );
+    };
   };
 
   render(){
@@ -200,18 +551,7 @@ export class QuizCreateQuestionModal extends React.Component {
             />
           )}
         />
-        <ModalSection showBorderTop={false}>
-          <ModalInputMultiline
-            index={1}
-            ref={r => this.inputFieldRefAnswer = r}
-            inputRef={r => this.inputRefAnswer = r}
-            subtitle={"Enter the question's answer"}
-            placeholder={'Input Answer Text'}
-            //initialValue={state[QuizQuestionKeys.questionAnswer] ?? ''}
-            onSubmitEditing={this._handleOnSubmitEditing}
-            validate={Validate.isNotNullOrWhitespace}
-          />
-        </ModalSection>
+        {this._renderSectionAnswer()}
         <ListFooterIcon
           show={true}
           marginTop={0}

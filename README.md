@@ -8,6 +8,7 @@
 - [ ] Record header height + Add snap to offset for header
 - [ ] CreateQuizModal: replace input icons
 - [ ] Refactor:  QuizListItem - pass down quizes as props, and use PropKeys to access them
+- [ ] When cancel is pressed, prompt actionSheet/Alert and ask to discard changes 
 - [x] Refactor: rename ListCardEmpty to ListCardImageTitleBody
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar
