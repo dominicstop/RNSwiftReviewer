@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, SectionList, Text, View, ScrollView, Keyboard, TouchableOpacity } from 'react-native';
+import { StyleSheet, SectionList, Text, View, ScrollView, Keyboard, TouchableOpacity, Clipboard } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
@@ -102,7 +102,7 @@ export class QuizAddQuestionModal extends React.Component {
     });
   };
 
-  // QuizCreateQuestionModal: onPressDone
+  // Modal - QuizCreateQuestionModal: onPressDone
   _handleOnPressDoneQuizCreateQuestionModal = ({question}) => {
     this.quizSection.addQuestion(question);
 
@@ -111,7 +111,7 @@ export class QuizAddQuestionModal extends React.Component {
     });
   };
 
-  // QuizAddQuestionModalItem: onPress callback
+  // QuizAddQuestionModalItem: item onPress
   _handleOnPressQuestionItem = ({question}) => {
     const state = this.state;
 

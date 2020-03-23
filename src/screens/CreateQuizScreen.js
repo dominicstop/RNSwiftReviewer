@@ -166,7 +166,7 @@ export class CreateQuizScreen extends React.Component {
   };
 
   _handleQuizAddSectionModalOnPressDone = () => {
-    alert();
+    console.log('CreateQuizScreen - _handleQuizAddSectionModalOnPressDone');
   };
   // #endregion
 

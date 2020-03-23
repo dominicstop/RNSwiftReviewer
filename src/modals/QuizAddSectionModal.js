@@ -167,6 +167,7 @@ export class QuizAddSectionModal extends React.Component {
     });
     
     this.state = {
+      //initial selected type
       selectedSectionType: SectionTypes.IDENTIFICATION,
     };
 
