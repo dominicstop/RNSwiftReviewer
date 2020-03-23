@@ -31,17 +31,19 @@ import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
-import { QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
 // TODO:
-// * Add switch to preserve choice order
-// * Implement editing/deleting of choices
-// * add delete button when isEditing
-// * avoid duplicates in choices
-// * debug data flow (check values in object when passing/receiving)
+// [ ] Add switch to preserve choice order
+// [x] Implement editing/deleting of choices
+// [ ] add delete button when isEditing
+// [ ] add reorder button in choices
+// [ ] add
+// [x] avoid duplicates in choices
+// [ ] debug data flow (check values in object when passing/receiving)
 
 
 function getTitleSubtitle(choiceCount){
@@ -90,8 +92,8 @@ class ChoiceItem extends React.PureComponent {
   });
 
   _handleOnPressChoice = () => {
-    const { onPressChoice, selectedIndex, index, choice } = this.props;
-    const isSelected = (selectedIndex == index);
+    const { onPressChoice, selectedChoice, index, choice } = this.props;
+    const isSelected = (selectedChoice == choice);
 
     this.containerRef.pulse(300);
 
@@ -104,9 +106,9 @@ class ChoiceItem extends React.PureComponent {
 
   render(){
     const { styles } = ChoiceItem;
-    const { index, selectedIndex, choice, isLast } = this.props;
+    const { index, choice, selectedChoice, isLast } = this.props;
 
-    const isSelected = (selectedIndex == index);
+    const isSelected = (choice == selectedChoice);
     const isFirst    = (index == 0);
     
     return(
@@ -168,8 +170,8 @@ class SectionMultipleChoice extends React.Component {
     super(props);
     
     this.state = {
-      choices: [],
-      selectedIndex: 0,
+      choices       : props.choices ?? [],
+      selectedChoice: props.selectedChoices ?? null,
     };
   };
 
@@ -188,26 +190,20 @@ class SectionMultipleChoice extends React.Component {
   };
 
   getChoices = () => {
-    const { choices, selectedIndex } = this.state;
+    const { choices, selectedChoice } = this.state;
     
-    let newChoices = [];
-    choices.forEach((choice, index) => {
-      if(selectedIndex != index){
-        newChoices.push(choice);
-      };
-    });
-    
-    return ({ 
-      choices: newChoices, 
-      answer : choices[selectedIndex],
-    });
+    return ({ choices, selectedChoice });
   };
 
   validate = (animate) => {
-    const { choices } = this.state;
+    const { choices, selectedChoice } = this.state;
     const choiceCount = choices?.length ?? 0;
 
-    const isValid = (choiceCount >= 2);
+    const isValid = (
+      (choiceCount    >= 2   ) &&
+      (selectedChoice != null)
+    );
+
     if(animate){
       this.rootContainerRef.shake(750);
     };
@@ -225,6 +221,7 @@ class SectionMultipleChoice extends React.Component {
         "Max Reached",
         "Cannot add any more choices, sorry."
       );
+      // early return
       return;
     };
 
@@ -235,12 +232,20 @@ class SectionMultipleChoice extends React.Component {
         okText: 'Add'
       });
 
+      const isDuplicate = choices.includes(textInput);
+
       if(!Validate.isNotNullOrWhitespace(textInput)){
         Alert.alert(
           'Invalid Input', 
           'Cannot create choice with the given input value, please try again.'
         );
       
+      } else if(isDuplicate) {
+        Alert.alert(
+          'Choice already exists', 
+          'Cannot add item because the choice already exists.'
+        );
+
       } else {
         await this.addChoice(textInput);
 
@@ -255,13 +260,13 @@ class SectionMultipleChoice extends React.Component {
   // ChoiceItem: onPress callback
   _handleOnPressChoice = ({choice, index}) => {
     this.setState({
-      selectedIndex: index,
+      selectedChoice: choice,
     });
   };
 
   render(){
     const { styles } = SectionMultipleChoice;
-    const { choices, selectedIndex } = this.state;
+    const { choices, selectedChoice } = this.state;
     const props = this.props;
 
     const choiceCount = choices?.length ?? 0;
@@ -293,7 +298,7 @@ class SectionMultipleChoice extends React.Component {
                 <ChoiceItem
                   isLast={(index == (choiceCount - 1))}
                   onPressChoice={this._handleOnPressChoice}
-                  {...{choice, index, selectedIndex}}
+                  {...{choice, index, selectedChoice}}
                 />
               )}
             </Animatable.View>
@@ -344,16 +349,21 @@ export class QuizCreateQuestionModal extends React.Component {
     super(props);
 
     // get section from props
-    const section = props[MNPQuizCreateQuestion.quizSection];
+    const section      = props[MNPQuizCreateQuestion.quizSection ];
+    const prevQuestion = props[MNPQuizCreateQuestion.quizQuestion];
+    const isEditing    = props[MNPQuizCreateQuestion.isEditing   ];
 
     let question = new QuizQuestionModel();
-    question.initFromSection(section);
+    if(isEditing){
+      question.values = {
+        ...(prevQuestion ?? {})
+      };
+    } else {
+      question.initFromSection(section);
+    };
+
     this.question = question;
     
-    Clipboard.setString(
-      JSON.stringify(this.question.values)
-    );
-
     this.state = {
       ...question.values,
     };
@@ -365,30 +375,53 @@ export class QuizCreateQuestionModal extends React.Component {
     const section     = props  [MNPQuizCreateQuestion.quizSection];
     const sectionType = section[QuizSectionKeys.sectionType];
 
-    let isValid = false;
     const isValidQuestion = this.inputFieldRefQuestion.isValid(animate);
 
-    if(sectionType == SectionTypes.IDENTIFICATION){
-      const isValidSubtitle = this.inputFieldRefAnswer.isValid(false);
-      isValid = (isValidQuestion && isValidSubtitle);
-      animate && this.inputFieldRefAnswer.isValid(true);
+    switch (sectionType) {
+      case SectionTypes.IDENTIFICATION:
+      case SectionTypes.MATCHING_TYPE :
+        const isValidSubtitle = this.inputFieldRefAnswer.isValid(false);
+        animate && this.inputFieldRefAnswer.isValid(true);
+        return (isValidQuestion && isValidSubtitle);
 
-    } else if(sectionType == SectionTypes.MULTIPLE_CHOICE){
-      const isValidChoices = this.multipleChoiceRef.validate(false)
-      isValid = (isValidQuestion && isValidChoices);
-      animate && this.multipleChoiceRef.validate(true);
+      case SectionTypes.MULTIPLE_CHOICE:
+        const isValidChoices = this.multipleChoiceRef.validate(false)
+        animate && this.multipleChoiceRef.validate(true);
+        return (isValidQuestion && isValidChoices);
     };
+  };
 
-    return(isValid);
+  updateQuestion = () => {
+    const props = this.props;
+
+    const section     = props  [MNPQuizCreateQuestion.quizSection];
+    const sectionType = section[QuizSectionKeys.sectionType];
+
+    // set question text
+    const questionText = this.inputFieldRefQuestion.getTextValue();
+    this.question.questionText = questionText;
+
+    switch (sectionType) {
+      case SectionTypes.IDENTIFICATION:
+      case SectionTypes.MATCHING_TYPE :
+        const answerText = this.inputFieldRefAnswer.getTextValue();
+        this.question.answer = answerText;
+        break;
+    
+      case SectionTypes.MULTIPLE_CHOICE:
+        const { choices, selectedChoice } = this.multipleChoiceRef.getChoices();
+        this.question.answer = selectedChoice;
+        this.question.addChoices(choices, isEditing);
+        break;
+    };
   };
 
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
 
-    const section     = props  [MNPQuizCreateQuestion.quizSection];
-    const onPressDone = props  [MNPQuizCreateQuestion.onPressDone];
-    const sectionType = section[QuizSectionKeys.sectionType];
+    const isEditing   = props[MNPQuizCreateQuestion.isEditing];
+    const onPressDone = props[MNPQuizCreateQuestion.onPressDone];
 
     const isValid = this.validate(false);
     if(!isValid){
@@ -397,32 +430,19 @@ export class QuizCreateQuestionModal extends React.Component {
         desc : 'Oops, please fill out the required items to continue.'
       });
 
-      //animate shake and early exit
+      // animate shake and early exit
       return this.validate(true);
     };
-
-    // set question text
-    const questionText = this.inputFieldRefQuestion.getTextValue();
-    this.question.questionText = questionText;
-
-    switch (sectionType) {
-      case SectionTypes.IDENTIFICATION:
-        const answerText = this.inputFieldRefAnswer.getTextValue();
-        this.question.answer = answerText;
-        break;
     
-      case SectionTypes.MULTIPLE_CHOICE:
-        const { answer, choices } = this.multipleChoiceRef.getChoices();
-        this.question.answer = answer;
-        this.question.addChoices(choices);
-        break;
-    };
+    // update question model
+    this.updateQuestion();
 
     // trigger callback event
     onPressDone && onPressDone({
       question: this.question.values,
     });
 
+    // check animation
     await this.overlay.start();
 
     // close modal
@@ -440,11 +460,19 @@ export class QuizCreateQuestionModal extends React.Component {
 
   _renderSectionAnswer(){
     const props = this.props;
+    const state = this.state;
 
-    const section  = props[MNPQuizCreateQuestion.quizSection];
-    const sectionType  = section[QuizSectionKeys.sectionType];
+    const section   = props[MNPQuizCreateQuestion.quizSection];
+    const isEditing = props[MNPQuizCreateQuestion.isEditing];
+
+    const sectionType = section[QuizSectionKeys.sectionType];
+
+    const answer  = state[QuizQuestionKeys.questionAnswer ];
+    const choices = state[QuizQuestionKeys.questionChoices];
+
 
     switch (sectionType) {
+      case SectionTypes.MATCHING_TYPE :
       case SectionTypes.IDENTIFICATION: return (
         <ModalSection showBorderTop={false}>
           <ModalInputMultiline
@@ -453,7 +481,7 @@ export class QuizCreateQuestionModal extends React.Component {
             inputRef={r => this.inputRefAnswer = r}
             subtitle={"Enter the question's answer"}
             placeholder={'Input Answer Text'}
-            //initialValue={state[QuizQuestionKeys.questionAnswer] ?? ''}
+            initialValue={(answer ?? '')}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
           />
@@ -462,7 +490,23 @@ export class QuizCreateQuestionModal extends React.Component {
       case SectionTypes.MULTIPLE_CHOICE: return (
         <SectionMultipleChoice
           ref={r => this.multipleChoiceRef = r}
+          selectedChoices={answer}
+          {...{choices}}
         />
+      );
+      case SectionTypes.MATCHING_TYPE: return (
+        <ModalSection showBorderTop={false}>
+          <ModalInputMultiline
+            index={1}
+            ref={r => this.sss = r}
+            inputRef={r => this.inputRefAnswer = r}
+            subtitle={"Enter the question's answer"}
+            placeholder={'Input Answer Text'}
+            initialValue={(answer ?? '')}
+            onSubmitEditing={this._handleOnSubmitEditing}
+            validate={Validate.isNotNullOrWhitespace}
+          />
+        </ModalSection>
       );
     };
   };
@@ -472,7 +516,8 @@ export class QuizCreateQuestionModal extends React.Component {
     const props = this.props;
     const state = this.state;
 
-    const section = props[MNPQuizCreateQuestion.quizSection];
+    const section   = props[MNPQuizCreateQuestion.quizSection];
+    const isEditing = props[MNPQuizCreateQuestion.isEditing];
 
     const sectionTitle = section[QuizSectionKeys.sectionTitle];
     const sectionType  = section[QuizSectionKeys.sectionType];
@@ -482,8 +527,14 @@ export class QuizCreateQuestionModal extends React.Component {
 
     const modalHeader = (
       <ModalHeader
-        title={'New Question'}
-        subtitle={`Create a new question for ${sectionTitle}`}
+        title={(isEditing
+          ? 'Edit Question'
+          : 'New Question'
+        )}
+        subtitle={(isEditing
+          ? `Edit this question's details`
+          : `Create a new question for ${sectionTitle}`
+        )}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
@@ -498,11 +549,11 @@ export class QuizCreateQuestionModal extends React.Component {
     const modalFooter = (
       <ModalFooter>
         <ModalFooterButton
-          buttonLeftTitle={'Create Quiz'}
-          buttonLeftSubtitle={'Save this Quiz'}
           buttonRightSubtitle={'Discard Changes'}
           onPressButtonLeft={this._handleOnPressButtonLeft}
           onPressButtonRight={this._handleOnPressButtonRight}
+          buttonLeftTitle={(isEditing? 'Update' : 'Done')}
+          buttonLeftSubtitle={(isEditing? 'Save changes' : 'Create Question')}
         />
       </ModalFooter>
     );
@@ -525,6 +576,10 @@ export class QuizCreateQuestionModal extends React.Component {
             subtitle={displaySectionDesc}
             imageSource={require('app/assets/icons/e-book-computer.png')}
             hasPadding={false}
+            title={(isEditing
+              ? `${displaySectionType} item`
+              : `New ${displaySectionType} item`
+            )}
           />
         </ModalSection>
         <ModalSectionHeader
@@ -545,7 +600,7 @@ export class QuizCreateQuestionModal extends React.Component {
             inputRef={r => this.inputRefQuestion = r}
             subtitle={'Enter the question you want to ask'}
             placeholder={'Input Question Text'}
-            //initialValue={state[QuizQuestionKeys.questionText] ?? ''}
+            initialValue={state[QuizQuestionKeys.questionText] ?? ''}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
           />

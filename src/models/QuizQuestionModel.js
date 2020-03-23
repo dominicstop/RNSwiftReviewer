@@ -82,7 +82,7 @@ export class QuizQuestionModel {
 
     const hashCode = Helpers.stringHash(question);
 
-    this.values[QuizQuestionKeys.sectionID] = (
+    this.values[QuizQuestionKeys.questionID] = (
       `question-type:${sectionType}-date:${created}-hash:${hashCode}-quiz:${quizID}-section:${sectionID}`
     );
   };
@@ -113,12 +113,19 @@ export class QuizQuestionModel {
     };
   };
 
-  addChoices(choices = []){
+  addChoices(choices = [], clearBeforeAdding = false){
     //const type = this.values[QuizQuestionKeys.sectionType];
+    if(clearBeforeAdding){
+      this.clearChoices();
+    };
 
     this.values[QuizQuestionKeys.questionChoices] = [
       ...this.values[QuizQuestionKeys.questionChoices] ?? [],
       ...choices
     ];
+  };
+
+  clearChoices(){
+    this.values[QuizQuestionKeys.questionChoices] = [];
   };
 };
