@@ -78,10 +78,12 @@ export class QuizSectionModel {
     const type    = this.values[QuizSectionKeys.sectionType];
     const created = this.values[QuizSectionKeys.sectionDateCreated];
 
-    const hashCode = Helpers.stringHash(title + desc);
+    const hashCode = Helpers.stringHash(
+      (title + desc + quizID)
+    );
 
     this.values[QuizSectionKeys.sectionID] = (
-      `section-type:${type}-date:${created}-hash:${hashCode}-quiz:${quizID}`
+      `sectionType:${type}-date:${created}-hash:${hashCode}`
     );
   };
 
@@ -96,5 +98,31 @@ export class QuizSectionModel {
 
     this.values[QuizSectionKeys.sectionQuestions    ] = newQuestions;
     this.values[QuizSectionKeys.sectionQuestionCount] = newQuestions.length;
+  };
+
+  updateQuestion(updatedQuestion = {}){
+    // local copy of sectionQuestions
+    const questionsCopy = [
+      ...(this.values[QuizSectionKeys.sectionQuestions] ?? [])
+    ];
+
+    const newQuestionID = updatedQuestion[QuizQuestionKeys.questionID];
+
+    for (let index = 0; index < questionsCopy.length; index++) {
+      const question = questionsCopy[index];
+      const questionID = question[QuizQuestionKeys.questionID];
+      
+      if(newQuestionID == questionID){
+        questionsCopy[index] = { ...question,
+          // pass down updated question values
+          [QuizQuestionKeys.questionText   ]: updatedQuestion[QuizQuestionKeys.questionText   ],
+          [QuizQuestionKeys.questionAnswer ]: updatedQuestion[QuizQuestionKeys.questionAnswer ],
+          [QuizQuestionKeys.questionChoices]: updatedQuestion[QuizQuestionKeys.questionChoices],
+        };
+      };
+    };
+
+    // assign changes made from copy
+    this.values[QuizSectionKeys.sectionQuestions] = questionsCopy;
   };
 };

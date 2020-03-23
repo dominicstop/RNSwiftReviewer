@@ -84,7 +84,7 @@ export class QuizAddQuestionModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
-  // Add New Question button press
+  // Add New Question button press - open modal
   _handleOnPressAddNewQuestion = () => {
     const state = this.state;
     
@@ -97,26 +97,20 @@ export class QuizAddQuestionModal extends React.Component {
       navProps: {
         [MNPQuizCreateQuestion.isEditing  ]: false,
         [MNPQuizCreateQuestion.quizSection]: section,
-        [MNPQuizCreateQuestion.onPressDone]: this._handleOnPressDoneQuizCreateQuestionModal,
+        [MNPQuizCreateQuestion.onPressDone]: this._handleOnPressCreateQuizCreateQuestionModal,
       },
     });
   };
 
-  // Modal - QuizCreateQuestionModal: onPressDone
-  _handleOnPressDoneQuizCreateQuestionModal = ({question}) => {
-    this.quizSection.addQuestion(question);
-
-    this.setState({
-      ...this.quizSection.values,
-    });
-  };
-
-  // QuizAddQuestionModalItem: item onPress
+  // QuizAddQuestionModalItem: item onPress - open modal
   _handleOnPressQuestionItem = ({question}) => {
     const state = this.state;
 
     // extract/isolate section values from stata
     const section = QuizSectionModel.extract(state);
+
+    console.log('_handleOnPressQuestionItem - question:');
+    console.log(question);
 
     // open QuizCreateQuestionModal
     ModalController.showModal({
@@ -125,8 +119,25 @@ export class QuizAddQuestionModal extends React.Component {
         [MNPQuizCreateQuestion.isEditing   ]: true,
         [MNPQuizCreateQuestion.quizSection ]: section,
         [MNPQuizCreateQuestion.quizQuestion]: question,
-        [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressDoneQuizCreateQuestionModal,
+        [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressEditQuizCreateQuestionModal,
       },
+    });
+  };
+
+  // Modal - QuizCreateQuestionModal: onPressDone - isEditing: false
+  _handleOnPressCreateQuizCreateQuestionModal = ({question}) => {
+    this.quizSection.addQuestion(question);
+
+    this.setState({
+      ...this.quizSection.values,
+    });
+  };
+
+  // Modal - QuizCreateQuestionModal: onPressDone - isEditing: true
+  _handleOnPressEditQuizCreateQuestionModal = ({question}) => {
+    this.quizSection.updateQuestion(question);
+    this.setState({
+      ...this.quizSection.values,
     });
   };
 

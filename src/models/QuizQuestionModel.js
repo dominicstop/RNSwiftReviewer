@@ -77,13 +77,14 @@ export class QuizQuestionModel {
     const quizID      = this.values[QuizQuestionKeys.quizID];
     const sectionID   = this.values[QuizQuestionKeys.sectionID];
     const sectionType = this.values[QuizQuestionKeys.sectionType];
-    const question    = this.values[QuizQuestionKeys.questionText];
-    const created     = this.values[QuizQuestionKeys.sectionDateCreated];
+    const created     = this.values[QuizQuestionKeys.questionDateCreated];
 
-    const hashCode = Helpers.stringHash(question);
+    const hashCode = Helpers.stringHash(
+      `quiz:${quizID}-section:${sectionID}`
+    );
 
     this.values[QuizQuestionKeys.questionID] = (
-      `question-type:${sectionType}-date:${created}-hash:${hashCode}-quiz:${quizID}-section:${sectionID}`
+      `question-type:${sectionType}-date:${created}-hash:${hashCode}`
     );
   };
 

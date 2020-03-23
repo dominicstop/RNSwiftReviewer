@@ -398,6 +398,7 @@ export class QuizCreateQuestionModal extends React.Component {
         ...(prevQuestion ?? {})
       };
     } else {
+      question.setDateCreated();
       question.initFromSection(section);
     };
 
