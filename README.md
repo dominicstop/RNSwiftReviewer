@@ -36,4 +36,5 @@
 - [ ] Bugfix: Fix scroll offset bug when on production build
 - [ ] Bugfix: fix sort animation header
 - [ ] Bugfix: fix scroll to top sorting behaviour
+- [ ] Bugfix: question choices order not preserved when created/edited
 - [x] Bugfix: fix scrollview offset bug in modals

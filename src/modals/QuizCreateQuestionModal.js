@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Alert, TouchableOpacity, Clipboard } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Ionicon           from '@expo/vector-icons/Ionicons';
@@ -35,6 +35,13 @@ import { QuizSectionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+
+// TODO:
+// * Add switch to preserve choice order
+// * Implement editing/deleting of choices
+// * add delete button when isEditing
+// * avoid duplicates in choices
+// * debug data flow (check values in object when passing/receiving)
 
 
 function getTitleSubtitle(choiceCount){
@@ -342,6 +349,10 @@ export class QuizCreateQuestionModal extends React.Component {
     let question = new QuizQuestionModel();
     question.initFromSection(section);
     this.question = question;
+    
+    Clipboard.setString(
+      JSON.stringify(this.question.values)
+    );
 
     this.state = {
       ...question.values,
@@ -386,10 +397,8 @@ export class QuizCreateQuestionModal extends React.Component {
         desc : 'Oops, please fill out the required items to continue.'
       });
 
-      //animate shake
-      this.validate(true);
-      //early exit
-      return;
+      //animate shake and early exit
+      return this.validate(true);
     };
 
     // set question text
@@ -402,7 +411,7 @@ export class QuizCreateQuestionModal extends React.Component {
         this.question.answer = answerText;
         break;
     
-      case SectionTypes.IDENTIFICATION:
+      case SectionTypes.MULTIPLE_CHOICE:
         const { answer, choices } = this.multipleChoiceRef.getChoices();
         this.question.answer = answer;
         this.question.addChoices(choices);

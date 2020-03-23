@@ -28,11 +28,12 @@ export const QuizSectionKeys = {
 
 // property names for QuizQuestionModel
 export const QuizQuestionKeys = {
-  quizID         : 'quizID'         ,
-  sectionID      : 'sectionID'      ,
-  sectionType    : 'sectionType'    ,
-  questionID     : 'questionID'     ,
-  questionText   : 'questionText'   ,
-  questionAnswer : 'questionAnswer' ,
-  questionChoices: 'questionChoices',
+  quizID             : 'quizID'             ,
+  sectionID          : 'sectionID'          ,
+  sectionType        : 'sectionType'        ,
+  questionID         : 'questionID'         ,
+  questionText       : 'questionText'       ,
+  questionAnswer     : 'questionAnswer'     ,
+  questionChoices    : 'questionChoices'    ,
+  questionDateCreated: 'questionDateCreated',
 };

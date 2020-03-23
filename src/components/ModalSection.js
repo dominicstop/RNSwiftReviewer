@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   rootContainer: {
-    paddingHorizontal: 10,
-    paddingTop: 12,
     backgroundColor: 'rgba(255,255,255,0.6)',
     borderColor: 'rgba(0,0,0,0.2)',
     borderBottomWidth: 1,
@@ -23,6 +21,7 @@ export class ModalSection extends React.PureComponent {
   static defaultProps = {
     showBorderTop  : true,
     hasMarginBottom: true,
+    hasPadding     : true,
     paddingBottom  : 15,
     marginBottom   : 20,
   };
@@ -31,10 +30,14 @@ export class ModalSection extends React.PureComponent {
     const { showBorderTop, ...props } = this.props;
 
     const containerStyle = {
-      paddingBottom: props.paddingBottom,
-      ...(showBorderTop   && { borderTopWidth: 1 }),
+      ...(showBorderTop && { borderTopWidth: 1 }),
       ...(props.hasMarginBottom && { 
         marginBottom : props.marginBottom,
+      }),
+      ...(props.hasPadding && {
+        paddingBottom: props.paddingBottom,
+        paddingHorizontal: 10,
+        paddingTop: 12,
       }),
     };
 

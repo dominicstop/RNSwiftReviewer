@@ -7,6 +7,8 @@ import * as Helpers from "app/src/functions/helpers";
 // create object with keys and ass. null values
 const defaultValues = IS_DEBUG && Helpers.createObjectFromKeys(QuizSectionKeys);
 
+const debug = true;
+
 export class QuizSectionModel {
   // default values
   static stucture = {
@@ -38,7 +40,7 @@ export class QuizSectionModel {
       copy[key] = values[key];
     };
 
-    return copy;
+    return {...copy};
   };
 
   constructor(values = {}){

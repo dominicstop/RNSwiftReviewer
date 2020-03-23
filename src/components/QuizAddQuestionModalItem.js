@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+
+import * as Animatable from 'react-native-animatable';
+import { iOSUIKit } from 'react-native-typography'; 
 
 import { ModalSection } from 'app/src/components/ModalSection';
-
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { iOSUIKit } from 'react-native-typography';
+import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
-import * as Colors   from 'app/src/constants/Colors';
+import * as Colors from 'app/src/constants/Colors';
 
 // used in modals/QuizAddQuestionModal
 // renderItem component, question item
@@ -36,6 +38,16 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     },
   });
 
+  _handleOnPressQuestionItem = async () => {
+    const { index, onPressQuestionItem, ...props } = this.props;
+    const question = QuizQuestionModel.extract(props);
+
+    await this.rootContainerRef.pulse(300);
+    onPressQuestionItem && onPressQuestionItem(
+      { index, question }
+    );
+  };
+
   render(){
     const { styles } = QuizAddQuestionModalItem;
     const { index, ...props } = this.props;
@@ -44,28 +56,39 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     const answer   = props[QuizQuestionKeys.questionAnswer];
 
     return(
-      <ModalSection 
-        containerStyle={styles.rootContainer}
-        hasMarginBottom={props.isLast}
-        showBorderTop={false}
+      <Animatable.View
+        ref={r => this.rootContainerRef = r}
+        useNativeDriver={true}
       >
-        <Text numberOfLines={5}>
-          <Text style={styles.textQuestionIndicator}>
-            {`${index + 1}. `}
-          </Text>
-          <Text style={styles.textQuestionBody}>
-            {question}
-          </Text>
-        </Text>
-        <Text>
-          <Text style={styles.textAnswerLabel}>
-            {'Answer: '}
-          </Text>
-          <Text style={styles.textAnswer}>
-            {answer}
-          </Text>
-        </Text>
-      </ModalSection>
+        <ModalSection 
+          hasMarginBottom={props.isLast}
+          showBorderTop={false}
+          hasPadding={false}
+        >
+          <TouchableOpacity
+            style={styles.rootContainer}
+            activeOpacity={0.75}
+            onPress={this._handleOnPressQuestionItem}
+          >
+            <Text numberOfLines={5}>
+              <Text style={styles.textQuestionIndicator}>
+                {`${index + 1}. `}
+              </Text>
+              <Text style={styles.textQuestionBody}>
+                {question}
+              </Text>
+            </Text>
+            <Text>
+              <Text style={styles.textAnswerLabel}>
+                {'Answer: '}
+              </Text>
+              <Text style={styles.textAnswer}>
+                {answer}
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </ModalSection>
+      </Animatable.View>
     );
   };
 };

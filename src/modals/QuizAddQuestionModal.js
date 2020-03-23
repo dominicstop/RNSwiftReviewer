@@ -95,6 +95,7 @@ export class QuizAddQuestionModal extends React.Component {
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
       navProps: {
+        [MNPQuizCreateQuestion.isEditing  ]: false,
         [MNPQuizCreateQuestion.quizSection]: section,
         [MNPQuizCreateQuestion.onPressDone]: this._handleOnPressDoneQuizCreateQuestionModal,
       },
@@ -104,9 +105,28 @@ export class QuizAddQuestionModal extends React.Component {
   // QuizCreateQuestionModal: onPressDone
   _handleOnPressDoneQuizCreateQuestionModal = ({question}) => {
     this.quizSection.addQuestion(question);
-    
+
     this.setState({
       ...this.quizSection.values,
+    });
+  };
+
+  // QuizAddQuestionModalItem: onPress callback
+  _handleOnPressQuestionItem = ({question}) => {
+    const state = this.state;
+
+    // extract/isolate section values from stata
+    const section = QuizSectionModel.extract(state);
+
+    // open QuizCreateQuestionModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
+      navProps: {
+        [MNPQuizCreateQuestion.isEditing   ]: true,
+        [MNPQuizCreateQuestion.quizSection ]: section,
+        [MNPQuizCreateQuestion.quizQuestion]: question,
+        [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressDoneQuizCreateQuestionModal,
+      },
     });
   };
 
@@ -209,13 +229,13 @@ export class QuizAddQuestionModal extends React.Component {
 
     return (
       <QuizAddQuestionModalItem
+        onPressQuestionItem={this._handleOnPressQuestionItem}
         {...{index, isLast, ...question}}
       />
     );
   };
 
   render(){
-    const { styles } = QuizAddQuestionModal;
     const state = this.state;
 
     const questions = state[QuizSectionKeys.sectionQuestions] ?? [];

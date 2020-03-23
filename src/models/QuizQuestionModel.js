@@ -70,7 +70,7 @@ export class QuizQuestionModel {
     const date = new Date();
     const ts   = date.getTime();
 
-    this.values[QuizQuestionKeys.sectionDateCreated] = ts;
+    this.values[QuizQuestionKeys.questionDateCreated] = ts;
   };
 
   setQuestionID(){
@@ -88,8 +88,9 @@ export class QuizQuestionModel {
   };
 
   initFromSection(section = {}){
-    this.quizID    = section[QuizSectionKeys.quizID];
-    this.sectionID = section[QuizSectionKeys.sectionID];
+    this.values[QuizQuestionKeys.quizID     ] = section[QuizSectionKeys.quizID     ];
+    this.values[QuizQuestionKeys.sectionID  ] = section[QuizSectionKeys.sectionID  ];
+    this.values[QuizQuestionKeys.sectionType] = section[QuizSectionKeys.sectionType];
 
     this.setDateCreated();
     this.setQuestionID();
@@ -112,20 +113,12 @@ export class QuizQuestionModel {
     };
   };
 
-  addChoices(chocies = []){
-    const type = this.values[QuizQuestionKeys.sectionType];
-    
-    if(type === SectionTypes.MULTIPLE_CHOICE){
-      const choices = this.values[QuizQuestionKeys.questionChoices];
+  addChoices(choices = []){
+    //const type = this.values[QuizQuestionKeys.sectionType];
 
-      this.values[QuizQuestionKeys.questionChoices] = [
-        ...(choices ?? []), ...chocies
-      ];
-
-    } else {
-      console.log(
-        `Cannot add choice. SectionType is ${type}`
-      );
-    };
+    this.values[QuizQuestionKeys.questionChoices] = [
+      ...this.values[QuizQuestionKeys.questionChoices] ?? [],
+      ...choices
+    ];
   };
 };
