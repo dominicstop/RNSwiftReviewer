@@ -6,6 +6,7 @@ import { iOSUIKit } from 'react-native-typography';
 
 import { ModalSection } from 'app/src/components/ModalSection';
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
+import { SectionTypes } from 'app/src/constants/SectionTypes';
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
 import * as Colors from 'app/src/constants/Colors';
@@ -52,8 +53,14 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     const { styles } = QuizAddQuestionModalItem;
     const { index, ...props } = this.props;
 
-    const question = props[QuizQuestionKeys.questionText];
-    const answer   = props[QuizQuestionKeys.questionAnswer];
+    const question    = props[QuizQuestionKeys.questionText];
+    const answer      = props[QuizQuestionKeys.questionAnswer];
+    const sectionType = props[QuizQuestionKeys.sectionType];
+    
+    const displayAnswer = ((sectionType == SectionTypes.TRUE_OR_FALSE)
+      ? (answer? 'True' : 'False')
+      : answer
+    );
 
     return(
       <Animatable.View
@@ -83,7 +90,7 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
                 {'Answer: '}
               </Text>
               <Text style={styles.textAnswer}>
-                {answer}
+                {displayAnswer}
               </Text>
             </Text>
           </TouchableOpacity>

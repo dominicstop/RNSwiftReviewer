@@ -2,15 +2,15 @@ import React, { Fragment } from 'react';
 import { StyleSheet, View, Text, Alert, TouchableOpacity, Clipboard } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Ionicon           from '@expo/vector-icons/Ionicons';
-import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicon             from '@expo/vector-icons/Ionicons';
+import MaterialCommunity   from '@expo/vector-icons/MaterialCommunityIcons';
+import SegmentedControlIOS from '@react-native-community/segmented-control';
 
 import * as Animatable from 'react-native-animatable';
 
 import { Navigation } from 'react-native-navigation';
 import { Divider } from 'react-native-elements';
 import { iOSUIKit } from 'react-native-typography';
-
 
 import { ModalBackground     } from 'app/src/components/ModalBackground';
 import { ModalHeader         } from 'app/src/components/ModalHeader';
@@ -147,7 +147,7 @@ class ChoiceItem extends React.PureComponent {
   };
 };
 
-class SectionMultipleChoice extends React.Component {
+class SectionMultipleChoice extends React.PureComponent {
   static propTypes = {
     onAddChoice: PropTypes.onAddChoice,
   };
@@ -329,6 +329,45 @@ class SectionMultipleChoice extends React.Component {
   };
 };
 
+class SectionTrueOrFalse extends React.PureComponent {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+      selectedIndex: (
+        props.initialValue? 0 : 1
+      ),
+    };
+  };
+
+  getAnswerValue = () => {
+    const { selectedIndex } = this.state;
+    return( selectedIndex == 0 );
+  };
+
+  _handleOnChange = ({nativeEvent}) => {
+    this.setState({
+      selectedIndex: nativeEvent.selectedSegmentIndex
+    });
+  };
+
+  render(){
+    const { selectedIndex } = this.state;
+
+    return(
+      <ModalSection showBorderTop={false}>
+        <SegmentedControlIOS
+          style={{height: 35}}
+          values={['True', 'False']}
+          activeTextColor={Colors.BLUE[1000]}
+          onChange={this._handleOnChange}
+          {...{selectedIndex}}
+        />
+      </ModalSection>
+    );
+  };
+};
+
 export class QuizCreateQuestionModal extends React.Component {
   static options() {
     return {
@@ -388,6 +427,9 @@ export class QuizCreateQuestionModal extends React.Component {
         const isValidChoices = this.multipleChoiceRef.validate(false)
         animate && this.multipleChoiceRef.validate(true);
         return (isValidQuestion && isValidChoices);
+
+      case SectionTypes.TRUE_OR_FALSE:
+        return (isValidQuestion);
     };
   };
 
@@ -395,6 +437,7 @@ export class QuizCreateQuestionModal extends React.Component {
     const props = this.props;
 
     const section     = props  [MNPQuizCreateQuestion.quizSection];
+    const isEditing   = props  [MNPQuizCreateQuestion.isEditing];
     const sectionType = section[QuizSectionKeys.sectionType];
 
     // set question text
@@ -412,6 +455,11 @@ export class QuizCreateQuestionModal extends React.Component {
         const { choices, selectedChoice } = this.multipleChoiceRef.getChoices();
         this.question.answer = selectedChoice;
         this.question.addChoices(choices, isEditing);
+        break;
+
+      case SectionTypes.TRUE_OR_FALSE:
+        const answerBool = this.trueOrFalseRef.getAnswerValue();
+        this.question.answer = answerBool;
         break;
     };
   };
@@ -494,19 +542,11 @@ export class QuizCreateQuestionModal extends React.Component {
           {...{choices}}
         />
       );
-      case SectionTypes.MATCHING_TYPE: return (
-        <ModalSection showBorderTop={false}>
-          <ModalInputMultiline
-            index={1}
-            ref={r => this.sss = r}
-            inputRef={r => this.inputRefAnswer = r}
-            subtitle={"Enter the question's answer"}
-            placeholder={'Input Answer Text'}
-            initialValue={(answer ?? '')}
-            onSubmitEditing={this._handleOnSubmitEditing}
-            validate={Validate.isNotNullOrWhitespace}
-          />
-        </ModalSection>
+      case SectionTypes.TRUE_OR_FALSE: return (
+        <SectionTrueOrFalse
+          ref={r => this.trueOrFalseRef = r}
+          initialValue={answer}
+        />
       );
     };
   };
