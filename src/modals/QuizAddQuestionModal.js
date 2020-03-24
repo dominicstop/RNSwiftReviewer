@@ -69,6 +69,7 @@ export class QuizAddQuestionModal extends React.Component {
 
     // trigger callback event
     onPressDone && onPressDone({
+      section: this.quizSection.values,
     });
 
     // close modal
@@ -84,7 +85,7 @@ export class QuizAddQuestionModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
-  // Add New Question button press - open modal
+  // Add New Question button press
   _handleOnPressAddNewQuestion = () => {
     const state = this.state;
     

@@ -126,7 +126,7 @@ export class CreateQuizScreen extends React.Component {
       routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
       navProps: {
         [MNPQuizAddQuestion.quizSection]: section,
-        [MNPQuizAddQuestion.onPressDone]: this._handleQuizAddSectionModalOnPressDone,
+        [MNPQuizAddQuestion.onPressDone]: this._handleQuizAddQuestionModalOnPressDone,
       },
     });
   };
@@ -165,8 +165,13 @@ export class CreateQuizScreen extends React.Component {
     this.setState({ ...this.quiz.values });
   };
 
-  _handleQuizAddSectionModalOnPressDone = () => {
-    console.log('CreateQuizScreen - _handleQuizAddSectionModalOnPressDone');
+  // modal callback: QuizAddQuestionModal
+  _handleQuizAddQuestionModalOnPressDone = ({section}) => {
+    this.quiz.updateSection(section);
+    
+    this.setState({
+      ...this.quiz.values,
+    });
   };
   // #endregion
 
