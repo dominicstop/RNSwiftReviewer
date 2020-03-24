@@ -9,6 +9,8 @@
 - [ ] CreateQuizModal: replace input icons
 - [ ] Refactor:  QuizListItem - pass down quizes as props, and use PropKeys to access them
 - [ ] When cancel is pressed, prompt actionSheet/Alert and ask to discard changes 
+- [ ] Don't show check animation when no changes in modal
+- [ ] enable/disable colors for footer section buttons
 - [x] Refactor: rename ListCardEmpty to ListCardImageTitleBody
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar

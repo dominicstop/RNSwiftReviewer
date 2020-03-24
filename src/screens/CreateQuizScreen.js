@@ -95,32 +95,50 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
+  // onPress: Add New Section
   _handleOnPressAddSection = () => {
-    const { navigation } = this.props;
 
     // open QuizAddSectionModal
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizAddSection,
       navProps: {
-        [MNPQuizAddSection.navigation  ]: navigation,
         [MNPQuizAddSection.isEditing   ]: false,
         [MNPQuizAddSection.sectionTitle]: null ,
         [MNPQuizAddSection.sectionDesc ]: null ,
         [MNPQuizAddSection.sectionType ]: null ,
+        [MNPQuizAddSection.sectionID   ]: null ,
         //event: attach onPress done/save handler
-        [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressDone,
+        [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressCreate,
       },
     });
   };
 
   // CreateQuizListItem - edit
   _handleOnPressSectionEdit = ({section, index}) => {
-    alert('edit');
+
+    const title = section[QuizSectionKeys.sectionTitle];
+    const desc  = section[QuizSectionKeys.sectionDesc ];
+    const type  = section[QuizSectionKeys.sectionType ];
+    const id    = section[QuizSectionKeys.sectionID   ];
+
+    // open QuizAddSectionModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalQuizAddSection,
+      navProps: {
+        [MNPQuizAddSection.isEditing   ]: true,
+        [MNPQuizAddSection.sectionTitle]: title,
+        [MNPQuizAddSection.sectionDesc ]: desc ,
+        [MNPQuizAddSection.sectionType ]: type ,
+        [MNPQuizAddSection.sectionID   ]: id   ,
+        //event: attach onPress done/save handler
+        [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressEdit,
+      },
+    });
+  
   };
 
-  // CreateQuizListItem - add
+  // CreateQuizListItem - add question
   _handleOnPressSectionAdd = ({section, index}) => {
-
     // open 
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
@@ -146,8 +164,8 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
-  // modal callback: QuizAddSectionModal
-  _handleAddSectionModalOnPressDone = ({title, desc, sectionType}) => {
+  // modal callback: QuizAddSectionModal - create
+  _handleAddSectionModalOnPressCreate = ({title, desc, sectionType}) => {
     this.footerRef.setVisibilty(true);
 
     const quizID = this.quiz.values[QuizKeys.quizID];
@@ -165,10 +183,26 @@ export class CreateQuizScreen extends React.Component {
     this.setState({ ...this.quiz.values });
   };
 
+  // modal callback: QuizAddSectionModal - edit
+  _handleAddSectionModalOnPressEdit = ({title, desc, sectionType, sectionID}) => {
+    const section = new QuizSectionModel();
+    //set values
+    section.title = title;
+    section.desc  = desc;
+    section.type  = sectionType;
+    
+    section.sectionID = sectionID;
+
+    this.quiz.updateSection(section.values);
+    this.setState({
+      ...this.quiz.values,
+    });
+  };
+
   // modal callback: QuizAddQuestionModal
   _handleQuizAddQuestionModalOnPressDone = ({section}) => {
     this.quiz.updateSection(section);
-    
+
     this.setState({
       ...this.quiz.values,
     });

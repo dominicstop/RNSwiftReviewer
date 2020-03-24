@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Keyboard, Animated, Image } from 'react-native';
+import { Platform, StyleSheet, Text, View, Alert, Keyboard, Animated, Image } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -23,7 +23,7 @@ import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
+import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
 import { SectionTypes, SectionTypesRadioValuesMap } from 'app/src/constants/SectionTypes';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
@@ -159,25 +159,42 @@ export class QuizAddSectionModal extends React.Component {
   constructor(props){
     super(props);
 
+    const isEditing   = props[MNPQuizAddSection.isEditing];
+    const sectionType = props[MNPQuizAddSection.sectionType];
+
+    this.state = {
+      //initial selected type
+      selectedSectionType: (isEditing
+        ? sectionType
+        : SectionTypes.IDENTIFICATION
+      ),
+    };
+
     this.progress = new Animated.Value(0);
 
     this._opacity = this.progress.interpolate({
       inputRange : [0, 0.25],
       outputRange: [0, 1  ],
     });
-    
-    this.state = {
-      //initial selected type
-      selectedSectionType: SectionTypes.IDENTIFICATION,
-    };
 
     this.lottieSource = require('app/assets/lottie/check_done.json');
   };
 
   _handleOnPressSectionItem = ({type}) => {
-    this.setState({
-      selectedSectionType: type,
-    });
+    const props = this.props;
+    const isEditing = props[MNPCreateQuiz.isEditing];
+
+    if(isEditing){
+      Alert.alert(
+        "Can't Change Type",
+        'Ornare Dolor Ipsum Vestibulum Magna'
+      );
+
+    } else {
+      this.setState({
+        selectedSectionType: type,
+      });
+    };
   };
 
   _handleOnSubmitEditing = ({index}) => {
@@ -193,9 +210,9 @@ export class QuizAddSectionModal extends React.Component {
     const { componentId, ...props } = this.props;
     const { selectedSectionType } = this.state;
 
-
-    const isEditing   = props[MNPCreateQuiz.isEditing  ];
-    const onPressDone = props[MNPCreateQuiz.onPressDone];
+    const isEditing   = props[MNPQuizAddSection.isEditing  ];
+    const sectionID   = props[MNPQuizAddSection.sectionID  ];
+    const onPressDone = props[MNPQuizAddSection.onPressDone];
 
     const isValidTitle    = this.inputFieldRefTitle.isValid(false);
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
@@ -208,7 +225,7 @@ export class QuizAddSectionModal extends React.Component {
 
       // trigger callback event
       onPressDone && onPressDone({
-        title, desc,
+        title, desc, sectionID,
         sectionType: selectedSectionType,
       });
 
@@ -294,7 +311,7 @@ export class QuizAddSectionModal extends React.Component {
             title={'Section Title'}
             subtitle={'Give this section a title (ex: Math Prelims etc.)'}
             placeholder={'Enter Section Title'}
-            initialValue={props[MNPCreateQuiz.quizTitle]}
+            initialValue={props[MNPQuizAddSection.sectionTitle]}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
@@ -319,7 +336,7 @@ export class QuizAddSectionModal extends React.Component {
             title={'Description'}
             subtitle={'Give this section a short description.'}
             placeholder={'Enter Section Title'}
-            initialValue={props[MNPCreateQuiz.quizDesc]}
+            initialValue={props[MNPQuizAddSection.sectionDesc]}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
               <SvgIcon

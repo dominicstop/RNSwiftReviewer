@@ -23,6 +23,7 @@ export const MNPQuizAddSection = {
   sectionTitle: 'sectionTitle',
   sectionDesc : 'sectionDesc' ,
   sectionType : 'sectionType' ,
+  sectionID   : 'sectionID'   ,
   onPressDone : 'onPressDone' ,
 };
 

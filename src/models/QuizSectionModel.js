@@ -51,6 +51,10 @@ export class QuizSectionModel {
     this.values[QuizSectionKeys.quizID] = id;
   };
 
+  set sectionID(id = ''){
+    this.values[QuizSectionKeys.sectionID] = id;
+  };
+
   set title(title = ''){
     this.values[QuizSectionKeys.sectionTitle] = title;
   };
