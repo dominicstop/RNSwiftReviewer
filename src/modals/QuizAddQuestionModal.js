@@ -9,6 +9,7 @@ import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
+import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
 import { ModalSection       } from 'app/src/components/ModalSection';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
@@ -32,6 +33,8 @@ import { QuizSectionModel } from '../models/QuizSectionModel';
 import { Divider } from 'react-native-elements';
 import { iOSUIKit } from 'react-native-typography';
 
+// TODO:
+// [ ] - Imp. footer icon
 
 export class QuizAddQuestionModal extends React.Component {
   static options() {
@@ -62,7 +65,7 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   // ModalFooter: save button
-  _handleOnPressButtonLeft = () => {
+  _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
 
     const onPressDone = props[MNPQuizAddQuestion.onPressDone];
@@ -71,6 +74,9 @@ export class QuizAddQuestionModal extends React.Component {
     onPressDone && onPressDone({
       section: this.quizSection.values,
     });
+
+    // show check overlay
+    await this.overlay.start();
 
     // close modal
     Navigation.dismissModal(componentId);
@@ -279,10 +285,16 @@ export class QuizAddQuestionModal extends React.Component {
       </ModalFooter>
     );
 
+    const overlay = (
+      <ModalOverlayCheck
+        ref={r => this.overlay = r}
+      />
+    );
+
     return (
       <ModalBackground
         wrapInScrollView={false}
-        {...{modalHeader, modalFooter}}
+        {...{modalHeader, modalFooter, overlay}}
       >
         <SectionList
           ref={r => this.sectionList = r}
