@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { StyleSheet, Text, View, SectionList, Image, Dimensions } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
@@ -26,7 +26,20 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
 import { sortQuizItems   } from 'app/src/functions/SortItems';
+import { QuizStore       } from 'app/src/functions/QuizStore';
 
+
+async function refreshQuizes(that){
+  const { index } = QuizStore.getCacheIndex();
+
+  if(index != that.quizStoreIndex){
+    const result = await QuizStore.getQuizes();
+
+    that.setState({
+      quizes: result.quizes,
+    });
+  };
+};
 
 export class QuizListScreen extends React.Component {
   static styles = StyleSheet.create({
@@ -42,18 +55,31 @@ export class QuizListScreen extends React.Component {
   constructor(props){
     super(props);
 
-    const testData = Object.values(TestDataQuiz);
+    const cache = QuizStore.getCache();
+    this.quizStoreIndex = cache.index;
 
     this.state = {
       scrollEnabled: true,
       isAsc: false,
       sortIndex: 0,
-      //quizes: [],
-      //quizes: [testData[0]],
-      //quizes: [testData[0], testData[1]],
-      //quizes: [testData[0], testData[1], testData[2]],
-      quizes: testData,
+      quizes: cache.quizes,
     };
+  };
+
+  componentDidMount(){
+    const { navigation } = this.props;
+
+    this.focusListener = navigation.addListener(
+      'didFocus', this.componentDidFocus
+    );
+  };
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+  };
+
+  componentDidFocus = () => {
+    refreshQuizes(this);
   };
 
   _handleOnPressCreateQuiz = () => {

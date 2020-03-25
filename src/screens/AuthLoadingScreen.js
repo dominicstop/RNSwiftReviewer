@@ -6,6 +6,7 @@ import * as COLORS  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { ROUTES } from 'app/src/constants/Routes';
+import { QuizStore } from 'app/src/functions/QuizStore';
 
 export class AuthLoadingScreen extends Component {
   static styles = StyleSheet.create({
@@ -22,6 +23,7 @@ export class AuthLoadingScreen extends Component {
     StatusBar.setBarStyle("light-content");
 
     await Promise.all([
+      QuizStore.getQuizes(),
       Helpers.timeout(750),
     ]);
 

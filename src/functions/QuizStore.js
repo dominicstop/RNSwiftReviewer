@@ -12,6 +12,13 @@ export class QuizStore {
     index++;
   };
 
+  static getCache(){
+    return {
+      index,
+      quizes: cache,
+    };
+  };
+
   static async getQuizes(){
     try {
       // get stored quizes
