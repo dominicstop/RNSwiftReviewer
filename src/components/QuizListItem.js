@@ -15,6 +15,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { ListCard      } from 'app/src/components/ListCard';
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
+import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
 import { QuizKeys } from 'app/src/constants/PropKeys';
 
@@ -119,27 +120,7 @@ class QuizListItemStats extends React.PureComponent {
   
   static styles = StyleSheet.create({
     rootContainer: {
-      flexDirection: 'row',
       marginTop: 10,
-    },
-    columnLeftContainer: {
-      flex: 1,
-      marginRight: 5,
-    },
-    columnRightContainer: {
-      flex: 1,
-      marginLeft: 5,
-    },
-    rowContainer: {
-      flexDirection: 'row',
-    },
-    textDetailLabel: {
-      ...iOSUIKit.subheadEmphasizedObject,
-      flex: 1,
-    },
-    textDetail: {
-      ...iOSUIKit.subheadObject,
-      color: Colors.GREY[800]
     },
   });
 
@@ -153,70 +134,25 @@ class QuizListItemStats extends React.PureComponent {
     const lastTaken     = quiz[QuizKeys.quizDateLastTaken] ?? 0;
 
     const dateLastTaken = moment.unix(lastTaken / 1000);
+    const textLastTaken = (lastTaken
+      ? dateLastTaken.fromNow()
+      : 'N/A'
+    );
+
+    const textTaken     = `${timesTaken   } ${Helpers.plural('time', timesTaken   )}`;
+    const textSections  = `${sectionCount } ${Helpers.plural('item', sectionCount )}`;
+    const textQuestions = `${questionCount} ${Helpers.plural('item', questionCount)}`;
 
     return(
-      <View style={styles.rootContainer}>
-        <View style={styles.columnLeftContainer}>
-          <View style={styles.rowContainer}>
-            <Text 
-              style={styles.textDetailLabel}
-              numberOfLines={1}
-            >
-              {'Taken'}
-            </Text>
-            <Text 
-              style={styles.textDetail}
-              numberOfLines={1}
-            >
-              {`${timesTaken} ${Helpers.plural('time', timesTaken)}`}
-            </Text>
-          </View>
-          <View style={styles.rowContainer}>
-            <Text 
-              style={styles.textDetailLabel}
-              numberOfLines={1}
-            >
-              {'Last'}
-            </Text>
-            <Text 
-              style={styles.textDetail}
-              numberOfLines={1}
-            >
-              {dateLastTaken.fromNow()}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.columnRightContainer}>
-          <View style={styles.rowContainer}>
-            <Text 
-              style={styles.textDetailLabel}
-              numberOfLines={1}
-            >
-              {'Sections'}
-            </Text>
-            <Text 
-              style={styles.textDetail}
-              numberOfLines={1}
-            >
-              {`${sectionCount} ${Helpers.plural('item', sectionCount)}`}
-            </Text>
-          </View>
-          <View style={styles.rowContainer}>
-            <Text 
-              style={styles.textDetailLabel}
-              numberOfLines={1}
-            >
-              {'Questions'}
-            </Text>
-            <Text 
-              style={styles.textDetail}
-              numberOfLines={1}
-            >
-              {`${questionCount} ${Helpers.plural('item', questionCount)}`}
-            </Text>
-          </View>
-        </View>
-      </View>
+      <TableLabelValue
+        containerStyle={styles.rootContainer}
+        labelValueMap={[
+          ['Taken'    , textTaken    ],
+          ['Sections' , textSections ],
+          ['Last'     , textLastTaken],
+          ['Questions', textQuestions],
+        ]}
+      />
     );
   };
 };
