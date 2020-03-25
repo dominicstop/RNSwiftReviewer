@@ -3,9 +3,11 @@ import { StyleSheet, Text, View, Clipboard } from 'react-native';
 
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 
-import { QuizListScreen } from 'app/src/screens/QuizListScreen';
-import { ExamListScreen } from 'app/src/screens/ExamListScreen';
 import { CustomTabBar } from 'app/src/components/CustomTabBar';
+
+import { QuizListScreen        } from 'app/src/screens/QuizListScreen';
+import { ExamListScreen        } from 'app/src/screens/ExamListScreen';
+import { ToBeImplementedScreen } from 'app/src/screens/ToBeImplementedScreen';
 
 import { ROUTES } from 'app/src/constants/Routes';
 
@@ -59,8 +61,8 @@ function getTabBarIcon({focused, horizontal, tintColor}, navigation){
 
 const HomeScreen = createBottomTabNavigator({
     [ROUTES.TabQuizRoute   ]: QuizListScreen,
-    [ROUTES.TabExamRoute   ]: ExamListScreen,
-    [ROUTES.TabOptionsRoute]: ExamListScreen,
+    [ROUTES.TabExamRoute   ]: ToBeImplementedScreen,
+    [ROUTES.TabOptionsRoute]: ToBeImplementedScreen,
   }, {
     initialRouteName: ROUTES.QuizListScreen,
     tabBarComponent: CustomTabBar,

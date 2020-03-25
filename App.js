@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import { createAppContainer } from 'react-navigation';
