@@ -69,6 +69,20 @@ export class QuizModel {
     );
   };
 
+  setQuestionCount(){
+    const sections = this.values[QuizKeys.quizSections] ?? [];
+
+    let questionCount = 0;
+    sections.forEach(section => {
+      const questions = section[QuizSectionKeys.sectionQuestions] ?? [];
+      questions.forEach(question => {
+        questionCount++;
+      });
+    });
+
+    this.values[QuizKeys.quizQuestionCount] = questionCount;
+  };
+
   addSection(section = {}){
     const quizID      = this.values[QuizKeys.quizID];
     const oldSections = this.values[QuizKeys.quizSections];
@@ -81,6 +95,8 @@ export class QuizModel {
 
     this.values[QuizKeys.quizSections    ] = newSections;
     this.values[QuizKeys.quizSectionCount] = newSections?.length ?? 0;
+
+    this.setQuestionCount();
   };
 
   updateSection(updatedSection = {}){
@@ -110,6 +126,7 @@ export class QuizModel {
     // assign changes made from copy
     this.values[QuizKeys.quizSections     ] = sectionsCopy;
     this.values[QuizKeys.quizSectionCount ] = sectionsCopy.length;
-    this.values[QuizKeys.quizQuestionCount]; //todo
+    // update question count
+    this.setQuestionCount();
   };
 };

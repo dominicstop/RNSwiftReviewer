@@ -26,6 +26,12 @@ import { QuizModel        } from 'app/src/models/QuizModel';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 import { ModalController } from 'app/src/functions/ModalController';
+import { QuizStore } from '../functions/QuizStore';
+
+// TODO:
+// [ ] - Move footerRef.setVisibilty to componentDidUpdate
+// [ ] - Change "Edit Quiz Details" color to secondary
+// [ ] - implement section deleting
 
 
 export class CreateQuizScreen extends React.Component {
@@ -93,6 +99,10 @@ export class CreateQuizScreen extends React.Component {
         [MNPCreateQuiz.onPressDone]: this._handleCreateQuizModalOnPressDone,
       },
     });
+  };
+
+  _handleOnPressFinishQuiz = () => {
+    QuizStore.getQuizes();
   };
 
   // onPress: Add New Section
@@ -190,7 +200,7 @@ export class CreateQuizScreen extends React.Component {
     section.title = title;
     section.desc  = desc;
     section.type  = sectionType;
-    
+
     section.sectionID = sectionID;
 
     this.quiz.updateSection(section.values);
@@ -219,8 +229,8 @@ export class CreateQuizScreen extends React.Component {
 
     // get section item count
     const sections       = state[QuizKeys.quizSections];
+    const countQuestions = state[QuizKeys.quizQuestionCount];
     const countSection   = sections?.length ?? 0;
-    const countQuestions = 0;
 
     return(
       <CreateQuizListHeader
@@ -318,7 +328,7 @@ export class CreateQuizScreen extends React.Component {
           <ButtonGradient
             title={'Finish Quiz'}
             subtitle={'Create and save the current quiz'}
-            onPress={this._handleOnPressDone}
+            onPress={this._handleOnPressFinishQuiz}
             gradientColors={[Colors.INDIGO.A400, Colors.BLUE.A700]}
             iconDistance={15}
             isBgGradient={true}
