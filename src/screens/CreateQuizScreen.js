@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
@@ -35,6 +35,7 @@ import { QuizStore       } from 'app/src/functions/QuizStore';
 // [ ] - Move footerRef.setVisibilty to componentDidUpdate
 // [ ] - Change "Edit Quiz Details" color to secondary
 // [ ] - implement section deleting
+// [ ] - preview question/sections when creating
 
 
 export class CreateQuizScreen extends React.Component {
@@ -107,8 +108,18 @@ export class CreateQuizScreen extends React.Component {
   // ScreenFooter - onPress "Finish Quiz"
   _handleOnPressFinishQuiz = async () => {
     const { navigation } = this.props;
+    
+    const quiz      = this.quiz.values;
+    const quizTitle = quiz[QuizKeys.quizTitle];
 
-    const quiz = this.quiz.values;
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title: `Save ${quizTitle} Quiz`,
+      message: "Are you done making quiz? If so, do you want to save it now?",
+      confirmText: 'Save Quiz',
+    });
+
+    // cancel was selected
+    if(!confirm) return;
 
     await Promise.all([
       // show check animation
@@ -121,6 +132,12 @@ export class CreateQuizScreen extends React.Component {
     navigation.dispatch(
       StackActions.popToTop()
     );
+
+    await Helpers.timeout(500);
+    Alert.alert(
+      'Quiz Added',
+      `${quizTitle} has been successfully saved.`
+    ); 
   };
 
   // onPress: Add New Section
@@ -178,8 +195,13 @@ export class CreateQuizScreen extends React.Component {
   };
 
   // CreateQuizListItem - delete
-  _handleOnPressSectionDelete = () => {
-    alert('delete');
+  _handleOnPressSectionDelete = async () => {
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title: `Delete this Section?`,
+      message: "Purus Cras Fringilla Vehicula Ultricies?",
+      confirmText: 'Delete',
+      isDestructive: true,
+    });
   };
   //#endregion
 

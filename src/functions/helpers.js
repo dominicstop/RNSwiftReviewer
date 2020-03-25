@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, ActionSheetIOS } from 'react-native';
 import deviceSize from 'react-native-device-size';
 import _ from 'lodash';
 
@@ -165,6 +165,21 @@ export function asyncAlertInput({
       { text: okText  , style: null    , onPress: (text) => resolve(text) },
     ], "plain-text", value, 'ascii-capable')
   );
+};
+
+export function asyncActionSheetConfirm({title, message, confirmText, isDestructive = false}){
+  return new Promise(resolve => {
+    ActionSheetIOS.showActionSheetWithOptions({
+      title, message,
+      options: ['Cancel', confirmText],
+      cancelButtonIndex: 0,
+      ...(isDestructive && {
+        destructiveButtonIndex: 1,
+      }),
+    }, (buttonIndex) => {
+      resolve((buttonIndex === 1));
+    });
+  });
 };
 
 
