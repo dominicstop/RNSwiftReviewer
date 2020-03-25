@@ -65,7 +65,7 @@ class QuizListItemHeader extends React.PureComponent {
     const title       = quiz[QuizKeys.quizTitle      ] ?? 'Title N/A';
     const createdUnix = quiz[QuizKeys.quizDateCreated] ?? 0;
 
-    const dateCreated = moment.unix(createdUnix);
+    const dateCreated = moment.unix(createdUnix / 1000);
 
     const DateCreated = (
       <View style={styles.titleDateContainer}>
@@ -152,7 +152,7 @@ class QuizListItemStats extends React.PureComponent {
     const questionCount = quiz[QuizKeys.quizQuestionCount] ?? 0;
     const lastTaken     = quiz[QuizKeys.quizDateLastTaken] ?? 0;
 
-    const dateLastTaken = moment.unix(lastTaken);
+    const dateLastTaken = moment.unix(lastTaken / 1000);
 
     return(
       <View style={styles.rootContainer}>
