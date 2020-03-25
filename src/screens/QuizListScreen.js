@@ -30,7 +30,7 @@ import { QuizStore       } from 'app/src/functions/QuizStore';
 
 
 async function refreshQuizes(that){
-  const { index } = QuizStore.getCacheIndex();
+  const { index } = QuizStore.getCache();
 
   if(index != that.quizStoreIndex){
     const result = await QuizStore.getQuizes();
