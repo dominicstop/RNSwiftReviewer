@@ -85,4 +85,8 @@ export class QuizStore {
       };
     };
   };
+
+  static async clearQuizes(){
+    await AsyncStorage.removeItem(QuizStore.KEY);
+  };
 };
