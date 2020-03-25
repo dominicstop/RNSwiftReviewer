@@ -3,11 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
+import { StackActions } from 'react-navigation';
+
 import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
 import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { ButtonGradient       } from 'app/src/components/ButtonGradient';
 import { REASectionList       } from 'app/src/components/ReanimatedComps';
 import { ScreenFooter         } from 'app/src/components/ScreenFooter';
+import { ScreenOverlayCheck   } from 'app/src/components/ScreenOverlayCheck';
 import { CreateQuizListItem   } from 'app/src/components/CreateQuizListItem';
 import { CreateQuizListHeader } from 'app/src/components/CreateQuizListHeader';
 import { CreateQuizListFooter } from 'app/src/components/CreateQuizListFooter';
@@ -26,7 +29,7 @@ import { QuizModel        } from 'app/src/models/QuizModel';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { QuizStore } from '../functions/QuizStore';
+import { QuizStore       } from 'app/src/functions/QuizStore';
 
 // TODO:
 // [ ] - Move footerRef.setVisibilty to componentDidUpdate
@@ -101,8 +104,23 @@ export class CreateQuizScreen extends React.Component {
     });
   };
 
-  _handleOnPressFinishQuiz = () => {
-    QuizStore.getQuizes();
+  // ScreenFooter - onPress "Finish Quiz"
+  _handleOnPressFinishQuiz = async () => {
+    const { navigation } = this.props;
+
+    const quiz = this.quiz.values;
+
+    await Promise.all([
+      // show check animation
+      this.overlay.start(),
+      // save quiz
+      QuizStore.insertQuiz(quiz),
+    ]);
+
+    // pop back to home route
+    navigation.dispatch(
+      StackActions.popToTop()
+    );
   };
 
   // onPress: Add New Section
@@ -343,6 +361,9 @@ export class CreateQuizScreen extends React.Component {
             )}
           />
         </ScreenFooter>
+        <ScreenOverlayCheck
+          ref={r => this.overlay = r}
+        />
       </View>
     );
   };

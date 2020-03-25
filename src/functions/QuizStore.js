@@ -8,7 +8,7 @@ export class QuizStore {
   static KEY = '@quiz';
 
   static updateCache(newCache){
-    cache = quizes;
+    cache = newCache;
     index++;
   };
 
@@ -18,7 +18,11 @@ export class QuizStore {
       const value = await AsyncStorage.getItem(QuizStore.KEY);
 
       // nothing stored yet
-      if(value == null) return [];
+      if(value == null) return {
+        success: true,
+        quizes: [], 
+        index,
+      };
 
       // parse string as json
       const quizes = await JSON.parse(value) ?? [];
@@ -52,8 +56,11 @@ export class QuizStore {
 
       //add new quiz to prev quizes
       const newQuizes = [ ...prevQuizes.quizes, quiz ];
+      await AsyncStorage.setItem(QuizStore.KEY, 
+        JSON.stringify(newQuizes)
+      );
 
-      await AsyncStorage.setItem(QuizStore.KEY, newQuizes);
+      // update quiz cache
       QuizStore.updateCache(newQuizes);
 
       return { 
