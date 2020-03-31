@@ -253,6 +253,7 @@ export class QuizListScreen extends React.Component {
           titleText={'Quizzes'}
           subtitleText={'Your Quiz Reviewers'}
           showSubtitle={true}
+          useTransition={true}
           //render handlers
           renderHeader={this._renderListHeader}
           renderTitleIcon={this._renderTitleIcon}

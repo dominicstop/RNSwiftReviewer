@@ -18,10 +18,8 @@ import Animated from 'react-native-reanimated';
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, sub, debug } = Animated;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
-
 const NAVBAR_NORMAL = HeaderValues.getHeaderHeight     (false);
 const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(false);
-const BOTTOM_SPACE = (TB_HEIGHT_ADJ + NAVBAR_NORMAL + 50);
 const DEBUG_COLORS  = false;
 const EXTRA_HEIGHT  = 30;
 
@@ -46,15 +44,16 @@ export class LargeTitleWithSnap extends React.PureComponent {
     subtitleText   : PropTypes.string,
     subtitleHeight : PropTypes.number,
     showSubtitle   : PropTypes.bool  ,
+    useTransition  : PropTypes.bool  ,
     renderSubtitle : PropTypes.func  ,
     renderTitleIcon: PropTypes.func  ,
   };
 
   static defaultProps = {
+    titleText     : 'Large Title',
+    extraHeight   : 0,
+    useTransition : false,
     subtitleHeight: 35,
-    titleText: 'Large Title',
-    extraHeight: 0,
-    headerHeight: 300,
   };
 
   static styles = StyleSheet.create({
@@ -141,8 +140,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
     super(props);
 
     this.state = {
-      enableSnap       : false,
-      neededHeight: 0    ,
+      enableSnap: false,
+      neededHeight: 0,
     };
 
     this._headerListHeight   = 0;
@@ -293,11 +292,9 @@ export class LargeTitleWithSnap extends React.PureComponent {
     return this.transitionRef;
   };
 
+  //#region - event handlers
   _handleOnLayoutFooter = ({nativeEvent: { layout }}) => {
     const { neededHeight } = this.state;
-    console.log(`screenHeight: ${screenHeight}`);
-    console.log(`footer height: ${layout.height}`);
-    console.log(`needed space: ${screenHeight - layout.height}\n\n`);
 
     if(neededHeight == 0){
       this.setState({
@@ -321,7 +318,9 @@ export class LargeTitleWithSnap extends React.PureComponent {
   _handleOnEndReached = () => {
     this.listFooterIconRef.show(true);
   };
+  //#endregion
 
+  //#region - render methods
   _renderSubtitle(){
     const { styles } = LargeTitleWithSnap;
     const { showSubtitle, renderSubtitle, ...props } = this.props;
@@ -506,7 +505,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
       scrollsToTop: false,
       //adjust insets + offsets
       scrollIndicatorInsets: {
-        top   : NAVBAR_LARGE + 10,
+        top   : NAVBAR_LARGE,
         bottom: TB_HEIGHT_ADJ + EXTRA_HEIGHT,
       },
       //get and store ref to this comp
@@ -519,15 +518,20 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     return(
       <View style={styles.rootContainer}>
-        <Transitioning.View
-          style={{flex: 1}}
-          ref={r => this.transitionRef = r}
-          {...{transition}}
-        >
-          {SectionList}
-        </Transitioning.View>
+        {props.useTransition? (
+          <Transitioning.View
+            style={{flex: 1}}
+            ref={r => this.transitionRef = r}
+            {...{transition}}
+          >
+            {SectionList}
+          </Transitioning.View>
+        ):(
+          SectionList
+        )}
         {this._renderHeader()}
       </View>
     );
   };
+  //#endregion
 };
