@@ -17,8 +17,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    //layout
+    // layout
     paddingBottom: INSET_BOTTOM,
+    //shadow
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 7,
+    shadowOffset: {
+      width: 0,
+      height: -5,
+    },
   },
   blurBackground: {
     ...StyleSheet.absoluteFillObject,
@@ -26,7 +34,7 @@ const styles = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
-    opacity: 0.6,
+    opacity: 0.5,
   },
 });
 
