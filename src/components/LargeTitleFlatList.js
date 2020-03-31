@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Helpers from 'app/src/functions/helpers';
-import { TB_HEIGHT_ADJ, INSET_TOP } from 'app/src/constants/UIValues';
+import { TB_HEIGHT_ADJ, INSET_TOP, INSET_BOTTOM } from 'app/src/constants/UIValues';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
@@ -21,6 +21,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 const NAVBAR_NORMAL = HeaderValues.getHeaderHeight     (false);
 const NAVBAR_LARGE  = HeaderValues.getHeaderHeightLarge(false);
+const BOTTOM_SPACE = (TB_HEIGHT_ADJ + NAVBAR_NORMAL + 50);
 const DEBUG_COLORS  = false;
 const EXTRA_HEIGHT  = 30;
 
@@ -140,9 +141,11 @@ export class LargeTitleWithSnap extends React.PureComponent {
     super(props);
 
     this.state = {
-      enableSnap: false,
+      enableSnap       : false,
+      neededHeight: 0    ,
     };
 
+    this._headerListHeight   = 0;
     const subtitleHeight = (props.showSubtitle? props.subtitleHeight : 0);
 
     this._titleLargeWidth  = new Value(-1);
@@ -276,10 +279,31 @@ export class LargeTitleWithSnap extends React.PureComponent {
       viewPosition: 0,
       animated: false,
     });
+
+    this.footerRef.measureInWindow((x, y) => {
+      const neededHeight = (screenHeight - y);
+
+      this.setState({
+        neededHeight: ((neededHeight < 0)? 0 : neededHeight)
+      });
+    });
   };
 
   getTransitionRef = () => {
     return this.transitionRef;
+  };
+
+  _handleOnLayoutFooter = ({nativeEvent: { layout }}) => {
+    const { neededHeight } = this.state;
+    console.log(`screenHeight: ${screenHeight}`);
+    console.log(`footer height: ${layout.height}`);
+    console.log(`needed space: ${screenHeight - layout.height}\n\n`);
+
+    if(neededHeight == 0){
+      this.setState({
+        neededHeight: layout.height,
+      });
+    };
   };
 
   _handleOnLayoutTitleLarge = ({nativeEvent}) => {
@@ -288,7 +312,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
       this._titleLargeHeight.setValue(height);
       this._titleLargeWidth.setValue(width + (width / 6.15) + 10);
-      //this._scrollY.setValue(0);
+      this._scrollY.setValue(0);
 
       this._isTitleLargeMeasured = true;
     };
@@ -419,14 +443,22 @@ export class LargeTitleWithSnap extends React.PureComponent {
   };
 
   _renderListFooter = () => {
-    const { renderFooter } = this.props;
+    const { renderFooter, itemCount } = this.props;
+    const { neededHeight } = this.state;
 
     return(
       <Fragment>
         {renderFooter && renderFooter()}
         <ListFooterIcon
           ref={r => this.listFooterIconRef = r}
+          hasEntranceAnimation={(itemCount > 0)}
         />
+        {(neededHeight == 0) && (
+          <View
+            ref={r => this.footerRef = r}
+            style={{width: '100%', height: 1}}
+          />
+        )}
       </Fragment>
     );
   };
@@ -434,16 +466,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
   render(){
     const { styles } = LargeTitleWithSnap;
     const { itemCount, itemSize, ...props } = this.props;
-    const { enableSnap } = this.state;
-
-    //temp fix
-    const a = (screenHeight - NAVBAR_NORMAL - props.headerHeight);
-    const b = (a - (itemCount * itemSize));
-    const c = (TB_HEIGHT_ADJ + 200);
+    const { enableSnap, neededHeight } = this.state;
 
     const extraHeight = (
-      (itemCount == 0)? a :
-      (itemCount <  3)? b : c
+       neededHeight + EXTRA_HEIGHT + NAVBAR_NORMAL + TB_HEIGHT_ADJ + 50
     );
 
     const sectionListStyle = {
@@ -459,16 +485,16 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
     //pass props to sectionList child comp
     let SectionList = React.cloneElement(sectionList, {
-      style: [styles.scrollview, sectionListStyle],
+      style: [styles.scrollView, sectionListStyle],
       contentContainerStyle: { 
-        paddingBottom: EXTRA_HEIGHT + extraHeight + props.extraHeight,
+        paddingBottom: (extraHeight + props.extraHeight),
       },
       //render + handlers
-      ListHeaderComponent: this._renderListHeader     ,
-      ListFooterComponent: this._renderListFooter     ,
-      onScrollEndDrag    : this._handleOnScrollEndDrag,
-      onScroll           : this._handleOnScroll       ,
-      onEndReached       : this._handleOnEndReached   ,
+      ListHeaderComponent: this._renderListHeader        ,
+      ListFooterComponent: this._renderListFooter        ,
+      onScrollEndDrag    : this._handleOnScrollEndDrag   ,
+      onScroll           : this._handleOnScroll          ,
+      onEndReached       : this._handleOnEndReached      ,
       //config scrollview
       scrollEventThrottle: 1,
       disableScrollViewPanResponder: true,
@@ -477,6 +503,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
       snapToEnd: false,
       snapToAlignment: 'center',
       snapToStart: true,
+      scrollsToTop: false,
       //adjust insets + offsets
       scrollIndicatorInsets: {
         top   : NAVBAR_LARGE + 10,

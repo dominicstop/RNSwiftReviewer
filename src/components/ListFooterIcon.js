@@ -16,7 +16,8 @@ export class ListFooterIcon extends React.Component {
 
   static defaultProps = {
     show     : false,
-    marginTop: 13,
+    marginTop: 13   ,
+    hasEntranceAnimation: true,
   };
 
   static styles = StyleSheet.create({
@@ -43,9 +44,27 @@ export class ListFooterIcon extends React.Component {
 
   render(){
     const { styles } = ListFooterIcon;
-    const { marginTop } = this.props;
+    const { marginTop, ...props } = this.props;
 
-    return(
+    const footerIcon = (
+      <Animatable.View
+        duration={1000}
+        delay={1500}
+        animation={'pulse'}
+        iterationCount={'infinite'}
+        iterationDelay={1000}
+        useNativeDriver={true}
+      >
+        <Ionicon
+          style={{opacity: 0.3}}
+          name={'ios-heart'}
+          size={23}
+          color={BLUE.A700}
+        />
+      </Animatable.View>
+    );
+
+    return props.hasEntranceAnimation? (
       <Animatable.View
         style={[styles.rootContainer, {marginTop}]}
         duration={500}
@@ -53,22 +72,12 @@ export class ListFooterIcon extends React.Component {
         animation={'fadeInUp'}
         useNativeDriver={true}
       >
-        <Animatable.View
-          duration={1000}
-          delay={1500}
-          animation={'pulse'}
-          iterationCount={'infinite'}
-          iterationDelay={1000}
-          useNativeDriver={true}
-        >
-          <Ionicon
-            style={{opacity: 0.3}}
-            name={'ios-heart'}
-            size={23}
-            color={BLUE.A700}
-          />
-        </Animatable.View>
+        {footerIcon}
       </Animatable.View>
+    ):(
+      <View style={[styles.rootContainer, {marginTop}]}>
+        {footerIcon}
+      </View>
     );
   };
 };
