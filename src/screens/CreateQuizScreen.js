@@ -243,7 +243,8 @@ export class CreateQuizScreen extends React.Component {
 
     section.sectionID = sectionID;
 
-    this.quiz.updateSection(section.values);
+    // update section, excluding questions
+    this.quiz.updateSection(section.values, false);
     this.setState({
       ...this.quiz.values,
     });
@@ -251,7 +252,7 @@ export class CreateQuizScreen extends React.Component {
 
   // modal callback: QuizAddQuestionModal
   _handleQuizAddQuestionModalOnPressDone = ({section}) => {
-    this.quiz.updateSection(section);
+    this.quiz.updateSection(section, true);
 
     this.setState({
       ...this.quiz.values,

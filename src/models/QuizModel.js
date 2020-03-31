@@ -99,7 +99,7 @@ export class QuizModel {
     this.setQuestionCount();
   };
 
-  updateSection(updatedSection = {}){
+  updateSection(updatedSection = {}, updateQuestions = false){
     // create copy of sections
     const sectionsCopy = [
       ...(this.values[QuizKeys.quizSections] ?? [])
@@ -114,11 +114,13 @@ export class QuizModel {
       if(updatedSectionID == sectionID){
         sectionsCopy[index] = { ...section,
           // pass down updated section values, excluding id/date created etc.
-          [QuizSectionKeys.sectionTitle        ]: updatedSection[QuizSectionKeys.sectionTitle        ],
-          [QuizSectionKeys.sectionDesc         ]: updatedSection[QuizSectionKeys.sectionDesc         ],
-          [QuizSectionKeys.sectionType         ]: updatedSection[QuizSectionKeys.sectionType         ],
-          [QuizSectionKeys.sectionQuestions    ]: updatedSection[QuizSectionKeys.sectionQuestions    ],
-          [QuizSectionKeys.sectionQuestionCount]: updatedSection[QuizSectionKeys.sectionQuestionCount],
+          [QuizSectionKeys.sectionTitle]: updatedSection[QuizSectionKeys.sectionTitle],
+          [QuizSectionKeys.sectionDesc ]: updatedSection[QuizSectionKeys.sectionDesc ],
+          [QuizSectionKeys.sectionType ]: updatedSection[QuizSectionKeys.sectionType ],
+          ...(updateQuestions && {
+            [QuizSectionKeys.sectionQuestions    ]: updatedSection[QuizSectionKeys.sectionQuestions    ],
+            [QuizSectionKeys.sectionQuestionCount]: updatedSection[QuizSectionKeys.sectionQuestionCount],
+          })
         };
       };
     };

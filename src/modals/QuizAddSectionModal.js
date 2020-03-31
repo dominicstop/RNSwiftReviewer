@@ -180,6 +180,27 @@ export class QuizAddSectionModal extends React.Component {
     this.lottieSource = require('app/assets/lottie/check_done.json');
   };
 
+  didEdit = () => {
+    const props = this.props;
+    const { selectedSectionType: nextType } = this.state;
+
+    const isEditing = props[MNPQuizAddSection.isEditing   ];
+    const prevTitle = props[MNPQuizAddSection.sectionTitle];
+    const prevDesc  = props[MNPQuizAddSection.sectionDesc ];
+    const prevType  = props[MNPQuizAddSection.sectionType ];
+
+    const nextTitle = this.inputFieldRefTitle.getText();
+    const nextDesc  = this.inputFieldRefDesc .getText();
+
+    const didChange = (
+      (prevTitle != nextTitle) ||
+      (prevDesc  != nextDesc ) ||
+      (prevType  != nextType )
+    );
+
+    return((!isEditing)? false : didChange);
+  };
+
   _handleOnPressSectionItem = ({type}) => {
     const props = this.props;
     const isEditing = props[MNPCreateQuiz.isEditing];
@@ -247,8 +268,22 @@ export class QuizAddSectionModal extends React.Component {
   _handleOnPressButtonRight = async () => {
     const { componentId } = this.props;
 
-    //close modal
     await Helpers.timeout(200);
+    const didEdit = this.didEdit();
+
+    if(didEdit){
+      const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+        title: 'Discard Section Changes',
+        message: 'Are you sure you want to discard all of your changes?',
+        confirmText: 'Discard',
+        isDestructive: true,
+      });
+
+      // early exit if cancel
+      if(!shouldDiscard) return;
+    };
+    
+    //close modal
     Navigation.dismissModal(componentId);
   };
 

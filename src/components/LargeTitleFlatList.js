@@ -37,6 +37,8 @@ const transition = (
   </Transition.Sequence>
 );
 
+// todo: rename this comp
+
 
 export class LargeTitleWithSnap extends React.PureComponent {
   static propTypes = {
