@@ -335,7 +335,7 @@ export class QuizAddSectionModal extends React.Component {
             inputRef={r => this.inputRefDesc = r}
             title={'Description'}
             subtitle={'Give this section a short description.'}
-            placeholder={'Enter Section Title'}
+            placeholder={'Enter Section Description'}
             initialValue={props[MNPQuizAddSection.sectionDesc]}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(

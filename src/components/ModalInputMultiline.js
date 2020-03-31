@@ -32,9 +32,9 @@ function deriveStateFromMode(mode){
     };
     case MODES.FOCUSED: return {
       colorBorder     : Colors.BLUE['A700'],
-      colorInput      : Colors.BLUE[900],
-      colorSubtitle   : Colors.GREY[900],
-      colorPlaceholder: Colors.GREY[700],
+      colorInput      : Colors.BLUE[1000],
+      colorSubtitle   : Colors.GREY[800],
+      colorPlaceholder: Colors.GREY[900],
       colorItemBadge  : Colors.INDIGO['A700'],
       fontWeightInput : '600',
     };

@@ -35,5 +35,9 @@ Animatable.initializeRegistryWithDefinitions({
     0  : { opacity: 0 },
     0.5: { opacity: 1 },
     1  : { opacity: 0 },
+  },
+  zoomInAlt: {
+    from  : { opacity: 1, transform: [{ scale: 0  }] },
+    to    : { opacity: 0, transform: [{ scale: 10 }] },
   }
 });

@@ -52,7 +52,7 @@ const rootNavigator = createAnimatedSwitchNavigator({
         />
         <Transition.In 
           type="fade" 
-          durationMs={750} 
+          durationMs={300} 
         />
       </Transition.Together>
     ),

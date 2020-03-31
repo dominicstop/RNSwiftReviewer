@@ -50,10 +50,10 @@ class LeftRightButton extends React.Component {
       marginBottom: -2,
     },
     textButtonLeftLabel: {
-      color: Colors.BLUE[600]
+      color: Colors.BLUE['800']
     },
     textButtonRightLabel: {
-      color: Colors.INDIGO[600]
+      color: Colors.INDIGO['800']
     },
     textButtonSubtitle: {
       ...iOSUIKit.subheadObject,

@@ -1,42 +1,58 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import * as Font from 'expo-font';
 
-import * as COLORS  from 'app/src/constants/Colors';
+import * as Animatable from 'react-native-animatable';
+import { BarIndicator } from 'react-native-indicators';
+
+import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { ROUTES } from 'app/src/constants/Routes';
 import { QuizStore } from 'app/src/functions/QuizStore';
 
 export class AuthLoadingScreen extends Component {
-  static styles = StyleSheet.create({
-    rootContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: COLORS.INDIGO.A700
-    },
-  });
 
   async componentDidMount(){
     const { navigation } = this.props;
     StatusBar.setBarStyle("light-content");
 
     await Promise.all([
+      this.animatedLoading.zoomIn(1000),
+      // preload quiz cahce
       QuizStore.getQuizes(),
-      Helpers.timeout(750),
     ]);
 
     navigation.navigate(ROUTES.homeRoute);
   };
 
-  render() {
-    const { styles } = AuthLoadingScreen;
-
-    return (
+  render(){
+    return(
       <View style={styles.rootContainer}>
-        <Text>AuthLoadingScreen</Text>
+        <Animatable.View
+          style={styles.indicatorContainer}
+          ref={r => this.animatedLoading = r}
+          useNativeDriver={true}
+        >
+          <BarIndicator 
+            color='white'
+            count={8}
+            size={55}
+            animationDuration={1500}
+          />
+        </Animatable.View>
       </View>
     );
   };
 };
+
+const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    alignItems: 'center', 
+    justifyContent: 'center',
+    backgroundColor: Colors.INDIGO.A700,
+  },
+  indicatorContainer: {
+    flex: 1,
+  },
+});
