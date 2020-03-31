@@ -129,4 +129,17 @@ export class QuizSectionModel {
     // assign changes made from copy
     this.values[QuizSectionKeys.sectionQuestions] = questionsCopy;
   };
+
+  deleteQuestion(deletedQuestion){
+    const deletedID = deletedQuestion[QuizQuestionKeys.questionID];
+    const questions = this.values[QuizSectionKeys.sectionQuestions] ?? [];
+    
+    const questionsUpdated = questions.filter((question, index) => {
+      const questionID = question[QuizQuestionKeys.questionID];
+      return (questionID != deletedID);
+    });
+
+    // assign changes made
+    this.values[QuizSectionKeys.sectionQuestions] = questionsUpdated;
+  };
 };

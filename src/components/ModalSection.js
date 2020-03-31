@@ -24,15 +24,17 @@ export class ModalSection extends React.PureComponent {
     hasPadding     : true,
     paddingBottom  : 15,
     marginBottom   : 20,
+    marginTop      : 0 ,
   };
 
   render(){
     const { showBorderTop, ...props } = this.props;
 
     const containerStyle = {
+      marginTop: props.marginTop,
       ...(showBorderTop && { borderTopWidth: 1 }),
       ...(props.hasMarginBottom && { 
-        marginBottom : props.marginBottom,
+        marginBottom: props.marginBottom,
       }),
       ...(props.hasPadding && {
         paddingBottom: props.paddingBottom,

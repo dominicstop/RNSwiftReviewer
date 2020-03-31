@@ -182,6 +182,13 @@ export function asyncActionSheetConfirm({title, message, confirmText, isDestruct
   });
 };
 
+export function asyncMeasure(ref){
+  return new Promise(resolve => {
+    ref.measure((x, y, width, height, px, py) => {
+      resolve({x, y, width, height, px, py});
+    });
+  });
+};
 
 export function countOccurences(item = '', items = []){
   return items.filter(i => i === item).length;

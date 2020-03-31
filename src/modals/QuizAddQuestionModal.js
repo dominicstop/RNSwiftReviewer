@@ -1,8 +1,12 @@
 import React from 'react';
-import { StyleSheet, SectionList, Text, View, ScrollView, Keyboard, TouchableOpacity, Clipboard } from 'react-native';
+import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
+
 import { Navigation } from 'react-native-navigation';
+import { Divider } from 'react-native-elements';
+import { iOSUIKit } from 'react-native-typography';
+import { createNativeWrapper } from 'react-native-gesture-handler';
 
 import { ModalBackground    } from 'app/src/components/ModalBackground';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
@@ -19,19 +23,18 @@ import { QuizAddQuestionModalItem } from 'app/src/components/QuizAddQuestionModa
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
-
-import   SvgIcon    from 'app/src/components/SvgIcon';
-import { SVG_KEYS } from 'app/src/components/SvgIcons';
+import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
 import * as Colors   from 'app/src/constants/Colors';
-import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { ModalController } from 'app/src/functions/ModalController';
-import { QuizSectionKeys } from '../constants/PropKeys';
-import { QuizSectionModel } from '../models/QuizSectionModel';
-import { Divider } from 'react-native-elements';
-import { iOSUIKit } from 'react-native-typography';
+import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
+
+
+const { width: screenWidth } = Dimensions.get('screen');
+
+const GHSectionList = createNativeWrapper(SectionList);
 
 // TODO:
 // [ ] - Imp. footer icon
@@ -49,7 +52,17 @@ export class QuizAddQuestionModal extends React.Component {
     },
     divider: {
       margin: 12,
-    }
+    },
+    buttonInsertContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonInsertText: {
+      ...iOSUIKit.bodyEmphasizedObject, 
+      color: Colors.BLUE.A700,
+      marginLeft: 7,
+    },
   });
 
   constructor(props){
@@ -62,6 +75,10 @@ export class QuizAddQuestionModal extends React.Component {
     this.state = {
       ...this.quizSection.values,
     };
+  };
+
+  _handleKeyExtractor = (question, index) => {
+    return question[QuizQuestionKeys.questionID];
   };
 
   // ModalFooter: save button
@@ -116,9 +133,6 @@ export class QuizAddQuestionModal extends React.Component {
     // extract/isolate section values from stata
     const section = QuizSectionModel.extract(state);
 
-    console.log('_handleOnPressQuestionItem - question:');
-    console.log(question);
-
     // open QuizCreateQuestionModal
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
@@ -128,6 +142,14 @@ export class QuizAddQuestionModal extends React.Component {
         [MNPQuizCreateQuestion.quizQuestion]: question,
         [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressEditQuizCreateQuestionModal,
       },
+    });
+  };
+
+  _handleOnPressQuestionDelete = ({question}) => {
+    this.quizSection.deleteQuestion(question);
+
+    this.setState({
+      ...this.quizSection.values
     });
   };
 
@@ -146,10 +168,6 @@ export class QuizAddQuestionModal extends React.Component {
     this.setState({
       ...this.quizSection.values,
     });
-  };
-
-  _handleKeyExtractor = (section, index) => {
-    return index;
   };
 
   _renderListHeader = () => {
@@ -196,6 +214,7 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   _renderListFooter = () => {
+    const { styles } = QuizAddQuestionModal;
     const state = this.state;
 
     const questions = state[QuizSectionKeys.sectionQuestions] ?? [];
@@ -204,12 +223,18 @@ export class QuizAddQuestionModal extends React.Component {
     if(count <= 0) return null;
 
     return(
-      <ModalSection>
+      <ModalSection marginTop={20}>
         <TouchableOpacity 
-          style={{alignItems: 'center'}}
+          style={styles.buttonInsertContainer}
           onPress={this._handleOnPressAddNewQuestion}
         >
-          <Text style={{...iOSUIKit.bodyEmphasizedObject, color: Colors.BLUE.A700}}>
+          <Ionicon
+            style={{marginTop: 1}}
+            name={'ios-add-circle'}
+            size={22}
+            color={Colors.BLUE.A400}
+          />
+          <Text style={styles.buttonInsertText}>
             {'Insert Question'}
           </Text>
         </TouchableOpacity>
@@ -248,6 +273,7 @@ export class QuizAddQuestionModal extends React.Component {
     return (
       <QuizAddQuestionModalItem
         onPressQuestionItem={this._handleOnPressQuestionItem}
+        onPressDelete={this._handleOnPressQuestionDelete}
         {...{index, isLast, ...question}}
       />
     );
@@ -296,7 +322,7 @@ export class QuizAddQuestionModal extends React.Component {
         wrapInScrollView={false}
         {...{modalHeader, modalFooter, overlay}}
       >
-        <SectionList
+        <GHSectionList
           ref={r => this.sectionList = r}
           sections={[{ data: questions }]}
           keyExtractor={this._handleKeyExtractor}
