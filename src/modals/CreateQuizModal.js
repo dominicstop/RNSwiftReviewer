@@ -47,6 +47,25 @@ export class CreateQuizModal extends React.PureComponent {
     super(props);
   };
 
+  // check if values were edited
+  didEdit = () => {
+    const props = this.props;
+
+    const isEditing = props[MNPCreateQuiz.isEditing];
+    const prevTitle = props[MNPCreateQuiz.quizTitle];
+    const prevDesc  = props[MNPCreateQuiz.quizDesc ];
+
+    const nextTitle = this.inputFieldRefTitle.getText();
+    const nextDesc  = this.inputFieldRefDesc .getText();
+
+    const didChange = (
+      (prevTitle != nextTitle) ||
+      (prevDesc  != nextDesc )
+    );
+
+    return((!isEditing)? false : didChange);
+  };
+
   _handleOnSubmitEditing = ({index}) => {
     if(index == 0){
       this.inputRefDesc.focus();
@@ -56,6 +75,7 @@ export class CreateQuizModal extends React.PureComponent {
     };
   };
 
+  // modalFooter: confirm onPress
   _handleOnPressButtonLeft = async () => {
     const { navigation, componentId, ...props } = this.props;
 
@@ -94,13 +114,29 @@ export class CreateQuizModal extends React.PureComponent {
       this.inputFieldRefDesc .isValid(true);
     };
   };
-
+  
+  // modalFooter: cancel onPress
   _handleOnPressButtonRight = async () => {
     const { componentId } = this.props;
+    const didEdit = this.didEdit();
 
-    //close modal
-    await Helpers.timeout(200);
-    Navigation.dismissModal(componentId);
+    if(didEdit){
+      const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+        title: 'Discard Changes',
+        message: 'Are you sure you want to discard all of your changes?',
+        confirmText: 'Discard',
+        isDestructive: true,
+      });
+
+      // early exit if cancel, otherwise close modal
+      if(!shouldDiscard) return;
+      Navigation.dismissModal(componentId);
+      
+    } else {
+      //close modal
+      await Helpers.timeout(200);
+      Navigation.dismissModal(componentId);
+    };
   };
 
   render(){
