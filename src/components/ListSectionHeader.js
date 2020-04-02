@@ -2,22 +2,22 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import throttle from "lodash/throttle";
+import debounce from "lodash/debounce";
 
 import * as Animatable  from 'react-native-animatable';
 import { iOSUIKit     } from 'react-native-typography';
 import { Feather      } from '@expo/vector-icons';
 import { BlurView     } from "@react-native-community/blur";
 
-
 import { ListSortItems        } from 'app/src/components/ListSortItems';
 import { ListSortButton       } from 'app/src/components/ListSortButton';
 import { TransitionWithHeight } from 'app/src/components/TransitionWithHeight';
 
-import { GREY, BLUE } from 'app/src/constants/Colors';
+import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
+
 import { getNextSort, SortKeys } from 'app/src/constants/SortValues';
 import { LIST_SECTION_HEIGHT } from 'app/src/constants/UIValues';
-import { plural } from 'app/src/functions/helpers';
 
 
 // Section header component that shows item count on the left
@@ -46,7 +46,7 @@ export class ListSectionHeader extends React.Component {
       paddingVertical: 8,
       marginBottom: 0,
       //borders
-      borderColor: GREY[300],
+      borderColor: Colors.GREY[300],
       borderTopWidth: 1,
       borderBottomWidth: 1,
       //shadows
@@ -81,7 +81,7 @@ export class ListSectionHeader extends React.Component {
     },
     iconContainer: {
       padding: 5,
-      backgroundColor: BLUE[50],
+      backgroundColor: Colors.BLUE[50],
       borderRadius: 5,
     },
     textTitle: {
@@ -92,7 +92,7 @@ export class ListSectionHeader extends React.Component {
     },
     textCount: {
       fontWeight: '400',
-      color: GREY[800],
+      color: Colors.GREY[800],
     },
     sortButton: {
       marginRight: 10,
@@ -106,9 +106,13 @@ export class ListSectionHeader extends React.Component {
       isSorting: false,
       isExpanded: false,
     };
+
+    this._handleOnPressSort   = debounce(this._handleOnPressSort  , 750, {leading: true});
+    this._handleOnPressOption = debounce(this._handleOnPressOption, 750, {leading: true});
+    this._handleOnPressCancel = debounce(this._handleOnPressCancel, 750, {leading: true});
   };
 
-  _handleOnPressSort = throttle(async () => {
+  _handleOnPressSort = async () => {
     const { onPressSort, ...props } = this.props;
 
     const nextSort = getNextSort(
@@ -136,15 +140,16 @@ export class ListSectionHeader extends React.Component {
       this.sortButtonContainer.fadeInRight(200),
       this.rootContainer.pulse(300)
     ]);
-  }, 750);
+  };
 
-  _handleOnLongPressSort = throttle(() => {
+  _handleOnLongPressSort = () => {
     const { onSortExpanded } = this.props;
 
     this.setState({ isExpanded: true });
     this.transitoner.transition(true);
+
     onSortExpanded && onSortExpanded();
-  }, 750);
+  };
 
   _handleOnPressOption = async ({index, sortType, sortValue, isAscending}) => {
     const { onPressSortOption, ...props } = this.props;
@@ -177,14 +182,14 @@ export class ListSectionHeader extends React.Component {
     ]);
   };
 
-  _handleOnPressCancel = throttle(() => {
+  _handleOnPressCancel = () => {
     const { onPressCancel } = this.props;
 
     this.setState({ isExpanded: false });
     this.transitoner.transition(false);
-    onPressCancel && onPressCancel();
 
-  }, 750);
+    onPressCancel && onPressCancel();
+  };
 
   // showing n items + sort btn
   _renderCollapsedHeader(){
@@ -206,7 +211,7 @@ export class ListSectionHeader extends React.Component {
       <Fragment>
         <ActivityIndicator 
           size={"small"}
-          color={BLUE.A100}
+          color={Colors.BLUE.A100}
         />
         <Text style={styles.textTitle}>
           {'Loading...'}
@@ -222,13 +227,13 @@ export class ListSectionHeader extends React.Component {
           <Feather
             name={'list'}
             size={18}
-            color={BLUE[700]}
+            color={Colors.BLUE[700]}
           />
         </TouchableOpacity>
         <Text style={styles.textTitle}>
           {'Showing: '}
           <Text style={styles.textCount}>
-            {`${itemCount} ${plural('item', itemCount)}`}
+            {`${itemCount} ${Helpers.plural('item', itemCount)}`}
           </Text>
         </Text>
       </Fragment>

@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon  from '@expo/vector-icons/Ionicons';
+import debounce from "lodash/debounce";
 
-import { iOSUIKit         } from 'react-native-typography';
-import { Divider          } from 'react-native-elements';
+import { iOSUIKit } from 'react-native-typography';
+import { Divider  } from 'react-native-elements';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -165,6 +166,15 @@ export class CreateQuizListItem extends React.Component {
       margin: 10,
     },
   });
+
+  constructor(props){
+    super(props);
+
+    // wrap onPress handlers in debounce
+    this._handleOnPressDelete      = debounce(this._handleOnPressDelete     , 750, {leading: true});
+    this._handleOnPressLeftButton  = debounce(this._handleOnPressLeftButton , 750, {leading: true});
+    this._handleOnPressRightButton = debounce(this._handleOnPressRightButton, 750, {leading: true});
+  };
 
   _handleOnPressDelete = () => {
     const { index, onPressSectionDelete, section } = this.props;

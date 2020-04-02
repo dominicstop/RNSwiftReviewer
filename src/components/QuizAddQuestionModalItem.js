@@ -1,13 +1,15 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-import Reanimated from 'react-native-reanimated';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-import { iOSUIKit } from 'react-native-typography'; 
+import debounce   from 'lodash/debounce';
+import Swipeable  from 'react-native-gesture-handler/Swipeable';
+import Reanimated from 'react-native-reanimated';
+
+import { Easing     } from 'react-native-reanimated';
+import { iOSUIKit   } from 'react-native-typography'; 
 import { RectButton } from 'react-native-gesture-handler';
-import { Easing } from 'react-native-reanimated';
 
 import { ModalSection } from 'app/src/components/ModalSection';
 
@@ -20,9 +22,9 @@ import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 const { Value, interpolate, timing } = Reanimated;
-const { width: screenWidth } = Dimensions.get('screen');
 
 const ITEM_WIDTH = 100;
+
 
 // used in modals/QuizAddQuestionModal
 // renderItem component, question item
@@ -89,6 +91,9 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
       toValue : 100,
       easing: Easing.inOut(Easing.ease),
     });
+
+    this._handleOnPressDelete       = debounce(this_handleOnPressDelete      , 750, {leading: true});
+    this._handleOnPressQuestionItem = debounce(this_handleOnPressQuestionItem, 750, {leading: true});
   };
 
   _handleOnPressQuestionItem = async () => {

@@ -2,11 +2,12 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import debounce from 'lodash/debounce';
+import Ionicon  from '@expo/vector-icons/Ionicons';
+
 import * as Animatable from 'react-native-animatable';
 
-import { BLUE, GREY } from 'app/src/constants/Colors';
-
+import * as Colors from 'app/src/constants/Colors';
 
 export const RadioListKeys = {
   title   : 'title'    , // display title
@@ -29,7 +30,7 @@ class ListSortItem extends React.Component {
       ...StyleSheet.absoluteFillObject,
       left: -100,
       right: -100,
-      backgroundColor: BLUE[50],
+      backgroundColor: Colors.BLUE[50],
     },
     itemSeperator: {
       borderColor: 'rgba(0,0,0,0.15)',
@@ -46,12 +47,12 @@ class ListSortItem extends React.Component {
     },
     itemTitleLabel: {
       fontWeight: '800',
-      color: GREY[900],
+      color: Colors.GREY[900],
     },
     itemDesc: {
       fontSize: 15,
       fontWeight: '300',
-      color: GREY[700],
+      color: Colors.GREY[700],
     },
     iconArrowContainer: {
       width: 27,
@@ -59,10 +60,16 @@ class ListSortItem extends React.Component {
       borderRadius: 27/2,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: BLUE[100],
+      backgroundColor: Colors.BLUE[100],
     },
     //#endregion
   });
+
+  constructor(props){
+    super(props);
+
+    this._handleOnPress = debounce(this._handleOnPress, 750, {leading: true});
+  };
 
   _handleOnPress = () => {
     const { onPressListItem, index, selectedType, ...props } = this.props;
@@ -103,7 +110,7 @@ class ListSortItem extends React.Component {
           name={'ios-radio-button-on'}
           type={'ionicon'}
           size={25}
-          color={BLUE.A700}
+          color={Colors.BLUE.A700}
         />
       </Animatable.View>
     ) : (
@@ -111,7 +118,7 @@ class ListSortItem extends React.Component {
         name={'ios-radio-button-off'}
         type={'ionicon'}
         size={25}
-        color={BLUE.A200}
+        color={Colors.BLUE.A200}
       />
     ));
 

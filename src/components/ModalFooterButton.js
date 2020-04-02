@@ -8,6 +8,8 @@ import * as Animatable from 'react-native-animatable';
 
 import LinearGradient  from 'react-native-linear-gradient';
 import Ionicon         from '@expo/vector-icons/Ionicons';
+import debounce        from "lodash/debounce";
+
 
 import { iOSUIKit } from 'react-native-typography';
 
@@ -91,15 +93,30 @@ export class ModalFooterButton extends React.PureComponent {
     },
   });
 
+  constructor(props){
+    super(props);
+
+    this._handleOnPressButtonLeft  = debounce(this._handleOnPressButtonLeft , 750, {leading: true});
+    this._handleOnPressButtonRight = debounce(this._handleOnPressButtonRight, 750, {leading: true});
+  };
+
   _handleOnPressButtonLeft = () => {
     const { onPressButtonLeft } = this.props;
-    this.rootContainerRef.pulse(500);
+
+    const ref = this.rootContainerRef;
+    ref && ref.pulse(500);
+
     onPressButtonLeft && onPressButtonLeft();
   };
 
   _handleOnPressButtonRight = () => {
     const { onPressButtonRight } = this.props;
-    this.rootContainerRef.pulse(500);
+
+    console.log('close');
+
+    const ref = this.rootContainerRef;
+    ref && ref.pulse(500);
+
     onPressButtonRight && onPressButtonRight();
   };
 

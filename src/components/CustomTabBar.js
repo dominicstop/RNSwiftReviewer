@@ -1,14 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions,  Clipboard } from 'react-native';
 
-import Reanimated, { Easing, Value, interpolate, concat, Extrapolate} from 'react-native-reanimated';
+import Reanimated, { Easing, Value, interpolate, concat, Extrapolate } from 'react-native-reanimated';
 
-import { VibrancyView } from "@react-native-community/blur";
 import * as Animatable from 'react-native-animatable';
-import { iOSUIKit } from 'react-native-typography';
+
+import debounce from "lodash/debounce";
 import LinearGradient from 'react-native-linear-gradient';
 
-import { GREY, ORANGE, YELLOW, INDIGO, BLUE } from 'app/src/constants/Colors';
+import { VibrancyView } from "@react-native-community/blur";
+import { iOSUIKit } from 'react-native-typography';
+
+import * as Colors from 'app/src/constants/Colors';
+
 import { TB_HEIGHT_ADJ, INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 
@@ -216,6 +220,8 @@ export class CustomTabBar extends React.Component {
       route     : routes[activeRouteIndex],
       routeIndex: activeRouteIndex,
     };
+
+    this._handleOnPressTab = debounce(this._handleOnPressTab, 750, {leading: true});
   };
 
   _handleOnPressTab = (route, routeIndex) => {
@@ -282,7 +288,7 @@ export class CustomTabBar extends React.Component {
         />
         <LinearGradient
           style={[styles.background]}
-          colors={[INDIGO.A700, BLUE.A700]}
+          colors={[Colors.INDIGO.A700, Colors.BLUE.A700]}
           start={{x: 0, y: 1}} 
           end  ={{x: 1, y: 0}}
         />

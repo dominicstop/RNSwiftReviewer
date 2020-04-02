@@ -4,8 +4,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import   moment             from 'moment';
-import   Feather            from '@expo/vector-icons/Feather';
+import moment   from 'moment';
+import Feather  from '@expo/vector-icons/Feather';
+import debounce from 'lodash/debounce';
+
 import { iOSUIKit         } from 'react-native-typography';
 import { Divider          } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,8 +15,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { ListCard      } from 'app/src/components/ListCard';
-import { ListItemBadge } from 'app/src/components/ListItemBadge';
+import { ListCard        } from 'app/src/components/ListCard';
+import { ListItemBadge   } from 'app/src/components/ListItemBadge';
 import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
 import { QuizKeys } from 'app/src/constants/PropKeys';
@@ -180,6 +182,12 @@ export class QuizListItem extends React.PureComponent {
       margin: 10,
     },
   });
+
+  constructor(props){
+    super(props);
+
+    this._handleOnPress = debounce(this._handleOnPress, 750, {leading: true});
+  };
   
   _handleOnPress = () => {
     const { quiz, index, onPressQuizItem } = this.props;
