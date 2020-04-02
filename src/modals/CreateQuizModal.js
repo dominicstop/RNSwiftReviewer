@@ -48,7 +48,7 @@ export class CreateQuizModal extends React.PureComponent {
   };
 
   // check if values were edited
-  didEdit = () => {
+  hasUnsavedChanges = () => {
     const props = this.props;
 
     const isEditing = props[MNPCreateQuiz.isEditing];
@@ -58,12 +58,13 @@ export class CreateQuizModal extends React.PureComponent {
     const nextTitle = this.inputFieldRefTitle.getText();
     const nextDesc  = this.inputFieldRefDesc .getText();
 
-    const didChange = (
+    return (isEditing? (
       (prevTitle != nextTitle) ||
       (prevDesc  != nextDesc )
-    );
-
-    return((!isEditing)? false : didChange);
+    ):(
+      (nextTitle != '') ||
+      (nextDesc  != '')
+    ));
   };
 
   _handleOnSubmitEditing = ({index}) => {
@@ -117,10 +118,12 @@ export class CreateQuizModal extends React.PureComponent {
   
   // modalFooter: cancel onPress
   _handleOnPressButtonRight = async () => {
-    const { componentId } = this.props;
-    const didEdit = this.didEdit();
+    const { componentId, ...props } = this.props;
+    const didChange = this.hasUnsavedChanges();
 
-    if(didEdit){
+    await Helpers.timeout(200);
+
+    if(didChange){
       const shouldDiscard = await Helpers.asyncActionSheetConfirm({
         title: 'Discard Changes',
         message: 'Are you sure you want to discard all of your changes?',
@@ -130,13 +133,10 @@ export class CreateQuizModal extends React.PureComponent {
 
       // early exit if cancel, otherwise close modal
       if(!shouldDiscard) return;
-      Navigation.dismissModal(componentId);
-      
-    } else {
-      //close modal
-      await Helpers.timeout(200);
-      Navigation.dismissModal(componentId);
     };
+
+    //close modal
+    Navigation.dismissModal(componentId);
   };
 
   render(){

@@ -180,7 +180,7 @@ export class QuizAddSectionModal extends React.Component {
     this.lottieSource = require('app/assets/lottie/check_done.json');
   };
 
-  didEdit = () => {
+  hasUnsavedChanges = () => {
     const props = this.props;
     const { selectedSectionType: nextType } = this.state;
 
@@ -188,17 +188,20 @@ export class QuizAddSectionModal extends React.Component {
     const prevTitle = props[MNPQuizAddSection.sectionTitle];
     const prevDesc  = props[MNPQuizAddSection.sectionDesc ];
     const prevType  = props[MNPQuizAddSection.sectionType ];
+    const initType  = SectionTypes.IDENTIFICATION;
 
     const nextTitle = this.inputFieldRefTitle.getText();
     const nextDesc  = this.inputFieldRefDesc .getText();
 
-    const didChange = (
+    return (isEditing? (
       (prevTitle != nextTitle) ||
       (prevDesc  != nextDesc ) ||
       (prevType  != nextType )
-    );
-
-    return((!isEditing)? false : didChange);
+    ):(
+      (nextTitle != ''      ) ||
+      (nextDesc  != ''      ) ||
+      (nextDesc  != initType) 
+    ));
   };
 
   _handleOnPressSectionItem = ({type}) => {
@@ -227,6 +230,7 @@ export class QuizAddSectionModal extends React.Component {
     };
   };
 
+  // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
     const { selectedSectionType } = this.state;
@@ -265,13 +269,14 @@ export class QuizAddSectionModal extends React.Component {
     };
   };
 
+  // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
     const { componentId } = this.props;
+    const didChange = this.hasUnsavedChanges();
 
     await Helpers.timeout(200);
-    const didEdit = this.didEdit();
 
-    if(didEdit){
+    if(didChange){
       const shouldDiscard = await Helpers.asyncActionSheetConfirm({
         title: 'Discard Section Changes',
         message: 'Are you sure you want to discard all of your changes?',
