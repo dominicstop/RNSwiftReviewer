@@ -282,11 +282,12 @@ export class LargeTitleWithSnap extends React.PureComponent {
     });
 
     this.footerRef.measureInWindow((x, y) => {
-      const neededHeight = (screenHeight - y);
+      const diff = (screenHeight - y);
+      const neededHeight = (
+        (diff <= 0)? 0 : diff
+      );
 
-      this.setState({
-        neededHeight: ((neededHeight < 0)? 0 : neededHeight)
-      });
+      this.setState({neededHeight});
     });
   };
 
@@ -295,16 +296,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
   };
 
   //#region - event handlers
-  _handleOnLayoutFooter = ({nativeEvent: { layout }}) => {
-    const { neededHeight } = this.state;
-
-    if(neededHeight == 0){
-      this.setState({
-        neededHeight: layout.height,
-      });
-    };
-  };
-
   _handleOnLayoutTitleLarge = ({nativeEvent}) => {
     if(!this._isTitleLargeMeasured){
       const { x, y, width, height } = nativeEvent.layout;
