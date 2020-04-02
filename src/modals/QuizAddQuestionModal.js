@@ -31,13 +31,49 @@ import * as Helpers  from 'app/src/functions/helpers';
 import { ModalController } from 'app/src/functions/ModalController';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
-
-const { width: screenWidth } = Dimensions.get('screen');
-
 const GHSectionList = createNativeWrapper(SectionList);
 
 // TODO:
 // [ ] - Imp. footer icon
+
+function didChangeQuestions(prevQuestions = [], nextQuestions = []){
+  const prevQuestionsCount = (prevQuestions?.length ?? 0);
+  const nextQuestionsCount = (nextQuestions?.length ?? 0);
+
+  const didChangeCount = (prevQuestionsCount != nextQuestionsCount);
+  if(didChangeCount) return true;
+
+  for (let index = 0; index < prevQuestionsCount; index++) {
+    const prevQuestionItem = prevQuestions[index];
+    const nextQuestionItem = nextQuestions[index];
+    
+    const prevQuestionID      = prevQuestionItem[QuizQuestionKeys.questionID];
+    const prevQuestionText    = prevQuestionItem[QuizQuestionKeys.questionText];
+    const prevQuestionAnswer  = prevQuestionItem[QuizQuestionKeys.questionAnswer];
+    const prevQuestionChoices = prevQuestionItem[QuizQuestionKeys.questionChoices];
+    const prevQuestionCreated = prevQuestionItem[QuizQuestionKeys.questionDateCreated];
+    
+    const nextQuestionID      = prevQuestionItem[QuizQuestionKeys.questionID];
+    const nextQuestionText    = nextQuestionItem[QuizQuestionKeys.questionText];
+    const nextQuestionAnswer  = nextQuestionItem[QuizQuestionKeys.questionAnswer];
+    const nextQuestionChoices = prevQuestionItem[QuizQuestionKeys.questionChoices];
+    const nextQuestionCreated = nextQuestionItem[QuizQuestionKeys.questionDateCreated];
+
+    const didChange = (
+      prevQuestionID      != nextQuestionID      ||
+      prevQuestionText    != nextQuestionText    ||
+      prevQuestionAnswer  != nextQuestionAnswer  ||
+      prevQuestionChoices != nextQuestionChoices ||
+      prevQuestionCreated != nextQuestionCreated
+    );
+    
+    // question change, early return
+    if(didChange) return true;
+  };
+
+  // no changes
+  return false;
+};
 
 export class QuizAddQuestionModal extends React.Component {
   static options() {
@@ -77,6 +113,27 @@ export class QuizAddQuestionModal extends React.Component {
     };
   };
 
+  hasUnsavedChanges = () => {
+    const props = this.props;
+    const state = this.state;
+
+    const isEditing   = props[MNPQuizAddQuestion.isEditing];
+    const prevSection = props[MNPQuizAddQuestion.quizSection];
+
+    const prevQuestions     = prevSection[QuizSectionKeys.sectionQuestions];
+    const prevQuestionCount = prevSection[QuizSectionKeys.sectionQuestionCount];
+
+    const nextQuestions     = state[QuizSectionKeys.sectionQuestions];
+    const nextQuestionCount = state[QuizSectionKeys.sectionQuestionCount];
+
+    return (isEditing? (
+      (prevQuestionCount != nextQuestionCount) ||
+      didChangeQuestions(prevQuestions, nextQuestions)
+    ):(
+      (nextQuestionCount > 0)
+    ));
+  };
+
   _handleKeyExtractor = (question, index) => {
     return question[QuizQuestionKeys.questionID];
   };
@@ -102,9 +159,23 @@ export class QuizAddQuestionModal extends React.Component {
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
     const { componentId } = this.props;
+    const didChange = this.hasUnsavedChanges();
 
-    // close modal
     await Helpers.timeout(200);
+
+    if(didChange){
+      const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+        title: 'Discard Changes',
+        message: 'Are you sure you want to discard all of your changes?',
+        confirmText: 'Discard',
+        isDestructive: true,
+      });
+
+      // early exit if cancel
+      if(!shouldDiscard) return;
+    };
+    
+    //close modal
     Navigation.dismissModal(componentId);
   };
 

@@ -138,8 +138,12 @@ export class QuizSectionModel {
       const questionID = question[QuizQuestionKeys.questionID];
       return (questionID != deletedID);
     });
+    
+    // count questions
+    const questionCount = questionsUpdated?.length ?? 0;
 
     // assign changes made
-    this.values[QuizSectionKeys.sectionQuestions] = questionsUpdated;
+    this.values[QuizSectionKeys.sectionQuestions    ] = questionsUpdated;
+    this.values[QuizSectionKeys.sectionQuestionCount] = questionCount;
   };
 };
