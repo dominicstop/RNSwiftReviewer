@@ -15,6 +15,7 @@ import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
 import { ModalSection       } from 'app/src/components/ModalSection';
+import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { ButtonGradient     } from 'app/src/components/ButtonGradient';
@@ -88,16 +89,6 @@ export class QuizAddQuestionModal extends React.Component {
     },
     divider: {
       margin: 12,
-    },
-    buttonInsertContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    buttonInsertText: {
-      ...iOSUIKit.bodyEmphasizedObject, 
-      color: Colors.BLUE.A700,
-      marginLeft: 7,
     },
   });
 
@@ -285,7 +276,6 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   _renderListFooter = () => {
-    const { styles } = QuizAddQuestionModal;
     const state = this.state;
 
     const questions = state[QuizSectionKeys.sectionQuestions] ?? [];
@@ -293,23 +283,20 @@ export class QuizAddQuestionModal extends React.Component {
 
     if(count <= 0) return null;
 
-    return(
-      <ModalSection marginTop={20}>
-        <TouchableOpacity 
-          style={styles.buttonInsertContainer}
-          onPress={this._handleOnPressAddNewQuestion}
-        >
+    return (
+      <ModalSectionButton
+        containerStyle={{marginTop: 20}}
+        onPress={this._handleOnPressAddNewQuestion}
+        isDestructive={false}
+        label={'Insert Question'}
+        leftIcon={(
           <Ionicon
             style={{marginTop: 1}}
             name={'ios-add-circle'}
-            size={22}
-            color={Colors.BLUE.A400}
+            size={21}
           />
-          <Text style={styles.buttonInsertText}>
-            {'Insert Question'}
-          </Text>
-        </TouchableOpacity>
-      </ModalSection>
+        )}
+      />
     );
   };
 
