@@ -18,13 +18,14 @@ export const MNPCreateQuiz = {
 
 // CreateQuizAddSectionModal open modal params
 export const MNPQuizAddSection = {
-  navigation  : 'navigation'  ,
-  isEditing   : 'isEditing'   ,
-  sectionTitle: 'sectionTitle',
-  sectionDesc : 'sectionDesc' ,
-  sectionType : 'sectionType' ,
-  sectionID   : 'sectionID'   ,
-  onPressDone : 'onPressDone' ,
+  navigation   : 'navigation'   ,
+  isEditing    : 'isEditing'    ,
+  sectionTitle : 'sectionTitle' ,
+  sectionDesc  : 'sectionDesc'  ,
+  sectionType  : 'sectionType'  ,
+  sectionID    : 'sectionID'    ,
+  onPressDone  : 'onPressDone'  ,
+  onPressDelete: 'onPressDelete',
 };
 
 // QuizAddQuestionModal

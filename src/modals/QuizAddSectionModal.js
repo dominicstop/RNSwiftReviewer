@@ -15,6 +15,7 @@ import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
 import { ModalSection       } from 'app/src/components/ModalSection';
+import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
 import { ModalInputField    } from 'app/src/components/ModalInputField';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ListItemBadge      } from 'app/src/components/ListItemBadge';
@@ -230,6 +231,16 @@ export class QuizAddSectionModal extends React.Component {
     };
   };
 
+  _handleOnPressDelete = () => {
+    const { componentId, onPressDelete, ...props } = this.props;
+    const sectionID = props[MNPQuizAddSection.sectionID];
+
+    onPressDelete && onPressDelete(sectionID);
+
+    // close modal
+    Navigation.dismissModal(componentId);
+  };
+
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
@@ -392,7 +403,9 @@ export class QuizAddSectionModal extends React.Component {
             )}
           />
         </ModalSection>
-        <ModalSection paddingBottom={0}>
+        <ModalSection 
+          containerStyle={{paddingBottom:0}}
+        >
           <SectionTypeHeader
             listItems={SectionTypesRadioValuesMap}
             selectedType={state.selectedSectionType}
@@ -405,6 +418,20 @@ export class QuizAddSectionModal extends React.Component {
             onPressListItem={this._handleOnPressSectionItem}
           />
         </ModalSection>
+        {isEditing && (
+          <ModalSectionButton
+            isDestructive={true}
+            onPress={this._handleOnPressDelete}
+            label={'Delete Section'}
+            leftIcon={(
+              <Ionicon
+                style={{marginTop: 1}}
+                name={'ios-trash'}
+                size={24}
+              />
+            )}
+          />
+        )}
         <ListFooterIcon
           show={true}
           marginTop={0}
