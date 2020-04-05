@@ -2,11 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
+import Reanimated from 'react-native-reanimated';
+
 import Ionicon  from '@expo/vector-icons/Ionicons';
 import debounce from "lodash/debounce";
 
 import { iOSUIKit } from 'react-native-typography';
 import { Divider  } from 'react-native-elements';
+import { Easing   } from 'react-native-reanimated';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -17,6 +20,8 @@ import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
 import { QuizSectionKeys   } from 'app/src/constants/PropKeys';
 import { SectionTypeTitles } from 'app/src/constants/SectionTypes';
+
+const { Value, Extrapolate, timing, interpolate } = Reanimated;
 
 class LeftRightButton extends React.Component {
   static styles = StyleSheet.create({
@@ -170,15 +175,63 @@ export class CreateQuizListItem extends React.Component {
   constructor(props){
     super(props);
 
+    const progress    = new Value(0);
+    this.layoutHeight = new Value(-1);
+
+    this._opacity = interpolate(progress, {
+      inputRange : [0, 100],
+      outputRange: [1, 0  ],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this._height = interpolate(progress, {
+      inputRange : [0, 100],
+      outputRange: [this.layoutHeight, 0],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this._scale = interpolate(progress, {
+      inputRange : [0, 100],
+      outputRange: [1, 0.75],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
+    this.timing = timing(progress, {
+      duration: 250,
+      toValue : 100,
+      easing  : Easing.out(Easing.ease),
+    });
+
     // wrap onPress handlers in debounce
     this._handleOnPressDelete      = debounce(this._handleOnPressDelete     , 750, {leading: true});
     this._handleOnPressLeftButton  = debounce(this._handleOnPressLeftButton , 750, {leading: true});
     this._handleOnPressRightButton = debounce(this._handleOnPressRightButton, 750, {leading: true});
   };
 
-  _handleOnPressDelete = () => {
+  _handleOnPressDelete = async () => {
     const { index, onPressSectionDelete, section } = this.props;
-    onPressSectionDelete && onPressSectionDelete({section, index});
+
+    const [{height}, confirm] = await Promise.all([
+      Helpers.asyncMeasure(this.listCardRef),
+      Helpers.asyncActionSheetConfirm({
+        title: `Delete this Section?`,
+        message: "Are you sure you want to delete this section?",
+        confirmText: 'Delete',
+        isDestructive: true,
+      }),
+    ]);
+
+    // early exit if cancel
+    if(!confirm) return null;
+
+    // update height
+    this.layoutHeight.setValue(height);
+
+    this.timing.start(() => {
+      onPressSectionDelete && onPressSectionDelete(
+        { section, index }
+      );
+    });
   };
 
   _handleOnPressLeftButton = () => {
@@ -205,49 +258,57 @@ export class CreateQuizListItem extends React.Component {
     const displayQuestionCount = `${questionCount} ${Helpers.plural('item', questionCount)}`;
 
     return(
-      <ListCard>
-        <View style={styles.titleContainer}>
-          <ListItemBadge
-            value={(props.index + 1)}
-            size={19}
-            color={Colors.INDIGO['A200']}
-          />
-          <Text style={styles.textTitle}>
-            {sectionTitle}
-          </Text>
-          <TouchableOpacity 
-            style={styles.closeContainer}
-            onPress={this._handleOnPressDelete}
-            activeOpacity={0.75}
-          >
-            <Ionicon
-              name={'ios-close'}
-              size={28}
-              color={Colors.RED[700]}
+      <Reanimated.View style={{
+        height : this._height ,
+        opacity: this._opacity,
+        transform: [
+          { scale: this._scale }
+        ]
+      }}>
+        <ListCard ref={r => this.listCardRef = r}>
+          <View style={styles.titleContainer}>
+            <ListItemBadge
+              value={(props.index + 1)}
+              size={19}
+              color={Colors.INDIGO['A200']}
             />
-          </TouchableOpacity>
-        </View>
-        <TableLabelValue
-          containerStyle={styles.labelValueContainer}
-          labelValueMap={[
-            ['Type'     , displaySectionType  ],
-            ['Questions', displayQuestionCount],
-          ]}
-        />
-        <Text numberOfLines={3}>
-          <Text style={styles.textDescLabel}>
-            {'Description: '}
+            <Text style={styles.textTitle}>
+              {sectionTitle}
+            </Text>
+            <TouchableOpacity 
+              style={styles.closeContainer}
+              onPress={this._handleOnPressDelete}
+              activeOpacity={0.75}
+            >
+              <Ionicon
+                name={'ios-close'}
+                size={28}
+                color={Colors.RED[700]}
+              />
+            </TouchableOpacity>
+          </View>
+          <TableLabelValue
+            containerStyle={styles.labelValueContainer}
+            labelValueMap={[
+              ['Type'     , displaySectionType  ],
+              ['Questions', displayQuestionCount],
+            ]}
+          />
+          <Text numberOfLines={3}>
+            <Text style={styles.textDescLabel}>
+              {'Description: '}
+            </Text>
+            <Text style={styles.textDescBody}>
+              {sectionDesc}
+            </Text>
           </Text>
-          <Text style={styles.textDescBody}>
-            {sectionDesc}
-          </Text>
-        </Text>
-        <Divider style={styles.divider}/>
-        <LeftRightButton
-          onPressLeftButton ={this._handleOnPressLeftButton }
-          onPressRightButton={this._handleOnPressRightButton}
-        />
-      </ListCard>
+          <Divider style={styles.divider}/>
+          <LeftRightButton
+            onPressLeftButton ={this._handleOnPressLeftButton }
+            onPressRightButton={this._handleOnPressRightButton}
+          />
+        </ListCard>
+      </Reanimated.View>
     );
   };
 };

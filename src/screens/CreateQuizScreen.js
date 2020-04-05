@@ -195,12 +195,10 @@ export class CreateQuizScreen extends React.Component {
   };
 
   // CreateQuizListItem - delete
-  _handleOnPressSectionDelete = async () => {
-    const confirm = await Helpers.asyncActionSheetConfirm({
-      title: `Delete this Section?`,
-      message: "Purus Cras Fringilla Vehicula Ultricies?",
-      confirmText: 'Delete',
-      isDestructive: true,
+  _handleOnPressSectionDelete = ({section, index}) => {
+    this.quiz.deleteSection(section);
+    this.setState({
+      ...this.quiz.values
     });
   };
   //#endregion

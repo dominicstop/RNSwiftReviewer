@@ -92,8 +92,8 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
       easing: Easing.inOut(Easing.ease),
     });
 
-    this._handleOnPressDelete       = debounce(this_handleOnPressDelete      , 750, {leading: true});
-    this._handleOnPressQuestionItem = debounce(this_handleOnPressQuestionItem, 750, {leading: true});
+    this._handleOnPressDelete       = debounce(this._handleOnPressDelete      , 750, {leading: true});
+    this._handleOnPressQuestionItem = debounce(this._handleOnPressQuestionItem, 750, {leading: true});
   };
 
   _handleOnPressQuestionItem = async () => {

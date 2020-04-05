@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 // wraps children inside a card w/ shadow
-export class ListCard extends React.PureComponent {
+class ListCardComp extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
       marginHorizontal: 10,
@@ -25,12 +25,13 @@ export class ListCard extends React.PureComponent {
   });
 
   render(){
-    const { styles } = ListCard;
+    const { styles } = ListCardComp;
     const { children, style, ...props } = this.props;
 
     return(
       <View 
         style={[styles.rootContainer, style]}
+        ref={props.innerRef}
         {...props}
       >
         {children}
@@ -38,3 +39,10 @@ export class ListCard extends React.PureComponent {
     );
   };
 };
+
+export const ListCard = React.forwardRef((props, ref) => (
+  <ListCardComp
+    innerRef={ref}
+    {...props}
+  />
+));
