@@ -4,8 +4,6 @@ import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } fro
 import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
-import { Divider } from 'react-native-elements';
-import { iOSUIKit } from 'react-native-typography';
 import { createNativeWrapper } from 'react-native-gesture-handler';
 
 import { ModalBackground    } from 'app/src/components/ModalBackground';
@@ -14,11 +12,7 @@ import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
-import { ModalSection       } from 'app/src/components/ModalSection';
 import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
-import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
-import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
-import { ButtonGradient     } from 'app/src/components/ButtonGradient';
 
 import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
 import { QuizAddQuestionModalItem   } from 'app/src/components/QuizAddQuestionModalItem';
@@ -235,7 +229,6 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   _renderListHeader = () => {
-    const { styles } = QuizAddQuestionModal;
     const section = QuizSectionModel.extract(this.state);
 
     return (
