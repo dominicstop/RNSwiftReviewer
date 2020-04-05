@@ -144,8 +144,21 @@ export class QuizModel {
     // count sections
     const sectionCount = sectionsUpdated?.length ?? 0;
 
-    console.log(`Prev Count: ${this.values[QuizKeys.quizSectionCount]}`);
-    console.log(`Next Count: ${sectionCount}`);
+    // assign changes made
+    this.values[QuizKeys.quizSections    ] = sectionsUpdated;
+    this.values[QuizKeys.quizSectionCount] = sectionCount;
+  };
+
+  deleteSectionByID(sectionDeletedID){
+    const sections  = this.values[QuizKeys.quizSections] ?? [];
+    
+    const sectionsUpdated = sections.filter((section, index) => {
+      const sectionID = section[QuizSectionKeys.sectionID];
+      return (sectionID != sectionDeletedID);
+    });
+    
+    // count sections
+    const sectionCount = sectionsUpdated?.length ?? 0;
 
     // assign changes made
     this.values[QuizKeys.quizSections    ] = sectionsUpdated;

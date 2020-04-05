@@ -153,7 +153,7 @@ export class CreateQuizScreen extends React.Component {
         [MNPQuizAddSection.sectionType ]: null ,
         [MNPQuizAddSection.sectionID   ]: null ,
         //event: attach onPress done/save handler
-        [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressCreate,
+        [MNPQuizAddSection.onPressDone]: this._handleAddSectionModalOnPressCreate,
       },
     });
   };
@@ -176,7 +176,8 @@ export class CreateQuizScreen extends React.Component {
         [MNPQuizAddSection.sectionType ]: type ,
         [MNPQuizAddSection.sectionID   ]: id   ,
         //event: attach onPress done/save handler
-        [MNPCreateQuiz.onPressDone]: this._handleAddSectionModalOnPressEdit,
+        [MNPQuizAddSection.onPressDone  ]: this._handleAddSectionModalOnPressEdit,
+        [MNPQuizAddSection.onPressDelete]: this._handleAddSectionModalOnPressDelete,
       },
     });
   
@@ -188,8 +189,8 @@ export class CreateQuizScreen extends React.Component {
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
       navProps: {
-        [MNPQuizAddQuestion.quizSection]: section,
-        [MNPQuizAddQuestion.onPressDone]: this._handleQuizAddQuestionModalOnPressDone,
+        [MNPQuizAddQuestion.quizSection ]: section,
+        [MNPQuizAddQuestion.onPressDone ]: this._handleQuizAddQuestionModalOnPressDone,
       },
     });
   };
@@ -245,6 +246,13 @@ export class CreateQuizScreen extends React.Component {
     this.quiz.updateSection(section.values, false);
     this.setState({
       ...this.quiz.values,
+    });
+  };
+
+  _handleAddSectionModalOnPressDelete = (sectionID) => {
+    this.quiz.deleteSectionByID(sectionID);
+    this.setState({
+      ...this.quiz.values
     });
   };
 

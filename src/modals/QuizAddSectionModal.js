@@ -177,8 +177,6 @@ export class QuizAddSectionModal extends React.Component {
       inputRange : [0, 0.25],
       outputRange: [0, 1  ],
     });
-
-    this.lottieSource = require('app/assets/lottie/check_done.json');
   };
 
   hasUnsavedChanges = () => {
@@ -231,12 +229,24 @@ export class QuizAddSectionModal extends React.Component {
     };
   };
 
-  _handleOnPressDelete = () => {
-    const { componentId, onPressDelete, ...props } = this.props;
-    const sectionID = props[MNPQuizAddSection.sectionID];
+  _handleOnPressDelete = async () => {
+    const { componentId, ...props } = this.props;
 
+    const sectionID     = props[MNPQuizAddSection.sectionID    ];
+    const onPressDelete = props[MNPQuizAddSection.onPressDelete];
+
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title: `Delete this Section?`,
+      message: "Are you sure you want to delete this section?",
+      confirmText: 'Delete',
+      isDestructive: true,
+    });
+
+    // early return if cancel
+    if(!confirm) return;
+
+    // call callback
     onPressDelete && onPressDelete(sectionID);
-
     // close modal
     Navigation.dismissModal(componentId);
   };
