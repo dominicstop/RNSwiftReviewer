@@ -108,36 +108,45 @@ export class CreateQuizScreen extends React.Component {
   // ScreenFooter - onPress "Finish Quiz"
   _handleOnPressFinishQuiz = async () => {
     const { navigation } = this.props;
-    
-    const quiz      = this.quiz.values;
-    const quizTitle = quiz[QuizKeys.quizTitle];
+    const quiz = this.quiz.values;
 
-    const confirm = await Helpers.asyncActionSheetConfirm({
-      title: `Save ${quizTitle} Quiz`,
-      message: "Are you done making quiz? If so, do you want to save it now?",
-      confirmText: 'Save Quiz',
-    });
+    const quizTitle     = quiz[QuizKeys.quizTitle];
+    const questionCount = quiz[QuizKeys.quizQuestionCount];
 
-    // cancel was selected
-    if(!confirm) return;
+    if(questionCount <= 0){
+      Alert.alert(
+        'Add a Question first',
+        'Create a bunch of questions first before saving this quiz.'
+      );
 
-    await Promise.all([
-      // show check animation
-      this.overlay.start(),
-      // save quiz
-      QuizStore.insertQuiz(quiz),
-    ]);
+    } else {
+      const confirm = await Helpers.asyncActionSheetConfirm({
+        title: `Save ${quizTitle} Quiz`,
+        message: "Are you done making quiz? If so, do you want to save it now?",
+        confirmText: 'Save Quiz',
+      });
 
-    // pop back to home route
-    navigation.dispatch(
-      StackActions.popToTop()
-    );
+      // cancel was selected
+      if(!confirm) return;
 
-    await Helpers.timeout(500);
-    Alert.alert(
-      'Quiz Added',
-      `${quizTitle} has been successfully saved.`
-    ); 
+      await Promise.all([
+        // show check animation
+        this.overlay.start(),
+        // save quiz
+        QuizStore.insertQuiz(quiz),
+      ]);
+
+      // pop back to home route
+      navigation.dispatch(
+        StackActions.popToTop()
+      );
+
+      await Helpers.timeout(500);
+      Alert.alert(
+        'Quiz Added',
+        `${quizTitle} has been successfully saved.`
+      );
+    };
   };
 
   // onPress: Add New Section
