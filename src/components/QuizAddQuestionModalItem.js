@@ -31,9 +31,9 @@ const ITEM_WIDTH = 100;
 export class QuizAddQuestionModalItem extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
-      paddingTop: 7,
-      paddingBottom: 7,
-      paddingHorizontal: 12,
+      paddingTop: 8,
+      paddingBottom: 8,
+      paddingHorizontal: 13,
     },
     actionContainer: {
       width: ITEM_WIDTH,

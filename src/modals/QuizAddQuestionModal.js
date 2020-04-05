@@ -20,7 +20,8 @@ import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { ButtonGradient     } from 'app/src/components/ButtonGradient';
 
-import { QuizAddQuestionModalItem } from 'app/src/components/QuizAddQuestionModalItem';
+import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
+import { QuizAddQuestionModalItem   } from 'app/src/components/QuizAddQuestionModalItem';
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
@@ -33,6 +34,7 @@ import { ModalController } from 'app/src/functions/ModalController';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 const GHSectionList = createNativeWrapper(SectionList);
+
 
 // TODO:
 // [ ] - Imp. footer icon
@@ -234,44 +236,13 @@ export class QuizAddQuestionModal extends React.Component {
 
   _renderListHeader = () => {
     const { styles } = QuizAddQuestionModal;
-    const state = this.state;
+    const section = QuizSectionModel.extract(this.state);
 
-    const questions = state[QuizSectionKeys.sectionQuestions] ?? [];
-    const count     = questions.length;
-
-    const sectionTitle = state[QuizSectionKeys.sectionTitle];
-
-    if(count > 0) return null;
-
-    return(
-      <ModalSection showBorderTop={false}>
-        <ImageTitleSubtitle
-          containerStyle={styles.buttonAddSectionEmpty}
-          title={'Looks A Bit Empty'}
-          subtitle={`${sectionTitle} doesn't have any questions yet. Add some to get started.`}
-          imageSource={require('app/assets/icons/lbw-spacecraft-laptop.png')}
-        />
-        <Divider style={styles.divider}/>
-        <ButtonGradient
-          containerStyle={styles.buttonAddSectionEmpty}
-          bgColor={Colors.BLUE[100]}
-          fgColor={Colors.BLUE['A700']}
-          alignment={'CENTER'}
-          title={'Add New Question'}
-          onPress={this._handleOnPressAddNewQuestion}
-          iconDistance={10}
-          isBgGradient={false}
-          addShadow={false}
-          showIcon={true}
-          leftIcon={(
-            <Ionicon
-              name={'ios-add-circle'}
-              color={Colors.BLUE['A700']}
-              size={25}
-            />
-          )}
-        />
-      </ModalSection>
+    return (
+      <QuizAddQuestionModalHeader
+        onPressAddSection={this._handleOnPressAddNewQuestion}
+        {...section}
+      />
     );
   };
 
