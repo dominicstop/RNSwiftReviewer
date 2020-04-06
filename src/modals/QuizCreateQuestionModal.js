@@ -465,6 +465,43 @@ export class QuizCreateQuestionModal extends React.Component {
     };
   };
 
+  // check if values were edited
+  hasUnsavedChanges = () => {
+    const props = this.props;
+    const state = this.state;
+
+    const isEditing = props[MNPQuizCreateQuestion.isEditing];
+    const section   = props[MNPQuizCreateQuestion.quizSection];
+
+    const sectionType = section[QuizSectionKeys.sectionType];
+    this.updateQuestion();
+
+    const prevQuestion = props[MNPQuizCreateQuestion.quizQuestion];
+    const nextQuestion = this.question.values;
+
+    const prevQuestionText = prevQuestion[QuizQuestionKeys.questionText   ];
+    const prevAnswer       = prevQuestion[QuizQuestionKeys.questionAnswer ];
+    const prevChoices      = prevQuestion[QuizQuestionKeys.questionChoices];
+
+    const nextQuestionText = nextQuestion[QuizQuestionKeys.questionText   ];
+    const nextAnswer       = nextQuestion[QuizQuestionKeys.questionAnswer ];
+    const nextChoices      = prevQuestion[QuizQuestionKeys.questionChoices];
+    
+    // todo: compare choices
+    const didChangeChoices = ((sectionType == SectionTypes.TRUE_OR_FALSE)
+      ? prevChoices.length != nextChoices.length
+      : false
+    );
+
+    return (isEditing? (
+      (prevQuestionText != nextQuestionText) || 
+      (prevAnswer       != nextAnswer      )
+    ):(
+      (nextQuestionText != '') ||
+      (nextAnswer       != '')
+    ));
+  };
+
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
@@ -501,9 +538,23 @@ export class QuizCreateQuestionModal extends React.Component {
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
     const { componentId } = this.props;
+    const didChange = this.hasUnsavedChanges();
 
-    // close modal
     await Helpers.timeout(200);
+
+    if(didChange){
+      const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+        title: 'Discard Changes',
+        message: 'Are you sure you want to discard all of your changes?',
+        confirmText: 'Discard',
+        isDestructive: true,
+      });
+
+      // early exit if cancel, otherwise close modal
+      if(!shouldDiscard) return;
+    };
+
+    //close modal
     Navigation.dismissModal(componentId);
   };
 
@@ -553,7 +604,6 @@ export class QuizCreateQuestionModal extends React.Component {
   };
 
   render(){
-    const { styles } = QuizCreateQuestionModal;
     const props = this.props;
     const state = this.state;
 

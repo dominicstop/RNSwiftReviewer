@@ -177,9 +177,10 @@ export class QuizAddQuestionModal extends React.Component {
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
       navProps: {
-        [MNPQuizCreateQuestion.isEditing  ]: false,
-        [MNPQuizCreateQuestion.quizSection]: section,
-        [MNPQuizCreateQuestion.onPressDone]: this._handleOnPressCreateQuizCreateQuestionModal,
+        [MNPQuizCreateQuestion.isEditing   ]: false,
+        [MNPQuizCreateQuestion.quizSection ]: section,
+        [MNPQuizCreateQuestion.quizQuestion]: {},
+        [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressCreateQuizCreateQuestionModal,
       },
     });
   };
