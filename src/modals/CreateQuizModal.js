@@ -79,6 +79,7 @@ export class CreateQuizModal extends React.PureComponent {
   // modalFooter: confirm onPress
   _handleOnPressButtonLeft = async () => {
     const { navigation, componentId, ...props } = this.props;
+    const hasChanges = this.hasUnsavedChanges();
 
     const isEditing   = props[MNPCreateQuiz.isEditing  ];
     const onPressDone = props[MNPCreateQuiz.onPressDone];
@@ -86,7 +87,11 @@ export class CreateQuizModal extends React.PureComponent {
     const isValidTitle    = this.inputFieldRefTitle.isValid(false);
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
 
-    if(isValidTitle && isValidSubtitle){
+    if(!hasChanges && isEditing){
+      //no changes, close modal
+      Navigation.dismissModal(componentId);
+
+    } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
       const desc  = this.inputFieldRefDesc .getText()
 

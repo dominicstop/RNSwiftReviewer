@@ -104,7 +104,6 @@ export class QuizAddQuestionModal extends React.Component {
     const props = this.props;
     const state = this.state;
 
-    const isEditing   = props[MNPQuizAddQuestion.isEditing];
     const prevSection = props[MNPQuizAddQuestion.quizSection];
 
     const prevQuestions     = prevSection[QuizSectionKeys.sectionQuestions];
@@ -112,6 +111,8 @@ export class QuizAddQuestionModal extends React.Component {
 
     const nextQuestions     = state[QuizSectionKeys.sectionQuestions];
     const nextQuestionCount = state[QuizSectionKeys.sectionQuestionCount];
+
+    const isEditing  = (prevQuestionCount == 0);
 
     return (isEditing? (
       (prevQuestionCount != nextQuestionCount) ||
@@ -128,16 +129,19 @@ export class QuizAddQuestionModal extends React.Component {
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
+    const hasChanges = this.hasUnsavedChanges();
 
     const onPressDone = props[MNPQuizAddQuestion.onPressDone];
 
-    // trigger callback event
-    onPressDone && onPressDone({
-      section: this.quizSection.values,
-    });
+    if(hasChanges){
+      // trigger callback event
+      onPressDone && onPressDone({
+        section: this.quizSection.values,
+      });
 
-    // show check overlay
-    await this.overlay.start();
+      // show check overlay
+      await this.overlay.start();
+    };
 
     // close modal
     Navigation.dismissModal(componentId);

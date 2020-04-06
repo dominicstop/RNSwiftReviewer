@@ -194,7 +194,7 @@ export class CreateQuizScreen extends React.Component {
 
   // CreateQuizListItem - add question
   _handleOnPressSectionAdd = ({section, index}) => {
-    // open 
+    // open QuizAddQuestionModal
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
       navProps: {

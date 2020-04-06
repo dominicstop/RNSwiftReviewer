@@ -505,34 +505,40 @@ export class QuizCreateQuestionModal extends React.Component {
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
+    const hasChanges = this.hasUnsavedChanges();
 
     const isEditing   = props[MNPQuizCreateQuestion.isEditing];
     const onPressDone = props[MNPQuizCreateQuestion.onPressDone];
 
     const isValid = this.validate(false);
-    if(!isValid){
+    if(!hasChanges && isEditing){
+      // no changes, close modal
+      Navigation.dismissModal(componentId);
+
+    } else if (!isValid){
       await Helpers.asyncAlert({
         title: 'Invalid Input',
         desc : 'Oops, please fill out the required items to continue.'
       });
 
       // animate shake and early exit
-      return this.validate(true);
+      this.validate(true);
+
+    } else {
+      // update question model
+      this.updateQuestion();
+
+      // trigger callback event
+      onPressDone && onPressDone({
+        question: this.question.values,
+      });
+
+      // check animation
+      await this.overlay.start();
+
+      // close modal
+      Navigation.dismissModal(componentId);
     };
-    
-    // update question model
-    this.updateQuestion();
-
-    // trigger callback event
-    onPressDone && onPressDone({
-      question: this.question.values,
-    });
-
-    // check animation
-    await this.overlay.start();
-
-    // close modal
-    Navigation.dismissModal(componentId);
   };
 
   // ModalFooter: cancel button

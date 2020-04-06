@@ -256,6 +256,8 @@ export class QuizAddSectionModal extends React.Component {
     const { componentId, ...props } = this.props;
     const { selectedSectionType } = this.state;
 
+    const hasChanges = this.hasUnsavedChanges();
+
     const isEditing   = props[MNPQuizAddSection.isEditing  ];
     const sectionID   = props[MNPQuizAddSection.sectionID  ];
     const onPressDone = props[MNPQuizAddSection.onPressDone];
@@ -263,7 +265,11 @@ export class QuizAddSectionModal extends React.Component {
     const isValidTitle    = this.inputFieldRefTitle.isValid(false);
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
 
-    if(isValidTitle && isValidSubtitle){
+    if(!hasChanges && isEditing){
+      // no changes, close modal
+      Navigation.dismissModal(componentId);
+
+    } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
       const desc  = this.inputFieldRefDesc .getText()
 
