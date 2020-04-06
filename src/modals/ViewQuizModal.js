@@ -3,8 +3,11 @@ import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
-import { ModalBackground } from 'app/src/components/ModalBackground';
-import { ModalHeader     } from 'app/src/components/ModalHeader';
+import { ModalBackground   } from 'app/src/components/ModalBackground';
+import { ModalHeader       } from 'app/src/components/ModalHeader';
+import { ModalFooter       } from 'app/src/components/ModalFooter';
+import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
+
 import { ModalSection    } from 'app/src/components/ModalSection';
 
 import { ROUTES } from 'app/src/constants/Routes';
@@ -49,9 +52,21 @@ export class ViewQuizModal extends React.Component {
       />
     );
 
+    const modalFooter = (
+      <ModalFooter>
+        <ModalFooterButton
+          buttonLeftTitle={'Start Quiz'}
+          buttonLeftSubtitle={'New Session'}
+          buttonRightSubtitle={'Close this modal'}
+          onPressButtonLeft={this._handleOnPressButtonLeft}
+          onPressButtonRight={this._handleOnPressButtonRight}
+        />
+      </ModalFooter>
+    );
+
     return (
       <ModalBackground
-        {...{modalHeader}}
+        {...{modalHeader, modalFooter}}
       >
         <ModalSection>
           <Text style={{fontSize: 24}}>ViewQuizModal</Text>
