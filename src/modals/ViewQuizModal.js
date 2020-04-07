@@ -11,6 +11,10 @@ import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 
 import { ModalSection    } from 'app/src/components/ModalSection';
 
+import { ViewQuizDetails     } from 'app/src/components/ViewQuizDetails';
+import { ViewQuizSectionList } from 'app/src/components/ViewQuizSectionList';
+import { ViewQuizSessionList } from 'app/src/components/ViewQuizSessionList';
+
 import { ROUTES } from 'app/src/constants/Routes';
 
 
@@ -25,6 +29,8 @@ const VQMSectionTypes = {
 // this modal is using SectionList to emulate scrollview + flatlist.
 // Replace w/ custom VirtualizedList impl.
 
+
+
 export class ViewQuizModal extends React.Component {
   static options() {
     return {
@@ -34,9 +40,24 @@ export class ViewQuizModal extends React.Component {
   static styles = StyleSheet.create({
   });
 
+  getSections = () => {
+    return ([
+      { type: VQMSectionTypes.DETAILS , data: [{type: VQMSectionTypes.DETAILS }] },
+      { type: VQMSectionTypes.SECTIONS, data: [{type: VQMSectionTypes.SECTIONS}] },
+      { type: VQMSectionTypes.SESSION , data: []   },
+    ]);
+  };
+
   _handleOnPressCloseModal = () => {
     const { navigation } = this.props;
     navigation.navigate(ROUTES.appStackRoute);
+  };
+
+  _handleKeyExtractor = ({type}, index) => {
+    return ((type === VQMSectionTypes.SESSION)
+      ? index //temp
+      : `${type}-${index}`
+    );
   };
 
   _renderSectionHeader = ({section}) => {
@@ -83,13 +104,13 @@ export class ViewQuizModal extends React.Component {
   _renderItem = ({item, index, section}) => {
     switch (section.type) {
       case VQMSectionTypes.DETAILS: return (
-        <Text>Details</Text>
+        <ViewQuizDetails/>
       );
       case VQMSectionTypes.SECTIONS: return (
-        <Text>Sections</Text>
+        <ViewQuizSectionList/>
       );
       case VQMSectionTypes.SESSION: return (
-        <Text>Sessions</Text>
+        <ViewQuizSessionList/>
       );
     };
   };
@@ -97,11 +118,7 @@ export class ViewQuizModal extends React.Component {
   render(){
     const { styles } = ViewQuizModal;
 
-    const sections = [
-      { type: VQMSectionTypes.DETAILS , data: [{}] },
-      { type: VQMSectionTypes.SECTIONS, data: [{}] },
-      { type: VQMSectionTypes.SESSION , data: []   },
-    ];
+    const sections = this.getSections();
 
     const modalHeader = (
       <ModalHeader
