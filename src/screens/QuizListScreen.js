@@ -18,7 +18,7 @@ import { HeaderValues  } from 'app/src/constants/HeaderValues';
 import { TestDataQuiz  } from 'app/src/constants/TestData';
 import { INSET_TOP     } from 'app/src/constants/UIValues';
 import { RNN_ROUTES    } from 'app/src/constants/Routes';
-import { MNPCreateQuiz } from 'app/src/constants/NavParams';
+import { MNPCreateQuiz, MNPViewQuiz } from 'app/src/constants/NavParams';
 
 import { QuizKeys } from 'app/src/constants/PropKeys';
 
@@ -82,6 +82,11 @@ export class QuizListScreen extends React.Component {
     refreshQuizes(this);
   };
 
+  //#region - event handlers / callbacks
+  _handleKeyExtractor = (quiz, index) => {
+    return quiz[QuizKeys.quizID];
+  };
+
   _handleOnPressCreateQuiz = () => {
     const { navigation } = this.props;
 
@@ -96,15 +101,20 @@ export class QuizListScreen extends React.Component {
     });
   };
 
-  //#region - event handlers / callbacks
-  _handleKeyExtractor = (quiz, index) => {
-    return quiz[QuizKeys.quizID];
-  };
-
+  // QuizListItem - onPress
   _handleOnPressQuizItem = ({quiz, index}) => {
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalViewQuiz
+      routeName: RNN_ROUTES.RNNModalViewQuiz,
+      navProps: {
+        [MNPViewQuiz.quiz]: quiz,
+        [MNPViewQuiz.onPressStartQuiz]: this._handleOnPressStartQuiz,
+      },
     });
+  };
+
+  // ViewQuizModal: onPress start
+  _handleOnPressStartQuiz = () => {
+    
   };
 
   // sort pill pressed - cycle through sort options

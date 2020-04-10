@@ -4,6 +4,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import * as Animatable from 'react-native-animatable';
+
 import moment   from 'moment';
 import Feather  from '@expo/vector-icons/Feather';
 import debounce from 'lodash/debounce';
@@ -20,7 +22,6 @@ import { ListItemBadge   } from 'app/src/components/ListItemBadge';
 import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
 import { QuizKeys } from 'app/src/constants/PropKeys';
-
 
 
 class QuizListItemHeader extends React.PureComponent {
@@ -97,9 +98,9 @@ class QuizListItemHeader extends React.PureComponent {
     return(
       <View style={styles.titleContainer}>
         <ListItemBadge
-          size={22}
+          size={20}
           value={(index + 1)}
-          marginRight={7}
+          marginRight={8}
         />
         <View>
           <Text 
@@ -189,8 +190,10 @@ export class QuizListItem extends React.PureComponent {
     this._handleOnPress = debounce(this._handleOnPress, 750, {leading: true});
   };
   
-  _handleOnPress = () => {
+  _handleOnPress = async () => {
     const { quiz, index, onPressQuizItem } = this.props;
+
+    await this.rootContainerRef.pulse(300);
     onPressQuizItem && onPressQuizItem({quiz, index});
   };
 
@@ -201,29 +204,34 @@ export class QuizListItem extends React.PureComponent {
     const description = quiz[QuizKeys.quizDesc] ?? 'No Description';
 
     return(
-      <ListCard>
-        <TouchableOpacity
-          onPress={this._handleOnPress}
-          activeOpacity={0.5}
-        >
-          <QuizListItemHeader
-            {...{quiz, index}}
-          />
-          <QuizListItemStats
-            {...{quiz}}
-          />
-          <Divider style={styles.divider}/>
-          <Text 
-            style={styles.textDescription}
-            numberOfLines={3}
+      <Animatable.View
+        ref={r => this.rootContainerRef = r}
+        useNativeDriver={true}
+      >
+        <ListCard>
+          <TouchableOpacity
+            onPress={this._handleOnPress}
+            activeOpacity={0.5}
           >
-            <Text style={styles.textDescriptionLabel}>
-              {'Description: '}
+            <QuizListItemHeader
+              {...{quiz, index}}
+            />
+            <QuizListItemStats
+              {...{quiz}}
+            />
+            <Divider style={styles.divider}/>
+            <Text 
+              style={styles.textDescription}
+              numberOfLines={3}
+            >
+              <Text style={styles.textDescriptionLabel}>
+                {'Description: '}
+              </Text>
+              {description}
             </Text>
-            {description}
-          </Text>
-        </TouchableOpacity>
-      </ListCard>
+          </TouchableOpacity>
+        </ListCard>
+      </Animatable.View>
     );
   };
 };

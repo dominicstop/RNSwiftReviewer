@@ -94,14 +94,14 @@ export class TableLabelValue extends React.PureComponent {
               >
                 <Text
                   key={`label-${indexRow}-${indexCol}`}
-                  style={styles.textDetailLabel}
+                  style={[styles.textDetailLabel, props.textDetailLabelStyle]}
                   numberOfLines={1}
                 >
                   {col[0]}
                 </Text>
                 <Text
                   key={`detail-${indexRow}-${indexCol}`}
-                  style={styles.textDetail}
+                  style={[styles.textDetail, props.textDetailStyle]}
                   numberOfLines={1}
                 >
                   {col[1]}

@@ -1,13 +1,24 @@
 //SNP: Screen Navigation Params
 //MNP: Modal  Navigation Params
 
-//CreateQuizScreen nav params
+
+// CreateQuizScreen nav params
 export const SNPCreateQuiz = {
   quizTitle: 'quizTitle',
   quizDesc : 'quizDesc' ,
 };
 
-// CreateQuizModal open modal params
+
+// #region - open modal params
+// These are params you need to pass when opening a modal
+
+// ViewQuizModal
+export const MNPViewQuiz = {
+  quiz: 'quiz',
+  onPressStartQuiz: 'onPressStartQuiz',
+};
+
+// CreateQuizModal
 export const MNPCreateQuiz = {
   navigation   : 'navigation'   ,
   isEditing    : 'isEditing'    ,
@@ -17,7 +28,7 @@ export const MNPCreateQuiz = {
   onPressDelete: 'onPressDelete',
 };
 
-// CreateQuizAddSectionModal open modal params
+// CreateQuizAddSectionModal
 export const MNPQuizAddSection = {
   navigation   : 'navigation'   ,
   isEditing    : 'isEditing'    ,
@@ -43,3 +54,4 @@ export const MNPQuizCreateQuestion = {
   onPressDone : 'onPressDone' ,
 };
 
+// #endregion

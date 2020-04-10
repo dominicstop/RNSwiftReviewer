@@ -9,13 +9,13 @@ import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 
-import { ModalSection    } from 'app/src/components/ModalSection';
-
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizDetails';
 import { ViewQuizSectionList } from 'app/src/components/ViewQuizSectionList';
 import { ViewQuizSessionList } from 'app/src/components/ViewQuizSessionList';
 
 import { ROUTES } from 'app/src/constants/Routes';
+import { MNPViewQuiz } from '../constants/NavParams';
+import { QuizKeys, QuizSectionKeys } from '../constants/PropKeys';
 
 
 // VQS: ViewQuizModal 🤣
@@ -41,10 +41,29 @@ export class ViewQuizModal extends React.Component {
   });
 
   getSections = () => {
+    const props = this.props;
+
+    const quiz     = props[MNPViewQuiz.quiz     ] ?? {};
+    const sections = quiz [QuizKeys.quizSections] ?? [];
+    const sessions = []; // todo: impl.
+
+
+    const detailsData = [
+      { type: VQMSectionTypes.DETAILS }
+    ];
+
+    const sectionData = sections.map(section =>
+      ({type: VQMSectionTypes.SECTIONS, ...section})
+    );
+
+    const sessionData = sessions.map(session =>
+      ({type: VQMSectionTypes.SESSION, ...session})
+    );
+
     return ([
-      { type: VQMSectionTypes.DETAILS , data: [{type: VQMSectionTypes.DETAILS }] },
-      { type: VQMSectionTypes.SECTIONS, data: [{type: VQMSectionTypes.SECTIONS}] },
-      { type: VQMSectionTypes.SESSION , data: []   },
+      { type: VQMSectionTypes.DETAILS , data: detailsData },
+      { type: VQMSectionTypes.SECTIONS, data: sectionData },
+      { type: VQMSectionTypes.SESSION , data: sessionData },
     ]);
   };
 
@@ -53,11 +72,14 @@ export class ViewQuizModal extends React.Component {
     navigation.navigate(ROUTES.appStackRoute);
   };
 
-  _handleKeyExtractor = ({type}, index) => {
-    return ((type === VQMSectionTypes.SESSION)
-      ? index //temp
-      : `${type}-${index}`
-    );
+  _handleKeyExtractor = (item, index) => {
+    const type = item.type;
+
+    switch (type) {
+      case VQMSectionTypes.DETAILS : return (`${type}-${index}`);
+      case VQMSectionTypes.SECTIONS: return (item[QuizSectionKeys.sectionID]);
+      case VQMSectionTypes.SESSION : return (index); //todo: impl.
+    };
   };
 
   _renderSectionHeader = ({section}) => {
@@ -101,10 +123,23 @@ export class ViewQuizModal extends React.Component {
     };
   };
 
+  _renderSectionSeperator = (data) => {
+    if(data.trailingItem) return null;
+
+    return(
+      <View style={{marginBottom: 20}}/>
+    );
+  };
+
   _renderItem = ({item, index, section}) => {
+    const props = this.props;
+    const quiz  = props[MNPViewQuiz.quiz] ?? {};
+
     switch (section.type) {
       case VQMSectionTypes.DETAILS: return (
-        <ViewQuizDetails/>
+        <ViewQuizDetails
+          {...{quiz}}
+        />
       );
       case VQMSectionTypes.SECTIONS: return (
         <ViewQuizSectionList/>
@@ -157,6 +192,7 @@ export class ViewQuizModal extends React.Component {
           keyExtractor={this._handleKeyExtractor}
           renderItem={this._renderItem}
           renderSectionHeader={this._renderSectionHeader}
+          SectionSeparatorComponent={this._renderSectionSeperator}
           //ListHeaderComponent={this._renderListHeader}
           //ListFooterComponent={this._renderListFooter}
           {...{sections}}
