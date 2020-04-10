@@ -35,6 +35,7 @@ import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+import { QuizSectionModel } from '../models/QuizSectionModel';
 
 // TODO:
 // [ ] Add switch to preserve choice order
@@ -368,6 +369,118 @@ class SectionTrueOrFalse extends React.PureComponent {
   };
 };
 
+class SectionMatchingType extends React.PureComponent {
+  static styles = StyleSheet.create({
+    answerContainer: {
+    },
+    choiceItemContainer: {
+      paddingVertical: 7,
+    },
+  });
+
+  constructor(props){
+    super(props);
+    
+    const answers     = QuizSectionModel.extractAnswers(props.section);
+    const answerCount = (answers?.length ?? 0);
+
+    const isAnswerDuplicate = answers.includes(props.answer);
+
+    this.state = {
+      answerCount,
+      showSegmentedControl: (answerCount > 0),
+      showChoices: (
+        (props.isEditing  ) && 
+        (isAnswerDuplicate) &&
+        (answerCount > 0  )
+      )
+    };
+  };
+
+  _handleSegmentControlOnChange = async ({nativeEvent}) => {
+    const index = nativeEvent.selectedSegmentIndex;
+    const showChoices = (index == 1);
+
+    if(showChoices){
+      await this.answerContainerRef.fadeOutRight(200);
+      this.setState({showChoices});
+      await this.answerContainerRef.fadeInLeft(150);
+
+    } else {
+      await this.answerContainerRef.fadeOutLeft(200);
+      this.setState({showChoices});
+      await this.answerContainerRef.fadeInRight(150);
+    };
+  };
+
+  _renderChoices(){
+    const { styles } = SectionMatchingType;
+    const { section } = this.props;
+    const answers  = QuizSectionModel.extractAnswers(section);
+
+    return answers.map((answer, index) => (
+      <TouchableOpacity
+        key={`${answer}-${index}`}
+        style={styles.choiceItemContainer}
+      >
+        <Text>
+          {answer}
+        </Text>
+      </TouchableOpacity>
+    ));
+  };
+
+  render(){
+    const { styles } = SectionMatchingType;
+    const { section } = this.props;
+    const { showChoices, answerCount, ...state } = this.state;
+
+    return(
+      <ModalSection showBorderTop={false}>
+        {(state.showSegmentedControl) && (
+          <SegmentedControlIOS
+            style={{height: 35}}
+            values={['New Choice', 'Choose...']}
+            activeTextColor={Colors.BLUE[1000]}
+            onChange={this._handleSegmentControlOnChange}
+            selectedIndex={(showChoices? 1 : 0)}
+          />
+        )}
+        <Animatable.View 
+          ref={r => this.answerContainerRef = r}
+          style={styles.answerContainer}
+          useNativeDriver={true}
+        >
+          {showChoices?(
+            <Fragment>
+              <ImageTitleSubtitle
+                containerStyle={{marginTop: 5}}
+                title={`Showing ${answerCount} ${Helpers.plural('choice', answerCount)}`}
+                subtitle={'Here are all the possible choices in this section. Tap and choose the corresponding answer for this question.'}
+                imageSource={require('app/assets/icons/e-block-choice.png')}
+                hasPadding={false}
+              />
+              <Divider style={{margin: 15}}/>
+              {this._renderChoices()}
+            </Fragment>
+          ):(
+            <ModalInputMultiline
+              index={1}
+              ref={r => this.inputFieldRefAnswer = r}
+              inputRef={r => this.inputRefAnswer = r}
+              subtitle={"Enter the corresponding answer"}
+              placeholder={'Input Answer Text'}
+              //initialValue={(answer ?? '')}
+              onSubmitEditing={this._handleOnSubmitEditing}
+              validate={Validate.isNotNullOrWhitespace}
+            />
+          )}
+        </Animatable.View>
+      </ModalSection>
+    );
+  };
+};
+
 export class QuizCreateQuestionModal extends React.Component {
   static options() {
     return {
@@ -576,7 +689,6 @@ export class QuizCreateQuestionModal extends React.Component {
     const answer  = state[QuizQuestionKeys.questionAnswer ];
     const choices = state[QuizQuestionKeys.questionChoices];
 
-
     switch (sectionType) {
       case SectionTypes.MATCHING_TYPE :
       case SectionTypes.IDENTIFICATION: return (
@@ -585,7 +697,7 @@ export class QuizCreateQuestionModal extends React.Component {
             index={1}
             ref={r => this.inputFieldRefAnswer = r}
             inputRef={r => this.inputRefAnswer = r}
-            subtitle={"Enter the question's answer"}
+            subtitle={"Enter the corresponding answer"}
             placeholder={'Input Answer Text'}
             initialValue={(answer ?? '')}
             onSubmitEditing={this._handleOnSubmitEditing}
@@ -606,6 +718,11 @@ export class QuizCreateQuestionModal extends React.Component {
           initialValue={answer}
         />
       );
+      //case SectionTypes.MATCHING_TYPE: return(
+      //  <SectionMatchingType
+      //    {...{section, answer, isEditing}}
+      //  />
+      //);
     };
   };
 
@@ -613,8 +730,8 @@ export class QuizCreateQuestionModal extends React.Component {
     const props = this.props;
     const state = this.state;
 
-    const section   = props[MNPQuizCreateQuestion.quizSection];
-    const isEditing = props[MNPQuizCreateQuestion.isEditing];
+    const section   = props[MNPQuizCreateQuestion.quizSection] ?? {};
+    const isEditing = props[MNPQuizCreateQuestion.isEditing  ] ?? false;
 
     const sectionTitle = section[QuizSectionKeys.sectionTitle];
     const sectionType  = section[QuizSectionKeys.sectionType];

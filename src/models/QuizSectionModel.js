@@ -43,6 +43,18 @@ export class QuizSectionModel {
     return {...copy};
   };
 
+  static extractAnswers(section = {}){
+    const questions = section?.[QuizSectionKeys.sectionQuestions] ?? [];
+
+    const answers = questions.map(question => (
+      question[QuizQuestionKeys.questionAnswer]
+    ));
+
+    return answers.filter(answer => (
+      (answer != '' || answer != null || answer != undefined)
+    ));
+  };
+
   constructor(values = {}){
     this.values = QuizSectionModel.wrap(values);
   };
