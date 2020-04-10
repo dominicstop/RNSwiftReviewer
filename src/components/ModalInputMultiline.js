@@ -24,7 +24,7 @@ function deriveStateFromMode(mode){
     case MODES.BLURRED:
     case MODES.INITIAL: return {
       colorBorder     : Colors.BLUE[800],
-      colorInput      : Colors.GREY[600],
+      colorInput      : Colors.GREY[900],
       colorSubtitle   : Colors.GREY[900],
       colorPlaceholder: Colors.GREY[600],
       colorItemBadge  : Colors.INDIGO['A400'],
@@ -56,7 +56,7 @@ export class ModalInputMultiline extends React.PureComponent {
     subtitleContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 5,
+      marginBottom: 7,
     },
     inputBackgound: {
       ...StyleSheet.absoluteFillObject,
@@ -226,7 +226,7 @@ export class ModalInputMultiline extends React.PureComponent {
         <Reanimated.View style={[styles.subtitleContainer, subtitleContainerStyle]}>
           <ListItemBadge
             value={props.index + 1}
-            size={17}
+            size={16}
             initFontSize={12}
             color={values.colorItemBadge}
           />

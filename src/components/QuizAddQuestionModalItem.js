@@ -56,6 +56,7 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     },
     textQuestionBody: {
       ...iOSUIKit.subheadObject,
+      color: Colors.GREY[900],
     },
     textAnswer: {
       ...iOSUIKit.subheadObject,
@@ -65,6 +66,7 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
       ...iOSUIKit.subheadEmphasizedObject,
       color: Colors.BLUE[1100],
       fontWeight: '600',
+      opacity: 0.9,
     },
   });
 
@@ -180,7 +182,7 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
             {question}
           </Text>
         </Text>
-        <Text>
+        <Text style={{ marginTop: 2 }}>
           <Text style={styles.textAnswerLabel}>
             {'Answer: '}
           </Text>

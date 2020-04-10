@@ -156,7 +156,7 @@ export class CreateQuizListItem extends React.Component {
       justifyContent: 'center',
     },
     labelValueContainer: {
-      marginBottom: 3,
+      marginBottom: 5,
     },
     textDescLabel: {
       ...iOSUIKit.subheadEmphasizedObject,
