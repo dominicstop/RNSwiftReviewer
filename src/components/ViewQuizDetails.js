@@ -4,6 +4,8 @@ import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } fro
 import Feather from '@expo/vector-icons/Feather';
 import moment  from 'moment';
 
+import { Divider } from 'react-native-elements';
+
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
 import { ModalSection    } from 'app/src/components/ModalSection';
@@ -91,11 +93,24 @@ export class ViewQuizDetails extends React.PureComponent {
     quizDetailsContainer: {
       marginTop: 10,
     },
+    divider: {
+      margin: 10,
+    },
+    textDescription: {
+      ...iOSUIKit.bodyObject,
+      color: Colors.GREY[800],
+    },
+    textDescriptionLabel: {
+      ...iOSUIKit.bodyEmphasizedObject,
+      color: Colors.BLUE[1100]
+    },
   });
   
   render(){
     const { styles } = ViewQuizDetails;
     const { quiz } = this.props;
+
+    const quizDesc = quiz[QuizKeys.quizDesc] ?? 'Description N/A';
 
     const timesTaken    = quiz[QuizKeys.quizTimesTaken   ] ?? 0;
     const sectionCount  = quiz[QuizKeys.quizSectionCount ] ?? 0;
@@ -128,6 +143,16 @@ export class ViewQuizDetails extends React.PureComponent {
             ['Questions', textQuestions],
           ]}
         />
+        <Divider style={styles.divider}/>
+        <Text 
+          style={styles.textDescription}
+          numberOfLines={3}
+        >
+          <Text style={styles.textDescriptionLabel}>
+            {'Description: '}
+          </Text>
+          {quizDesc}
+        </Text>
       </ModalSection>
     );
   };
