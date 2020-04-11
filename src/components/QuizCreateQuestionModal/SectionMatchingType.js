@@ -6,11 +6,13 @@ import SegmentedControlIOS from '@react-native-community/segmented-control';
 
 import * as Animatable from 'react-native-animatable';
 
-import { Divider } from 'react-native-elements';
+import { Divider  } from 'react-native-elements';
+import { iOSUIKit } from 'react-native-typography';
 
 import { ModalSection        } from 'app/src/components/ModalSection';
 import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
 import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
+import { ListItemBadge       } from 'app/src/components/ListItemBadge';
 
 import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
@@ -18,13 +20,70 @@ import * as Helpers  from 'app/src/functions/helpers';
 
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
+class ChoiceItem extends React.PureComponent {
+  static styles = StyleSheet.create({
+    rootContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingTop: 12,
+      paddingBottom: 12,
+    },
+    border: {
+      borderBottomColor: 'rgba(0,0,0,0.15)',
+      borderBottomWidth: 1,
+    },
+    textChoice: {
+      ...iOSUIKit.bodyObject,
+      flex: 1,
+      marginLeft: 7,
+      color: Colors.GREY[900]
+    },
+  });
+
+  _handleOnPressChoice = () => {
+    const { onPressChoice, answer, index } = this.props;
+    onPressChoice && onPressChoice(
+      { answer, index }
+    );
+  };
+
+  render(){
+    const { styles } = ChoiceItem;
+    const { isLast, answer, index } = this.props;
+
+    const isFirst = (index == 0);
+
+    const rootContainerStyle = {
+      ...(!isLast && styles.border),
+      ...(isFirst && { marginTop: 5 }),
+      ...(isLast  && { paddingBottom: 2 }),
+    };
+
+    return(
+      <TouchableOpacity
+        key={`${answer}-${index}`}
+        style={[styles.rootContainer, rootContainerStyle]}
+        onPress={this._handleOnPressChoice}
+      >
+        <ListItemBadge
+          value={(index + 1)}
+          size={21}
+          textStyle={{fontWeight: '800'}}
+          containerStyle={{marginTop: 1}}
+          color={Colors.BLUE[100]}
+          textColor={Colors.INDIGO.A700}
+        />
+        <Text style={styles.textChoice}>
+          {answer}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+};
 
 export class SectionMatchingType extends React.PureComponent {
   static styles = StyleSheet.create({
     answerContainer: {
-    },
-    choiceItemContainer: {
-      paddingVertical: 7,
     },
     segmentedControl: {
       height: 35,
@@ -42,6 +101,7 @@ export class SectionMatchingType extends React.PureComponent {
 
     this.state = {
       answerCount,
+      selectedAnswer: null,
       showSegmentedControl: (answerCount > 0),
       showChoices: (
         (props.isEditing  ) &&
@@ -79,20 +139,24 @@ export class SectionMatchingType extends React.PureComponent {
     };
   };
 
+  _handleOnPressChoice = () => {
+    // TODO: WIP
+    alert('Not Implemented');
+  };
+
   _renderChoices(){
     const { styles } = SectionMatchingType;
     const { section } = this.props;
-    const answers  = QuizSectionModel.extractAnswers(section);
+
+    const answers     = QuizSectionModel.extractAnswers(section);
+    const answerCount = (answers?.length ?? 0);
 
     return answers.map((answer, index) => (
-      <TouchableOpacity
-        key={`${answer}-${index}`}
-        style={styles.choiceItemContainer}
-      >
-        <Text>
-          {answer}
-        </Text>
-      </TouchableOpacity>
+      <ChoiceItem
+        isLast={(index == (answerCount - 1))}
+        onPressChoice={this._handleOnPressChoice}
+        {...{answer, index}}
+      />
     ));
   };
 
@@ -122,11 +186,10 @@ export class SectionMatchingType extends React.PureComponent {
               <ImageTitleSubtitle
                 containerStyle={{marginTop: 5}}
                 title={`Showing ${answerCount} ${Helpers.plural('choice', answerCount)}`}
-                subtitle={'Here are all the possible choices in this section. Tap and choose the corresponding answer for this question.'}
+                subtitle={'Here are all the choices in this section. Tap and choose the corresponding answer for this question.'}
                 imageSource={require('app/assets/icons/e-block-choice.png')}
                 hasPadding={false}
               />
-              <Divider style={{margin: 15}}/>
               {this._renderChoices()}
             </Fragment>
           ):(
