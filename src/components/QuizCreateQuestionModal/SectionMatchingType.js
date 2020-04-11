@@ -25,8 +25,8 @@ class ChoiceItem extends React.PureComponent {
     rootContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingTop: 12,
-      paddingBottom: 12,
+      paddingTop: 13,
+      paddingBottom: 13,
     },
     border: {
       borderBottomColor: 'rgba(0,0,0,0.15)',
@@ -38,10 +38,18 @@ class ChoiceItem extends React.PureComponent {
       marginLeft: 7,
       color: Colors.GREY[900]
     },
+    textChoiceSelected: {
+      ...iOSUIKit.bodyEmphasizedObject,
+      flex: 1,
+      marginLeft: 7,
+      color: Colors.GREY[900]
+    },
   });
 
   _handleOnPressChoice = () => {
     const { onPressChoice, answer, index } = this.props;
+
+    this.rootContainerRef.pulse(200);
     onPressChoice && onPressChoice(
       { answer, index }
     );
@@ -49,9 +57,10 @@ class ChoiceItem extends React.PureComponent {
 
   render(){
     const { styles } = ChoiceItem;
-    const { isLast, answer, index } = this.props;
+    const { isLast, answer, index, selectedAnswer } = this.props;
 
-    const isFirst = (index == 0);
+    const isFirst    = (index == 0);
+    const isSelected = (answer == selectedAnswer);
 
     const rootContainerStyle = {
       ...(!isLast && styles.border),
@@ -62,20 +71,35 @@ class ChoiceItem extends React.PureComponent {
     return(
       <TouchableOpacity
         key={`${answer}-${index}`}
-        style={[styles.rootContainer, rootContainerStyle]}
+        activeOpacity={0.8}
         onPress={this._handleOnPressChoice}
       >
-        <ListItemBadge
-          value={(index + 1)}
-          size={21}
-          textStyle={{fontWeight: '800'}}
-          containerStyle={{marginTop: 1}}
-          color={Colors.BLUE[100]}
-          textColor={Colors.INDIGO.A700}
-        />
-        <Text style={styles.textChoice}>
-          {answer}
-        </Text>
+        <Animatable.View
+          ref={r => this.rootContainerRef = r}
+          style={[styles.rootContainer, rootContainerStyle]}
+          useNativeDriver={true}
+        >
+          <ListItemBadge
+            value={(index + 1)}
+            size={21}
+            textStyle={{fontWeight: '800'}}
+            containerStyle={{marginTop: 1}}
+            color={(isSelected
+              ? Colors.GREEN[100]
+              : Colors.BLUE [100]
+            )}
+            textColor={(isSelected
+              ? Colors.GREEN [700]
+              : Colors.INDIGO.A700
+            )}
+          />
+          <Text style={(isSelected
+            ? styles.textChoiceSelected
+            : styles.textChoice
+          )}>
+            {answer}
+          </Text>
+        </Animatable.View>
       </TouchableOpacity>
     );
   };
@@ -87,7 +111,7 @@ export class SectionMatchingType extends React.PureComponent {
     },
     segmentedControl: {
       height: 35,
-      marginBottom: 10,
+      marginBottom: 12,
     },
   });
 
@@ -112,14 +136,14 @@ export class SectionMatchingType extends React.PureComponent {
   };
 
   getAnswerValue = () => {
-    const { showChoices } = this.state;
+    const { showChoices, selectedAnswer } = this.state;
 
     if(!showChoices && this.inputFieldRefAnswer){
       const answer = this.inputFieldRefAnswer.getTextValue();
       return answer;
 
     } else {
-      return 'test';
+      return selectedAnswer;
     };
   };
 
@@ -139,14 +163,15 @@ export class SectionMatchingType extends React.PureComponent {
     };
   };
 
-  _handleOnPressChoice = () => {
-    // TODO: WIP
-    alert('Not Implemented');
+  _handleOnPressChoice = ({ answer, index }) => {
+    this.setState({
+      selectedAnswer: answer
+    });
   };
 
   _renderChoices(){
-    const { styles } = SectionMatchingType;
     const { section } = this.props;
+    const { selectedAnswer } = this.state;
 
     const answers     = QuizSectionModel.extractAnswers(section);
     const answerCount = (answers?.length ?? 0);
@@ -155,7 +180,7 @@ export class SectionMatchingType extends React.PureComponent {
       <ChoiceItem
         isLast={(index == (answerCount - 1))}
         onPressChoice={this._handleOnPressChoice}
-        {...{answer, index}}
+        {...{answer, index, selectedAnswer}}
       />
     ));
   };
