@@ -118,19 +118,20 @@ export class SectionMatchingType extends React.PureComponent {
   constructor(props){
     super(props);
     
-    const answers     = QuizSectionModel.extractAnswers(props.section);
-    const answerCount = (answers?.length ?? 0);
+    const answers       = QuizSectionModel.extractAnswers(props.section);
+    const answersUnique = [...(new Set(answers))];
+    const answerCount   = answersUnique.length;
 
-    const isAnswerDuplicate = answers.includes(props.answer);
+    const occurences = Helpers.countOccurences(props.answer, answers);
 
     this.state = {
       answerCount,
-      selectedAnswer: null,
+      selectedAnswer: props.answer,
       showSegmentedControl: (answerCount > 0),
       showChoices: (
-        (props.isEditing  ) &&
-        (isAnswerDuplicate) &&
-        (answerCount > 0  )
+        (props.isEditing) &&
+        (answerCount > 0) &&
+        (occurences  > 1)
       )
     };
   };
@@ -173,10 +174,11 @@ export class SectionMatchingType extends React.PureComponent {
     const { section } = this.props;
     const { selectedAnswer } = this.state;
 
-    const answers     = QuizSectionModel.extractAnswers(section);
-    const answerCount = (answers?.length ?? 0);
+    const answers       = QuizSectionModel.extractAnswers(section);
+    const answersUnique = [...(new Set(answers))];
+    const answerCount   = answersUnique.length;
 
-    return answers.map((answer, index) => (
+    return answersUnique.map((answer, index) => (
       <ChoiceItem
         isLast={(index == (answerCount - 1))}
         onPressChoice={this._handleOnPressChoice}
@@ -187,7 +189,7 @@ export class SectionMatchingType extends React.PureComponent {
 
   render(){
     const { styles } = SectionMatchingType;
-    const { section } = this.props;
+    const props = this.props;
     const { showChoices, answerCount, ...state } = this.state;
 
     return(
@@ -224,7 +226,7 @@ export class SectionMatchingType extends React.PureComponent {
               inputRef={r => this.inputRefAnswer = r}
               subtitle={"Enter the corresponding answer"}
               placeholder={'Input Answer Text'}
-              //initialValue={(answer ?? '')}
+              initialValue={(props.answer ?? '')}
               onSubmitEditing={this._handleOnSubmitEditing}
               validate={Validate.isNotNullOrWhitespace}
             />
