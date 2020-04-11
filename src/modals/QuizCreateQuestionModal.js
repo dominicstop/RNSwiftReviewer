@@ -17,6 +17,7 @@ import { ModalHeader         } from 'app/src/components/ModalHeader';
 import { ModalFooter         } from 'app/src/components/ModalFooter';
 import { ModalFooterButton   } from 'app/src/components/ModalFooterButton';
 import { ModalSection        } from 'app/src/components/ModalSection';
+import { ModalSectionButton  } from 'app/src/components/ModalSectionButton';
 import { ModalOverlayCheck   } from 'app/src/components/ModalOverlayCheck';
 import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
 import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
@@ -297,6 +298,7 @@ class SectionMultipleChoice extends React.PureComponent {
             >
               {choices.map((choice, index) =>
                 <ChoiceItem
+                  key={`$choiceItem-${choice}`}
                   isLast={(index == (choiceCount - 1))}
                   onPressChoice={this._handleOnPressChoice}
                   {...{choice, index, selectedChoice}}
@@ -615,7 +617,30 @@ export class QuizCreateQuestionModal extends React.Component {
     ));
   };
 
-  // ModalFooter: save button
+  // ModalSectionButton: onPress delete
+  _handleOnPressDelete = async () => {
+    const { componentId, ...props } = this.props;
+
+    const question      = props[MNPQuizCreateQuestion.quizQuestion ];
+    const onPressDelete = props[MNPQuizCreateQuestion.onPressDelete];
+
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title        : 'Delete this Question?',
+      message      : "Are you sure you want to delete this question?",
+      confirmText  : 'Delete',
+      isDestructive: true,
+    });
+
+    // early return if cancel
+    if(!confirm) return;
+
+    // call callback
+    onPressDelete && onPressDelete({question});
+    // close modal
+    Navigation.dismissModal(componentId);
+  };
+
+  // ModalFooter: onPress save button
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
     const hasChanges = this.hasUnsavedChanges();
@@ -654,7 +679,7 @@ export class QuizCreateQuestionModal extends React.Component {
     };
   };
 
-  // ModalFooter: cancel button
+  // ModalFooter: onPress cancel button
   _handleOnPressButtonRight = async () => {
     const { componentId } = this.props;
     const didChange = this.hasUnsavedChanges();
@@ -830,6 +855,20 @@ export class QuizCreateQuestionModal extends React.Component {
           )}
         />
         {this._renderSectionAnswer()}
+        {isEditing && (
+          <ModalSectionButton
+            isDestructive={true}
+            onPress={this._handleOnPressDelete}
+            label={'Delete Question'}
+            leftIcon={(
+              <Ionicon
+                style={{marginTop: 1}}
+                name={'ios-trash'}
+                size={24}
+              />
+            )}
+          />
+        )}
         <ListFooterIcon
           show={true}
           marginTop={0}

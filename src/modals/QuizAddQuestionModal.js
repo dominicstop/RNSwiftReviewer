@@ -122,6 +122,8 @@ export class QuizAddQuestionModal extends React.Component {
     ));
   };
 
+  // #region - event handlers/callbacks
+  // SectionList: itkeyExtractor
   _handleKeyExtractor = (question, index) => {
     return question[QuizQuestionKeys.questionID];
   };
@@ -184,7 +186,7 @@ export class QuizAddQuestionModal extends React.Component {
         [MNPQuizCreateQuestion.isEditing   ]: false,
         [MNPQuizCreateQuestion.quizSection ]: section,
         [MNPQuizCreateQuestion.quizQuestion]: {},
-        [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressCreateQuizCreateQuestionModal,
+        [MNPQuizCreateQuestion.onPressDone ]: this._handleQuizCreateQuestionModalOnPressCreate,
       },
     });
   };
@@ -200,14 +202,16 @@ export class QuizAddQuestionModal extends React.Component {
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
       navProps: {
-        [MNPQuizCreateQuestion.isEditing   ]: true,
-        [MNPQuizCreateQuestion.quizSection ]: section,
-        [MNPQuizCreateQuestion.quizQuestion]: question,
-        [MNPQuizCreateQuestion.onPressDone ]: this._handleOnPressEditQuizCreateQuestionModal,
+        [MNPQuizCreateQuestion.isEditing    ]: true,
+        [MNPQuizCreateQuestion.quizSection  ]: section,
+        [MNPQuizCreateQuestion.quizQuestion ]: question,
+        [MNPQuizCreateQuestion.onPressDone  ]: this._handleQuizCreateQuestionModalOnPressEdit  ,
+        [MNPQuizCreateQuestion.onPressDelete]: this._handleQuizCreateQuestionModalOnPressDelete,
       },
     });
   };
 
+  // QuizAddQuestionModalItem: item onPress delete
   _handleOnPressQuestionDelete = ({question}) => {
     this.quizSection.deleteQuestion(question);
 
@@ -215,9 +219,12 @@ export class QuizAddQuestionModal extends React.Component {
       ...this.quizSection.values
     });
   };
+  //#endregion
 
-  // Modal - QuizCreateQuestionModal: onPressDone - isEditing: false
-  _handleOnPressCreateQuizCreateQuestionModal = ({question}) => {
+  // #region - event handlers/callbacks
+  // QuizCreateQuestionModal - isEditing: false
+  // ModalFooterButton: onPressDone callback
+  _handleQuizCreateQuestionModalOnPressCreate = ({question}) => {
     this.quizSection.addQuestion(question);
 
     this.setState({
@@ -225,14 +232,28 @@ export class QuizAddQuestionModal extends React.Component {
     });
   };
 
-  // Modal - QuizCreateQuestionModal: onPressDone - isEditing: true
-  _handleOnPressEditQuizCreateQuestionModal = ({question}) => {
+  // QuizCreateQuestionModal - isEditing: true
+  // ModalFooterButton: onPressDone callback
+  _handleQuizCreateQuestionModalOnPressEdit = ({question}) => {
     this.quizSection.updateQuestion(question);
     this.setState({
       ...this.quizSection.values,
     });
   };
 
+  // QuizCreateQuestionModal - isEditing: true
+  // ModalSectionButton: onPress delete callback
+  _handleQuizCreateQuestionModalOnPressDelete = ({question}) => {
+    this.quizSection.deleteQuestion(question);
+
+    this.setState({
+      ...this.quizSection.values
+    });
+  };
+  //#endregion
+
+  // #region - render functiaons
+  // SectionList: top header
   _renderListHeader = () => {
     const section = QuizSectionModel.extract(this.state);
 
@@ -244,6 +265,7 @@ export class QuizAddQuestionModal extends React.Component {
     );
   };
 
+  // SectionList: bottom footer
   _renderListFooter = () => {
     const state = this.state;
 
@@ -269,6 +291,7 @@ export class QuizAddQuestionModal extends React.Component {
     );
   };
 
+  // SectionList: sticky header
   _renderSectionHeader = ({section}) => {
     const state = this.state;
 
@@ -291,6 +314,7 @@ export class QuizAddQuestionModal extends React.Component {
     );
   };
 
+  // SectionList: render questions
   _renderItem = ({item: question, index}) => {
     const state = this.state;
     
@@ -361,4 +385,5 @@ export class QuizAddQuestionModal extends React.Component {
       </ModalBackground>
     );
   };
+  //#endregion
 };

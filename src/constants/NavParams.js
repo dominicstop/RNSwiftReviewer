@@ -48,10 +48,11 @@ export const MNPQuizAddQuestion = {
 
 // QuizCreateQuestionModal
 export const MNPQuizCreateQuestion = {
-  isEditing   : 'isEditing'   ,
-  quizSection : 'quizSection' ,
-  quizQuestion: 'quizQuestion',
-  onPressDone : 'onPressDone' ,
+  isEditing    : 'isEditing'    ,
+  quizSection  : 'quizSection'  ,
+  quizQuestion : 'quizQuestion' ,
+  onPressDone  : 'onPressDone'  ,
+  onPressDelete: 'onPressDelete',
 };
 
 // #endregion
