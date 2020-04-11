@@ -95,7 +95,6 @@ export class QuizCreateQuestionModal extends React.Component {
 
     switch (sectionType) {
       case SectionTypes.IDENTIFICATION:
-      case SectionTypes.MATCHING_TYPE :
         const isValidSubtitle = this.inputFieldRefAnswer.isValid(false);
         animate && this.inputFieldRefAnswer.isValid(true);
         return (isValidQuestion && isValidSubtitle);
@@ -106,6 +105,10 @@ export class QuizCreateQuestionModal extends React.Component {
         return (isValidQuestion && isValidChoices);
 
       case SectionTypes.TRUE_OR_FALSE:
+        return (isValidQuestion);
+
+      case SectionTypes.MATCHING_TYPE:
+        //TODO: WIP
         return (isValidQuestion);
     };
   };
@@ -123,7 +126,6 @@ export class QuizCreateQuestionModal extends React.Component {
 
     switch (sectionType) {
       case SectionTypes.IDENTIFICATION:
-      case SectionTypes.MATCHING_TYPE :
         const answerText = this.inputFieldRefAnswer.getTextValue();
         this.question.answer = answerText;
         break;
@@ -137,6 +139,12 @@ export class QuizCreateQuestionModal extends React.Component {
       case SectionTypes.TRUE_OR_FALSE:
         const answerBool = this.trueOrFalseRef.getAnswerValue();
         this.question.answer = answerBool;
+        break;
+
+      case SectionTypes.MATCHING_TYPE :
+        //TODO: WIP
+        const answer = this.matchingTypeRef.getAnswerValue();
+        this.question.answer = answer;
         break;
     };
   };
@@ -220,7 +228,7 @@ export class QuizCreateQuestionModal extends React.Component {
         desc : 'Oops, please fill out the required items to continue.'
       });
 
-      // animate shake and early exit
+      // animate shake
       this.validate(true);
 
     } else {
@@ -276,7 +284,6 @@ export class QuizCreateQuestionModal extends React.Component {
     const choices = state[QuizQuestionKeys.questionChoices];
 
     switch (sectionType) {
-      case SectionTypes.MATCHING_TYPE :
       case SectionTypes.IDENTIFICATION: return (
         <ModalSection showBorderTop={false}>
           <ModalInputMultiline
@@ -304,11 +311,12 @@ export class QuizCreateQuestionModal extends React.Component {
           initialValue={answer}
         />
       );
-      //case SectionTypes.MATCHING_TYPE: return(
-      //  <SectionMatchingType
-      //    {...{section, answer, isEditing}}
-      //  />
-      //);
+      case SectionTypes.MATCHING_TYPE: return(
+        <SectionMatchingType
+          ref={r => this.matchingTypeRef = r}
+          {...{section, answer, isEditing}}
+        />
+      );
     };
   };
 
