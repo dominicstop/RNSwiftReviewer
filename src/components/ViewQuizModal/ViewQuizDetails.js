@@ -22,6 +22,7 @@ class QuizHeading extends React.PureComponent {
     dateCreatedContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      marginTop: 1,
     },
     textTitle: {
       ...iOSUIKit.title3EmphasizedObject,
