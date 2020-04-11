@@ -25,6 +25,7 @@ export class ListItemBadge extends React.Component {
     // appearance props
     size          : PropTypes.number,
     color         : PropTypes.string,
+    textColor     : PropTypes.string,
     adjustFontSize: PropTypes.bool  ,
     initFontSize  : PropTypes.number,
     diffFontSize  : PropTypes.number,
@@ -36,6 +37,7 @@ export class ListItemBadge extends React.Component {
   static defaultProps = {
     size          : 18         ,
     color         : INDIGO.A700,
+    textColor     : 'white'    ,
     adjustFontSize: true       ,
     initFontSize  : 13         ,
     diffFontSize  : 2          ,
@@ -50,6 +52,7 @@ export class ListItemBadge extends React.Component {
     const fontSizeAdj = (props.diffFontSize * charCount);
 
     const textStyle = {
+      color: props.textColor,
       ...(props.adjustFontSize && {
         fontSize: (props.initFontSize - fontSizeAdj)
       }),
