@@ -172,10 +172,10 @@ export class QuizCreateQuestionModal extends React.Component {
     const nextChoices      = prevQuestion[QuizQuestionKeys.questionChoices];
     
     // todo: compare choices
-    const didChangeChoices = ((sectionType == SectionTypes.TRUE_OR_FALSE)
-      ? prevChoices.length != nextChoices.length
-      : false
-    );
+    //const didChangeChoices = ((sectionType == SectionTypes.TRUE_OR_FALSE)
+    //  ? prevChoices.length != nextChoices.length
+    //  : false
+    //);
 
     return (isEditing? (
       (prevQuestionText != nextQuestionText) || 
