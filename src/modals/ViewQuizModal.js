@@ -9,9 +9,9 @@ import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 
-import { ViewQuizDetails     } from 'app/src/components/ViewQuizDetails';
-import { ViewQuizSectionList } from 'app/src/components/ViewQuizSectionList';
-import { ViewQuizSessionList } from 'app/src/components/ViewQuizSessionList';
+import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
+import { ViewQuizSectionList } from 'app/src/components/ViewQuizModal/ViewQuizSectionList';
+import { ViewQuizSessionList } from 'app/src/components/ViewQuizModal/ViewQuizSessionList';
 
 import { ROUTES } from 'app/src/constants/Routes';
 import { MNPViewQuiz } from '../constants/NavParams';

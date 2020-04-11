@@ -14,7 +14,7 @@ import { TableLabelValue } from 'app/src/components/TableLabelValue';
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { QuizKeys } from '../constants/PropKeys';
+import { QuizKeys } from 'app/src/constants/PropKeys';
 
 
 class QuizHeading extends React.PureComponent {
