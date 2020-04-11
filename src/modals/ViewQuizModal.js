@@ -142,7 +142,9 @@ export class ViewQuizModal extends React.Component {
         />
       );
       case VQMSectionTypes.SECTIONS: return (
-        <ViewQuizSectionList/>
+        <ViewQuizSectionList
+          {...{index, ...item}}
+        />
       );
       case VQMSectionTypes.SESSION: return (
         <ViewQuizSessionList/>
