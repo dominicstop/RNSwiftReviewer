@@ -11,6 +11,7 @@ import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 
+import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionList } from 'app/src/components/ViewQuizModal/ViewQuizSectionList';
 import { ViewQuizSessionList } from 'app/src/components/ViewQuizModal/ViewQuizSessionList';
@@ -71,11 +72,6 @@ export class ViewQuizModal extends React.Component {
     ]);
   };
 
-  _handleOnPressCloseModal = () => {
-    const { navigation } = this.props;
-    navigation.navigate(ROUTES.appStackRoute);
-  };
-
   _handleKeyExtractor = (item, index) => {
     const type = item.type;
 
@@ -84,6 +80,26 @@ export class ViewQuizModal extends React.Component {
       case VQMSectionTypes.SECTIONS: return (item[QuizSectionKeys.sectionID]);
       case VQMSectionTypes.SESSION : return (index); //todo: impl.
     };
+  };
+
+  _handleOnPressCloseModal = () => {
+    const { navigation } = this.props;
+    navigation.navigate(ROUTES.appStackRoute);
+  };
+
+  // ModalFooter: onPress "Start Quiz" button
+  _handleOnPressButtonLeft = async () => {
+    const { navigation, ...props } = this.props;
+
+    const quiz = props[MNPViewQuiz.quiz];
+    const onPressStartQuiz = props[MNPViewQuiz.onPressStartQuiz];
+
+    // call callback
+    onPressStartQuiz && onPressStartQuiz({quiz});
+
+    await this.overlayRef.show();
+
+    //navigation.navigate(ROUTES.createQuizRoute);
   };
 
   // #region - render methods
@@ -200,10 +216,16 @@ export class ViewQuizModal extends React.Component {
       </ModalFooter>
     );
 
+    const overlay = (
+      <ViewQuizOverlay
+        ref={r => this.overlayRef = r}
+      />
+    );
+
     return (
       <ModalBackground
         wrapInScrollView={false}
-        {...{modalHeader, modalFooter}}
+        {...{modalHeader, modalFooter, overlay}}
       >
         <SectionList
           ref={r => this.sectionList = r}

@@ -14,7 +14,8 @@ export const SNPCreateQuiz = {
 
 // ViewQuizModal
 export const MNPViewQuiz = {
-  quiz: 'quiz',
+  quiz      : 'quiz',
+  navigation: 'navigation',
   onPressStartQuiz: 'onPressStartQuiz',
 };
 

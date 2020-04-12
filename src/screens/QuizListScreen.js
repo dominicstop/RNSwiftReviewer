@@ -103,10 +103,13 @@ export class QuizListScreen extends React.Component {
 
   // QuizListItem - onPress
   _handleOnPressQuizItem = ({quiz, index}) => {
+    const { navigation } = this.props;
+
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalViewQuiz,
       navProps: {
-        [MNPViewQuiz.quiz]: quiz,
+        [MNPViewQuiz.quiz      ]: quiz,
+        [MNPViewQuiz.navigation]: navigation,
         [MNPViewQuiz.onPressStartQuiz]: this._handleOnPressStartQuiz,
       },
     });
