@@ -3,6 +3,8 @@ import { StyleSheet, Animated } from 'react-native';
 
 import LottieView from 'lottie-react-native';
 
+import * as Helpers from 'app/src/functions/helpers';
+
 const styles = StyleSheet.create({
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -20,6 +22,10 @@ export class ModalOverlayCheck extends React.PureComponent {
   constructor(props){
     super(props);
 
+    this.state = {
+      mount: false
+    };
+
     this.progress = new Animated.Value(0);
 
     this._opacity = this.progress.interpolate({
@@ -36,6 +42,10 @@ export class ModalOverlayCheck extends React.PureComponent {
       toValue: 1
     });
 
+    await Helpers.setStateAsync(this, {
+      mount: true
+    });
+
     await new Promise(resolve => {
       animation.start(() => {
         resolve();
@@ -44,6 +54,9 @@ export class ModalOverlayCheck extends React.PureComponent {
   };
 
   render(){
+    const { mount } = this.state;
+    if(!mount) return null;
+
     const overlayContainerStyle = {
       opacity: this._opacity,
     };
@@ -51,7 +64,7 @@ export class ModalOverlayCheck extends React.PureComponent {
     return (
       <Animated.View 
         style={[styles.overlayContainer, overlayContainerStyle]}
-        pointerEvents={'none'}
+        pointerEvents={'auto'}
       >
         <LottieView
           ref={r => this.lottieRef = r}
