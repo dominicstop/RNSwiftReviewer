@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, SectionList } from 'react-native';
+import { StyleSheet, View, SectionList } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
@@ -8,14 +8,17 @@ import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
+import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
+
 
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionList } from 'app/src/components/ViewQuizModal/ViewQuizSectionList';
 import { ViewQuizSessionList } from 'app/src/components/ViewQuizModal/ViewQuizSessionList';
 
-import { ROUTES } from 'app/src/constants/Routes';
-import { MNPViewQuiz } from '../constants/NavParams';
-import { QuizKeys, QuizSectionKeys } from '../constants/PropKeys';
+import { ROUTES      } from 'app/src/constants/Routes';
+import { MNPViewQuiz } from 'app/src/constants/NavParams';
+
+import { QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
 
 
 // VQM: ViewQuizModal 🤣
@@ -28,7 +31,6 @@ const VQMSectionTypes = {
 // Since it isn't recc to wrap a VirtualizedList inside a scrollview
 // this modal is using SectionList to emulate scrollview + flatlist.
 // Replace w/ custom VirtualizedList impl.
-
 
 
 export class ViewQuizModal extends React.Component {
@@ -84,6 +86,7 @@ export class ViewQuizModal extends React.Component {
     };
   };
 
+  // #region - render methods
   _renderSectionHeader = ({section}) => {
     switch (section.type) {
       case VQMSectionTypes.DETAILS: return (
@@ -133,6 +136,16 @@ export class ViewQuizModal extends React.Component {
     );
   };
 
+  _renderListFooter = () => {
+    return(
+      <ListFooterIcon
+        ref={r => this.listFooterIconRef = r}
+        show={true}
+        hasEntranceAnimation={true}
+      />
+    );
+  };
+
   _renderItem = ({item, index, section}) => {
     const props = this.props;
     const quiz  = props[MNPViewQuiz.quiz] ?? {};
@@ -158,7 +171,6 @@ export class ViewQuizModal extends React.Component {
 
   render(){
     const { styles } = ViewQuizModal;
-
     const sections = this.getSections();
 
     const modalHeader = (
@@ -199,11 +211,11 @@ export class ViewQuizModal extends React.Component {
           renderItem={this._renderItem}
           renderSectionHeader={this._renderSectionHeader}
           SectionSeparatorComponent={this._renderSectionSeperator}
-          //ListHeaderComponent={this._renderListHeader}
-          //ListFooterComponent={this._renderListFooter}
+          ListFooterComponent={this._renderListFooter}
           {...{sections}}
         />
       </ModalBackground>
     );
   };
+  // #endregion
 };
