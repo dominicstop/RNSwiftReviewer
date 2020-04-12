@@ -45,6 +45,9 @@ export class ListFooterIcon extends React.Component {
   render(){
     const { styles } = ListFooterIcon;
     const { marginTop, ...props } = this.props;
+    const { show } = this.state;
+
+    if(!show) return null;
 
     const footerIcon = (
       <Animatable.View

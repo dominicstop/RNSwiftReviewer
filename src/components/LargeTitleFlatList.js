@@ -307,10 +307,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
       this._isTitleLargeMeasured = true;
     };
   };
-
-  _handleOnEndReached = () => {
-    this.listFooterIconRef.show(true);
-  };
   //#endregion
 
   //#region - render methods
@@ -435,7 +431,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
   };
 
   _renderListFooter = () => {
-    const { renderFooter, itemCount } = this.props;
+    const { renderFooter } = this.props;
     const { neededHeight } = this.state;
 
     return(
@@ -443,7 +439,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
         {renderFooter && renderFooter()}
         <ListFooterIcon
           ref={r => this.listFooterIconRef = r}
-          hasEntranceAnimation={(itemCount > 0)}
+          show={true}
+          hasEntranceAnimation={true}
         />
         {(neededHeight == 0) && (
           <View
@@ -457,7 +454,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
   render(){
     const { styles } = LargeTitleWithSnap;
-    const { itemCount, itemSize, ...props } = this.props;
+    const { itemSize, ...props } = this.props;
     const { enableSnap, neededHeight } = this.state;
 
     const extraHeight = (
@@ -486,7 +483,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
       ListFooterComponent: this._renderListFooter        ,
       onScrollEndDrag    : this._handleOnScrollEndDrag   ,
       onScroll           : this._handleOnScroll          ,
-      onEndReached       : this._handleOnEndReached      ,
       //config scrollview
       scrollEventThrottle: 1,
       disableScrollViewPanResponder: true,
