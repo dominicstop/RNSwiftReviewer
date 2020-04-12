@@ -2,12 +2,13 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
-import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
-import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
-import { QuizListItem         } from 'app/src/components/QuizListItem';
-import { QuizListHeader       } from 'app/src/components/QuizListHeader';
-import { REASectionList       } from 'app/src/components/ReanimatedComps';
+import { LargeTitleWithSnap } from 'app/src/components/LargeTitleFlatList';
+import { LargeTitleFadeIcon } from 'app/src/components/LargeTitleFadeIcon';
+import { ListSectionHeader  } from 'app/src/components/ListSectionHeader';
+import { REASectionList     } from 'app/src/components/ReanimatedComps';
+
+import { QuizListItem   } from 'app/src/components/QuizListScreen/QuizListItem';
+import { QuizListHeader } from 'app/src/components/QuizListScreen/QuizListHeader';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
@@ -15,7 +16,6 @@ import { SVG_KEYS } from 'app/src/components/SvgIcons';
 import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
 
 import { HeaderValues  } from 'app/src/constants/HeaderValues';
-import { TestDataQuiz  } from 'app/src/constants/TestData';
 import { INSET_TOP     } from 'app/src/constants/UIValues';
 import { RNN_ROUTES    } from 'app/src/constants/Routes';
 import { MNPCreateQuiz, MNPViewQuiz } from 'app/src/constants/NavParams';
