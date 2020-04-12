@@ -39,7 +39,7 @@ export class ImageTitleSubtitle extends React.Component {
     },
     textContainer: {
       flex: 1,
-      marginLeft: 12,
+      marginLeft: 13,
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,

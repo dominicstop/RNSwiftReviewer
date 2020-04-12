@@ -18,7 +18,7 @@ import { MNPViewQuiz } from '../constants/NavParams';
 import { QuizKeys, QuizSectionKeys } from '../constants/PropKeys';
 
 
-// VQS: ViewQuizModal 🤣
+// VQM: ViewQuizModal 🤣
 const VQMSectionTypes = {
   DETAILS : 'DETAILS' ,
   SECTIONS: 'SECTIONS',
@@ -47,7 +47,6 @@ export class ViewQuizModal extends React.Component {
     const sections = quiz [QuizKeys.quizSections] ?? [];
     const sessions = []; // todo: impl.
 
-
     const detailsData = [
       { type: VQMSectionTypes.DETAILS }
     ];
@@ -56,8 +55,11 @@ export class ViewQuizModal extends React.Component {
       ({type: VQMSectionTypes.SECTIONS, ...section})
     );
 
-    const sessionData = sessions.map(session =>
-      ({type: VQMSectionTypes.SESSION, ...session})
+    const sessionData = ((sessions.length == 0)
+      ? [{ type: VQMSectionTypes.SESSION, isEmptyCard: true }]
+      : sessions.map(sesssion => (
+        ({ type: VQMSectionTypes.SESSION, ...sesssion })
+      ))
     );
 
     return ([
@@ -147,7 +149,9 @@ export class ViewQuizModal extends React.Component {
         />
       );
       case VQMSectionTypes.SESSION: return (
-        <ViewQuizSessionList/>
+        <ViewQuizSessionList
+          {...{index, ...item}}
+        />
       );
     };
   };
