@@ -5,15 +5,16 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { StackActions } from 'react-navigation';
 
-import { LargeTitleWithSnap   } from 'app/src/components/LargeTitleFlatList';
-import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
-import { ButtonGradient       } from 'app/src/components/ButtonGradient';
-import { REASectionList       } from 'app/src/components/ReanimatedComps';
-import { ScreenFooter         } from 'app/src/components/ScreenFooter';
-import { ScreenOverlayCheck   } from 'app/src/components/ScreenOverlayCheck';
-import { CreateQuizListItem   } from 'app/src/components/CreateQuizListItem';
-import { CreateQuizListHeader } from 'app/src/components/CreateQuizListHeader';
-import { CreateQuizListFooter } from 'app/src/components/CreateQuizListFooter';
+import { LargeTitleWithSnap } from 'app/src/components/LargeTitleFlatList';
+import { LargeTitleFadeIcon } from 'app/src/components/LargeTitleFadeIcon';
+import { ButtonGradient     } from 'app/src/components/ButtonGradient';
+import { REASectionList     } from 'app/src/components/ReanimatedComps';
+import { ScreenFooter       } from 'app/src/components/ScreenFooter';
+import { ScreenOverlayCheck } from 'app/src/components/ScreenOverlayCheck';
+
+import { CreateQuizListItem   } from 'app/src/components/CreateQuizScreen/CreateQuizListItem';
+import { CreateQuizListHeader } from 'app/src/components/CreateQuizScreen/CreateQuizListHeader';
+import { CreateQuizListFooter } from 'app/src/components/CreateQuizScreen/CreateQuizListFooter';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
