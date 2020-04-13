@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNModalManager.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNModalManager.h

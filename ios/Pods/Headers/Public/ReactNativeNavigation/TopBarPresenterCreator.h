@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/TopBarPresenterCreator.h
+../../../../../node_modules/react-native-navigation/lib/ios/TopBarPresenterCreator.h

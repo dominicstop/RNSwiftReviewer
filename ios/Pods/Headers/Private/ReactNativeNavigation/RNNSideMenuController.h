@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSideMenuController.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSideMenuController.h

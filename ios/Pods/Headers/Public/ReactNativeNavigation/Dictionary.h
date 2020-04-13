@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/Dictionary.h
+../../../../../node_modules/react-native-navigation/lib/ios/Dictionary.h

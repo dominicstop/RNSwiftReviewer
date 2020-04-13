@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNLayoutNode.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNLayoutNode.h

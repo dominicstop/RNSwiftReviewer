@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNBottomTabsOptions.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNBottomTabsOptions.h

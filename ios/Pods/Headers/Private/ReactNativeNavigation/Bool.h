@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/Bool.h
+../../../../../node_modules/react-native-navigation/lib/ios/Bool.h

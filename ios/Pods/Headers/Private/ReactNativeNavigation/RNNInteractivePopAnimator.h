@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNInteractivePopAnimator.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNInteractivePopAnimator.h

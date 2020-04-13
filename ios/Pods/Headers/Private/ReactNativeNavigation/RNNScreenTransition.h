@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNScreenTransition.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNScreenTransition.h

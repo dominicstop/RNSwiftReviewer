@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NullImage.h
+../../../../../node_modules/react-native-navigation/lib/ios/NullImage.h

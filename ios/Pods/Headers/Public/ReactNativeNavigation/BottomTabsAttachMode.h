@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/BottomTabsAttachMode.h
+../../../../../node_modules/react-native-navigation/lib/ios/BottomTabsAttachMode.h

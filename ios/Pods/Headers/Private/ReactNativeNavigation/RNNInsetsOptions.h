@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNInsetsOptions.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNInsetsOptions.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/DictionaryParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/DictionaryParser.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RCTConvert+UIFontWeight.h
+../../../../../node_modules/react-native-navigation/lib/ios/RCTConvert+UIFontWeight.h

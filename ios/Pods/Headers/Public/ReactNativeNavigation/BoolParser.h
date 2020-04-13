@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/BoolParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/BoolParser.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNExternalComponentStore.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNExternalComponentStore.h

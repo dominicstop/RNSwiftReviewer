@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/VICMAImageView.h
+../../../../../node_modules/react-native-navigation/lib/ios/VICMAImageView.h

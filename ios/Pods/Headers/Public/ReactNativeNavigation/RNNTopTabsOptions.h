@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNTopTabsOptions.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNTopTabsOptions.h

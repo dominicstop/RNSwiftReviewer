@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNTabBarItemCreator.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNTabBarItemCreator.h

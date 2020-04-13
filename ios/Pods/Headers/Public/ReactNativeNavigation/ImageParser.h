@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/ImageParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/ImageParser.h

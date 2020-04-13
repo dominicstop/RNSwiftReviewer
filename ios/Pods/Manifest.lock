@@ -260,8 +260,10 @@ PODS:
     - React-cxxreact (= 0.61.4)
     - React-jsi (= 0.61.4)
     - ReactCommon/jscallinvoker (= 0.61.4)
-  - ReactNativeNavigation (4.8.1):
+  - ReactNativeNavigation (5.1.1):
     - React
+    - React-RCTImage
+    - React-RCTText
   - RNCAsyncStorage (1.9.0):
     - React
   - RNCMaskedView (0.1.8):
@@ -342,7 +344,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - ReactNativeNavigation (from `../node_modules/react-native-navigation/ReactNativeNavigation.podspec`)
+  - ReactNativeNavigation (from `../node_modules/react-native-navigation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -454,7 +456,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeNavigation:
-    :podspec: "../node_modules/react-native-navigation/ReactNativeNavigation.podspec"
+    :path: "../node_modules/react-native-navigation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
@@ -543,7 +545,7 @@ SPEC CHECKSUMS:
   React-RCTText: 21934e0a51d522abcd0a275407e80af45d6fd9ec
   React-RCTVibration: 0f76400ee3cec6edb9c125da49fed279340d145a
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
-  ReactNativeNavigation: dd001e289d2828340579521adc054f21330d18b1
+  ReactNativeNavigation: 6790740cd9618139c3122145786f13012e8cc3b3
   RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
   RNCMaskedView: 4383c3140f1235391fd6029968c166f09ddd0973
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
@@ -567,6 +569,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: cb890c79c63885504ddc0efd7a7d01481760aca2
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 399f3317a633a569b1157b7de7466a7c341db201
+PODFILE CHECKSUM: 36f0b0c6dbaca9b8ab2f1cd81cee2fe0d6fa2f00
 
 COCOAPODS: 1.8.3

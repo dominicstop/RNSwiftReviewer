@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/ColorParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/ColorParser.h

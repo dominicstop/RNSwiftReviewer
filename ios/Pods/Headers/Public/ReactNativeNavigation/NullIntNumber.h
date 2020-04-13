@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NullIntNumber.h
+../../../../../node_modules/react-native-navigation/lib/ios/NullIntNumber.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNPushAnimation.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNPushAnimation.h

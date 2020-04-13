@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/InteractivePopGestureDelegate.h
+../../../../../node_modules/react-native-navigation/lib/ios/InteractivePopGestureDelegate.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NSArray+utils.h
+../../../../../node_modules/react-native-navigation/lib/ios/NSArray+utils.h

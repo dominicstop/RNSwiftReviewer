@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NullDouble.h
+../../../../../node_modules/react-native-navigation/lib/ios/NullDouble.h

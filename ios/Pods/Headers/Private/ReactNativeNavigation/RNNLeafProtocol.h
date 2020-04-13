@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNLeafProtocol.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNLeafProtocol.h

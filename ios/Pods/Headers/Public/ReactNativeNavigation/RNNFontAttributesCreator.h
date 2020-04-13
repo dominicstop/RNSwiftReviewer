@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNFontAttributesCreator.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNFontAttributesCreator.h

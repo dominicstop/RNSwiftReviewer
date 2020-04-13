@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNOverlayOptions.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNOverlayOptions.h

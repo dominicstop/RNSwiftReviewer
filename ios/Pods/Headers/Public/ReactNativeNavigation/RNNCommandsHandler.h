@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNCommandsHandler.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNCommandsHandler.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSegmentedControl.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSegmentedControl.h

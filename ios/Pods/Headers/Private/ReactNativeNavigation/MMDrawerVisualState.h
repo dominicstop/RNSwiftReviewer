@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSideMenu/MMDrawerController/MMDrawerVisualState.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSideMenu/MMDrawerController/MMDrawerVisualState.h

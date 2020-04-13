@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNControllerFactory.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNControllerFactory.h

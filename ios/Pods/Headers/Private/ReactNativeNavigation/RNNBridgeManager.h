@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNBridgeManager.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNBridgeManager.h

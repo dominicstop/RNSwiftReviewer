@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNAssert.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNAssert.h

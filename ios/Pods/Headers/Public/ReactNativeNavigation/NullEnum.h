@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NullEnum.h
+../../../../../node_modules/react-native-navigation/lib/ios/NullEnum.h

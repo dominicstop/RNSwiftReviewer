@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/ReactNativeNavigation.h
+../../../../../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSplitViewController.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSplitViewController.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/IntNumberParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/IntNumberParser.h

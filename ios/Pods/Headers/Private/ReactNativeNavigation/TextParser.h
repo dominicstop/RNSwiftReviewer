@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/TextParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/TextParser.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNCustomViewController.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNCustomViewController.h

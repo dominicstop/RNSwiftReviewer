@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNCustomTitleView.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNCustomTitleView.h

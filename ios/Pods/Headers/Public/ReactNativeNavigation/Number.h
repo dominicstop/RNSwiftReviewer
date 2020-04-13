@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/Number.h
+../../../../../node_modules/react-native-navigation/lib/ios/Number.h

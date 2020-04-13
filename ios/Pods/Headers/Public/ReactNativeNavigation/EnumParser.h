@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/EnumParser.h
+../../../../../node_modules/react-native-navigation/lib/ios/EnumParser.h

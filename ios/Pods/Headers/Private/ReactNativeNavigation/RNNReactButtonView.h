@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNReactButtonView.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNReactButtonView.h

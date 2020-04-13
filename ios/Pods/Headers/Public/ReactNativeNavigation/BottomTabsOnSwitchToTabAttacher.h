@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/BottomTabsOnSwitchToTabAttacher.h
+../../../../../node_modules/react-native-navigation/lib/ios/BottomTabsOnSwitchToTabAttacher.h

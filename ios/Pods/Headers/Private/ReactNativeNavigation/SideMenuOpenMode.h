@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/SideMenuOpenMode.h
+../../../../../node_modules/react-native-navigation/lib/ios/SideMenuOpenMode.h

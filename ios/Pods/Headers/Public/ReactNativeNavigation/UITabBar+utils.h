@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/UITabBar+utils.h
+../../../../../node_modules/react-native-navigation/lib/ios/UITabBar+utils.h

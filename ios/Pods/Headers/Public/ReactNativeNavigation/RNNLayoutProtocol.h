@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNLayoutProtocol.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNLayoutProtocol.h

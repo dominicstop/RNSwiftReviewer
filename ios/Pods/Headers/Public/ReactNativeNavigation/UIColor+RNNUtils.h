@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/Utils/UIColor+RNNUtils.h
+../../../../../node_modules/react-native-navigation/lib/ios/Utils/UIColor+RNNUtils.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NullText.h
+../../../../../node_modules/react-native-navigation/lib/ios/NullText.h

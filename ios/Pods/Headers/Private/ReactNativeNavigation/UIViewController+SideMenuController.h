@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/UIViewController+SideMenuController.h
+../../../../../node_modules/react-native-navigation/lib/ios/UIViewController+SideMenuController.h

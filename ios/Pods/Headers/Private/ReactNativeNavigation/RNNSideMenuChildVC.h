@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSideMenuChildVC.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSideMenuChildVC.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNPreviewOptions.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNPreviewOptions.h

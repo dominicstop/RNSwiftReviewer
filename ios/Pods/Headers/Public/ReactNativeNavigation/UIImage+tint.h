@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/UIImage+tint.h
+../../../../../node_modules/react-native-navigation/lib/ios/UIImage+tint.h

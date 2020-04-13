@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNBottomTabsPresenter.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNBottomTabsPresenter.h

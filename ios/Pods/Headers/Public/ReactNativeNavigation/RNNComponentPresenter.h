@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNComponentPresenter.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNComponentPresenter.h

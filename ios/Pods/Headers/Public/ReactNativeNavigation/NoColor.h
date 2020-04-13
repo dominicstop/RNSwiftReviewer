@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NoColor.h
+../../../../../node_modules/react-native-navigation/lib/ios/NoColor.h

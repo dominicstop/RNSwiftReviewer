@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNExternalViewController.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNExternalViewController.h

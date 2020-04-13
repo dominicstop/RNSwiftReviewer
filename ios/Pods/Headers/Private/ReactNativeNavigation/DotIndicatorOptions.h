@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/DotIndicatorOptions.h
+../../../../../node_modules/react-native-navigation/lib/ios/DotIndicatorOptions.h

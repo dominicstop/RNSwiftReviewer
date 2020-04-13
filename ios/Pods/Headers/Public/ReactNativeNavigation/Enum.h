@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/Enum.h
+../../../../../node_modules/react-native-navigation/lib/ios/Enum.h

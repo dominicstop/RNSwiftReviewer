@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSplashScreen.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSplashScreen.h

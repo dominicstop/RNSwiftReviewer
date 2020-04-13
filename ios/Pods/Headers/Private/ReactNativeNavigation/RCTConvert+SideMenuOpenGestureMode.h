@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RCTConvert+SideMenuOpenGestureMode.h
+../../../../../node_modules/react-native-navigation/lib/ios/RCTConvert+SideMenuOpenGestureMode.h

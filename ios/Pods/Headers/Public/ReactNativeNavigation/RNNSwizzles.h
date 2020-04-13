@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNSwizzles.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNSwizzles.h

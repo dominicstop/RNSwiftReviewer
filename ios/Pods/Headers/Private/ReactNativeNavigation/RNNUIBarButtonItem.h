@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNUIBarButtonItem.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNUIBarButtonItem.h

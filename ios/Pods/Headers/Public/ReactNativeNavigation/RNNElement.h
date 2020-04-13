@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNElement.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNElement.h

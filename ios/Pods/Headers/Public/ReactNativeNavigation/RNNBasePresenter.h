@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNBasePresenter.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNBasePresenter.h

@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/NullDictionary.h
+../../../../../node_modules/react-native-navigation/lib/ios/NullDictionary.h

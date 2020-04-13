@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/UIViewController+LayoutProtocol.h
+../../../../../node_modules/react-native-navigation/lib/ios/UIViewController+LayoutProtocol.h

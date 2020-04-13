@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/Utils/UIView+Utils.h
+../../../../../node_modules/react-native-navigation/lib/ios/Utils/UIView+Utils.h

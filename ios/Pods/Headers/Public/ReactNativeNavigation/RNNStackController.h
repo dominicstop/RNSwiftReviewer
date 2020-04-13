@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNStackController.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNStackController.h

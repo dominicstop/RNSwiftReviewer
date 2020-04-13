@@ -1,1 +1,1 @@
-../../../ReactNativeNavigation/lib/ios/RNNComponentViewCreator.h
+../../../../../node_modules/react-native-navigation/lib/ios/RNNComponentViewCreator.h
