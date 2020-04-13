@@ -15,7 +15,7 @@ import { iOSUIKit } from 'react-native-typography';
 
 import * as Colors from 'app/src/constants/Colors';
 
-const RADIUS = 12;
+const RADIUS = 13;
 
 // Used in modalFooter as children
 // Shows a accept/decline button
@@ -41,9 +41,9 @@ export class ModalFooterButton extends React.PureComponent {
     buttonWrapper: {
       flex: 1,
       flexDirection: 'row',
-      marginHorizontal: 7,
-      marginTop: 10,
-      marginBottom: (10 + INSET_BOTTOM),
+      marginHorizontal: 8,
+      marginTop: 12,
+      marginBottom: (12 + INSET_BOTTOM),
       //shadow
       shadowColor: "#000",
       shadowOpacity: 0.3,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   rootContainer: {
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: 'rgba(255,255,255,0.7)',
     borderColor: 'rgba(0,0,0,0.2)',
     borderBottomWidth: 1,
   },

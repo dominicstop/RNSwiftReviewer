@@ -221,7 +221,7 @@ export class CreateQuizModal extends React.PureComponent {
             )}
           />
         </ModalSection>
-        <ModalSection showBorderTop={false}>
+        <ModalSection showBorderTop={true}>
           <ModalInputField
             index={1}
             ref={r => this.inputFieldRefDesc = r}

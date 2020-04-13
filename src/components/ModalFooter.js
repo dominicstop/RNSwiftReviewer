@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   background: {
     borderTopWidth: 1,
     borderColor: 'rgba(0,0,0,0.2)',
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(255,255,255,0.85)',
     //fill space
     position: 'absolute',
     top: 0,
@@ -40,7 +40,8 @@ export class ModalFooter extends React.PureComponent {
       <View style={styles.rootContainer}>
         <BlurView
           style={styles.blurBackground}
-          blurType={'regular'}
+          blurType={'light'}
+          blurAmount={100}
         />
         <View style={styles.background}/>
         {this.props.children}
