@@ -259,6 +259,7 @@ export class CustomTabBar extends React.Component {
     return(
       <TabBarItem
         ref={r => this[`tabBarItem-${routeIndex}`] = r}
+        key={`tabBarItem-${routeIndex}-${route}`}
         onPressTab={this._handleOnPressTab}
         {...{route, routeIndex, isInitialRoute, labelText, tabIcon}}
       />

@@ -7,7 +7,7 @@ import Reanimated, { Extrapolate } from "react-native-reanimated";
 export class LargeTitleFadeIcon extends React.Component {
   static propTypes = {
     scrollY   : PropTypes.object,
-    inputRange: PropTypes.object,
+    inputRange: PropTypes.array ,
   };
 
   static styles = StyleSheet.create({

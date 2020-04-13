@@ -27,7 +27,7 @@ export class LargeTitleHeaderCard  extends React.Component {
     isTitleAnimated: PropTypes.bool  ,
     //receive from LargeTitleFlatList
     scrollY   : PropTypes.object,
-    inputRange: PropTypes.object,
+    inputRange: PropTypes.array,
   };
 
   static defaultProps = {
