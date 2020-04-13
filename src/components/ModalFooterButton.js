@@ -46,8 +46,8 @@ export class ModalFooterButton extends React.PureComponent {
       marginBottom: (12 + INSET_BOTTOM),
       //shadow
       shadowColor: "#000",
-      shadowOpacity: 0.3,
-      shadowRadius: 3.84,
+      shadowOpacity: 0.4,
+      shadowRadius: 3,
       shadowOffset: {
         width: 0,
         height: 2,
