@@ -13,9 +13,46 @@ import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
 
 const MODES = {
+  'INITIAL': 'INITIAL',
   'FOCUSED': 'FOCUSED',
   'BLURRED': 'BLURRED',
   'INVALID': 'INVALID',
+};
+
+function deriveStateFromMode(mode){
+  switch (mode) {
+    case MODES.BLURRED:
+    case MODES.INITIAL: return {
+      colorIcon       : Colors.BLUE  [800 ],
+      colorBorder     : Colors.BLUE  [800 ],
+      colorInput      : Colors.GREY  [800 ],
+      colorTitle      : Colors.INDIGO[1100],
+      colorSubtitle   : Colors.GREY  [900 ],
+      colorPlaceholder: Colors.GREY  [600 ],
+      colorItemBadge  : Colors.INDIGO.A400 ,
+      fontWeightInput : '400',
+    };
+    case MODES.FOCUSED: return {
+      colorIcon       : Colors.BLUE  .A700 ,
+      colorBorder     : Colors.BLUE  .A700 ,
+      colorInput      : Colors.BLUE  [1000],
+      colorTitle      : Colors.INDIGO[900 ],
+      colorSubtitle   : Colors.GREY  [800 ],
+      colorPlaceholder: Colors.GREY  [900 ],
+      colorItemBadge  : Colors.INDIGO.A700 ,
+      fontWeightInput : '600',
+    };
+    case MODES.INVALID: return {
+      colorIcon       : Colors.RED.A700,
+      colorBorder     : Colors.RED.A700,
+      colorInput      : Colors.RED[700],
+      colorTitle      : Colors.RED[900],
+      colorSubtitle   : Colors.RED[700],
+      colorPlaceholder: Colors.RED[400],
+      colorItemBadge  : Colors.RED.A700,
+      fontWeightInput : '400',
+    };
+  };
 };
 
 export class ModalInputField extends React.PureComponent {
@@ -226,39 +263,21 @@ export class ModalInputField extends React.PureComponent {
     const { iconActive, iconInactive, ...props } = this.getProps();
     const { mode, textInput: value } = this.state;
 
-    const textInputStyle = (() => {
-      switch (mode) {
-        case MODES.BLURRED: return {
-          color     : Colors.GREY[600],
-          fontWeight: '400',
-        };
-        case MODES.FOCUSED: return {
-          color     : Colors.BLUE[900],
-          fontWeight: '600',
-        };
-        case MODES.INVALID: return {
-          color     : Colors.RED[700],
-          fontWeight: '300',
-        };
-      };
-    })();
+    const values = deriveStateFromMode(mode);
 
-    const tintColor = (() => {
-      switch (mode) {
-        case MODES.BLURRED: return Colors.BLUE[800];
-        case MODES.FOCUSED: return Colors.BLUE.A700;
-        case MODES.INVALID: return Colors.RED.A700;
-      };
-    })();
-
-    const inputBackgoundStyle = {
-      opacity: this._bgOpacity,
+    const textInputStyle = {
+      color     : values.colorInput,
+      fontWeight: values.fontWeightInput,
     };
 
     const inputBorder = {
-      opacity: this._borderOpacity,
-      borderWidth: this._borderWidth,
-      borderColor: tintColor,
+      opacity    : this._borderOpacity,
+      borderWidth: this._borderWidth  ,
+      borderColor: values.colorBorder ,
+    };
+
+    const inputBackgoundStyle = {
+      opacity: this._bgOpacity,
     };
 
     const iconActiveStyle = {
@@ -278,26 +297,18 @@ export class ModalInputField extends React.PureComponent {
     };
 
     const textTitleStyle = {
+      color     : values.colorTitle,
       fontWeight: concat(this._titleFontWeight, '00'),
-      color: (
-       (mode === MODES.BLURRED)? Colors.INDIGO[1100] :
-       (mode === MODES.FOCUSED)? Colors.INDIGO[900 ] :
-       (mode === MODES.INVALID)? Colors.RED   [900 ] : null
-      ),
     };
 
    const textSubtitleStyle = {
+     color  : values.colorSubtitle ,
      opacity: this._subtitleOpacity,
-     color: (
-       (mode === MODES.BLURRED)? Colors.GREY[800] :
-       (mode === MODES.FOCUSED)? Colors.GREY[900] :
-       (mode === MODES.INVALID)? Colors.RED [900] : null
-     ),
    };
 
    const iconProps = {
-     fill  : tintColor,
-     stroke: tintColor,
+     fill  : values.colorIcon,
+     stroke: values.colorIcon,
    };
 
     return(
