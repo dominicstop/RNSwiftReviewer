@@ -343,7 +343,7 @@ export class QuizAddQuestionModal extends React.Component {
           <Ionicon
             style={{marginTop: 3}}
             name={'ios-bookmarks'}
-            size={24}
+            size={22}
             color={'white'}
           />
         )}

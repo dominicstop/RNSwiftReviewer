@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.75)',
+    backgroundColor: 'rgba(255,255,255,0.8)',
     alignItems: 'center',
     paddingTop: 7,
-    borderBottomColor: 'rgba(0,0,0,0.15)',
+    borderColor: Colors.GREY[300],
     borderBottomWidth: 1,
   },
   dragIndicator: {
@@ -42,34 +42,36 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
+    paddingBottom: 3,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 40/2,
+    width: 38,
+    height: 38,
+    borderRadius: 38/2,
     backgroundColor: Colors.INDIGO.A700,
     alignItems: 'center',
     justifyContent: 'center',
+    aspectRatio: 1,
   },
   iconStyle: {
     shadowColor: 'white',
     shadowRadius: 7,
-    shadowOpacity: 0.6,
+    shadowOpacity: 0.5,
   },
   headerTextContainer: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 9,
   },
   textTitle: {
-    ...iOSUIKit.bodyEmphasizedObject,
-    fontSize: 20,
+    ...iOSUIKit.subheadEmphasizedObject,
+    fontSize: 17,
     fontWeight: '800',
     color: Colors.INDIGO[1000],
   },
   textSubtitle: {
     ...iOSUIKit.subheadObject,
-    color: Colors.GREY[800],
+    opacity: 0.75,
   },
 });
 
@@ -80,6 +82,7 @@ export class ModalHeader extends React.PureComponent {
     title         : PropTypes.string ,
     subtitle      : PropTypes.string ,
     LeftHeaderIcon: PropTypes.element,
+    containerStyle: PropTypes.object ,
   };
 
   static defaultProps = {
@@ -105,7 +108,7 @@ export class ModalHeader extends React.PureComponent {
           blurAmount={50}
           blurType={'light'}
         />
-        <View style={styles.headerWrapper}>
+        <View style={[styles.headerWrapper, props.containerStyle]}>
           <Animatable.View 
             style={styles.dragIndicator}
             animation={'pulse'}

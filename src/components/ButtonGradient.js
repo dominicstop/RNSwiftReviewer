@@ -101,6 +101,7 @@ export class ButtonGradient extends React.PureComponent {
     },
     subtitle: {
       ...iOSUIKit.calloutObject,
+      opacity: 0.8,
     },
   });
 

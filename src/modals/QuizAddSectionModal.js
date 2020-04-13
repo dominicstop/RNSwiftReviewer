@@ -338,7 +338,7 @@ export class QuizAddSectionModal extends React.Component {
         )}
         headerIcon={(
           <Ionicon
-            name={'ios-albums'}
+            name={'ios-filing'}
             size={22}
             color={'white'}
           />

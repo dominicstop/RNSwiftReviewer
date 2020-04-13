@@ -12,7 +12,7 @@ import * as Colors from '../constants/Colors';
 
 const styles = StyleSheet.create({
   rootContainer: {
-    borderColor: 'rgba(0,0,0,0.1)',
+    borderColor: Colors.GREY[400],
     borderBottomWidth: 1,
   },
   blurBackground: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
-    opacity: 0.6,
+    opacity: 0.7,
   },
   titleIconContainer: {
   },
@@ -60,6 +60,7 @@ export class ModalSectionHeader extends React.PureComponent {
 
   static defaultProps = {
     title: 'Section Title',
+    showTopBorder: true,
   };
 
   render(){
@@ -84,7 +85,7 @@ export class ModalSectionHeader extends React.PureComponent {
     };
     
     return(
-      <View style={[styles.rootContainer, rootContainerStyle]}>
+      <View style={[styles.rootContainer, rootContainerStyle, props.containerStyle]}>
         <BlurView
           style={styles.blurBackground}
           blurType={'light'}

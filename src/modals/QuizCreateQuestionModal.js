@@ -392,7 +392,6 @@ export class QuizCreateQuestionModal extends React.Component {
         </ModalSection>
         <ModalSectionHeader
           title={'Question'}
-          showTopBorder={false}
           titleIcon={(
             <MaterialCommunity
               name={'format-letter-case'}

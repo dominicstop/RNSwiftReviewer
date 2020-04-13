@@ -25,8 +25,9 @@ class QuizHeading extends React.PureComponent {
       marginTop: 1,
     },
     textTitle: {
-      ...iOSUIKit.title3EmphasizedObject,
+      ...iOSUIKit.bodyEmphasizedObject,
       ...sanFranciscoWeights.heavy,
+      fontSize: iOSUIKit.bodyEmphasizedObject.fontSize + 2,
       color: Colors.BLUE.A700,
     },
     textDateCreatedRoot: {

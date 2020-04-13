@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
@@ -24,7 +24,7 @@ function deriveStateFromMode(mode){
     case MODES.BLURRED:
     case MODES.INITIAL: return {
       colorBorder     : Colors.BLUE[800],
-      colorInput      : Colors.GREY[900],
+      colorInput      : Colors.GREY[800],
       colorSubtitle   : Colors.GREY[900],
       colorPlaceholder: Colors.GREY[600],
       colorItemBadge  : Colors.INDIGO['A400'],

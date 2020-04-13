@@ -163,8 +163,8 @@ export class CreateQuizModal extends React.PureComponent {
         )}
         headerIcon={(
           <Ionicon
-            style={{marginTop: 3}}
-            name={'ios-book'}
+            style={{marginLeft: 3, marginBottom: 1}}
+            name={'ios-create'}
             size={24}
             color={'white'}
           />

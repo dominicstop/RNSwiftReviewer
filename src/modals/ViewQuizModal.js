@@ -192,7 +192,8 @@ export class ViewQuizModal extends React.Component {
     const modalHeader = (
       <ModalHeader
         title={'View Quiz'}
-        subtitle={'Praesent commodo cursus magna, ve'}
+        subtitle={"Press the \"Start Quiz\" to take this quiz."}
+        containerStyle={{borderBottomWidth: 0}}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}

@@ -229,8 +229,8 @@ export class ModalInputField extends React.PureComponent {
     const textInputStyle = (() => {
       switch (mode) {
         case MODES.BLURRED: return {
-          color     : Colors.GREY[700],
-          fontWeight: '300',
+          color     : Colors.GREY[600],
+          fontWeight: '400',
         };
         case MODES.FOCUSED: return {
           color     : Colors.BLUE[900],
