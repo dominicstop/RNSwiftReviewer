@@ -14,8 +14,8 @@ import { AuthLoadingScreen } from 'app/src/screens/AuthLoadingScreen';
 import { HomeScreen        } from 'app/src/screens/HomeScreen';
 import { CreateQuizScreen  } from 'app/src/screens/CreateQuizScreen';
 
-import { useScreens } from 'react-native-screens';
-useScreens();
+import { enableScreens } from 'react-native-screens';
+enableScreens();
 
 
 const AppStack = createStackNavigator({ 
@@ -31,8 +31,8 @@ const AppStack = createStackNavigator({
         backgroundColor: INDIGO[50],
       },
       headerTintColor: 'white',
-      headerBackground: (
-        <NavHeader/>
+      headerBackground: (props) => (
+        <NavHeader {...props}/>
       ),
     },
   }

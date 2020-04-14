@@ -65,7 +65,7 @@ const HomeScreen = createBottomTabNavigator({
     [ROUTES.TabOptionsRoute]: ToBeImplementedScreen,
   }, {
     initialRouteName: ROUTES.QuizListScreen,
-    tabBarComponent: CustomTabBar,
+    tabBarComponent: (props) => <CustomTabBar {...props}/>,
     defaultNavigationOptions: ({navigation}) => ({
       //render tab icons based on route
       tabBarIcon: (options) => getTabBarIcon(options, navigation),
@@ -93,7 +93,6 @@ HomeScreen.navigationOptions = ({navigation}) => {
 
   return {
     title: options.headerTitle,
-    headerTitle: null,
     headerShown: false,
   };
 };
