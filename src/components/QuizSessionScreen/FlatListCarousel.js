@@ -24,15 +24,19 @@ export class FlatListCarousel extends React.PureComponent {
 
   _handleOnScrollEndDrag = async ({nativeEvent}) => {
     const { onBeforeSnap } = this.props;
-    const { contentOffset } = nativeEvent;
+    const { contentOffset: {y} } = nativeEvent;
+
+    const scrollY      = ((y < 0)? 0 : y);
+    const currentIndex = Math.round(scrollY / ITEM_HEIGHT);
 
     onBeforeSnap && onBeforeSnap({
-      index: this.currentIndex,
+      prevIndex: this.currentIndex,
+      nextIndex: currentIndex,
     });
 
-    this.scrollY = contentOffset.y;
+    this.scrollY = scrollY;
     this.flatlistRef.setNativeProps({scrollEnabled: false });
-    
+
     await Helpers.timeout(250);
     this.flatlistRef.setNativeProps({ scrollEnabled: true });
   };
@@ -47,7 +51,7 @@ export class FlatListCarousel extends React.PureComponent {
     const { contentOffset: {y} } = nativeEvent;
 
     const scrollY      = ((y < 0)? 0 : y);
-    const currentIndex = Math.ceil(scrollY / ITEM_HEIGHT);
+    const currentIndex = Math.round(scrollY / ITEM_HEIGHT);
 
     this.scrollY      = scrollY;
     this.currentIndex = currentIndex;

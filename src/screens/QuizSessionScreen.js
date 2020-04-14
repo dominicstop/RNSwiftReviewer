@@ -90,6 +90,12 @@ export class QuizSessionScreen extends React.Component {
     });
   };
 
+  _handleOnBeforeSnap = ({nextIndex}) => {
+    this.setState({
+      currentIndex: nextIndex,
+    });
+  };
+
   _renderItem = ({item, index}) => {
     return(
       <QuizQuestionItem
@@ -108,6 +114,7 @@ export class QuizSessionScreen extends React.Component {
           data={DUMMY_DATA}
           renderItem={this._renderItem}
           onSnap={this._handleSnap}
+          onBeforeSnap={this._handleOnBeforeSnap}
         />
         <Text style={{
           position: 'absolute',
