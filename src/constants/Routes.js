@@ -4,11 +4,12 @@ export const ROUTES = {
   authRoute: 'authRoute',
   appRoute : 'appRoute' ,
   // appstack routes
-  homeRoute: 'homeRoute',
-  createQuizRoute: 'createQuizRoute',
+  homeRoute       : 'homeRoute'       ,
+  createQuizRoute : 'createQuizRoute' ,
+  quizSessionRoute: 'quizSessionRoute',
   // home tabnav routes
-  TabQuizRoute: 'TabQuizRoute',
-  TabExamRoute: 'TabExamRoute',
+  TabQuizRoute   : 'TabQuizRoute'   ,
+  TabExamRoute   : 'TabExamRoute'   ,
   TabOptionsRoute: 'TabOptionsRoute',
 };
 

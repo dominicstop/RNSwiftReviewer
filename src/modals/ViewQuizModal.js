@@ -3,6 +3,8 @@ import { StyleSheet, View, SectionList } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 
+import { Navigation } from 'react-native-navigation';
+
 import { ModalBackground    } from 'app/src/components/ModalBackground';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
@@ -10,17 +12,17 @@ import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
-
 import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionList } from 'app/src/components/ViewQuizModal/ViewQuizSectionList';
 import { ViewQuizSessionList } from 'app/src/components/ViewQuizModal/ViewQuizSessionList';
 
-import { ROUTES      } from 'app/src/constants/Routes';
-import { MNPViewQuiz } from 'app/src/constants/NavParams';
+import { ROUTES } from 'app/src/constants/Routes';
 
-import { QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { QuizKeys, QuizSectionKeys   } from 'app/src/constants/PropKeys';
+import { MNPViewQuiz, SNPQuizSession } from 'app/src/constants/NavParams';
 
+import * as Helpers from 'app/src/functions/helpers';
 
 // VQM: ViewQuizModal 🤣
 const VQMSectionTypes = {
@@ -89,17 +91,32 @@ export class ViewQuizModal extends React.Component {
 
   // ModalFooter: onPress "Start Quiz" button
   _handleOnPressButtonLeft = async () => {
-    const { navigation, ...props } = this.props;
+    const { navigation, componentId, ...props } = this.props;
 
     const quiz = props[MNPViewQuiz.quiz];
     const onPressStartQuiz = props[MNPViewQuiz.onPressStartQuiz];
 
     // call callback
     onPressStartQuiz && onPressStartQuiz({quiz});
+    
+    navigation.navigate(ROUTES.quizSessionRoute, {
+      [SNPQuizSession.quiz]: quiz,
+    });
 
-    await this.overlayRef.show();
+    await Promise.all([
+      Helpers.timeout(1000),
+      this.overlayRef.show(),
+    ]);
 
-    //navigation.navigate(ROUTES.createQuizRoute);
+    //close modal
+    Navigation.dismissModal(componentId);
+  };
+
+  _handleOnPressButtonRight = () => {
+    const { componentId } = this.props;
+
+    //close modal
+    Navigation.dismissModal(componentId);
   };
 
   // #region - render methods

@@ -8,6 +8,10 @@ export const SNPCreateQuiz = {
   quizDesc : 'quizDesc' ,
 };
 
+// QuizSessionScreen nav params
+export const SNPQuizSession = {
+  quiz: 'quiz',
+};
 
 // #region - open modal params
 // These are params you need to pass when opening a modal

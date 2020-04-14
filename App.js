@@ -13,14 +13,16 @@ import { NavHeader } from 'app/src/components/NavHeader';
 import { AuthLoadingScreen } from 'app/src/screens/AuthLoadingScreen';
 import { HomeScreen        } from 'app/src/screens/HomeScreen';
 import { CreateQuizScreen  } from 'app/src/screens/CreateQuizScreen';
+import { QuizSessionScreen } from 'app/src/screens/QuizSessionScreen';
 
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
 
 const AppStack = createStackNavigator({ 
-    [ROUTES.homeRoute      ]: HomeScreen, 
-    [ROUTES.createQuizRoute]: CreateQuizScreen,
+    [ROUTES.homeRoute       ]: HomeScreen       ,
+    [ROUTES.createQuizRoute ]: CreateQuizScreen ,
+    [ROUTES.quizSessionRoute]: QuizSessionScreen,
   }, {
     mode: 'card',
     defaultNavigationOptions: {
