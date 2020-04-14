@@ -14,7 +14,23 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.6)'
+    backgroundColor: 'rgba(255,255,255,0.5)'
+  },
+  loadingContainer: {
+    width: 55,
+    height: 55,
+    borderRadius: 55/2,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // shadow
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
   },
   overlay: {
   },
@@ -27,12 +43,12 @@ export class ViewQuizOverlay extends React.PureComponent {
     const progress = new Value(0);
 
     this._opacity = interpolate(progress, {
-      inputRange : [0, 50],
+      inputRange : [0, 100],
       outputRange: [0, 1 ],
     });
 
     this._translateY = interpolate(progress, {
-      inputRange : [0, 75],
+      inputRange : [0, 100],
       outputRange: [200, 0],
       extrapolate: Extrapolate.CLAMP,
     });
@@ -45,7 +61,7 @@ export class ViewQuizOverlay extends React.PureComponent {
 
     this.animation = timing(progress, {
       easing  : Easing.inOut(Easing.ease),
-      duration: 500,
+      duration: 300,
       toValue : 100,
     });
 
@@ -79,13 +95,14 @@ export class ViewQuizOverlay extends React.PureComponent {
         style={[styles.overlayContainer, overlayContainerStyle]}
         pointerEvents={'auto'}
       >
-        <Reanimated.View style={{
+        <Reanimated.View style={[styles.loadingContainer, [{
           transform: [
             { scale     : this._scale      },
             { translateY: this._translateY },
           ],
-        }}>
-          <ActivityIndicator 
+        }]]}>
+          <ActivityIndicator
+            style={{marginLeft: 5, marginTop: 5}}
             size={"large"} 
             color={Colors.INDIGO.A700}
           />
