@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboard } from 'react-native';
 
 import { FlatListCarousel } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
+import { QuizQuestionItem } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
 
 import * as Helpers from 'app/src/functions/helpers';
 
@@ -27,40 +28,6 @@ const DUMMY_DATA = [
   { key: 19 },
 ];
 
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
-
-const ITEM_HEIGHT = screenHeight;
-const ITEM_WIDTH  = screenWidth;
-
-class QuizQuestionItem extends React.PureComponent {
-  static styles = StyleSheet.create({
-    rootContainer: {
-      width: ITEM_WIDTH,
-      height: ITEM_HEIGHT,
-      backgroundColor: 'red',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-  });
-
-  render(){
-    const { styles } = QuizQuestionItem;
-    const { index } = this.props;
-
-    const rootContainerStyle = {
-      backgroundColor: ((index % 2 == 0)
-        ? 'red'
-        : 'green'
-      ),
-    };
-
-    return(
-      <View style={[styles.rootContainer, rootContainerStyle]}>
-        <Text style={{fontSize: 64}}>{index}</Text>
-      </View>
-    );
-  };
-};
 
 export class QuizSessionScreen extends React.Component {
   static navigationOptions = {

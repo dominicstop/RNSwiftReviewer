@@ -3,10 +3,17 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboa
 
 import * as Helpers from 'app/src/functions/helpers';
 
+import { HeaderValues } from 'app/src/constants/HeaderValues';
+import { INSET_BOTTOM } from 'app/src/constants/UIValues';
+
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const ITEM_WIDTH  = screenWidth ;
 const ITEM_HEIGHT = screenHeight;
+
+
+const spaceTop    = HeaderValues.getHeaderHeight(true);
+const spaceBottom = INSET_BOTTOM;
 
 export class FlatListCarousel extends React.PureComponent {
 
@@ -14,6 +21,11 @@ export class FlatListCarousel extends React.PureComponent {
     super(props);
 
     this.scrollY = 0;
+  };
+
+  componentDidMount(){
+    const { innerRef } = this.props;
+    innerRef && innerRef(this.flatlistRef);
   };
   
   getProps(){
@@ -56,9 +68,6 @@ export class FlatListCarousel extends React.PureComponent {
     this.scrollY      = scrollY;
     this.currentIndex = currentIndex;
 
-    console.log(`\n_handleOnMomentumScrollEnd: ${scrollY}`);
-    console.log(`currentIndex: ${onSnap}`);
-
     onSnap && onSnap({
       index: currentIndex
     });
@@ -74,14 +83,14 @@ export class FlatListCarousel extends React.PureComponent {
     const { renderItem } = this.props;
 
     return(
-      <View>
+      <View style={styles.itemContainer}>
         {renderItem && renderItem({item, index})}
       </View>
     );
   };
 
   render(){
-    const props = this.props;
+    const props = this.getProps();
 
     return(
       <FlatList
@@ -92,6 +101,7 @@ export class FlatListCarousel extends React.PureComponent {
         snapToAlignment={'center'}
         decelerationRate={'fast'}
         overScrollMode={'never'}
+        scrollsToTop={false}
         disableIntervalMomentum={true}
         directionalLockEnabled={true}
         disableScrollViewPanResponder={true}
@@ -107,5 +117,10 @@ export class FlatListCarousel extends React.PureComponent {
 };
 
 const styles = StyleSheet.create({
-
+  itemContainer: {
+    height       : ITEM_HEIGHT,
+    width        : ITEM_WIDTH ,
+    paddingTop   : spaceTop   ,
+    paddingBottom: spaceBottom,
+  },
 });
