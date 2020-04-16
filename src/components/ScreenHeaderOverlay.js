@@ -1,18 +1,19 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
-import { BlurView } from "@react-native-community/blur";
-
-import { INSET_TOP    } from 'app/src/constants/UIValues';
-import { HeaderValues } from 'app/src/constants/HeaderValues';
+import { INSET_TOP } from 'app/src/constants/UIValues';
 import { NavHeader } from './NavHeader';
 
 export class ScreenHeaderOverlay extends React.PureComponent {
   render(){
-    return(
-      <NavHeader containerStyle={styles.rootContainer}>
+    const props = this.props;
 
+    return(
+      <NavHeader 
+        containerStyle={styles.rootContainer}
+        {...props}
+      >
+        {this.props.children}
       </NavHeader>
     );
   };
