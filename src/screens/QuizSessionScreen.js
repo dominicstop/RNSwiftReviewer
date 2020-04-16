@@ -53,6 +53,16 @@ export class QuizSessionScreen extends React.Component {
     item[QuizQuestionKeys.questionID]
   );
 
+  // QuizSessionHeader: onPress Done
+  _handleOnPressDone = () => {
+    alert('done');
+  };
+
+  // QuizSessionHeader: onPress Cancel
+  _handleOnPressCancel = () => {
+    alert('cancel');
+  };
+
   _handleSnap = ({index}) => {
     this.setState({
       currentIndex: index
@@ -90,6 +100,8 @@ export class QuizSessionScreen extends React.Component {
         <QuizSessionHeader
           totalCount={data.length}
           currentIndex={(currentIndex + 1)}
+          onPressDone={this._handleOnPressDone}
+          onPressCancel={this._handleOnPressCancel}
         />
       </View>
     );

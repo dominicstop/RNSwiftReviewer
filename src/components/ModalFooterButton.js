@@ -6,14 +6,14 @@ import { MODAL_FOOTER_HEIGHT, INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 import * as Animatable from 'react-native-animatable';
 
-import LinearGradient  from 'react-native-linear-gradient';
 import Ionicon         from '@expo/vector-icons/Ionicons';
 import debounce        from "lodash/debounce";
-
+import LinearGradient  from 'react-native-linear-gradient';
 
 import { iOSUIKit } from 'react-native-typography';
 
 import * as Colors from 'app/src/constants/Colors';
+
 
 const RADIUS = 13;
 
