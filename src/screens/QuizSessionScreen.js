@@ -1,37 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboard } from 'react-native';
 
+import { ScreenHeaderOverlay } from 'app/src/components/ScreenHeaderOverlay';
+
 import { FlatListCarousel } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
 import { QuizQuestionItem } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
 
 import * as Helpers from 'app/src/functions/helpers';
 
-const DUMMY_DATA = [
-  { key: 1  },
-  { key: 2  },
-  { key: 3  },
-  { key: 4  },
-  { key: 5  },
-  { key: 6  },
-  { key: 7  },
-  { key: 8  },
-  { key: 9  },
-  { key: 10 },
-  { key: 11 },
-  { key: 12 },
-  { key: 13 },
-  { key: 14 },
-  { key: 15 },
-  { key: 16 },
-  { key: 17 },
-  { key: 18 },
-  { key: 19 },
-];
+import { QuizSessionModel } from 'app/src/models/QuizSession';
+
+import { SNPQuizSession   } from 'app/src/constants/NavParams';
+import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
 
 export class QuizSessionScreen extends React.Component {
   static navigationOptions = {
     title: 'N/A',
+    headerShown: false,
   };
 
   static styles = StyleSheet.create({
@@ -45,11 +31,28 @@ export class QuizSessionScreen extends React.Component {
 
   constructor(props){
     super(props);
+    // get nav params passed from prev screen
+    const { params } = props.navigation.state;
+
+    const quiz = params[SNPQuizSession.quiz];
+
+    const session = new QuizSessionModel();
+    session.initFromQuiz(quiz);
+
+    const [a, b] = session.questionsRemaining;
+
+    const questionsCurrent = [a, b];
+    this.session = session;
 
     this.state = {
       currentIndex: 0,
+      listQuestions: questionsCurrent,
     };
   };
+
+  _handleKeyExtractor = (item, index) => (
+    item[QuizQuestionKeys.questionID]
+  );
 
   _handleSnap = ({index}) => {
     this.setState({
@@ -66,22 +69,23 @@ export class QuizSessionScreen extends React.Component {
   _renderItem = ({item, index}) => {
     return(
       <QuizQuestionItem
-        {...{index}}
+        {...{index, ...item}}
       />
     );
   };
 
   render(){
     const { styles } = QuizSessionScreen;
-    const { currentIndex } = this.state;
+    const { currentIndex, listQuestions: data } = this.state;
 
     return(
       <View style={styles.rootContainer}>
         <FlatListCarousel
-          data={DUMMY_DATA}
+          keyExtractor={this._handleKeyExtractor}
           renderItem={this._renderItem}
           onSnap={this._handleSnap}
           onBeforeSnap={this._handleOnBeforeSnap}
+          {...{data}}
         />
         <Text style={{
           position: 'absolute',
@@ -92,6 +96,7 @@ export class QuizSessionScreen extends React.Component {
         }}>
           {currentIndex}
         </Text>
+        <ScreenHeaderOverlay/>
       </View>
     );
   };

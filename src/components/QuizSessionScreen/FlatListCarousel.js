@@ -11,7 +11,6 @@ const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 const ITEM_WIDTH  = screenWidth ;
 const ITEM_HEIGHT = screenHeight;
 
-
 const spaceTop    = HeaderValues.getHeaderHeight(true);
 const spaceBottom = INSET_BOTTOM;
 
@@ -92,13 +91,23 @@ export class FlatListCarousel extends React.PureComponent {
   render(){
     const props = this.getProps();
 
+    const data  = props.data;
+    const count = data?.length ?? 0;
+
+    const flatlistProps = {
+      ...((count <= 1)? {
+        snapToInterval : ITEM_HEIGHT,
+        snapToAlignment: 'center'   ,
+      }:{
+        pagingEnabled: true,
+      })
+    };
+
     return(
       <FlatList
         ref={r => this.flatlistRef = r}
         style={styles.flatList}
         renderItem={this._renderItem}
-        keyExtractor={item => item.key}
-        snapToAlignment={'center'}
         decelerationRate={'fast'}
         overScrollMode={'never'}
         scrollsToTop={false}
@@ -106,11 +115,15 @@ export class FlatListCarousel extends React.PureComponent {
         directionalLockEnabled={true}
         disableScrollViewPanResponder={true}
         scrollEventThrottle={500}
-        pagingEnabled={true}
         onScrollEndDrag={this._handleOnScrollEndDrag}
         onScroll={this._handleOnScroll}
         onMomentumScrollEnd={this._handleOnMomentumScrollEnd}
+        scrollIndicatorInsets={{
+          top   : spaceTop,
+          bottom: spaceBottom
+        }}
         {...props}
+        {...flatlistProps}
       />
     );
   };

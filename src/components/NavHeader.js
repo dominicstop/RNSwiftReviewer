@@ -9,11 +9,6 @@ import { INDIGO, BLUE } from 'app/src/constants/Colors';
 
 
 export class NavHeader extends Component {
-  static navigationOptions = {
-    title     : 'Create Quiz',
-    headerMode: 'float',
-  };
-
   static styles = StyleSheet.create({
     rootContainer: {
       width: '100%',
@@ -30,9 +25,10 @@ export class NavHeader extends Component {
 
   render() {
     const { styles } = NavHeader;
+    const props = this.props;
 
     return (
-      <View style={styles.rootContainer}>
+      <View style={[styles.rootContainer, props.containerStyle]}>
         <VibrancyView
           style={styles.blurBackground}
           blurType={"light"}
@@ -44,6 +40,7 @@ export class NavHeader extends Component {
           start={{x: 0, y: 1}} 
           end  ={{x: 1, y: 0}}
         />
+        {props.children}
       </View>
     );
   };

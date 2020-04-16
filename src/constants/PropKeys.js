@@ -37,3 +37,11 @@ export const QuizQuestionKeys = {
   questionChoices    : 'questionChoices'    ,
   questionDateCreated: 'questionDateCreated',
 };
+
+// property names for QuizSessionModel
+export const QuizSessionKeys = {
+  quizID   : 'quizID'   ,
+  sessionID: 'sessionID',
+  dateStart: 'dateStart',
+  dateEnd  : 'dateEnd'  ,
+};
