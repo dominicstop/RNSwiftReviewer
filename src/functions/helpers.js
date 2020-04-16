@@ -67,7 +67,7 @@ export function isStringEmpty(string){
   return (text.length == 0) || (text == '');
 };
 
-export function hexToRgbA(hex, opacity){
+export function hexToRGBA(hex, opacity){
   let c;
   if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
     c= hex.substring(1).split('');

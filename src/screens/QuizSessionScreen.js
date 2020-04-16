@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboard } from 'react-native';
 
-import { ScreenHeaderOverlay } from 'app/src/components/ScreenHeaderOverlay';
-
-import { FlatListCarousel } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
-import { QuizQuestionItem } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
+import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
+import { QuizQuestionItem  } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
+import { QuizSessionHeader } from 'app/src/components/QuizSessionScreen/QuizSessionHeader';
 
 import * as Helpers from 'app/src/functions/helpers';
 
@@ -78,6 +77,7 @@ export class QuizSessionScreen extends React.Component {
     const { styles } = QuizSessionScreen;
     const { currentIndex, listQuestions: data } = this.state;
 
+
     return(
       <View style={styles.rootContainer}>
         <FlatListCarousel
@@ -87,16 +87,10 @@ export class QuizSessionScreen extends React.Component {
           onBeforeSnap={this._handleOnBeforeSnap}
           {...{data}}
         />
-        <Text style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          fontSize: 30
-        }}>
-          {currentIndex}
-        </Text>
-        <ScreenHeaderOverlay/>
+        <QuizSessionHeader
+          totalCount={data.length}
+          currentIndex={(currentIndex + 1)}
+        />
       </View>
     );
   };

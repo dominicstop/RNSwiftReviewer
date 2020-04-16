@@ -6,11 +6,11 @@ import { NavHeader } from './NavHeader';
 
 export class ScreenHeaderOverlay extends React.PureComponent {
   render(){
-    const props = this.props;
+    const { containerStyle, ...props } = this.props;
 
     return(
       <NavHeader 
-        containerStyle={styles.rootContainer}
+        containerStyle={[styles.rootContainer, containerStyle]}
         {...props}
       >
         {this.props.children}
