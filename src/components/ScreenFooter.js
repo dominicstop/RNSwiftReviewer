@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-
 import { BlurView } from "@react-native-community/blur";
-
 import { INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 

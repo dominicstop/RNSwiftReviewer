@@ -26,7 +26,6 @@ const AppStack = createStackNavigator({
   }, {
     mode: 'card',
     defaultNavigationOptions: {
-      headerMode: 'float',
       headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
       headerTransparent: true,
       cardStyle: {
@@ -36,6 +35,9 @@ const AppStack = createStackNavigator({
       headerBackground: (props) => (
         <NavHeader {...props}/>
       ),
+    },
+    navigationOptions: {
+      headerMode: 'float',
     },
   }
 );
