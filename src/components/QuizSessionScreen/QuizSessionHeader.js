@@ -35,7 +35,7 @@ class CenterPill extends React.PureComponent {
     },
     textRight: {
       ...iOSUIKit.subheadEmphasizedWhiteObject,
-      fontVariant: ['tabular-nums'],
+      //fontVariant: ['tabular-nums'],
       paddingLeft: 7,
       paddingRight: 10,
       paddingVertical: 3,

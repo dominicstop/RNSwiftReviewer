@@ -38,14 +38,11 @@ export class QuizSessionScreen extends React.Component {
     const session = new QuizSessionModel();
     session.initFromQuiz(quiz);
 
-    const [a, b] = session.questionsRemaining;
-
-    const questionsCurrent = [a, b];
     this.session = session;
 
     this.state = {
       currentIndex: 0,
-      listQuestions: questionsCurrent,
+      questions: session.questions,
     };
   };
 
@@ -85,8 +82,7 @@ export class QuizSessionScreen extends React.Component {
 
   render(){
     const { styles } = QuizSessionScreen;
-    const { currentIndex, listQuestions: data } = this.state;
-
+    const { currentIndex, questions: data } = this.state;
 
     return(
       <View style={styles.rootContainer}>

@@ -37,33 +37,32 @@ export class QuizSessionModel {
   };
 
   static extract(values){
-    let   copy = QuizSessionModel.wrap({});
-    const keys = Object.keys(QuizSessionKeys);
+    let   copy = QuizQuestionModel.wrap({});
+    const keys = Object.keys(QuizQuestionKeys);
 
     for (const key of keys) {
       copy[key] = values[key];
     };
 
-    return {...copy};
-  };
-
-  static extractAnswers(section = {}){
-    const questions = section?.[QuizSessionKeys.sectionQuestions] ?? [];
-
-    const answers = questions.map(question => (
-      question[QuizQuestionKeys.questionAnswer]
-    ));
-
-    return answers.filter(answer => (
-      (answer != '' || answer != null || answer != undefined)
-    ));
+    return copy;
   };
 
   constructor(values = {}){
     this.values = QuizSessionModel.wrap(values);
 
-    this.questionsCurrent   = [];
-    this.questionsRemaining = [];
+    this.questions = [];
+  };
+
+  initFromQuiz(quiz = {}){
+    this.setStartDate();
+
+    const quizID   = quiz[QuizKeys.quizID];
+    const sections = quiz[QuizKeys.quizSections];
+
+    const questions = extractQuestionsFromSections(sections);
+    this.questions = questions;
+
+    this.values[QuizSessionKeys.quizID] = quizID;
   };
 
   setStartDate(){
@@ -96,24 +95,5 @@ export class QuizSessionModel {
 
   get remainingQuestions(){
     return [...this.questionsRemaining];
-  };
-
-  initFromQuiz(quiz = {}){
-    this.setStartDate();
-
-    const quizID   = quiz[QuizKeys.quizID];
-    const sections = quiz[QuizKeys.quizSections];
-
-    const questions = extractQuestionsFromSections(sections);
-    const [firstQuestion, ...questionsRemaining] = questions;
-
-    this.questionsCurrent   = [firstQuestion];
-    this.questionsRemaining = questionsRemaining;
-
-    console.log(`total quesiton     count: ${questions.length}`);
-    console.log(`questionsCurrent   count: ${this.questionsCurrent  .length}`);
-    console.log(`questionsRemaining count: ${this.questionsRemaining.length}`);
-
-    this.values[QuizSessionKeys.quizID] = quizID;
   };
 };
