@@ -122,7 +122,7 @@ class ChoiceItem extends React.PureComponent {
 
 export class SectionMultipleChoice extends React.PureComponent {
   static propTypes = {
-    onAddChoice: PropTypes.onAddChoice,
+    onAddChoice: PropTypes.func,
   };
 
   static styles = StyleSheet.create({

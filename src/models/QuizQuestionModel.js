@@ -65,6 +65,13 @@ export class QuizQuestionModel {
     this.values[QuizQuestionKeys.questionAnswer] = answer;
   };
 
+  set choices(choices = []){
+    const prevChoices = this.values[QuizQuestionKeys.questionChoices] ?? [];
+    const nextChoices = new Set([...prevChoices, ...choices]);
+
+    this.values[QuizQuestionKeys.questionChoices] = [...nextChoices];
+  };
+
   setDateCreated(){
     // get timestamp today
     const date = new Date();
@@ -114,12 +121,7 @@ export class QuizQuestionModel {
     };
   };
 
-  addChoices(choices = [], clearBeforeAdding = false){
-    //const type = this.values[QuizQuestionKeys.sectionType];
-    if(clearBeforeAdding){
-      this.clearChoices();
-    };
-
+  addChoices(choices = []){
     this.values[QuizQuestionKeys.questionChoices] = [
       ...this.values[QuizQuestionKeys.questionChoices] ?? [],
       ...choices

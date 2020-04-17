@@ -123,7 +123,10 @@ export class ModalHeader extends React.PureComponent {
               <Text style={styles.textTitle}>
                 {props.title}
               </Text>
-              <Text style={styles.textSubtitle}>
+              <Text 
+                style={styles.textSubtitle}
+                numberOfLines={1}
+              >
                 {props.subtitle}
               </Text>
             </View>

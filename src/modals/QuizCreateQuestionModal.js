@@ -132,8 +132,8 @@ export class QuizCreateQuestionModal extends React.Component {
     
       case SectionTypes.MULTIPLE_CHOICE:
         const { choices, selectedChoice } = this.multipleChoiceRef.getChoices();
-        this.question.answer = selectedChoice;
-        this.question.addChoices(choices, isEditing);
+        this.question.answer  = selectedChoice;
+        this.question.choices = choices;
         break;
 
       case SectionTypes.TRUE_OR_FALSE:

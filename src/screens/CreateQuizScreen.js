@@ -40,6 +40,13 @@ import { QuizStore       } from 'app/src/functions/QuizStore';
 
 
 export class CreateQuizScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Create Quiz',
+    headerShown: true,
+    headerTitle: () => null,
+    headerBackground: () => null,
+  };
+
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
@@ -50,12 +57,7 @@ export class CreateQuizScreen extends React.Component {
     },
   });
 
-  static navigationOptions = {
-    title: 'Create Quiz',
-    headerTitle: null,
-    headerShown: true,
-    headerBackground: null,
-  };
+  
 
   constructor(props){
     super(props);
