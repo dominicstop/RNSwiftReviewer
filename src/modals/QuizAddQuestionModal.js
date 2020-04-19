@@ -282,7 +282,7 @@ export class QuizAddQuestionModal extends React.Component {
         label={'Insert Question'}
         leftIcon={(
           <Ionicon
-            style={{marginTop: 1}}
+            style={{marginTop: 2}}
             name={'ios-add-circle'}
             size={21}
           />

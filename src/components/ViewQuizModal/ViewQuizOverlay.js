@@ -49,13 +49,13 @@ export class ViewQuizOverlay extends React.PureComponent {
 
     this._translateY = interpolate(progress, {
       inputRange : [0, 100],
-      outputRange: [200, 0],
+      outputRange: [500, 0],
       extrapolate: Extrapolate.CLAMP,
     });
 
     this._scale = interpolate(progress, {
       inputRange : [0, 100],
-      outputRange: [0.5, 1],
+      outputRange: [0.3, 1],
       extrapolate: Extrapolate.CLAMP,
     });
 

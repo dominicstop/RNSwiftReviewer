@@ -48,7 +48,7 @@ export class ModalSectionButton extends React.PureComponent {
 
   render(){
     const { styles } = ModalSectionButton;
-    const { leftIcon, label, isDestructive, ...props } = this.props;
+    const { leftIcon, label, isDestructive, containerStyle, ...props } = this.props;
 
     const iconColor = (isDestructive
       ? Colors.RED[600]
@@ -67,7 +67,7 @@ export class ModalSectionButton extends React.PureComponent {
     
     return(
       <ModalSection
-        containerStyle={styles.rootContainer}
+        containerStyle={[styles.rootContainer, containerStyle]}
         hasPadding={false}
         {...props}
       >
