@@ -18,6 +18,7 @@ export class ModalController {;
           modal: { swipeToDismiss },
           layout: {
             backgroundColor: 'transparent',
+            componentBackgroundColor: 'transparent',
           },
         },
       },
