@@ -22,6 +22,9 @@ export class ModalSectionButton extends React.PureComponent {
   };
 
   static styles = StyleSheet.create({
+    rootContainer: {
+      paddingVertical: 12,
+    },
     buttonInsertContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -63,7 +66,11 @@ export class ModalSectionButton extends React.PureComponent {
     };
     
     return(
-      <ModalSection {...props}>
+      <ModalSection
+        containerStyle={styles.rootContainer}
+        hasPadding={false}
+        {...props}
+      >
         <TouchableOpacity 
           style={styles.buttonInsertContainer}
           onPress={this._handleOnPress}
