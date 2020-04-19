@@ -271,7 +271,15 @@ export class LargeTitleWithSnap extends React.PureComponent {
     this.setState({enableSnap: true});
 
     await Helpers.timeout(250);
+    this.scrollToTop();
+    this.setExtraHeight();
+  };
 
+  getTransitionRef = () => {
+    return this.transitionRef;
+  };
+
+  scrollToTop = () => {
     const node = this.sectionListRef.getNode();
     node && node.scrollToLocation({
       itemIndex: 0,
@@ -280,6 +288,11 @@ export class LargeTitleWithSnap extends React.PureComponent {
       viewPosition: 0,
       animated: false,
     });
+  };
+
+  setExtraHeight = async () => {
+    this.scrollToTop();
+    await Helpers.timeout(250);
 
     this.footerRef.measureInWindow((x, y) => {
       const diff = (screenHeight - y);
@@ -289,10 +302,6 @@ export class LargeTitleWithSnap extends React.PureComponent {
 
       this.setState({neededHeight});
     });
-  };
-
-  getTransitionRef = () => {
-    return this.transitionRef;
   };
 
   //#region - event handlers
@@ -442,12 +451,10 @@ export class LargeTitleWithSnap extends React.PureComponent {
           show={true}
           hasEntranceAnimation={true}
         />
-        {(neededHeight == 0) && (
-          <View
-            ref={r => this.footerRef = r}
-            style={{width: '100%', height: 1}}
-          />
-        )}
+        <View
+          ref={r => this.footerRef = r}
+          style={{width: '100%', height: 1}}
+        />
       </Fragment>
     );
   };

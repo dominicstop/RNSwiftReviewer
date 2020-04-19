@@ -20,7 +20,8 @@ export const SNPQuizSession = {
 export const MNPViewQuiz = {
   quiz      : 'quiz',
   navigation: 'navigation',
-  onPressStartQuiz: 'onPressStartQuiz',
+  onPressStartQuiz : 'onPressStartQuiz' ,
+  onPressDeleteQuiz: 'onPressDeleteQuiz',
 };
 
 // CreateQuizModal

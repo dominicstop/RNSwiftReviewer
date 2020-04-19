@@ -1,4 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { QuizKeys } from 'app/src/constants/PropKeys';
+
+import isEqual from 'lodash/isEqual';
 
 let cache = [];
 let index = 0;
@@ -62,7 +65,7 @@ export class QuizStore {
       };
 
       //add new quiz to prev quizes
-      const newQuizes = [ ...prevQuizes.quizes, quiz ];
+      const newQuizes = [...prevQuizes.quizes, quiz];
       await AsyncStorage.setItem(QuizStore.KEY, 
         JSON.stringify(newQuizes)
       );
@@ -86,7 +89,71 @@ export class QuizStore {
     };
   };
 
+  static async setQuizes(quizes = []){
+    try {
+      // save quiz
+      await AsyncStorage.setItem(QuizStore.KEY, 
+        JSON.stringify(quizes)
+      );
+
+      // update quiz cache
+      QuizStore.updateCache(newQuizes);
+
+      return { 
+        index,
+        success: true,
+      };
+      
+    } catch (error) {
+      console.log('Error: QuizStore - setQuizes failed!');
+      console.log(error);
+
+      return { 
+        success: false,
+        index,
+      };
+    };
+  };
+
   static async clearQuizes(){
     await AsyncStorage.removeItem(QuizStore.KEY);
+  };
+
+  static async deleteQuizByID(quizID, useCache = false){
+    try {
+      let prevQuizes = cache;
+
+      if(!useCache){
+        const result = await QuizStore.getQuizes();
+        prevQuizes = result.quizes;
+
+        if(!result.success){
+          throw ('QuizStore.getQuizes Failed');
+        };
+      };
+
+      const nextQuiz = prevQuizes.filter(quiz => (
+        quiz[QuizKeys.quizID] != quizID
+      ));
+
+      const { success } = await QuizStore.setQuizes(nextQuiz);
+      if(success) throw('QuizStore.setQuizes Failed');
+
+      return { 
+        index,
+        quizes : nextQuiz,
+        success: true,
+      };
+      
+    } catch (error) {
+      console.log('Error: QuizStore - deleteQuizByID failed!');
+      console.log(error);
+
+      return { 
+        index,
+        quizes : [],
+        success: false,
+      };
+    };
   };
 };

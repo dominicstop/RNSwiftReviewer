@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, View, SectionList } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import { ModalBackground    } from 'app/src/components/ModalBackground';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
+import { ModalSectionButton  } from 'app/src/components/ModalSectionButton';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
@@ -84,6 +85,40 @@ export class ViewQuizModal extends React.Component {
     };
   };
 
+  _handleOnPressDelete = async () => {
+    const { componentId, ...props } = this.props;
+
+    const quiz     = props[MNPViewQuiz.quiz] ?? {};
+    const callback = props[MNPViewQuiz.onPressDeleteQuiz];
+
+    const quizTitle = quiz[QuizKeys.quizTitle];
+
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title: `Delete this Quiz?`,
+      message: "Are you sure you want to delete this quiz?",
+      confirmText: 'Delete',
+      isDestructive: true,
+    });
+
+    if(confirm){
+      await Promise.all([
+        this.overlayRef.show(),
+        // wait for delete to finish
+        callback && callback(quiz),
+        // wait at least 1 sec
+        Helpers.timeout(1000),
+      ]);
+
+      // close modal
+      Navigation.dismissModal(componentId);
+      await Helpers.asyncAlert({
+        title: 'Quiz Deleted',
+        desc : `${quizTitle} has been deleted.`,
+      });
+
+    };
+  };
+
   _handleOnPressCloseModal = () => {
     const { navigation } = this.props;
     navigation.navigate(ROUTES.appStackRoute);
@@ -112,6 +147,7 @@ export class ViewQuizModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
+  // ModalFooter: onPress "cancel" button
   _handleOnPressButtonRight = () => {
     const { componentId } = this.props;
 
@@ -171,11 +207,25 @@ export class ViewQuizModal extends React.Component {
 
   _renderListFooter = () => {
     return(
-      <ListFooterIcon
-        ref={r => this.listFooterIconRef = r}
-        show={true}
-        hasEntranceAnimation={true}
-      />
+      <Fragment>
+        <ModalSectionButton
+          isDestructive={true}
+          onPress={this._handleOnPressDelete}
+          label={'Delete Quiz'}
+          leftIcon={(
+            <Ionicon
+              style={{marginTop: 1}}
+              name={'ios-trash'}
+              size={24}
+            />
+          )}
+        />
+        <ListFooterIcon
+          ref={r => this.listFooterIconRef = r}
+          show={true}
+          hasEntranceAnimation={true}
+        />
+      </Fragment>
     );
   };
 

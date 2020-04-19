@@ -110,14 +110,34 @@ export class QuizListScreen extends React.Component {
       navProps: {
         [MNPViewQuiz.quiz      ]: quiz,
         [MNPViewQuiz.navigation]: navigation,
-        [MNPViewQuiz.onPressStartQuiz]: this._handleOnPressStartQuiz,
+        [MNPViewQuiz.onPressStartQuiz ]: this._handleOnPressStartQuiz ,
+        [MNPViewQuiz.onPressDeleteQuiz]: this._handleOnPressDeleteQuiz,
       },
     });
   };
 
   // ViewQuizModal: onPress start
   _handleOnPressStartQuiz = () => {
-    
+  };
+
+  // ViewQuizModal: onPress delete
+  _handleOnPressDeleteQuiz = async (quiz) => {
+    const quizID = quiz[QuizKeys.quizID];
+
+    const result = await QuizStore.deleteQuizByID(quizID);
+    if(result.success){
+      await Helpers.setStateAsync(this, { 
+        quizes: result.quizes 
+      });
+      // temp fix
+      this.largeTitleRef.setExtraHeight();
+
+    } else {
+      await Helpers.asyncAlert({
+        title: 'Error',
+        desc : 'Unable to delete quiz.'
+      });
+    };
   };
 
   // sort pill pressed - cycle through sort options
