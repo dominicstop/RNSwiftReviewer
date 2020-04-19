@@ -6,7 +6,7 @@ import * as Colors from 'app/src/constants/Colors';
 
 const styles = StyleSheet.create({
   rootContainer: {
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: 'rgba(255,255,255,0.7)',
     borderColor: Colors.GREY[400],
     borderBottomWidth: 1,
   },

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     alignItems: 'center',
     paddingTop: 7,
     borderColor: Colors.GREY[300],
@@ -105,7 +105,7 @@ export class ModalHeader extends React.PureComponent {
       <View style={styles.rootContainer}>
         <BlurView
           style={styles.blurBackground}
-          blurAmount={50}
+          blurAmount={75}
           blurType={'light'}
         />
         <View style={[styles.headerWrapper, props.containerStyle]}>

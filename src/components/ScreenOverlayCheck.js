@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Animated } from 'react-native';
 
+import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
+
 import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
@@ -8,7 +11,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.75)',
     zIndex: 999,
   },
   overlay: {

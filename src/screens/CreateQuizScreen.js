@@ -147,7 +147,7 @@ export class CreateQuizScreen extends React.Component {
       await Helpers.timeout(500);
       Alert.alert(
         'Quiz Added',
-        `${quizTitle} has been successfully saved.`
+        `"${quizTitle}" has been successfully saved.`
       );
     };
   };

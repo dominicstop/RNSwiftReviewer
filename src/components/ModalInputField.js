@@ -7,7 +7,8 @@ import { iOSUIKit } from 'react-native-typography';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import * as Colors from '../constants/Colors';
+import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
 
 import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
@@ -23,24 +24,26 @@ function deriveStateFromMode(mode){
   switch (mode) {
     case MODES.BLURRED:
     case MODES.INITIAL: return {
-      colorIcon       : Colors.BLUE  [800 ],
-      colorBorder     : Colors.BLUE  [800 ],
-      colorInput      : Colors.GREY  [800 ],
+      colorIcon       : Colors.BLUE[800],
+      colorBorder     : Colors.BLUE[800],
+      colorInput      : Helpers.hexToRGBA(Colors.BLUE[900], 0.75),
       colorTitle      : Colors.INDIGO[1100],
-      colorSubtitle   : Colors.GREY  [900 ],
-      colorPlaceholder: Colors.GREY  [600 ],
+      colorSubtitle   : Colors.GREY[900],
+      colorPlaceholder: Helpers.hexToRGBA(Colors.BLUE[1000], 0.5),
       colorItemBadge  : Colors.INDIGO.A400 ,
-      fontWeightInput : '400',
+      colorBackground : 'rgba(245,245,255, 0.75)',
+      fontWeightInput : '700',
     };
     case MODES.FOCUSED: return {
-      colorIcon       : Colors.BLUE  .A700 ,
-      colorBorder     : Colors.BLUE  .A700 ,
-      colorInput      : Colors.BLUE  [1000],
-      colorTitle      : Colors.INDIGO[900 ],
-      colorSubtitle   : Colors.GREY  [800 ],
-      colorPlaceholder: Colors.GREY  [900 ],
+      colorIcon       : Colors.BLUE.A700 ,
+      colorBorder     : Colors.BLUE.A700 ,
+      colorInput      : Colors.BLUE[1000],
+      colorTitle      : Colors.INDIGO[900],
+      colorSubtitle   : Colors.GREY[800],
+      colorPlaceholder: Helpers.hexToRGBA(Colors.BLUE[900], 0.8),
       colorItemBadge  : Colors.INDIGO.A700 ,
-      fontWeightInput : '600',
+      colorBackground : 'white',
+      fontWeightInput : '700',
     };
     case MODES.INVALID: return {
       colorIcon       : Colors.RED.A700,
@@ -48,9 +51,10 @@ function deriveStateFromMode(mode){
       colorInput      : Colors.RED[700],
       colorTitle      : Colors.RED[900],
       colorSubtitle   : Colors.RED[700],
-      colorPlaceholder: Colors.RED[400],
+      colorPlaceholder: Helpers.hexToRGBA(Colors.RED[900], 0.5),
       colorItemBadge  : Colors.RED.A700,
-      fontWeightInput : '400',
+      colorBackground : Helpers.hexToRGBA(Colors.RED[50], 0.5),
+      fontWeightInput : '700',
     };
   };
 };
@@ -278,6 +282,7 @@ export class ModalInputField extends React.PureComponent {
 
     const inputBackgoundStyle = {
       opacity: this._bgOpacity,
+      backgroundColor: values.colorBackground,
     };
 
     const iconActiveStyle = {
@@ -353,10 +358,10 @@ export class ModalInputField extends React.PureComponent {
             onSubmitEditing={this._handleOnSubmitEditing}
             onChangeText={this._handleOnChangeText}
             placeholder={props.placeholder}
+            placeholderTextColor={values.colorPlaceholder}
             maxLength={300}
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
-            placeholderTextColor={Colors.GREY[700]}
             {...{value, ...props}}
           />
         </Animatable.View>

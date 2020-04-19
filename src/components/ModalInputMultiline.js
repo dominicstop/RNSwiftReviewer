@@ -7,7 +7,8 @@ import { iOSUIKit } from 'react-native-typography';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import * as Colors  from 'app/src/constants/Colors';
+import * as Colors   from 'app/src/constants/Colors';
+import * as Helpers  from 'app/src/functions/helpers';
 
 import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
@@ -24,27 +25,30 @@ function deriveStateFromMode(mode){
     case MODES.BLURRED:
     case MODES.INITIAL: return {
       colorBorder     : Colors.BLUE[800],
-      colorInput      : Colors.GREY[800],
+      colorInput      : Helpers.hexToRGBA(Colors.BLUE[1000], 0.8),
       colorSubtitle   : Colors.GREY[900],
-      colorPlaceholder: Colors.GREY[600],
+      colorPlaceholder: Helpers.hexToRGBA(Colors.BLUE[1000], 0.5),
       colorItemBadge  : Colors.INDIGO['A400'],
-      fontWeightInput : '400',
+      colorBackground : Helpers.hexToRGBA(Colors.BLUE[50], 0.25),
+      fontWeightInput : '600',
     };
     case MODES.FOCUSED: return {
       colorBorder     : Colors.BLUE['A700'],
       colorInput      : Colors.BLUE[1000],
       colorSubtitle   : Colors.GREY[800],
-      colorPlaceholder: Colors.GREY[900],
+      colorPlaceholder: Helpers.hexToRGBA(Colors.BLUE[900], 0.6),
       colorItemBadge  : Colors.INDIGO['A700'],
-      fontWeightInput : '600',
+      colorBackground : 'white',
+      fontWeightInput : '700',
     };
     case MODES.INVALID: return {
       colorBorder     : Colors.RED['A700'],
       colorInput      : Colors.RED[700],
-      colorSubtitle   : Colors.RED[700],
-      colorPlaceholder: Colors.RED[400],
+      colorSubtitle   : Colors.RED[900],
+      colorPlaceholder: Helpers.hexToRGBA(Colors.RED[900], 0.6),
       colorItemBadge  : Colors.RED['A700'],
-      fontWeightInput : '400',
+      colorBackground : Helpers.hexToRGBA(Colors.RED[50], 0.5),
+      fontWeightInput : '600',
     };
   };
 };
@@ -195,6 +199,7 @@ export class ModalInputMultiline extends React.PureComponent {
 
     const inputBackgoundStyle = {
       opacity: this._bgOpacity,
+      backgroundColor: values.colorBackground,
     };
 
     const inputBorder = {
