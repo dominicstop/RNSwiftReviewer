@@ -321,12 +321,8 @@ export class ModalInputField extends React.PureComponent {
         <Reanimated.View style={[styles.titleContainer, titleContainerStyle]}>
           <ListItemBadge
             value={props.index + 1}
+            color={values.colorItemBadge}
             size={18}
-            color={(
-              (mode === MODES.BLURRED)? Colors.INDIGO.A400 :
-              (mode === MODES.FOCUSED)? Colors.INDIGO.A700 :
-              (mode === MODES.INVALID)? Colors.RED   .A700 : null
-            )}
           />
           <Reanimated.Text style={[styles.textTitle, textTitleStyle]}>
             {props.title}

@@ -127,6 +127,7 @@ export class ModalBackground extends React.PureComponent {
 
   render(){
     const { modalHeader, modalFooter, overlay, ...props } = this.props;
+    const { mount } = this.state;
     
     return(
       <View style={styles.rootContainer}>
@@ -140,8 +141,9 @@ export class ModalBackground extends React.PureComponent {
           <View style={styles.scrollViewContainer}>
             {this._renderScrollView()}
           </View>
-        ):(
+        ):(mount && (
           <Animatable.View
+            ref={r => this.animatedWrapperRef = r}
             style={{flex: 1}}
             animation={'fadeInUp'}
             duration={300}
@@ -156,7 +158,7 @@ export class ModalBackground extends React.PureComponent {
               },
             })}
           </Animatable.View>
-        )}
+        ))}
         {modalHeader}
         {modalFooter}
         {overlay}
