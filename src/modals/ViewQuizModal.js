@@ -260,7 +260,6 @@ export class ViewQuizModal extends React.Component {
       <ModalHeader
         title={'View Quiz'}
         subtitle={"Press the \"Start Quiz\" to take this quiz."}
-        containerStyle={{borderBottomWidth: 0}}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}

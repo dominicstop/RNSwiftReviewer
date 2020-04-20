@@ -7,13 +7,15 @@ import * as Animatable from 'react-native-animatable';
 import { BlurView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
-import * as Colors from '../constants/Colors';
+import * as Colors from 'app/src/constants/Colors';
+import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
 const styles = StyleSheet.create({
   rootContainer: {
+    top: -BORDER_WIDTH,
     borderColor: Colors.GREY[400],
-    borderBottomWidth: 1,
+    borderBottomWidth: BORDER_WIDTH,
   },
   blurBackground: {
     ...StyleSheet.absoluteFillObject,
@@ -68,7 +70,7 @@ export class ModalSectionHeader extends React.PureComponent {
     
     const rootContainerStyle = {
       ...(props.showTopBorder && {
-        borderTopWidth: 1,
+        borderTopWidth: BORDER_WIDTH,
       }),
     };
 

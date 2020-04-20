@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions,  Clipboard } from 'react-native';
 
-import Reanimated, { Easing, Value, interpolate, concat, Extrapolate } from 'react-native-reanimated';
+import Reanimated, { Easing, Value, interpolate, Extrapolate } from 'react-native-reanimated';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -12,8 +12,9 @@ import { VibrancyView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
 import * as Colors from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
 
-import { TB_HEIGHT_ADJ, INSET_BOTTOM } from 'app/src/constants/UIValues';
+import { TB_HEIGHT_ADJ, INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
 class TabBarItem extends React.Component {
@@ -192,9 +193,12 @@ export class CustomTabBar extends React.Component {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       paddingBottom: INSET_BOTTOM,
+      //border
+      borderTopWidth: BORDER_WIDTH,
+      borderTopColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.75),
       //shadow
       shadowColor: "#000",
-      shadowOpacity: 0.15,
+      shadowOpacity: 0.2,
       shadowRadius: 7,
       shadowOffset: {
         width: 0,

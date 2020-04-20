@@ -1,14 +1,17 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Colors from 'app/src/constants/Colors';
+import { BORDER_WIDTH } from 'app/src/constants/UIValues';
+
 
 const styles = StyleSheet.create({
   rootContainer: {
+    top: -BORDER_WIDTH,
     backgroundColor: 'rgba(255,255,255,0.7)',
-    borderColor: Colors.GREY[400],
-    borderBottomWidth: 1,
+    borderColor: Colors.GREY[500],
+    borderBottomWidth: BORDER_WIDTH,
   },
 });
 
@@ -34,7 +37,9 @@ export class ModalSection extends React.PureComponent {
 
     const containerStyle = {
       marginTop: props.marginTop,
-      ...(showBorderTop && { borderTopWidth: 1 }),
+      ...(showBorderTop && { 
+        borderTopWidth: BORDER_WIDTH
+      }),
       ...(props.hasMarginBottom && { 
         marginBottom: props.marginBottom,
       }),

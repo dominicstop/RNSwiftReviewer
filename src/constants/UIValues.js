@@ -1,5 +1,5 @@
+import { PixelRatio } from 'react-native';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
-import { HeaderValues } from 'app/src/constants/HeaderValues';
 
 export const INSET_BOTTOM = StaticSafeAreaInsets.safeAreaInsetsBottom;
 export const INSET_TOP    = StaticSafeAreaInsets.safeAreaInsetsTop;
@@ -16,3 +16,4 @@ export const MODAL_HEADER_HEIGHT  = 70;
 export const MODAL_FOOTER_HEIGHT  = 78 + INSET_BOTTOM;
 export const MODAL_BOTTOM_PADDING = 100;
 
+export const BORDER_WIDTH = (1 / PixelRatio.get());

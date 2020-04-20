@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { BlurView } from "@react-native-community/blur";
 
-import { MODAL_FOOTER_HEIGHT, MODAL_BOTTOM_PADDING } from 'app/src/constants/UIValues';
+import { MODAL_FOOTER_HEIGHT, MODAL_BOTTOM_PADDING, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
 const styles = StyleSheet.create({
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   background: {
-    borderTopWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
+    borderTopWidth: BORDER_WIDTH,
+    borderColor: 'rgba(0,0,0,0.3)',
     backgroundColor: 'rgba(255,255,255,0.85)',
     //fill space
     position: 'absolute',

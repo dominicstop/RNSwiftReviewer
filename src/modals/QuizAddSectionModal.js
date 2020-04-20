@@ -370,7 +370,7 @@ export class QuizAddSectionModal extends React.Component {
       <ModalBackground
         {...{modalHeader, modalFooter, overlay}}
       >
-        <ModalSection showBorderTop={false}>
+        <ModalSection>
           <ModalInputField
             index={0}
             ref={r => this.inputFieldRefTitle = r}

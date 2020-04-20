@@ -2,18 +2,19 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import * as Helpers from 'app/src/functions/helpers';
-import { TB_HEIGHT_ADJ, INSET_TOP, INSET_BOTTOM } from 'app/src/constants/UIValues';
-import { HeaderValues } from 'app/src/constants/HeaderValues';
-import { INDIGO, BLUE } from 'app/src/constants/Colors';
-
-import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
-import { REALinearGradient } from 'app/src/components/ReanimatedComps';
+import Animated from 'react-native-reanimated';
 
 import { VibrancyView } from "@react-native-community/blur";
 import { Transitioning, Transition, Easing } from 'react-native-reanimated';
 
-import Animated from 'react-native-reanimated';
+import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
+import { REALinearGradient } from 'app/src/components/ReanimatedComps';
+
+import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
+
+import { HeaderValues } from 'app/src/constants/HeaderValues';
+import { TB_HEIGHT_ADJ, INSET_TOP, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 const { concat, floor, Extrapolate, interpolate, Value, event, block, set, divide, add, sub, debug } = Animated;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
@@ -74,6 +75,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
       width: '100%',
       overflow: 'hidden',
       marginTop: INSET_TOP,
+      borderBottomWidth: BORDER_WIDTH,
+      borderBottomColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.5),
     },
     headerBGContainer: {
       ...StyleSheet.absoluteFillObject,
@@ -403,7 +406,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
           />
           <REALinearGradient
             style={[styles.background, backgroundStyle]}
-            colors={[INDIGO.A700, BLUE.A700]}
+            colors={[Colors.INDIGO.A700, Colors.BLUE.A700]}
             start={{x: 0, y: 1}} 
             end  ={{x: 1, y: 0}}
           />

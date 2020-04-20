@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
@@ -9,8 +9,9 @@ import { TableLabelValue } from 'app/src/components/TableLabelValue';
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';
 
-import { QuizSectionKeys } from 'app/src/constants/PropKeys';
-import { SectionTypes, SectionTypeTitles } from 'app/src/constants/SectionTypes';
+import { BORDER_WIDTH      } from 'app/src/constants/UIValues';
+import { QuizSectionKeys   } from 'app/src/constants/PropKeys';
+import { SectionTypeTitles } from 'app/src/constants/SectionTypes';
 
 
 export class ViewQuizSectionList extends React.PureComponent {
@@ -19,7 +20,7 @@ export class ViewQuizSectionList extends React.PureComponent {
       paddingHorizontal: 12,
       paddingVertical: 10,
       backgroundColor: 'rgba(255,255,255,0.6)',
-      borderBottomWidth: 1,
+      borderBottomWidth: BORDER_WIDTH,
       borderBottomColor: 'rgba(0,0,0,0.2)',
     },
     titleContainer: {

@@ -3,11 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
+
 import { BlurView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
-import { MODAL_HEADER_HEIGHT } from 'app/src/constants/UIValues';
 import * as Colors from 'app/src/constants/Colors';
+
+import { MODAL_HEADER_HEIGHT, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
 const styles = StyleSheet.create({
@@ -27,8 +29,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.9)',
     alignItems: 'center',
     paddingTop: 7,
-    borderColor: Colors.GREY[300],
-    borderBottomWidth: 1,
+    borderColor: Colors.GREY[400],
+    borderBottomWidth: BORDER_WIDTH,
   },
   dragIndicator: {
     width: 40,
