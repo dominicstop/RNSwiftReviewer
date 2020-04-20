@@ -23,7 +23,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 const { Value, interpolate, timing } = Reanimated;
 
-const ITEM_WIDTH = 100;
+const ITEM_WIDTH = 125;
 
 
 // used in modals/QuizAddQuestionModal
@@ -88,8 +88,13 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
       ],
     });
 
+    this._rootContainerScaleY = interpolate(progress, {
+      inputRange : [0, 100],
+      outputRange: [1, 0.75],
+    });
+
     this.animation = timing(progress, {
-      duration: 500,
+      duration: 400,
       toValue : 100,
       easing: Easing.inOut(Easing.ease),
     });
@@ -115,11 +120,17 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     const { height } = await Helpers.asyncMeasure(this.contentRef);
     this.containerHeight.setValue(height);
 
-    this.animation.start(() => {
-      onPressDelete && onPressDelete(
-        { index, question }
-      );
+    // for some reason, the animation finish
+    // callback get's called twice
+    await new Promise(resolve => {
+      this.animation.start(() => {
+        resolve && resolve();
+      });
     });
+
+    onPressDelete && onPressDelete(
+      { index, question }
+    );
   };
 
   _renderRightActions = (progress, dragX) => {
@@ -158,11 +169,6 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     const { styles } = QuizAddQuestionModalItem;
     const { index, ...props } = this.props;
 
-    const rootContainerStyle = {
-      opacity: this._rootContainerOpacity,
-      margin : this._rootContainerMargin,
-    };
-
     const question    = props[QuizQuestionKeys.questionText];
     const answer      = props[QuizQuestionKeys.questionAnswer];
     const sectionType = props[QuizQuestionKeys.sectionType];
@@ -196,11 +202,17 @@ export class QuizAddQuestionModalItem extends React.PureComponent {
     return(
       <Swipeable
         friction={1.5}
-        rightThreshold={50}
+        rightThreshold={75}
         overshootRight={false}
         renderRightActions={this._renderRightActions}
       >
-        <Reanimated.View style={rootContainerStyle}>
+        <Reanimated.View style={{
+          margin   : this._rootContainerMargin ,
+          opacity  : this._rootContainerOpacity,
+          transform: [
+            { scaleY: this._rootContainerScaleY }
+          ],
+        }}>
           <Animatable.View
             ref={r => this.rootContainerRef = r}
             useNativeDriver={true}

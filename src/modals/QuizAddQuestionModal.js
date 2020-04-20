@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon    from '@expo/vector-icons/Ionicons';
+import Reanimated from 'react-native-reanimated';
 
 import { Navigation } from 'react-native-navigation';
 import { createNativeWrapper } from 'react-native-gesture-handler';
@@ -123,7 +124,7 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   // #region - event handlers/callbacks
-  // SectionList: itkeyExtractor
+  // SectionList: item keyExtractor
   _handleKeyExtractor = (question, index) => {
     return question[QuizQuestionKeys.questionID];
   };
@@ -212,12 +213,29 @@ export class QuizAddQuestionModal extends React.Component {
   };
 
   // QuizAddQuestionModalItem: item onPress delete
-  _handleOnPressQuestionDelete = ({question}) => {
-    this.quizSection.deleteQuestion(question);
+  _handleOnPressQuestionDelete = async ({question}) => {
+    const prevSection = this.state;
+    const animatedRef = this.modalBgRef.animatedWrapperRef;
 
-    this.setState({
-      ...this.quizSection.values
-    });
+    this.quizSection.deleteQuestion(question);
+    const nextSection = this.quizSection.values;
+
+    const prevQuestionCount = prevSection[QuizSectionKeys.sectionQuestionCount];
+    const nextQuestionCount = nextSection[QuizSectionKeys.sectionQuestionCount];
+
+    if(prevQuestionCount == 1, nextQuestionCount == 0){
+      // fade out first
+      animatedRef && await animatedRef.fadeScaleOut(250);
+      // then update the list
+      await Helpers.setStateAsync(this, { ...nextSection });
+      // and then fade in again
+      animatedRef && await animatedRef.fadeScaleIn(250);
+
+    } else {
+      this.setState({
+        ...nextSection
+      });
+    };
   };
   //#endregion
 
@@ -370,6 +388,7 @@ export class QuizAddQuestionModal extends React.Component {
 
     return (
       <ModalBackground
+        ref={r => this.modalBgRef = r}
         wrapInScrollView={false}
         {...{modalHeader, modalFooter, overlay}}
       >
