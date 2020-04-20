@@ -1,14 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 
+import Reanimated from 'react-native-reanimated';
 import * as Animatable from 'react-native-animatable';
-import {  BlurView } from "@react-native-community/blur";
+
+import { Easing   } from 'react-native-reanimated';
+import { BlurView } from "@react-native-community/blur";
 
 import { AnimatedListItem } from 'app/src/components/AnimatedListItem';
 
 import * as Helpers from 'app/src/functions/helpers';
 import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
+
+const { Value, Extrapolate, interpolate, timing } = Reanimated;
 
 
 const styles = StyleSheet.create({
@@ -40,7 +45,7 @@ const styles = StyleSheet.create({
     paddingTop: MODAL_HEADER_HEIGHT,
   },
   scrollviewContent: {
-    paddingBottom: MODAL_FOOTER_HEIGHT + 200,
+    paddingBottom: MODAL_FOOTER_HEIGHT + 100,
   },
 });
 
@@ -64,19 +69,78 @@ export class ModalBackground extends React.PureComponent {
   constructor(props){
     super(props);
 
+    this.keyboardHeight = 0;
+    
+    this. progress           = new Value(0);
+    this.keyboardHeightValue = new Value(0);
+
+    this._height = interpolate(this.progress, {
+      inputRange : [0, 100],
+      outputRange: [0, this.keyboardHeightValue],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
     this.state = {
       mount: false,
+      keyboardVisible: false,
     };
   };
 
   async componentDidMount(){
-    await Helpers.timeout(250);
+    // subscribe to event listeners
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow' , this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
+
+    await Helpers.timeout(200);
     this.setState({ mount: true });
+  };
+
+  componentWillUnmount() {
+    // ubsubsrcibe to event listeners
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  };
+
+  _keyboardDidShow = (event) => {
+    const keyboardHeight = event.endCoordinates.height;
+
+    if(this.keyboardHeight == 0){
+      this.keyboardHeight = keyboardHeight;
+      this.keyboardHeightValue.setValue(keyboardHeight);
+    };
+
+    this.setState({
+      keyboardVisible: true
+    });
+
+     const animation = timing(this.progress, {
+      duration: 250,
+      toValue: 100,
+      easing: Easing.inOut(Easing.ease),
+    });
+
+    animation.start();
+  };
+
+  _keyboardWillHide = () => {
+    const animation = timing(this.progress, {
+      duration: 250,
+      toValue: 0,
+      easing: Easing.inOut(Easing.ease),
+    });
+
+    this.setState({
+      keyboardVisible: false
+    });
+
+    animation.start();
   };
 
   _renderScrollView(){
     const props = this.props;
-    const { mount } = this.state;
+    const { mount, keyboardVisible } = this.state;
+
+    const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
 
     const scrollViewProps = {
       ...props,
@@ -86,7 +150,7 @@ export class ModalBackground extends React.PureComponent {
       keyboardDismissMode: 'interactive',
       scrollIndicatorInsets: { 
         top   : MODAL_HEADER_HEIGHT,
-        bottom: MODAL_FOOTER_HEIGHT,
+        bottom: insetBottom,
       },
     };
 
@@ -95,6 +159,7 @@ export class ModalBackground extends React.PureComponent {
       return(
         <Animatable.View
           style={{flex: 1}}
+          ref={r => this.animatedWrapperRef = r}
           animation={'fadeInUp'}
           duration={250}
           useNativeDriver={true}
@@ -127,7 +192,9 @@ export class ModalBackground extends React.PureComponent {
 
   render(){
     const { modalHeader, modalFooter, overlay, ...props } = this.props;
-    const { mount } = this.state;
+    const { mount, keyboardVisible } = this.state;
+
+    const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
     
     return(
       <View style={styles.rootContainer}>
@@ -138,9 +205,7 @@ export class ModalBackground extends React.PureComponent {
         />
         <View style={styles.background}/>
         {props.wrapInScrollView? (
-          <View style={styles.scrollViewContainer}>
-            {this._renderScrollView()}
-          </View>
+          this._renderScrollView()
         ):(mount && (
           <Animatable.View
             ref={r => this.animatedWrapperRef = r}
@@ -154,11 +219,14 @@ export class ModalBackground extends React.PureComponent {
               contentContainerStyle: styles.scrollviewContent,
               scrollIndicatorInsets: { 
                 top   : MODAL_HEADER_HEIGHT,
-                bottom: MODAL_FOOTER_HEIGHT,
+                bottom: insetBottom,
               },
             })}
           </Animatable.View>
         ))}
+        <Reanimated.View
+          style={{ height: this._height }}
+        />
         {modalHeader}
         {modalFooter}
         {overlay}
