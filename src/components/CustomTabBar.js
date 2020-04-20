@@ -225,7 +225,7 @@ export class CustomTabBar extends React.Component {
       routeIndex: activeRouteIndex,
     };
 
-    this._handleOnPressTab = debounce(this._handleOnPressTab, 750, {leading: true});
+    this._handleOnPressTab = debounce(this._handleOnPressTab, 250, {leading: true});
   };
 
   _handleOnPressTab = (route, routeIndex) => {

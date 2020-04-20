@@ -91,7 +91,6 @@ export class ModalBackground extends React.PureComponent {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow' , this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
 
-    await Helpers.timeout(200);
     this.setState({ mount: true });
   };
 

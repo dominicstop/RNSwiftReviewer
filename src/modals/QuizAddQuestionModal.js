@@ -360,7 +360,7 @@ export class QuizAddQuestionModal extends React.Component {
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
-            name={'ios-bookmarks'}
+            name={'ios-journal'}
             size={22}
             color={'white'}
           />

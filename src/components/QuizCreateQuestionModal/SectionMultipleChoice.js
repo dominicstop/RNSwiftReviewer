@@ -54,6 +54,7 @@ class ChoiceItem extends React.PureComponent {
     },
     choiceText: {
       ...iOSUIKit.bodyObject,
+      color: Colors.GREY[800],
       marginLeft: 10,
     },
     choiceTextSelected: {
