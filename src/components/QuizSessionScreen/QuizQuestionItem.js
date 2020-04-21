@@ -93,6 +93,7 @@ export class QuizQuestionItem extends React.PureComponent {
       case SectionTypes.TRUE_OR_FALSE: return null;
       case SectionTypes.IDENTIFICATION: return (
         <AnswerIdentification
+          ref={r => this.answerIdentificationRef = r}
           {...{isFocused, ...question}}
         />
       );

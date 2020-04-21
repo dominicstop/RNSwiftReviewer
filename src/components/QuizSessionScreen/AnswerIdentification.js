@@ -48,23 +48,28 @@ export class AnswerIdentification extends React.PureComponent {
     };
   };
 
-  componentDidMount(){
-    // subscribe to event listeners
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardWillShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
+  componentDidUpdate(prevProps){
+    const nextProps = this.props;
+    const { keyboardVisible } = this.state;
+
+    const prevIsFocused = prevProps.isFocused;
+    const nextIsFocused = nextProps.isFocused;
+
+    const didUnfocused = (
+      prevIsFocused && !nextIsFocused
+    );
+
+    if(didUnfocused && keyboardVisible){
+      // trigger manual keyboard hide animation
+      this.progress.setValue(0);
+      this.setState({ keyboardVisible: false });
+    };
   };
 
-  componentWillUnmount() {
-    // ubsubsrcibe to event listeners
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  };
-
-  _keyboardWillShow = (event) => {
+  // this is triggered from QuizSessionScreen
+  _onKeyboardWillShowHide = (event, visible) => {
+    const { keyboardVisible } = this.state;
     const { duration, endCoordinates } = event;
-    const { isFocused } = this.props;
-    if(!isFocused) return;
-
     const keyboardHeight = endCoordinates.height;
 
     if(this.keyboardHeight == 0){
@@ -72,35 +77,16 @@ export class AnswerIdentification extends React.PureComponent {
       this.keyboardHeightValue.setValue(keyboardHeight);
     };
 
-    this.setState({
-      keyboardVisible: true
-    });
-
-     const animation = timing(this.progress, {
-      easing: Easing.bezier(0.17, 0.59, 0.4, 0.77),
-      duration: duration / 1.75,
-      toValue: 100,
-    });
-
-    animation.start();
-  };
-
-  _keyboardWillHide = (event) => {
-    const { isFocused } = this.props;
-    const { duration } = event;
-    if(!isFocused) return;
-
     const animation = timing(this.progress, {
-      easing: Easing.bezier(0.17, 0.59, 0.4, 0.77),
-      toValue: 0,
-      duration,
+      easing  : Easing.bezier(0.17, 0.59, 0.4, 0.77),
+      toValue : (visible? 100 : 0),
+      duration: (duration / 1.75 ),
     });
 
-    this.setState({
-      keyboardVisible: false
-    });
-
-    animation.start();
+    if(keyboardVisible != visible){
+      this.setState({ keyboardVisible: visible });
+      animation.start();
+    };
   };
 
   render(){

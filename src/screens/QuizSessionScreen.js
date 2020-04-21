@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboard } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Keyboard } from 'react-native';
 
 import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
 import { QuizQuestionItem  } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
@@ -11,6 +11,7 @@ import { QuizSessionModel } from 'app/src/models/QuizSession';
 
 import { SNPQuizSession   } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
+import { SectionTypes } from '../constants/SectionTypes';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -46,6 +47,52 @@ export class QuizSessionScreen extends React.Component {
     };
   };
 
+  componentDidMount(){
+    // subscribe to event listeners
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardWillShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
+  };
+
+  componentWillUnmount() {
+    // ubsubsrcibe to event listeners
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  };
+
+  _keyboardWillShow = (event) => {
+    const { currentIndex, questions } = this.state;
+
+    // get current question
+    const question = questions[currentIndex];
+    // get ref to current question item
+    const questionRef = this[`item-${currentIndex}`];
+
+    const type = question[QuizQuestionKeys.sectionType];
+    if(type == SectionTypes.IDENTIFICATION){
+      // get ref to AnswerIdentification item
+      const identificationRef = questionRef?.answerIdentificationRef;
+
+      identificationRef?._onKeyboardWillShowHide(event, true);
+    };
+  };
+
+  _keyboardWillHide = (event) => {
+    const { currentIndex, questions } = this.state;
+
+    // get current question
+    const question = questions[currentIndex];
+    // get ref to current question item
+    const questionRef = this[`item-${currentIndex}`];
+
+    const type = question[QuizQuestionKeys.sectionType];
+    if(type == SectionTypes.IDENTIFICATION){
+      // get ref to AnswerIdentification item
+      const identificationRef = questionRef?.answerIdentificationRef;
+      // manually trigger event handler
+      identificationRef?._onKeyboardWillShowHide(event, false);
+    };
+  };
+
   _handleKeyExtractor = (item, index) => (
     item[QuizQuestionKeys.questionID]
   );
@@ -77,6 +124,7 @@ export class QuizSessionScreen extends React.Component {
 
     return(
       <QuizQuestionItem
+        ref={r => this[`item-${index}`] = r}
         isFocused={(currentIndex == index)}
         {...{index, currentIndex, ...item}}
       />
