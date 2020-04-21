@@ -1,21 +1,22 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboard } from 'react-native';
+import { StyleSheet, ScrollView, Text, View } from 'react-native';
 
 import { iOSUIKit     } from 'react-native-typography';
 import { VibrancyView } from "@react-native-community/blur";
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
+import { AnswerTrueOrFalse    } from 'app/src/components/QuizSessionScreen/AnswerTrueOrFalse';
 import { AnswerMultipleChoice } from 'app/src/components/QuizSessionScreen/AnswerMultipleChoice';
+import { AnswerIdentification } from 'app/src/components/QuizSessionScreen/AnswerIdentification';
 
-import * as Helpers from 'app/src/functions/helpers';
 import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
 
-import { SectionTypes } from 'app/src/constants/SectionTypes';
+import { SectionTypes     } from 'app/src/constants/SectionTypes';
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
-import { AnswerIdentification } from './AnswerIdentification';
 
+import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
 
 export class QuizQuestionItem extends React.PureComponent {
@@ -90,7 +91,11 @@ export class QuizQuestionItem extends React.PureComponent {
  
     switch (sectionType) {
       case SectionTypes.MATCHING_TYPE:
-      case SectionTypes.TRUE_OR_FALSE: return null;
+      case SectionTypes.TRUE_OR_FALSE: return (
+        <AnswerTrueOrFalse
+          {...{isFocused, ...question}}
+        />
+      );
       case SectionTypes.IDENTIFICATION: return (
         <AnswerIdentification
           ref={r => this.answerIdentificationRef = r}

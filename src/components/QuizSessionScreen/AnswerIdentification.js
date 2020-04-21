@@ -22,14 +22,16 @@ const BOTTOM_MARGIN = (21 + INSET_BOTTOM);
 export class AnswerIdentification extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
-      backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.75)
+      backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.8),
+      borderTopColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.5),
+      borderTopWidth: BORDER_WIDTH,
     },
     inputContainer: {
       flexDirection: 'row',
       overflow: 'hidden',
       alignItems: 'center',
       paddingHorizontal: 10,
-      paddingVertical: 7,
+      paddingVertical: 8,
       marginTop: 15,
       marginBottom: 25,
       marginHorizontal: 12,
@@ -41,8 +43,8 @@ export class AnswerIdentification extends React.PureComponent {
     },
     textInput: {
       flex: 1,
-      fontSize: 16,
-      fontWeight:'700',
+      fontSize: 14,
+      fontWeight:'600',
       color: Helpers.hexToRGBA(Colors.BLUE.A700, 0.9),
     },
     textInputFocused: {
