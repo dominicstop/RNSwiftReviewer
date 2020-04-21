@@ -110,6 +110,7 @@ export class FlatListCarousel extends React.PureComponent {
         renderItem={this._renderItem}
         decelerationRate={'fast'}
         overScrollMode={'never'}
+        keyboardDismissMode={'on-drag'}
         scrollsToTop={false}
         disableIntervalMomentum={true}
         directionalLockEnabled={true}

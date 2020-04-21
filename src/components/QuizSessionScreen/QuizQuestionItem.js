@@ -117,6 +117,7 @@ export class QuizQuestionItem extends React.PureComponent {
           <ScrollView
             style={styles.scrollview}
             contentContainerStyle={styles.scrollviewContent}
+            showsVerticalScrollIndicator={false}
           >
             <ListItemBadge
               size={20}
