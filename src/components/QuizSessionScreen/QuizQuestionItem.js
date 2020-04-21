@@ -14,6 +14,7 @@ import * as Colors  from 'app/src/constants/Colors';
 import { SectionTypes } from 'app/src/constants/SectionTypes';
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+import { AnswerIdentification } from './AnswerIdentification';
 
 
 
@@ -80,21 +81,24 @@ export class QuizQuestionItem extends React.PureComponent {
 
   _renderAnswer(){
     const { styles } = QuizQuestionItem;
-    const props = this.props;
-
-    // extract question values from props
-    const question = QuizQuestionModel.extract(props);
+    const { isFocused, ...props } = this.props;
 
     const sectionType = props[QuizQuestionKeys.sectionType];
+    
+    // extract question values from props
+    const question = QuizQuestionModel.extract(props);
  
     switch (sectionType) {
       case SectionTypes.MATCHING_TYPE:
-      case SectionTypes.IDENTIFICATION:
       case SectionTypes.TRUE_OR_FALSE: return null;
-
+      case SectionTypes.IDENTIFICATION: return (
+        <AnswerIdentification
+          {...{isFocused, ...question}}
+        />
+      );
       case SectionTypes.MULTIPLE_CHOICE: return (
         <AnswerMultipleChoice
-          {...question}
+          {...{isFocused, ...question}}
         />
       );
     };
@@ -123,7 +127,7 @@ export class QuizQuestionItem extends React.PureComponent {
             />
             <View style={styles.contentContainer}>
               <Text style={styles.textQuestion}>
-                {`      ${questionText}`}
+                {`      ${questionText} ${props.isFocused}`}
               </Text>
             </View>
           </ScrollView>

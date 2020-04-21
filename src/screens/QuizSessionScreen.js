@@ -73,9 +73,12 @@ export class QuizSessionScreen extends React.Component {
   };
 
   _renderItem = ({item, index}) => {
+    const { currentIndex } = this.state;
+
     return(
       <QuizQuestionItem
-        {...{index, ...item}}
+        isFocused={(currentIndex == index)}
+        {...{index, currentIndex, ...item}}
       />
     );
   };
@@ -84,6 +87,10 @@ export class QuizSessionScreen extends React.Component {
     const { styles } = QuizSessionScreen;
     const { currentIndex, questions: data } = this.state;
 
+    const extraData = {
+      currentIndex
+    };
+
     return(
       <View style={styles.rootContainer}>
         <FlatListCarousel
@@ -91,7 +98,7 @@ export class QuizSessionScreen extends React.Component {
           renderItem={this._renderItem}
           onSnap={this._handleSnap}
           onBeforeSnap={this._handleOnBeforeSnap}
-          {...{data}}
+          {...{data, extraData}}
         />
         <QuizSessionHeader
           totalCount={data.length}

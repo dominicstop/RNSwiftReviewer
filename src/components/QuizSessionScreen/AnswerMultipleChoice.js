@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboard } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import * as Helpers from 'app/src/functions/helpers';
 import * as Colors  from 'app/src/constants/Colors';
@@ -37,7 +37,6 @@ export class AnswerMultipleChoice extends React.PureComponent {
       ...iOSUIKit.subheadWhiteObject,
     },
   });
-
 
   render(){
     const { styles } = AnswerMultipleChoice;
