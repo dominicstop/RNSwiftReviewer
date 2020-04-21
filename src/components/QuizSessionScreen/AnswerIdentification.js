@@ -6,26 +6,48 @@ import Reanimated from 'react-native-reanimated';
 import { Easing   } from 'react-native-reanimated';
 import { iOSUIKit } from 'react-native-typography';
 
+import   SvgIcon    from 'app/src/components/SvgIcon';
+import { SVG_KEYS } from 'app/src/components/SvgIcons';
+
 import * as Helpers from 'app/src/functions/helpers';
 import * as Colors  from 'app/src/constants/Colors';
 
-import { INSET_BOTTOM } from 'app/src/constants/UIValues';
+import { INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 const { Value, Extrapolate, interpolate, timing, sub } = Reanimated;
 
-const BOTTOM_MARGIN = (10 + INSET_BOTTOM);
+const BOTTOM_MARGIN = (21 + INSET_BOTTOM);
 
 
 export class AnswerIdentification extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
+      backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.75)
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      overflow: 'hidden',
+      alignItems: 'center',
+      paddingHorizontal: 10,
+      paddingVertical: 7,
+      marginTop: 15,
+      marginBottom: 25,
+      marginHorizontal: 12,
+      borderRadius: 10,
+    },
+    inputBackground: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'white',
     },
     textInput: {
-      ...iOSUIKit.bodyObject,
-      backgroundColor: 'white',
-      borderRadius: 10,
-      margin: 10,
-      padding: 6,
+      flex: 1,
+      fontSize: 16,
+      fontWeight:'700',
+      color: Helpers.hexToRGBA(Colors.BLUE.A700, 0.9),
+    },
+    textInputFocused: {
+      fontWeight:'800',
+      color: Helpers.hexToRGBA(Colors.BLUE[1000], 0.8),
     },
   });
 
@@ -43,8 +65,16 @@ export class AnswerIdentification extends React.PureComponent {
       extrapolate: Extrapolate.CLAMP,
     });
 
+    this._borderRadius = interpolate(this.progress, {
+      inputRange : [0, 100],
+      outputRange: [0, 15],
+      extrapolate: Extrapolate.CLAMP,
+    });
+
     this.state = {
       keyboardVisible: false,
+      inputFocused: false,
+      textInput: '',
     };
   };
 
@@ -80,7 +110,7 @@ export class AnswerIdentification extends React.PureComponent {
     const animation = timing(this.progress, {
       easing  : Easing.bezier(0.17, 0.59, 0.4, 0.77),
       toValue : (visible? 100 : 0),
-      duration: (duration / 1.75 ),
+      duration: (duration / 1.5 ),
     });
 
     if(keyboardVisible != visible){
@@ -89,20 +119,48 @@ export class AnswerIdentification extends React.PureComponent {
     };
   };
 
+  _handleOnFocus = ({nativeEvent}) => {
+    this.setState({
+      text: nativeEvent.text,
+      inputFocused: true,
+    });
+  };
+
+  _handleOnBlur = ({nativeEvent}) => {
+    this.setState({
+      text: nativeEvent.text,
+      inputFocused: false,
+    });
+  };
+
   render(){
     const { styles } = AnswerIdentification;
+    const { inputFocused } = this.state;
+
+    const rootContainerStyle = {
+      borderTopLeftRadius : this._borderRadius,
+      borderTopRightRadius: this._borderRadius,
+    };
 
     return(
-      <View style={styles.rootContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder={'Type your answer...'}
-          placeholderTextColor={'black'}
-        />
+      <Reanimated.View style={[styles.rootContainer, rootContainerStyle]}>
+        <View style={styles.inputContainer}>
+          <View style={styles.inputBackground}/>
+          <TextInput
+            style={[styles.textInput, (inputFocused && styles.textInputFocused)]}
+            onBlur={this._handleOnBlur}
+            onFocus={this._handleOnFocus}
+            placeholder={'Type your answer...'}
+            placeholderTextColor={(inputFocused
+              ? Helpers.hexToRGBA(Colors.BLUE[900], 0.5)
+              : Helpers.hexToRGBA(Colors.BLUE.A700, 0.6)
+            )}
+          />
+        </View>
         <Reanimated.View
           style={{ marginBottom: this._height }}
         />
-      </View>
+      </Reanimated.View>
     );
   };
 };
