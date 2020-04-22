@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.8),
   },
   segmentedContainer: {
-    marginTop: 15,
+    marginTop: 12,
     marginBottom: 20,
     marginHorizontal: 13,
     borderWidth: 1,

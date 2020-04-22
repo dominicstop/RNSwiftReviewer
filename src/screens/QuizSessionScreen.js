@@ -69,10 +69,8 @@ export class QuizSessionScreen extends React.Component {
 
     const type = question[QuizQuestionKeys.sectionType];
     if(type == SectionTypes.IDENTIFICATION){
-      // get ref to AnswerIdentification item
-      const identificationRef = questionRef?.answerIdentificationRef;
-
-      identificationRef?._onKeyboardWillShowHide(event, true);
+      // manually trigger keyboard event handler
+      questionRef?._onKeyboardWillShowHide(event, true);
     };
   };
 
@@ -86,10 +84,8 @@ export class QuizSessionScreen extends React.Component {
 
     const type = question[QuizQuestionKeys.sectionType];
     if(type == SectionTypes.IDENTIFICATION){
-      // get ref to AnswerIdentification item
-      const identificationRef = questionRef?.answerIdentificationRef;
-      // manually trigger event handler
-      identificationRef?._onKeyboardWillShowHide(event, false);
+      // manually trigger keyboard event handler
+      questionRef?._onKeyboardWillShowHide(event, false);
     };
   };
 

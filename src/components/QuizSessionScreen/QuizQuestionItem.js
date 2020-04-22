@@ -80,8 +80,29 @@ export class QuizQuestionItem extends React.PureComponent {
     },
   });
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      extraBottomSpace: 0,
+    };
+  };
+
+  // this is triggered from QuizSessionScreen
+  _onKeyboardWillShowHide = (event, visible) => {
+    const { height } = event.endCoordinates;
+
+    this.setState({ 
+      extraBottomSpace: (visible? height : 0)
+    });
+    
+    if(this.answerIdentificationRef){
+      this.answerIdentificationRef
+        ._onKeyboardWillShowHide(event, visible);
+    };
+  };
+
   _renderAnswer(){
-    const { styles } = QuizQuestionItem;
     const { isFocused, ...props } = this.props;
 
     const sectionType = props[QuizQuestionKeys.sectionType];
@@ -113,15 +134,27 @@ export class QuizQuestionItem extends React.PureComponent {
   render(){
     const { styles } = QuizQuestionItem;
     const { index, ...props } = this.props;
+    const { extraBottomSpace } = this.state;
 
+    const sectionType  = props[QuizQuestionKeys.sectionType];
     const questionText = props[QuizQuestionKeys.questionText];
+
+    const choices      = props[QuizQuestionKeys.questionChoices];
+    const choicesCount = choices?.length ?? 0;
+
+    const bottomSpace = (
+      (sectionType == SectionTypes.MATCHING_TYPE  )? 100 :
+      (sectionType == SectionTypes.TRUE_OR_FALSE  )? 200 :
+      (sectionType == SectionTypes.IDENTIFICATION )? (extraBottomSpace + 100) :
+      (sectionType == SectionTypes.MULTIPLE_CHOICE)? (choicesCount * 40) : 0
+    );
 
     return(
       <View style={styles.rootContainer}>
         <View style={styles.rootWrapper}>
           <ScrollView
             style={styles.scrollview}
-            contentContainerStyle={styles.scrollviewContent}
+            contentContainerStyle={{paddingBottom: bottomSpace}}
             showsVerticalScrollIndicator={false}
           >
             <ListItemBadge
