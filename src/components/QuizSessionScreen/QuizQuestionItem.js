@@ -7,6 +7,7 @@ import { VibrancyView } from "@react-native-community/blur";
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
 import { AnswerTrueOrFalse    } from 'app/src/components/QuizSessionScreen/AnswerTrueOrFalse';
+import { AnswerMatchingType   } from 'app/src/components/QuizSessionScreen/AnswerMatchingType';
 import { AnswerMultipleChoice } from 'app/src/components/QuizSessionScreen/AnswerMultipleChoice';
 import { AnswerIdentification } from 'app/src/components/QuizSessionScreen/AnswerIdentification';
 
@@ -111,7 +112,11 @@ export class QuizQuestionItem extends React.PureComponent {
     const question = QuizQuestionModel.extract(props);
  
     switch (sectionType) {
-      case SectionTypes.MATCHING_TYPE:
+      case SectionTypes.MATCHING_TYPE: return (
+        <AnswerMatchingType
+          {...{isFocused, ...question}}
+        />
+      );
       case SectionTypes.TRUE_OR_FALSE: return (
         <AnswerTrueOrFalse
           {...{isFocused, ...question}}
