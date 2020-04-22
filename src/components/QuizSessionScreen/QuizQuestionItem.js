@@ -114,6 +114,7 @@ export class QuizQuestionItem extends React.PureComponent {
     switch (sectionType) {
       case SectionTypes.MATCHING_TYPE: return (
         <AnswerMatchingType
+          onPressChooseAnswer={props.onPressChooseAnswer}
           {...{isFocused, ...question}}
         />
       );
@@ -148,8 +149,8 @@ export class QuizQuestionItem extends React.PureComponent {
     const choicesCount = choices?.length ?? 0;
 
     const bottomSpace = (
-      (sectionType == SectionTypes.MATCHING_TYPE  )? 100 :
-      (sectionType == SectionTypes.TRUE_OR_FALSE  )? 200 :
+      (sectionType == SectionTypes.MATCHING_TYPE  )? 100 : //todo
+      (sectionType == SectionTypes.TRUE_OR_FALSE  )? 200 : //todo
       (sectionType == SectionTypes.IDENTIFICATION )? (extraBottomSpace + 100) :
       (sectionType == SectionTypes.MULTIPLE_CHOICE)? (choicesCount * 40) : 0
     );

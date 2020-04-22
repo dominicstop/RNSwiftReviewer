@@ -11,7 +11,10 @@ import { QuizSessionModel } from 'app/src/models/QuizSession';
 
 import { SNPQuizSession   } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
+
 import { SectionTypes } from '../constants/SectionTypes';
+import { RNN_ROUTES } from '../constants/Routes';
+import { ModalController } from '../functions/ModalController';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -102,16 +105,29 @@ export class QuizSessionScreen extends React.Component {
   _handleOnPressCancel = () => {
     alert('cancel');
   };
-
+  
+  // FlatListCarousel
   _handleSnap = ({index}) => {
     this.setState({
       currentIndex: index
     });
   };
 
+  // FlatListCarousel
   _handleOnBeforeSnap = ({nextIndex}) => {
     this.setState({
       currentIndex: nextIndex,
+    });
+  };
+
+  // QuizQuestionItem - AnswerMatchingType
+  _handleOnPressAnswer = () => {
+    const { } = this.props;
+
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalQuizSessionChooseAnswer,
+      navProps: {
+      },
     });
   };
 
@@ -122,6 +138,7 @@ export class QuizSessionScreen extends React.Component {
       <QuizQuestionItem
         ref={r => this[`item-${index}`] = r}
         isFocused={(currentIndex == index)}
+        onPressChooseAnswer={this._handleOnPressAnswer}
         {...{index, currentIndex, ...item}}
       />
     );
