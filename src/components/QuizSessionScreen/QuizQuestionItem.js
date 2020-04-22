@@ -120,17 +120,20 @@ export class QuizQuestionItem extends React.PureComponent {
       );
       case SectionTypes.TRUE_OR_FALSE: return (
         <AnswerTrueOrFalse
+          onAnswerSelected={props.onAnswerSelected}
           {...{isFocused, ...question}}
         />
       );
       case SectionTypes.IDENTIFICATION: return (
         <AnswerIdentification
           ref={r => this.answerIdentificationRef = r}
+          onAnswerSelected={props.onAnswerSelected}
           {...{isFocused, ...question}}
         />
       );
       case SectionTypes.MULTIPLE_CHOICE: return (
         <AnswerMultipleChoice
+          onAnswerSelected={props.onAnswerSelected}
           {...{isFocused, ...question}}
         />
       );

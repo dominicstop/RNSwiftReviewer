@@ -121,7 +121,7 @@ export class QuizSessionScreen extends React.Component {
   };
 
   // QuizQuestionItem - AnswerMatchingType
-  _handleOnPressAnswer = () => {
+  _handleOnPressAnswer = (question) => {
     const { } = this.props;
 
     ModalController.showModal({
@@ -131,6 +131,13 @@ export class QuizSessionScreen extends React.Component {
     });
   };
 
+  _handleOnAnswerSelected = ({question, answer}) => {
+    console.log('\n\nanswer');
+    console.log(answer);
+    console.log('question:');
+    console.log(question);
+  };
+
   _renderItem = ({item, index}) => {
     const { currentIndex } = this.state;
 
@@ -138,6 +145,7 @@ export class QuizSessionScreen extends React.Component {
       <QuizQuestionItem
         ref={r => this[`item-${index}`] = r}
         isFocused={(currentIndex == index)}
+        onAnswerSelected={this._handleOnAnswerSelected}
         onPressChooseAnswer={this._handleOnPressAnswer}
         {...{index, currentIndex, ...item}}
       />

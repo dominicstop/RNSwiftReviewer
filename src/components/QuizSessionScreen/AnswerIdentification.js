@@ -13,6 +13,7 @@ import * as Helpers from 'app/src/functions/helpers';
 import * as Colors  from 'app/src/constants/Colors';
 
 import { INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
+import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
 const { Value, Extrapolate, interpolate, timing, sub } = Reanimated;
 
@@ -129,9 +130,19 @@ export class AnswerIdentification extends React.PureComponent {
   };
 
   _handleOnBlur = ({nativeEvent}) => {
-    this.setState({
-      text: nativeEvent.text,
+    const { text } = nativeEvent;
+    const { onAnswerSelected, ...props } = this.props;
+
+    // extract question values from props
+    const question = QuizQuestionModel.extract(props);
+    onAnswerSelected && onAnswerSelected({
+      answer: text,
+      question,
+    });
+
+    this.setState({ 
       inputFocused: false,
+      text,
     });
   };
 

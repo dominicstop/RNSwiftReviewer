@@ -7,6 +7,8 @@ import * as Colors  from 'app/src/constants/Colors';
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { iOSUIKit } from 'react-native-typography';
 
+import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+
 const colorsAdj = [
   Helpers.hexToRGBA(Colors.BLUE[700 ], 0.9),
   Helpers.hexToRGBA(Colors.BLUE[800 ], 0.9),
@@ -38,6 +40,18 @@ export class AnswerMultipleChoice extends React.PureComponent {
     },
   });
 
+  _handleOnPressChoice = (choice, index) => {
+    const { onAnswerSelected, ...props } = this.props;
+
+    // extract question from props
+    const question = QuizQuestionModel.extract(props);
+
+    onAnswerSelected && onAnswerSelected({
+      answer: choice,
+      question,
+    });
+  };
+
   render(){
     const { styles } = AnswerMultipleChoice;
     const props = this.props;
@@ -48,16 +62,21 @@ export class AnswerMultipleChoice extends React.PureComponent {
     return(
       <View style={styles.rootContainer}>
         {choices.map((choice, index) => {
-          const backgroundColor = bgColors[choicesCount - 1][index]
+          const backgroundColor = bgColors[choicesCount - 1][index];
+
           return(
-            <View
-              style={[styles.choiceContainer, {backgroundColor}]}
+            <TouchableOpacity
               key={`choice-${choice}`}
+              activeOpacity={0.9}
+              style={[styles.choiceContainer, {backgroundColor}]}
+              onPress={() => {
+                this._handleOnPressChoice(choice, index);
+              }}
             >
               <Text style={styles.textChoice}>
                 {choice}
               </Text>
-            </View>
+            </TouchableOpacity>
           );
         })}
       </View>

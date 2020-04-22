@@ -6,14 +6,31 @@ import SegmentedControl from '@react-native-community/segmented-control';
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
+import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+
 
 export class AnswerTrueOrFalse extends React.PureComponent {
+
+  _handleSegmentOnChange = ({nativeEvent}) => {
+    const { selectedSegmentIndex } = nativeEvent;
+    const { onAnswerSelected, ...props } = this.props;
+
+    // extract question from props
+    const question = QuizQuestionModel.extract(props);
+
+    onAnswerSelected && onAnswerSelected({
+      answer: (selectedSegmentIndex == 0),
+      question,
+    });
+  };
+
   render(){
     return(
       <View style={styles.rootContainer}>
         <View style={styles.segmentedContainer}>
           <SegmentedControl
             style={styles.segmentedControl}
+            onChange={this._handleSegmentOnChange}
             values={['True', 'False']}
             textColor={Colors.BLUE[1000]}
             activeTextColor={'white'}
