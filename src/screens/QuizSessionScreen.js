@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 
 import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
 import { QuizQuestionItem  } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';

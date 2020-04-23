@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
@@ -6,24 +6,20 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 
+import { ListItemBadge } from 'app/src/components/ListItemBadge';
+
 import { ModalBackground    } from 'app/src/components/ModalBackground';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
-import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
-import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
-import { ROUTES } from 'app/src/constants/Routes';
-
-import { } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { BORDER_WIDTH } from '../constants/UIValues';
-import { ListItemBadge } from '../components/ListItemBadge';
 import { iOSUIKit } from 'react-native-typography';
 
 
@@ -82,6 +78,8 @@ class ChoiceItem extends React.PureComponent {
               animation={'breathe'}
               duration={3000}
               iterationCount={'infinite'}
+              iterationDelay={1000}
+              easing={'ease-in-out'}
               useNativeDriver={true}
             />
           )}
@@ -113,10 +111,6 @@ class ChoiceItem extends React.PureComponent {
 };
 
 export class QuizSessionChooseAnswerModal extends React.Component {
-  static styles = StyleSheet.create({
-
-  });
-
   constructor(props){
     super(props);
 
@@ -157,7 +151,6 @@ export class QuizSessionChooseAnswerModal extends React.Component {
   };
   
   render(){
-    const { styles } = QuizSessionChooseAnswerModal;
     const { selected } = this.state;
     const props = this.props;
 
@@ -199,6 +192,7 @@ export class QuizSessionChooseAnswerModal extends React.Component {
       >
         {sectionChoices.map((choice, index) => (
           <ChoiceItem
+            key={`choice-${choice}`}
             onChoiceSelected={this._handleOnChoiceSelected}
             {...{choice, index, selected}}
           />

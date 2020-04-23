@@ -1,8 +1,8 @@
 import { IS_DEBUG } from "app/src/constants/Options";
 import { QuizSessionKeys, QuizKeys, QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
+import { SectionTypes } from "app/src/constants/SectionTypes";
 
 import * as Helpers from "app/src/functions/helpers";
-import { SectionTypes } from "../constants/SectionTypes";
 
 function extractQuestionsFromSections(sections = []){
   let questions = [];

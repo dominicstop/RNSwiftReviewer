@@ -36,6 +36,11 @@ Navigation.events().registerAppLaunchedListener(() => {
 // register animations for react-native-animatable
 Animatable.initializeRegistryWithDefinitions({
   breathe: {
+    0  : { opacity: 1 },
+    0.5: { opacity: 0 },
+    1  : { opacity: 1 },
+  },
+  breatheReverse: {
     0  : { opacity: 0 },
     0.5: { opacity: 1 },
     1  : { opacity: 0 },

@@ -16,7 +16,6 @@ import { INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 
 const { Value, Extrapolate, interpolate, timing, sub } = Reanimated;
-
 const BOTTOM_MARGIN = (21 + INSET_BOTTOM);
 
 
