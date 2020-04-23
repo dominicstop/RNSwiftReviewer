@@ -77,8 +77,8 @@ class ChoiceItem extends React.PureComponent {
               style={styles.background}
               animation={'breathe'}
               duration={3000}
-              iterationCount={'infinite'}
               iterationDelay={1000}
+              iterationCount={'infinite'}
               easing={'ease-in-out'}
               useNativeDriver={true}
             />

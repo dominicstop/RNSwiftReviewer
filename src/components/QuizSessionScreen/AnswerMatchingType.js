@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, Keyboard, Text, View, TouchableOpacity, FlatList, TextInput, Dimensions } from 'react-native';
 
+import Ionicon from '@expo/vector-icons/Ionicons';
+
 import * as Helpers from 'app/src/functions/helpers';
 import * as Colors  from 'app/src/constants/Colors';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+import { iOSUIKit } from 'react-native-typography';
 
 export class AnswerMatchingType extends React.PureComponent {
 
@@ -25,7 +28,12 @@ export class AnswerMatchingType extends React.PureComponent {
           activeOpacity={0.8}
           onPress={this._handleOnPressChooseAnswer}
         >
-          <Text>
+          <Ionicon
+            name={'ios-filing'}
+            color={Colors.BLUE.A700}
+            size={26}
+          />
+          <Text style={styles.buttonTextTitle}>
             {'Choose Answer...'}
           </Text>
         </TouchableOpacity>
@@ -47,8 +55,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 13,
     borderWidth: 1,
     borderColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.25),
-    padding: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
     backgroundColor: 'white',
     borderRadius: 10,
+    //shadow
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 1.41,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+  },
+  buttonTextTitle: {
+    ...iOSUIKit.bodyEmphasizedObject,
+    flex: 1,
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: '800',
+    color: Colors.BLUE.A700,
   },
 });
