@@ -61,4 +61,11 @@ export const MNPQuizCreateQuestion = {
   onPressDelete: 'onPressDelete',
 };
 
+export const MNPQuizSessionChooseAnswer = {
+  quiz          : 'quiz',
+  question      : 'question',
+  sectionChoices: 'sectionChoices',
+  onPressDone   : 'onPressDone',
+};
+
 // #endregion

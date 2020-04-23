@@ -40,8 +40,9 @@ export const QuizQuestionKeys = {
 
 // property names for QuizSessionModel
 export const QuizSessionKeys = {
-  quizID   : 'quizID'   ,
-  sessionID: 'sessionID',
-  dateStart: 'dateStart',
-  dateEnd  : 'dateEnd'  ,
+  quizID             : 'quizID'             ,
+  sessionID          : 'sessionID'          ,
+  dateStart          : 'dateStart'          ,
+  dateEnd            : 'dateEnd'            ,
+  matchingTypeChoices: 'matchingTypeChoices',
 };

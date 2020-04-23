@@ -1,7 +1,8 @@
 import { IS_DEBUG } from "app/src/constants/Options";
-import { QuizSessionKeys, QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { QuizSessionKeys, QuizKeys, QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from "app/src/functions/helpers";
+import { SectionTypes } from "../constants/SectionTypes";
 
 function extractQuestionsFromSections(sections = []){
   let questions = [];
@@ -15,6 +16,41 @@ function extractQuestionsFromSections(sections = []){
   };
 
   return questions;
+};
+
+
+function extractMatchingTypeChoicesFromSections(sections = []){
+  let choices = {};
+
+  for (const section of sections) {
+    const type = section[QuizSectionKeys.sectionType];
+
+    if(type === SectionTypes.MATCHING_TYPE){
+      const sectionID = section[QuizSectionKeys.sectionID];
+      const questions = section[QuizSectionKeys.sectionQuestions];
+      
+      // extract answers from section
+      const answers = questions.map(question => 
+        question[QuizQuestionKeys.questionAnswer]
+      );
+
+      console.log('answers');
+      console.log(answers);
+      
+
+      // get rid of duplicate/invalid answers
+      const answersUnique   = [...(new Set(answers))];
+      const answersFiltered = answersUnique.filter(answer => (
+        answer != ''        ||
+        answer != null      ||
+        answer != undefined 
+      ))
+
+      choices[sectionID] = answersFiltered;
+    };
+  };
+
+  return choices;
 };
 
 
@@ -62,7 +98,10 @@ export class QuizSessionModel {
     const questions = extractQuestionsFromSections(sections);
     this.questions = questions;
 
-    this.values[QuizSessionKeys.quizID] = quizID;
+    const matchingTypeChoices = extractMatchingTypeChoicesFromSections(sections);
+
+    this.values[QuizSessionKeys.quizID             ] = quizID;
+    this.values[QuizSessionKeys.matchingTypeChoices] = matchingTypeChoices;
   };
 
   setStartDate(){

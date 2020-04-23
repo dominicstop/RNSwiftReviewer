@@ -10,9 +10,10 @@ import * as Helpers from 'app/src/functions/helpers';
 import { QuizSessionModel } from 'app/src/models/QuizSession';
 
 import { SNPQuizSession   } from 'app/src/constants/NavParams';
-import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
+import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 import { SectionTypes } from '../constants/SectionTypes';
+import { MNPQuizSessionChooseAnswer } from '../constants/NavParams';
 import { RNN_ROUTES } from '../constants/Routes';
 import { ModalController } from '../functions/ModalController';
 
@@ -38,6 +39,7 @@ export class QuizSessionScreen extends React.Component {
     const { params } = props.navigation.state;
 
     const quiz = params[SNPQuizSession.quiz];
+    this.quiz = quiz;
 
     const session = new QuizSessionModel();
     session.initFromQuiz(quiz);
@@ -122,11 +124,26 @@ export class QuizSessionScreen extends React.Component {
 
   // QuizQuestionItem - AnswerMatchingType
   _handleOnPressAnswer = (question) => {
-    const { } = this.props;
 
+    // get matchingTypeChoices obj - holds all the choices for each section
+    const matchingTypeChoices = this.session.values[
+      QuizSessionKeys.matchingTypeChoices
+    ];
+
+    // get the sectionID of the question
+    const sectionID = question[QuizQuestionKeys.sectionID];
+
+    // get the matchingTypeChoices for this section
+    const sectionChoices = matchingTypeChoices[sectionID];
+    
+    // open QuizSessionChooseAnswerModal
     ModalController.showModal({
       routeName: RNN_ROUTES.RNNModalQuizSessionChooseAnswer,
       navProps: {
+        [MNPQuizSessionChooseAnswer.quiz          ]: this.quiz,
+        [MNPQuizSessionChooseAnswer.question      ]: question,
+        [MNPQuizSessionChooseAnswer.sectionChoices]: sectionChoices,
+        [MNPQuizSessionChooseAnswer.onPressDone   ]: this._handleOnAnswerSelected,
       },
     });
   };
