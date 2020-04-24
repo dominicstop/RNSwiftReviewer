@@ -120,7 +120,7 @@ export class QuizQuestionItem extends React.Component {
   };
 
   _renderAnswer(){
-    const { isFocused, question, ...props } = this.props;
+    const { isFocused, question, answer, ...props } = this.props;
 
     const sectionType = question[QuizQuestionKeys.sectionType];
     
@@ -128,26 +128,26 @@ export class QuizQuestionItem extends React.Component {
       case SectionTypes.MATCHING_TYPE: return (
         <AnswerMatchingType
           onPressChooseAnswer={props.onPressChooseAnswer}
-          {...{isFocused, ...question}}
+          {...{isFocused, answer, ...question}}
         />
       );
       case SectionTypes.TRUE_OR_FALSE: return (
         <AnswerTrueOrFalse
           onAnswerSelected={props.onAnswerSelected}
-          {...{isFocused, ...question}}
+          {...{isFocused, answer, ...question}}
         />
       );
       case SectionTypes.IDENTIFICATION: return (
         <AnswerIdentification
           ref={r => this.answerIdentificationRef = r}
           onAnswerSelected={props.onAnswerSelected}
-          {...{isFocused, ...question}}
+          {...{isFocused, answer, ...question}}
         />
       );
       case SectionTypes.MULTIPLE_CHOICE: return (
         <AnswerMultipleChoice
           onAnswerSelected={props.onAnswerSelected}
-          {...{isFocused, ...question}}
+          {...{isFocused, answer, ...question}}
         />
       );
     };
