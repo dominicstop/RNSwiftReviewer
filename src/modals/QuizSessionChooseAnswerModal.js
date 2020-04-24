@@ -27,7 +27,7 @@ import { QuizSessionAnswerKeys } from '../constants/PropKeys';
 class ChoiceItem extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
-      backgroundColor: 'rgba(255,255,255,0.7)',
+      backgroundColor: 'rgba(255,255,255,0.8)',
       borderBottomColor: 'rgba(0,0,0,0.3)',
       borderBottomWidth: BORDER_WIDTH,
     },

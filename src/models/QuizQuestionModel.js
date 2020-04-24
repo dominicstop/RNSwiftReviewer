@@ -91,7 +91,7 @@ export class QuizQuestionModel {
     );
 
     this.values[QuizQuestionKeys.questionID] = (
-      `question-type:${sectionType}-date:${created}-hash:${hashCode}`
+      `questionID-(type:${sectionType})-(date:${created})-hash:${hashCode}`
     );
   };
 

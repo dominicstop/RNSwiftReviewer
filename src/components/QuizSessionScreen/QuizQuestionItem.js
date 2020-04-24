@@ -171,7 +171,7 @@ export class QuizQuestionItem extends React.Component {
       (sectionType == SectionTypes.MULTIPLE_CHOICE)? (choicesCount * 40) : 0
     );
 
-    console.log(`render: ${index}`);
+    //console.log(`render: ${index}`);
     
     return(
       <View style={styles.rootContainer}>
