@@ -1,22 +1,26 @@
 import React from 'react';
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
 
+import * as Animatable from 'react-native-animatable';
 import SegmentedControl from '@react-native-community/segmented-control';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+import { QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 
 
-export class AnswerTrueOrFalse extends React.PureComponent {
-
+export class AnswerTrueOrFalse extends React.Component {
   _handleSegmentOnChange = ({nativeEvent}) => {
     const { selectedSegmentIndex } = nativeEvent;
     const { onAnswerSelected, ...props } = this.props;
 
     // extract question from props
     const question = QuizQuestionModel.extract(props);
+
+    this.rootContainerRef.pulse(500);
+    this.segmentedContainerRef.pulse(300);
 
     onAnswerSelected && onAnswerSelected({
       answer: (selectedSegmentIndex == 0),
@@ -25,9 +29,21 @@ export class AnswerTrueOrFalse extends React.PureComponent {
   };
 
   render(){
+    const { answer } = this.props;
+    const hasAnswer = (answer != undefined);
+    const answerValue = answer?.[QuizSessionAnswerKeys.answerValue];
+
     return(
-      <View style={styles.rootContainer}>
-        <View style={styles.segmentedContainer}>
+      <Animatable.View
+        ref={r => this.rootContainerRef = r}
+        style={styles.rootContainer}
+        useNativeDriver={true}
+      >
+        <Animatable.View 
+          ref={r => this.segmentedContainerRef = r}
+          style={styles.segmentedContainer}
+          useNativeDriver={true}
+        >
           <SegmentedControl
             style={styles.segmentedControl}
             onChange={this._handleSegmentOnChange}
@@ -37,9 +53,13 @@ export class AnswerTrueOrFalse extends React.PureComponent {
             tintColor={Colors.BLUE.A700}
             appearance={'light'}
             backgroundColor={'white'}
+            selectedIndex={(hasAnswer
+              ? (answerValue? 0 : 1)
+              : undefined
+            )}
           />
-        </View>
-      </View>
+        </Animatable.View>
+      </Animatable.View>
     );
   };
 };
