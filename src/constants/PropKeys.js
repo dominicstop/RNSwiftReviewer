@@ -42,7 +42,21 @@ export const QuizQuestionKeys = {
 export const QuizSessionKeys = {
   quizID             : 'quizID'             ,
   sessionID          : 'sessionID'          ,
-  dateStart          : 'dateStart'          ,
-  dateEnd            : 'dateEnd'            ,
+  sessionDateStart   : 'sessionDateStart'   ,
+  sessionDateEnd     : 'sessionDateEnd'     ,
+  sessionAnswers     : 'sessionAnswers'     ,
   matchingTypeChoices: 'matchingTypeChoices',
+};
+
+// QuizSessionAnswerModel
+export const QuizSessionAnswerKeys = {
+  quizID            : 'quizID'            ,
+  sessionID         : 'sessionID'         ,
+  sectionID         : 'sectionID'         ,
+  sectionType       : 'sectionType'       ,
+  questionID        : 'questionID'        ,
+  answerID          : 'answerID'          ,
+  answerValue       : 'answerValue'       ,
+  answerTimestamp   : 'answerTimestamp'   ,
+  answerValueHistory: 'answerValueHistory',
 };

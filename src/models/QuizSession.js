@@ -34,10 +34,6 @@ function extractMatchingTypeChoicesFromSections(sections = []){
         question[QuizQuestionKeys.questionAnswer]
       );
 
-      console.log('answers');
-      console.log(answers);
-      
-
       // get rid of duplicate/invalid answers
       const answersUnique   = [...(new Set(answers))];
       const answersFiltered = answersUnique.filter(answer => (
@@ -73,8 +69,8 @@ export class QuizSessionModel {
   };
 
   static extract(values){
-    let   copy = QuizQuestionModel.wrap({});
-    const keys = Object.keys(QuizQuestionKeys);
+    let   copy = QuizSessionModel.wrap({});
+    const keys = Object.keys(QuizSessionKeys);
 
     for (const key of keys) {
       copy[key] = values[key];
@@ -95,12 +91,20 @@ export class QuizSessionModel {
     const quizID   = quiz[QuizKeys.quizID];
     const sections = quiz[QuizKeys.quizSections];
 
-    const questions = extractQuestionsFromSections(sections);
-    this.questions = questions;
+    const startDate = this.values[QuizSessionKeys.sessionDateStart];
 
-    const matchingTypeChoices = extractMatchingTypeChoicesFromSections(sections);
+    const sessionID = (
+      `session-(quizID:${quizID})-(startDate:${startDate})`
+    );
 
-    this.values[QuizSessionKeys.quizID             ] = quizID;
+    this.questions =
+      extractQuestionsFromSections(sections);
+
+    const matchingTypeChoices =
+      extractMatchingTypeChoicesFromSections(sections);
+
+    this.values[QuizSessionKeys.quizID   ] = quizID;
+    this.values[QuizSessionKeys.sessionID] = sessionID;
     this.values[QuizSessionKeys.matchingTypeChoices] = matchingTypeChoices;
   };
 
@@ -109,7 +113,7 @@ export class QuizSessionModel {
     const date = new Date();
     const ts   = date.getTime();
 
-    this.values[QuizSessionKeys.dateStart] = ts;
+    this.values[QuizSessionKeys.sessionDateStart] = ts;
   };
 
   setEndDate(){
@@ -117,7 +121,7 @@ export class QuizSessionModel {
     const date = new Date();
     const ts   = date.getTime();
 
-    this.values[QuizSessionKeys.dateEnd] = ts;
+    this.values[QuizSessionKeys.sessionDateEnd] = ts;
   };
 
   set quizID(id = ''){
@@ -126,13 +130,5 @@ export class QuizSessionModel {
 
   set sessionID(id = ''){
     this.values[QuizSessionKeys.sessionID] = id;
-  };
-
-  get currentQuestions(){
-    return [...this.questionsCurrent];
-  };
-
-  get remainingQuestions(){
-    return [...this.questionsRemaining];
   };
 };

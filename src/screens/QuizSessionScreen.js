@@ -16,6 +16,7 @@ import { SectionTypes } from '../constants/SectionTypes';
 import { MNPQuizSessionChooseAnswer } from '../constants/NavParams';
 import { RNN_ROUTES } from '../constants/Routes';
 import { ModalController } from '../functions/ModalController';
+import { QuizSessionAnswerModel } from '../models/QuizSessionAnswerModel';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -43,8 +44,11 @@ export class QuizSessionScreen extends React.Component {
 
     const session = new QuizSessionModel();
     session.initFromQuiz(quiz);
-
     this.session = session;
+
+    const answers = new QuizSessionAnswerModel();
+    answers.initFromSession(session.values);
+    this.answers = answers;
 
     this.state = {
       currentIndex: 0,
@@ -123,7 +127,7 @@ export class QuizSessionScreen extends React.Component {
   };
 
   // QuizQuestionItem - AnswerMatchingType
-  _handleOnPressAnswer = (question) => {
+  _handleOnPressChooseAnswer = (question) => {
 
     // get matchingTypeChoices obj - holds all the choices for each section
     const matchingTypeChoices = this.session.values[
@@ -149,10 +153,7 @@ export class QuizSessionScreen extends React.Component {
   };
 
   _handleOnAnswerSelected = ({question, answer}) => {
-    console.log('\n\nanswer');
-    console.log(answer);
-    console.log('question:');
-    console.log(question);
+    this.answers.addAnswer(question, answer);
   };
 
   _renderItem = ({item, index}) => {
@@ -163,7 +164,7 @@ export class QuizSessionScreen extends React.Component {
         ref={r => this[`item-${index}`] = r}
         isFocused={(currentIndex == index)}
         onAnswerSelected={this._handleOnAnswerSelected}
-        onPressChooseAnswer={this._handleOnPressAnswer}
+        onPressChooseAnswer={this._handleOnPressChooseAnswer}
         {...{index, currentIndex, ...item}}
       />
     );
