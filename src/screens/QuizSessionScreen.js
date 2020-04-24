@@ -55,6 +55,7 @@ export class QuizSessionScreen extends React.Component {
     this.state = {
       currentIndex: 0,
       questions: session.questions,
+      answers: answers.answerMap,
     };
   };
 

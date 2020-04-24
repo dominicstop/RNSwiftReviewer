@@ -15,7 +15,7 @@ export class QuizSessionAnswerModel {
   constructor(){
     // key/value map of answers
     // - questionID: { QuizSessionAnswerKeys }
-    this.answers = {};
+    this.answerMap = {};
   };
 
   initFromSession(session){
@@ -34,7 +34,7 @@ export class QuizSessionAnswerModel {
 
     // check if answer already exists
     const doesAnswerExist =
-      (this.answers[questionID] !== undefined);
+      (this.answerMap[questionID] !== undefined);
     
 
     if(!doesAnswerExist){
@@ -43,7 +43,7 @@ export class QuizSessionAnswerModel {
         `answerID:(${questionID})-sessionID:(${this.sessionID})`;
 
       // record new answer
-      this.answers[questionID] = {
+      this.answerMap[questionID] = {
         // init values - from session
         [QuizSessionAnswerKeys.quizID   ]: this.quizID   ,
         [QuizSessionAnswerKeys.sessionID]: this.sessionID,
@@ -62,13 +62,13 @@ export class QuizSessionAnswerModel {
     } else {
       // save a copy of the prev ans
       const prevAnswer = {
-        ...this.answers[questionID],
+        ...this.answerMap[questionID],
       };
 
       const prevAnswerValueHistory =
         prevAnswer[QuizSessionAnswerKeys.answerValueHistory];
       
-      this.answers[questionID] = {
+      this.answerMap[questionID] = {
         ...prevAnswer,
         // save new answer values
         [QuizSessionAnswerKeys.answerValue    ]: answerValue ,
