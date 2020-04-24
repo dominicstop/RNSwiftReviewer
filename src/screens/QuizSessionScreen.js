@@ -12,11 +12,13 @@ import { QuizSessionModel } from 'app/src/models/QuizSession';
 import { SNPQuizSession   } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
-import { SectionTypes } from '../constants/SectionTypes';
-import { MNPQuizSessionChooseAnswer } from '../constants/NavParams';
-import { RNN_ROUTES } from '../constants/Routes';
-import { ModalController } from '../functions/ModalController';
-import { QuizSessionAnswerModel } from '../models/QuizSessionAnswerModel';
+import { SectionTypes    } from 'app/src/constants/SectionTypes';
+import { RNN_ROUTES      } from 'app/src/constants/Routes';
+import { ModalController } from 'app/src/functions/ModalController';
+import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
+
+import { QuizSessionAnswerModel } from 'app/src/models/QuizSessionAnswerModel';
+
 
 
 export class QuizSessionScreen extends React.Component {

@@ -1,13 +1,8 @@
-import { IS_DEBUG } from "app/src/constants/Options";
-import { QuizSessionKeys, QuizKeys, QuizSectionKeys, QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
+import { QuizSessionKeys, QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes } from "app/src/constants/SectionTypes";
 
 import * as Helpers from "app/src/functions/helpers";
 
-
-const PRINT_DEBUG = (
-  IS_DEBUG && false
-);
 
 
 // This model is in charge of recording the answers from a
@@ -26,14 +21,6 @@ export class QuizSessionAnswerModel {
   initFromSession(session){
     this.quizID    = session[QuizSessionKeys.quizID   ];
     this.sessionID = session[QuizSessionKeys.sessionID];
-
-    if(PRINT_DEBUG){
-      console.log('----------------------------------------');
-      console.log('QuizSessionAnswerModel - initFromSession');
-      console.log(`quizID   : ${this.quizID   }`);
-      console.log(`sessionID: ${this.sessionID}`);
-      console.log('////');
-    };
   };
 
   addAnswer(question = {}, answerValue){
@@ -45,16 +32,15 @@ export class QuizSessionAnswerModel {
     const date      = new Date();
     const timestamp = date.getTime();
 
-    const doesAnswerExist = (
-      // check if answer already exists
-      (this.answers[questionID] !== undefined)
-    );
+    // check if answer already exists
+    const doesAnswerExist =
+      (this.answers[questionID] !== undefined);
+    
 
     if(!doesAnswerExist){
       // create answerID
-      const answerID = (
-        `answerID:(${questionID})-sessionID:(${this.sessionID})`
-      );
+      const answerID =
+        `answerID:(${questionID})-sessionID:(${this.sessionID})`;
 
       // record new answer
       this.answers[questionID] = {
@@ -71,17 +57,6 @@ export class QuizSessionAnswerModel {
         [QuizSessionAnswerKeys.answerTimestamp]: timestamp   ,
         // init answerValueHistory w/ empty array
         [QuizSessionAnswerKeys.answerValueHistory]: [],
-      };
-
-      // debug - log
-      if(PRINT_DEBUG){
-        console.log('-----------------------------------');
-        console.log('QuizSessionAnswerModel -- addAnswer');
-        console.log(`timestamp      : ${timestamp      }`);
-        console.log(`answerValue    : ${answerValue    }`);
-        console.log(`doesAnswerExist: ${doesAnswerExist}`);
-        console.log(this.answers[questionID]);
-        console.log('////');
       };
 
     } else {
@@ -101,28 +76,13 @@ export class QuizSessionAnswerModel {
         // update answerValueHistory
         [QuizSessionAnswerKeys.answerValueHistory]: [
           // append prev. answers
-          ...prevAnswerValueHistory,
-          {
+          ...prevAnswerValueHistory, {
             // append prev answer
             [QuizSessionAnswerKeys.answerValue    ]: prevAnswer[QuizSessionAnswerKeys.answerValue    ],
             [QuizSessionAnswerKeys.answerTimestamp]: prevAnswer[QuizSessionAnswerKeys.answerTimestamp],
           }
         ],
       };
-    };
-
-    // debug - log
-    if(PRINT_DEBUG){
-      console.log('-----------------------------------');
-      console.log('QuizSessionAnswerModel -- addAnswer');
-      console.log(`timestamp      : ${timestamp      }`);
-      console.log(`answerValue    : ${answerValue    }`);
-      console.log(`doesAnswerExist: ${doesAnswerExist}`);
-      console.log('this.answers[questionID]:');
-      console.log(this.answers[questionID]);
-      console.log('this.answers:');
-      console.log(JSON.stringify(this.answers));
-      console.log('////');
     };
   };
 };
