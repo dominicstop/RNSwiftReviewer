@@ -117,16 +117,24 @@ export class QuizSessionScreen extends React.Component {
   
   // FlatListCarousel
   _handleSnap = ({index}) => {
-    this.setState({
-      currentIndex: index
-    });
+    const { currentIndex } = this.state;
+
+    if(currentIndex != index){
+      this.setState({
+        currentIndex: index,
+      });
+    };
   };
 
   // FlatListCarousel
   _handleOnBeforeSnap = ({nextIndex}) => {
-    this.setState({
-      currentIndex: nextIndex,
-    });
+    const { currentIndex } = this.state;
+
+    if(currentIndex != nextIndex){
+      this.setState({
+        currentIndex: nextIndex,
+      });
+    };
   };
 
   // QuizQuestionItem - AnswerMatchingType

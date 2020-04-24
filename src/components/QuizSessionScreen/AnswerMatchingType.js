@@ -76,10 +76,6 @@ class ActiveButton extends React.PureComponent {
       marginTop: 13,
       marginBottom: 20,
       marginHorizontal: 13,
-      borderWidth: 1,
-      borderColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.25),
-      paddingVertical: 6,
-      paddingHorizontal: 12,
       backgroundColor: 'white',
       borderRadius: 10,
       //shadow
@@ -91,20 +87,31 @@ class ActiveButton extends React.PureComponent {
         height: 1,
       },
     },
+    iconContainer: {
+      backgroundColor: Colors.BLUE[900],
+      paddingHorizontal: 14,
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
+    },
     textContainer: {
-      marginLeft: 10,
+      flex: 1,
+      marginHorizontal: 10,
+      marginVertical: 5,
     },
     buttonTextTitle: {
-      ...iOSUIKit.bodyEmphasizedObject,
+      ...iOSUIKit.subheadEmphasizedObject,
       flex: 1,
-      fontSize: 16,
-      fontWeight: '700',
+      fontWeight: '800',
       color: Colors.BLUE.A700,
     },
     buttonTextSubtitle: {
       ...iOSUIKit.footnoteObject,
       color: Colors.BLUE[1000],
       opacity: 0.9,
+      marginTop: -2,
     },
   });
 
@@ -120,11 +127,13 @@ class ActiveButton extends React.PureComponent {
         activeOpacity={0.8}
         onPress={props.onPressChooseAnswer}
       >
-        <Ionicon
-          name={'ios-filing'}
-          color={Colors.BLUE.A700}
-          size={26}
-        />
+        <View style={styles.iconContainer}>
+          <Ionicon
+            name={'ios-filing'}
+            color={'white'}
+            size={26}
+          />
+        </View>
         <View style={styles.textContainer}>
           <Text style={styles.buttonTextTitle}>
             {answerText}
