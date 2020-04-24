@@ -15,12 +15,10 @@ import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { SectionTypes     } from 'app/src/constants/SectionTypes';
-import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
-
-import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+import { QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 
 
-export class QuizQuestionItem extends React.PureComponent {
+export class QuizQuestionItem extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
@@ -89,6 +87,24 @@ export class QuizQuestionItem extends React.PureComponent {
     };
   };
 
+  shouldComponentUpdate(nextProps){
+    const prevProps = this.props;
+
+    const prevAns = prevProps.answer ?? {};
+    const nextAns = nextProps.answer ?? {};
+
+    const prevAnsVal = prevAns[QuizSessionAnswerKeys.answerValue];
+    const nextAnsVal = nextAns[QuizSessionAnswerKeys.answerValue];
+
+    return(
+      // update when focused
+      prevProps.isFocused != nextProps.isFocused ||
+      // update when the answer changed
+      prevAnsVal != nextAnsVal
+    );
+
+  };
+
   // this is triggered from QuizSessionScreen
   _onKeyboardWillShowHide = (event, visible) => {
     const { height } = event.endCoordinates;
@@ -104,13 +120,10 @@ export class QuizQuestionItem extends React.PureComponent {
   };
 
   _renderAnswer(){
-    const { isFocused, ...props } = this.props;
+    const { isFocused, question, ...props } = this.props;
 
-    const sectionType = props[QuizQuestionKeys.sectionType];
+    const sectionType = question[QuizQuestionKeys.sectionType];
     
-    // extract question values from props
-    const question = QuizQuestionModel.extract(props);
- 
     switch (sectionType) {
       case SectionTypes.MATCHING_TYPE: return (
         <AnswerMatchingType
@@ -142,13 +155,13 @@ export class QuizQuestionItem extends React.PureComponent {
 
   render(){
     const { styles } = QuizQuestionItem;
-    const { index, ...props } = this.props;
+    const { index, question, ...props } = this.props;
     const { extraBottomSpace } = this.state;
 
-    const sectionType  = props[QuizQuestionKeys.sectionType];
-    const questionText = props[QuizQuestionKeys.questionText];
+    const sectionType  = question[QuizQuestionKeys.sectionType];
+    const questionText = question[QuizQuestionKeys.questionText];
 
-    const choices      = props[QuizQuestionKeys.questionChoices];
+    const choices      = question[QuizQuestionKeys.questionChoices];
     const choicesCount = choices?.length ?? 0;
 
     const bottomSpace = (
@@ -158,6 +171,8 @@ export class QuizQuestionItem extends React.PureComponent {
       (sectionType == SectionTypes.MULTIPLE_CHOICE)? (choicesCount * 40) : 0
     );
 
+    console.log(`render: ${index}`);
+    
     return(
       <View style={styles.rootContainer}>
         <View style={styles.rootWrapper}>

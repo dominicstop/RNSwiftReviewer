@@ -156,26 +156,37 @@ export class QuizSessionScreen extends React.Component {
   };
 
   _handleOnAnswerSelected = ({question, answer}) => {
+    const prevState = this.state;
+
     this.answers.addAnswer(question, answer);
+    this.setState({
+      ...prevState,
+      answers: this.answers.answerMap,
+    });
   };
 
   _renderItem = ({item, index}) => {
-    const { currentIndex } = this.state;
+    const { currentIndex, answers } = this.state;
+
+    const questionID = item[QuizQuestionKeys.questionID];
+    // undefined when no matching answer
+    const answer = answers[questionID];
 
     return(
       <QuizQuestionItem
         ref={r => this[`item-${index}`] = r}
         isFocused={(currentIndex == index)}
+        question={item}
         onAnswerSelected={this._handleOnAnswerSelected}
         onPressChooseAnswer={this._handleOnPressChooseAnswer}
-        {...{index, currentIndex, ...item}}
+        {...{index, answer, currentIndex}}
       />
     );
   };
 
   render(){
     const { styles } = QuizSessionScreen;
-    const { currentIndex, questions: data } = this.state;
+    const { currentIndex, questions: data, answers } = this.state;
 
     const extraData = {
       currentIndex
