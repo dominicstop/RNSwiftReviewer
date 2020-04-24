@@ -44,8 +44,8 @@ export class AnswerIdentification extends React.PureComponent {
     textInput: {
       flex: 1,
       fontSize: 14,
-      fontWeight:'600',
-      color: Helpers.hexToRGBA(Colors.BLUE.A700, 0.9),
+      fontWeight:'700',
+      color: Helpers.hexToRGBA(Colors.BLUE[900], 0.9),
     },
     textInputFocused: {
       fontWeight:'800',
