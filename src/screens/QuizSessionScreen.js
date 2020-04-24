@@ -130,7 +130,8 @@ export class QuizSessionScreen extends React.Component {
   };
 
   // QuizQuestionItem - AnswerMatchingType
-  _handleOnPressChooseAnswer = (question) => {
+  _handleOnPressChooseAnswer = (question, answer) => {
+    const answers = this.answers.answerMap;
 
     // get matchingTypeChoices obj - holds all the choices for each section
     const matchingTypeChoices = this.session.values[
@@ -142,6 +143,7 @@ export class QuizSessionScreen extends React.Component {
 
     // get the matchingTypeChoices for this section
     const sectionChoices = matchingTypeChoices[sectionID];
+
     
     // open QuizSessionChooseAnswerModal
     ModalController.showModal({
@@ -149,6 +151,8 @@ export class QuizSessionScreen extends React.Component {
       navProps: {
         [MNPQuizSessionChooseAnswer.quiz          ]: this.quiz,
         [MNPQuizSessionChooseAnswer.question      ]: question,
+        [MNPQuizSessionChooseAnswer.answer        ]: answer,
+        [MNPQuizSessionChooseAnswer.answers       ]: answers,
         [MNPQuizSessionChooseAnswer.sectionChoices]: sectionChoices,
         [MNPQuizSessionChooseAnswer.onPressDone   ]: this._handleOnAnswerSelected,
       },

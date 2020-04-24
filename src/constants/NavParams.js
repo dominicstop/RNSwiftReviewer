@@ -64,6 +64,8 @@ export const MNPQuizCreateQuestion = {
 export const MNPQuizSessionChooseAnswer = {
   quiz          : 'quiz',
   question      : 'question',
+  answer        : 'answer',
+  answers       : 'answers',
   sectionChoices: 'sectionChoices',
   onPressDone   : 'onPressDone',
 };

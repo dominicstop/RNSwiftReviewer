@@ -21,6 +21,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { BORDER_WIDTH } from '../constants/UIValues';
 import { iOSUIKit } from 'react-native-typography';
+import { QuizSessionAnswerKeys } from '../constants/PropKeys';
 
 
 class ChoiceItem extends React.PureComponent {
@@ -114,8 +115,11 @@ export class QuizSessionChooseAnswerModal extends React.Component {
   constructor(props){
     super(props);
 
+    const answer      = props?.[MNPQuizSessionChooseAnswer.answer] ?? {};
+    const answerValue = answer [QuizSessionAnswerKeys.answerValue];
+
     this.state = {
-      selected: null,
+      selected: answerValue,
     };
   };
 
