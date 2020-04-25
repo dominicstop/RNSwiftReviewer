@@ -72,10 +72,10 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 20,
     marginHorizontal: 13,
-    borderWidth: 1,
-    borderColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.25),
   },
   segmentedControl: {
     height: 33,
+    borderWidth: 1,
+    borderColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.5),
   },
 });

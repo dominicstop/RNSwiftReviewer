@@ -194,7 +194,7 @@ export class QuizQuestionItem extends React.Component {
             />
             <View style={styles.contentContainer}>
               <Text style={styles.textQuestion}>
-                {`      ${questionText} ${props.isFocused}`}
+                {`      ${questionText}`}
               </Text>
             </View>
           </ScrollView>
