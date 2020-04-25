@@ -14,12 +14,13 @@ import * as Colors  from 'app/src/constants/Colors';
 
 import { INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
+import { QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 
 const { Value, Extrapolate, interpolate, timing, sub } = Reanimated;
 const BOTTOM_MARGIN = (21 + INSET_BOTTOM);
 
 
-export class AnswerIdentification extends React.PureComponent {
+export class AnswerIdentification extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.8),
@@ -78,6 +79,27 @@ export class AnswerIdentification extends React.PureComponent {
       inputFocused: false,
       textInput: '',
     };
+  };
+
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    // check if answer obj from props
+    const prevAnswer = prevProps?.answer ?? {};
+    const nextAnswer = nextProps?.answer ?? {};
+    // get answer value from answer obj
+    const prevAnsVal = prevAnswer[QuizSessionAnswerKeys.answerValue];
+    const nextAnsVal = nextAnswer[QuizSessionAnswerKeys.answerValue];
+
+    return(
+      // check if props changed
+      (prevAnsVal != nextAnsVal) ||
+      // check if state changed
+      (prevState.textInput       != nextState.textInput      ) ||
+      (prevState.inputFocused    != nextState.inputFocused   ) ||
+      (prevState.keyboardVisible != nextState.keyboardVisible)
+    );
   };
 
   componentDidUpdate(prevProps){
@@ -147,7 +169,11 @@ export class AnswerIdentification extends React.PureComponent {
 
   render(){
     const { styles } = AnswerIdentification;
+    const { answer } = this.props;
     const { inputFocused } = this.state;
+
+    // get answer value from answer obj
+    const answerValue = answer?.[QuizSessionAnswerKeys.answerValue];
 
     const rootContainerStyle = {
       borderTopLeftRadius : this._borderRadius,
@@ -160,6 +186,7 @@ export class AnswerIdentification extends React.PureComponent {
           <View style={styles.inputBackground}/>
           <TextInput
             style={[styles.textInput, (inputFocused && styles.textInputFocused)]}
+            defaultValue={answerValue}
             onBlur={this._handleOnBlur}
             onFocus={this._handleOnFocus}
             placeholder={'Type your answer...'}
