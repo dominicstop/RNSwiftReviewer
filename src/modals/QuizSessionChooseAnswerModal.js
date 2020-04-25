@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Ionicon from '@expo/vector-icons/Ionicons';
 
+import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
@@ -14,14 +15,12 @@ import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
-import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
-
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { BORDER_WIDTH } from '../constants/UIValues';
-import { iOSUIKit } from 'react-native-typography';
-import { QuizSessionAnswerKeys } from '../constants/PropKeys';
+import { BORDER_WIDTH } from 'app/src/constants/UIValues';
+import { QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
+import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 
 class ChoiceItem extends React.PureComponent {
