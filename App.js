@@ -1,6 +1,7 @@
 import React from 'react';
 
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
+
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator, HeaderStyleInterpolators } from 'react-navigation-stack';
 import { Transition } from 'react-native-reanimated';
@@ -20,9 +21,18 @@ enableScreens();
 
 
 const AppStack = createStackNavigator({ 
-    [ROUTES.homeRoute       ]: HomeScreen       ,
-    [ROUTES.createQuizRoute ]: CreateQuizScreen ,
-    [ROUTES.quizSessionRoute]: QuizSessionScreen,
+    [ROUTES.homeRoute]: {
+      screen: HomeScreen,
+    },
+    [ROUTES.createQuizRoute ]: {
+      screen: CreateQuizScreen,
+    },
+    [ROUTES.quizSessionRoute]: {
+      screen: QuizSessionScreen,
+      navigationOptions: {
+        gestureEnabled: false,
+      },
+    },
   }, {
     mode: 'card',
     defaultNavigationOptions: {

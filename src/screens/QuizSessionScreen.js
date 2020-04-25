@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 
+import { StackActions } from 'react-navigation';
+
 import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
 import { QuizQuestionItem  } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
 import { QuizSessionHeader } from 'app/src/components/QuizSessionScreen/QuizSessionHeader';
@@ -116,8 +118,22 @@ export class QuizSessionScreen extends React.Component {
   };
 
   // QuizSessionHeader: onPress Cancel
-  _handleOnPressCancel = () => {
-    alert('cancel');
+  _handleOnPressCancel = async () => {
+    const { navigation } = this.props;
+
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title: 'Discard Quiz Session',
+      message: "Are you sure you want to discard the current quiz session and go back?",
+      confirmText: 'Quit Session',
+      isDestructive: true,
+    });
+
+    if(confirm){
+      // pop back to home route
+      navigation && navigation.dispatch(
+        StackActions.popToTop()
+      );
+    };
   };
   
   // FlatListCarousel
