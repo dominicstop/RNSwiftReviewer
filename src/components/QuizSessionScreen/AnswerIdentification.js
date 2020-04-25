@@ -163,6 +163,7 @@ export class AnswerIdentification extends React.PureComponent {
             onBlur={this._handleOnBlur}
             onFocus={this._handleOnFocus}
             placeholder={'Type your answer...'}
+            returnKeyType={'done'}
             placeholderTextColor={(inputFocused
               ? Helpers.hexToRGBA(Colors.BLUE[900], 0.5)
               : Helpers.hexToRGBA(Colors.BLUE.A700, 0.6)

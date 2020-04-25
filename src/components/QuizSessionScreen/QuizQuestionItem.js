@@ -87,8 +87,9 @@ export class QuizQuestionItem extends React.Component {
     };
   };
 
-  shouldComponentUpdate(nextProps){
+  shouldComponentUpdate(nextProps, nextState){
     const prevProps = this.props;
+    const prevState = this.state;
 
     const prevAns = prevProps.answer ?? {};
     const nextAns = nextProps.answer ?? {};
@@ -97,6 +98,8 @@ export class QuizQuestionItem extends React.Component {
     const nextAnsVal = nextAns[QuizSessionAnswerKeys.answerValue];
 
     return(
+      // update when bottomSpace changes
+      prevState.extraBottomSpace != nextState.extraBottomSpace ||
       // update when focused
       prevProps.isFocused != nextProps.isFocused ||
       // update when the answer changed
