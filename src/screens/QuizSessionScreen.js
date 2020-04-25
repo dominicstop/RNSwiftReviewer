@@ -107,7 +107,12 @@ export class QuizSessionScreen extends React.Component {
 
   // QuizSessionHeader: onPress Done
   _handleOnPressDone = () => {
-    alert('done');
+    // open QuizSessionDoneModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.RNNModalQuizSessionDone,
+      navProps: {
+      },
+    });
   };
 
   // QuizSessionHeader: onPress Cancel

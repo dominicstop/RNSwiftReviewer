@@ -21,5 +21,6 @@ export const RNN_ROUTES = {
   RNNModalQuizAddSection         : 'RNNModalQuizAddSection'         ,
   RNNModalQuizAddQuestions       : 'RNNModalQuizAddQuestions'       ,
   RNNModalQuizCreateQuestion     : 'RNNModalQuizCreateQuestion'     ,
+  RNNModalQuizSessionDone        : 'RNNModalQuizSessionDone'        ,
   RNNModalQuizSessionChooseAnswer: 'RNNModalQuizSessionChooseAnswer',
 };
