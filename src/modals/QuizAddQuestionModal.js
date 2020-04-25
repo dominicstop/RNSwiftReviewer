@@ -182,7 +182,7 @@ export class QuizAddQuestionModal extends React.Component {
 
     // open QuizCreateQuestionModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
+      routeName: RNN_ROUTES.ModalQuizCreateQuestion,
       navProps: {
         [MNPQuizCreateQuestion.isEditing   ]: false,
         [MNPQuizCreateQuestion.quizSection ]: section,
@@ -201,7 +201,7 @@ export class QuizAddQuestionModal extends React.Component {
 
     // open QuizCreateQuestionModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizCreateQuestion,
+      routeName: RNN_ROUTES.ModalQuizCreateQuestion,
       navProps: {
         [MNPQuizCreateQuestion.isEditing    ]: true,
         [MNPQuizCreateQuestion.quizSection  ]: section,

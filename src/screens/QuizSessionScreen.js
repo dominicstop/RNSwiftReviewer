@@ -107,9 +107,9 @@ export class QuizSessionScreen extends React.Component {
 
   // QuizSessionHeader: onPress Done
   _handleOnPressDone = () => {
-    // open QuizSessionDoneModal
+    // open QuizSessionChooseAnswerModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizSessionDone,
+      routeName: RNN_ROUTES.ModalQuizSessionDone,
       navProps: {
       },
     });
@@ -160,7 +160,7 @@ export class QuizSessionScreen extends React.Component {
     
     // open QuizSessionChooseAnswerModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizSessionChooseAnswer,
+      routeName: RNN_ROUTES.ModalQuizSessionChooseAnswer,
       navProps: {
         [MNPQuizSessionChooseAnswer.quiz          ]: this.quiz,
         [MNPQuizSessionChooseAnswer.question      ]: question,

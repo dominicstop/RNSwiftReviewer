@@ -16,11 +16,11 @@ export const ROUTES = {
 export const RNN_ROUTES = {
   RootReactNavigationRoute: 'RootReactNavigationRoute',
   // modal comps/routes
-  RNNModalViewQuiz               : 'RNNModalViewQuiz'               ,
-  RNNModalCreateQuiz             : 'RNNModalCreateQuiz'             ,
-  RNNModalQuizAddSection         : 'RNNModalQuizAddSection'         ,
-  RNNModalQuizAddQuestions       : 'RNNModalQuizAddQuestions'       ,
-  RNNModalQuizCreateQuestion     : 'RNNModalQuizCreateQuestion'     ,
-  RNNModalQuizSessionDone        : 'RNNModalQuizSessionDone'        ,
-  RNNModalQuizSessionChooseAnswer: 'RNNModalQuizSessionChooseAnswer',
+  ModalViewQuiz               : 'ModalViewQuiz'               ,
+  ModalCreateQuiz             : 'ModalCreateQuiz'             ,
+  ModalQuizAddSection         : 'ModalQuizAddSection'         ,
+  ModalQuizAddQuestions       : 'ModalQuizAddQuestions'       ,
+  ModalQuizCreateQuestion     : 'ModalQuizCreateQuestion'     ,
+  ModalQuizSessionDone        : 'ModalQuizSessionDone'        ,
+  ModalQuizSessionChooseAnswer: 'ModalQuizSessionChooseAnswer',
 };

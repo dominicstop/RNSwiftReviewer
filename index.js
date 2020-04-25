@@ -18,13 +18,13 @@ import { RNN_ROUTES } from 'app/src/constants/Routes';
 // register RNN components
 Navigation.registerComponent(RNN_ROUTES.RootReactNavigationRoute, () => App);
 // register RNN modals
-Navigation.registerComponent(RNN_ROUTES.RNNModalViewQuiz               , () => ViewQuizModal               );
-Navigation.registerComponent(RNN_ROUTES.RNNModalCreateQuiz             , () => CreateQuizModal             );
-Navigation.registerComponent(RNN_ROUTES.RNNModalQuizAddSection         , () => QuizAddSectionModal         );
-Navigation.registerComponent(RNN_ROUTES.RNNModalQuizAddQuestions       , () => QuizAddQuestionModal        );
-Navigation.registerComponent(RNN_ROUTES.RNNModalQuizCreateQuestion     , () => QuizCreateQuestionModal     );
-Navigation.registerComponent(RNN_ROUTES.RNNModalQuizSessionDone        , () => QuizSessionDoneModal        );
-Navigation.registerComponent(RNN_ROUTES.RNNModalQuizSessionChooseAnswer, () => QuizSessionChooseAnswerModal);
+Navigation.registerComponent(RNN_ROUTES.ModalViewQuiz               , () => ViewQuizModal               );
+Navigation.registerComponent(RNN_ROUTES.ModalCreateQuiz             , () => CreateQuizModal             );
+Navigation.registerComponent(RNN_ROUTES.ModalQuizAddSection         , () => QuizAddSectionModal         );
+Navigation.registerComponent(RNN_ROUTES.ModalQuizAddQuestions       , () => QuizAddQuestionModal        );
+Navigation.registerComponent(RNN_ROUTES.ModalQuizCreateQuestion     , () => QuizCreateQuestionModal     );
+Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionDone        , () => QuizSessionDoneModal        );
+Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionChooseAnswer, () => QuizSessionChooseAnswerModal);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({

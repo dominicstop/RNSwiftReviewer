@@ -96,7 +96,7 @@ export class CreateQuizScreen extends React.Component {
     
     // open CreateQuizModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalCreateQuiz,
+      routeName: RNN_ROUTES.ModalCreateQuiz,
       navProps: {
         [MNPCreateQuiz.navigation]: navigation,
         [MNPCreateQuiz.isEditing ]: true     ,
@@ -157,7 +157,7 @@ export class CreateQuizScreen extends React.Component {
 
     // open QuizAddSectionModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizAddSection,
+      routeName: RNN_ROUTES.ModalQuizAddSection,
       navProps: {
         [MNPQuizAddSection.isEditing   ]: false,
         [MNPQuizAddSection.sectionTitle]: null ,
@@ -180,7 +180,7 @@ export class CreateQuizScreen extends React.Component {
 
     // open QuizAddSectionModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizAddSection,
+      routeName: RNN_ROUTES.ModalQuizAddSection,
       navProps: {
         [MNPQuizAddSection.isEditing   ]: true,
         [MNPQuizAddSection.sectionTitle]: title,
@@ -199,7 +199,7 @@ export class CreateQuizScreen extends React.Component {
   _handleOnPressSectionAdd = ({section, index}) => {
     // open QuizAddQuestionModal
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalQuizAddQuestions,
+      routeName: RNN_ROUTES.ModalQuizAddQuestions,
       navProps: {
         [MNPQuizAddQuestion.quizSection ]: section,
         [MNPQuizAddQuestion.onPressDone ]: this._handleQuizAddQuestionModalOnPressDone,

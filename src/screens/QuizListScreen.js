@@ -91,7 +91,7 @@ export class QuizListScreen extends React.Component {
     const { navigation } = this.props;
 
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalCreateQuiz,
+      routeName: RNN_ROUTES.ModalCreateQuiz,
       navProps: {
         [MNPCreateQuiz.navigation]: navigation,
         [MNPCreateQuiz.isEditing ]: false     ,
@@ -106,7 +106,7 @@ export class QuizListScreen extends React.Component {
     const { navigation } = this.props;
 
     ModalController.showModal({
-      routeName: RNN_ROUTES.RNNModalViewQuiz,
+      routeName: RNN_ROUTES.ModalViewQuiz,
       navProps: {
         [MNPViewQuiz.quiz      ]: quiz,
         [MNPViewQuiz.navigation]: navigation,
