@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
-
+import Chroma from 'chroma-js';
 import Ionicon from '@expo/vector-icons/Ionicons';
+
+import * as Animatable from 'react-native-animatable';
 import { iOSUIKit } from 'react-native-typography';
 
 import * as Helpers from 'app/src/functions/helpers';
@@ -13,19 +14,16 @@ import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 import { QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 
 
-const colorsAdj = [
-  Helpers.hexToRGBA(Colors.BLUE[700 ], 0.9),
-  Helpers.hexToRGBA(Colors.BLUE[800 ], 0.9),
-  Helpers.hexToRGBA(Colors.BLUE[900 ], 0.9),
-  Helpers.hexToRGBA(Colors.BLUE[1000], 0.9),
-];
+const scale = Chroma.scale([
+  Colors.BLUE[800 ],
+  Colors.BLUE[900 ],
+  Colors.BLUE[1000],
+]);
 
-const bgColors = [
-  [colorsAdj[0]],
-  [colorsAdj[1], colorsAdj[2]],
-  [colorsAdj[1], colorsAdj[2], colorsAdj[3]],
-  [colorsAdj[0], colorsAdj[1], colorsAdj[2], colorsAdj[3]],
-];
+const bgColors = Array.from({length: 10}, (x, i) => (
+  scale.colors(i)
+));
+
 
 class ChoiceItem extends React.Component {
   static styles = StyleSheet.create({
@@ -55,14 +53,15 @@ class ChoiceItem extends React.Component {
     },
   });
 
-  constructor(props){
-    super(props);
+  shouldComponentUpdate(nextProps){
+    const prevProps = this.props;
 
-    this.backgroundColor = 
-      bgColors[props.choicesCount - 1][props.index];
-
-    this.letter =
-      Helpers.getLetter(props.index);
+    return (
+      (prevProps.index        != nextProps.index       ) ||
+      (prevProps.choice       != nextProps.choice      ) ||
+      (prevProps.isSelected   != nextProps.isSelected  ) ||
+      (prevProps.choicesCount != nextProps.choicesCount) 
+    );
   };
 
   _handleOnPressChoice = () => {
@@ -74,7 +73,7 @@ class ChoiceItem extends React.Component {
 
   render(){
     const { styles } = ChoiceItem;
-    const { choice, isSelected } = this.props;
+    const { index, choice, choicesCount, isSelected } = this.props;
 
     return(
       <Animatable.View
@@ -86,15 +85,15 @@ class ChoiceItem extends React.Component {
           activeOpacity={0.9}
           onPress={this._handleOnPressChoice}
           style={[styles.choiceContainer, (isSelected
-            ? { backgroundColor: Colors.BLUE.A700   }
-            : { backgroundColor: this.backgroundColor }
+            ? { backgroundColor: Colors.BLUE.A700 }
+            : { backgroundColor: bgColors[choicesCount][index] }
           )]}
         >
           <Text style={(isSelected
             ? styles.textLetterSelected
             : styles.textLetter
           )}>
-            {this.letter}
+            {Helpers.getLetter(index)}
           </Text>
           <Text style={(isSelected
             ? styles.textChoiceSelected
@@ -162,7 +161,7 @@ export class AnswerMultipleChoice extends React.Component {
     const { styles } = AnswerMultipleChoice;
     const { answer, ...props } = this.props;
 
-    const choices      = props [QuizQuestionKeys.questionChoices] ?? [];
+    const choices      = props[QuizQuestionKeys.questionChoices] ?? [];
     const choicesCount = choices.length;
 
     const answerVal = answer?.[QuizSessionAnswerKeys.answerValue];
