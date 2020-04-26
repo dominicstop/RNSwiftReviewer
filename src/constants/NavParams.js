@@ -73,6 +73,7 @@ export const MNPQuizSessionChooseAnswer = {
 
 // QuizSessionDoneModal
 export const MNPQuizSessionDoneModal = {
+  quiz           : 'quiz'           ,
   answers        : 'answers'        ,
   questions      : 'questions'      ,
   currentIndex   : 'currentIndex'   ,

@@ -11,7 +11,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { QuizSessionModel } from 'app/src/models/QuizSession';
 
-import { SNPQuizSession   } from 'app/src/constants/NavParams';
+import { SNPQuizSession, MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 import { SectionTypes    } from 'app/src/constants/SectionTypes';
@@ -20,7 +20,6 @@ import { ModalController } from 'app/src/functions/ModalController';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 import { QuizSessionAnswerModel } from 'app/src/models/QuizSessionAnswerModel';
-
 
 
 export class QuizSessionScreen extends React.Component {
@@ -72,7 +71,8 @@ export class QuizSessionScreen extends React.Component {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   };
-
+  
+  // #region - event handlers / callbacks
   _keyboardWillShow = (event) => {
     const { currentIndex, questions } = this.state;
 
@@ -103,16 +103,29 @@ export class QuizSessionScreen extends React.Component {
     };
   };
 
+  // FlatListCarousel - flatlist
   _handleKeyExtractor = (item, index) => (
     item[QuizQuestionKeys.questionID]
   );
 
   // QuizSessionHeader: onPress Done
   _handleOnPressDone = () => {
-    // open QuizSessionChooseAnswerModal
+    const { questions, currentIndex } = this.state;
+
+    const quiz            = { ...this.quiz };
+    const answers         = this.answers.answerMap;
+    const currentQuestion = questions[currentIndex];
+
+    // open QuizSessionDoneModal
     ModalController.showModal({
       routeName: RNN_ROUTES.ModalQuizSessionDone,
       navProps: {
+        [MNPQuizSessionDoneModal.quiz           ]: quiz           ,
+        [MNPQuizSessionDoneModal.answers        ]: answers        ,
+        [MNPQuizSessionDoneModal.questions      ]: questions      ,
+        [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
+        [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
+        [MNPQuizSessionDoneModal.onPressDone    ]: null,
       },
     });
   };
@@ -197,7 +210,10 @@ export class QuizSessionScreen extends React.Component {
       answers: this.answers.answerMap,
     });
   };
+  //#endregion
 
+  // #region - render functions
+  // FlatListCarousel - flatlist
   _renderItem = ({item, index}) => {
     const { currentIndex, answers } = this.state;
 
@@ -243,4 +259,5 @@ export class QuizSessionScreen extends React.Component {
       </View>
     );
   };
+  //#endregion
 };
