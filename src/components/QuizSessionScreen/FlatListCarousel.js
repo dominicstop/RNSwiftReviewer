@@ -8,7 +8,7 @@ import { INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
-const ITEM_WIDTH  = screenWidth ;
+const ITEM_WIDTH  = screenWidth;
 const ITEM_HEIGHT = screenHeight;
 
 const spaceTop    = HeaderValues.getHeaderHeight(true);
@@ -22,9 +22,15 @@ export class FlatListCarousel extends React.PureComponent {
     this.scrollY = 0;
   };
 
-  componentDidMount(){
+  async componentDidMount(){
     const { innerRef } = this.props;
     innerRef && innerRef(this.flatlistRef);
+
+    await Helpers.timeout(50);
+    this.flatlistRef.scrollToOffset({
+      animated: true,
+      offset: 0,
+    });
   };
   
   getProps(){
@@ -70,6 +76,13 @@ export class FlatListCarousel extends React.PureComponent {
     onSnap && onSnap({
       index: currentIndex
     });
+
+    if(y < 0 && this.flatlistRef){
+      this.flatlistRef.scrollToOffset({
+        animated: true,
+        offset: 0,
+      });
+    };
   };
 
   _handleGetItemLayout = (data, index) => ({
@@ -111,6 +124,7 @@ export class FlatListCarousel extends React.PureComponent {
         decelerationRate={'fast'}
         overScrollMode={'never'}
         keyboardDismissMode={'on-drag'}
+        nestedScrollEnabled={true}
         removeClippedSubviews={true}
         maxToRenderPerBatch={5}
         scrollsToTop={false}

@@ -111,10 +111,11 @@ export class QuizSessionScreen extends React.Component {
   // QuizSessionHeader: onPress Done
   _handleOnPressDone = () => {
     const { questions, currentIndex } = this.state;
-
-    const quiz            = { ...this.quiz };
-    const answers         = this.answers.answerMap;
     const currentQuestion = questions[currentIndex];
+
+    const quiz    = { ...this.quiz };
+    const answers = this.answers.answerMap;
+    const session = this.session.values;
 
     // open QuizSessionDoneModal
     ModalController.showModal({
@@ -122,6 +123,7 @@ export class QuizSessionScreen extends React.Component {
       navProps: {
         [MNPQuizSessionDoneModal.quiz           ]: quiz           ,
         [MNPQuizSessionDoneModal.answers        ]: answers        ,
+        [MNPQuizSessionDoneModal.session        ]: session        ,
         [MNPQuizSessionDoneModal.questions      ]: questions      ,
         [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
@@ -244,6 +246,7 @@ export class QuizSessionScreen extends React.Component {
     return(
       <View style={styles.rootContainer}>
         <FlatListCarousel
+          ref={r => this.flatlistCarouselRef = r}
           keyExtractor={this._handleKeyExtractor}
           renderItem={this._renderItem}
           onSnap={this._handleSnap}
