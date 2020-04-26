@@ -167,8 +167,8 @@ export class QuizSessionDoneModal extends React.Component {
 
     const modalHeader = (
       <ModalHeader
-        title={'Choose Answer'}
-        subtitle={"Choose from the following choices..."}
+        title={'Quiz Session'}
+        subtitle={`Press "End Session" when you're done`}
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
-    opacity: 0.7,
+    opacity: 0.8,
   },
   titleIconContainer: {
   },
