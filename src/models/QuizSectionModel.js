@@ -55,6 +55,19 @@ export class QuizSectionModel {
     ));
   };
 
+  static compare(prevSection = {}, nextSection = {}){
+    return (
+      // todo: compare sections
+      (prevSection[QuizSectionKeys.quizID              ] != nextSection[QuizSectionKeys.quizID              ]) ||
+      (prevSection[QuizSectionKeys.sectionID           ] != nextSection[QuizSectionKeys.sectionID           ]) ||
+      (prevSection[QuizSectionKeys.sectionTitle        ] != nextSection[QuizSectionKeys.sectionTitle        ]) ||
+      (prevSection[QuizSectionKeys.sectionDesc         ] != nextSection[QuizSectionKeys.sectionDesc         ]) ||
+      (prevSection[QuizSectionKeys.sectionType         ] != nextSection[QuizSectionKeys.sectionType         ]) ||
+      (prevSection[QuizSectionKeys.sectionDateCreated  ] != nextSection[QuizSectionKeys.sectionDateCreated  ]) ||
+      (prevSection[QuizSectionKeys.sectionQuestionCount] != nextSection[QuizSectionKeys.sectionQuestionCount])
+    );
+  };
+
   constructor(values = {}){
     this.values = QuizSectionModel.wrap(values);
   };

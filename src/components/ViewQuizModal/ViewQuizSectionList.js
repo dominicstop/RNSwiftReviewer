@@ -12,9 +12,10 @@ import * as Helpers  from 'app/src/functions/helpers';
 import { BORDER_WIDTH      } from 'app/src/constants/UIValues';
 import { QuizSectionKeys   } from 'app/src/constants/PropKeys';
 import { SectionTypeTitles } from 'app/src/constants/SectionTypes';
+import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 
-export class ViewQuizSectionList extends React.PureComponent {
+export class ViewQuizSectionList extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       paddingHorizontal: 12,
@@ -42,15 +43,26 @@ export class ViewQuizSectionList extends React.PureComponent {
     },
   });
 
+  shouldComponentUpdate(nextProps){
+    const prevProps = this.props;
+
+    const prevSection = prevProps?.section ?? {};
+    const nextSection = nextProps?.section ?? {};
+
+    return QuizSectionModel.compare(prevSection, nextSection);
+  };
+
   render(){
     const { styles } = ViewQuizSectionList;
     const { index, ...props } = this.props;
 
-    const title = props[QuizSectionKeys.sectionTitle] ?? 'N/A';
-    const desc  = props[QuizSectionKeys.sectionDesc ] ?? 'N/A';
-    const type  = props[QuizSectionKeys.sectionType ] ?? 'N/A';
+    const section = props?.section ?? {};
 
-    const questionCount = props[QuizSectionKeys.sectionQuestionCount] ?? 0;
+    const title = section[QuizSectionKeys.sectionTitle] ?? 'N/A';
+    const desc  = section[QuizSectionKeys.sectionDesc ] ?? 'N/A';
+    const type  = section[QuizSectionKeys.sectionType ] ?? 'N/A';
+
+    const questionCount = section[QuizSectionKeys.sectionQuestionCount] ?? 0;
     
     const textType  = SectionTypeTitles[type];
     const textCount = `${questionCount} ${Helpers.plural('item', questionCount)}`;
@@ -73,8 +85,8 @@ export class ViewQuizSectionList extends React.PureComponent {
           containerStyle={{marginTop: 3}}
           textDetailLabelStyle={{flex: 0, marginRight: 5}}
           labelValueMap={[
-            ['Type:'    , textType ],
-            ['Sections:', textCount],
+            ['Type:'     , textType ],
+            ['Questions:', textCount],
           ]}
         />
         <Text style={styles.textDescription}>

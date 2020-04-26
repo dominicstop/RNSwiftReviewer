@@ -154,7 +154,8 @@ export class QuizSessionDoneModal extends React.Component {
       );
       case QSDSectionTypes.SECTIONS: return (
         <ViewQuizSectionList
-          {...{index, ...item}}
+          section={item}
+          {...{index}}
         />
       );
     };
