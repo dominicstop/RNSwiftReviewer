@@ -17,7 +17,7 @@ import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
-import { ViewQuizSectionList } from 'app/src/components/ViewQuizModal/ViewQuizSectionList';
+import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -153,7 +153,7 @@ export class QuizSessionDoneModal extends React.Component {
         />
       );
       case QSDSectionTypes.SECTIONS: return (
-        <ViewQuizSectionList
+        <ViewQuizSectionItem
           section={item}
           {...{index}}
         />

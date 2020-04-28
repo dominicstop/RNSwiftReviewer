@@ -9,14 +9,14 @@ import { ModalBackground    } from 'app/src/components/ModalBackground';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
-import { ModalSectionButton  } from 'app/src/components/ModalSectionButton';
+import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
-import { ViewQuizSectionList } from 'app/src/components/ViewQuizModal/ViewQuizSectionList';
-import { ViewQuizSessionList } from 'app/src/components/ViewQuizModal/ViewQuizSessionList';
+import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
+import { ViewQuizSessionItem } from 'app/src/components/ViewQuizModal/ViewQuizSessionItem';
 
 import { ROUTES } from 'app/src/constants/Routes';
 
@@ -240,14 +240,12 @@ export class ViewQuizModal extends React.Component {
         />
       );
       case VQMSectionTypes.SECTIONS: return (
-        <ViewQuizSectionList
-          section={item}
+        <ViewQuizSectionItem
           {...{index}}
         />
       );
       case VQMSectionTypes.SESSION: return (
-        <ViewQuizSessionList
-          session={item}
+        <ViewQuizSessionItem
           {...{index}}
         />
       );

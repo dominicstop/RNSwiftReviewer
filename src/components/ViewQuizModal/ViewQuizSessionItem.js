@@ -8,7 +8,7 @@ import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';
 import { ImageTitleSubtitle } from '../ImageTitleSubtitle';
 
-export class ViewQuizSessionList extends React.PureComponent {
+export class  ViewQuizSessionItem extends React.PureComponent {
   static styles = StyleSheet.create({
     rootContainer: {
       paddingHorizontal: 12,
@@ -24,10 +24,10 @@ export class ViewQuizSessionList extends React.PureComponent {
   });
 
   render(){
-    const { styles } = ViewQuizSessionList;
-    const { isEmptyCard } = this.props;
+    const { styles } =  ViewQuizSessionItem;
+    const { isEmpty } = this.props;
 
-    return (isEmptyCard? (
+    return (isEmpty? (
       <ModalSection
         containerStyle={styles.rootContainerEmpty}
         showBorderTop={false}

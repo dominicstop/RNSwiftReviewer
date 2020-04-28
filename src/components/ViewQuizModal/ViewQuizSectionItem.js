@@ -15,12 +15,12 @@ import { SectionTypeTitles } from 'app/src/constants/SectionTypes';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 
-export class ViewQuizSectionList extends React.Component {
+export class ViewQuizSectionItem extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       paddingHorizontal: 12,
       paddingVertical: 10,
-      backgroundColor: 'rgba(255,255,255,0.6)',
+      backgroundColor: 'rgba(255,255,255,0.9)',
       borderBottomWidth: BORDER_WIDTH,
       borderBottomColor: 'rgba(0,0,0,0.2)',
     },
@@ -30,8 +30,9 @@ export class ViewQuizSectionList extends React.Component {
     },
     textTitle: {
       ...iOSUIKit.subheadObject,
-      ...sanFranciscoWeights.semibold,
+      ...sanFranciscoWeights.bold,
       fontSize: (iOSUIKit.subheadEmphasizedObject.fontSize + 2),
+      color: Colors.BLUE[1100],
       flex: 1,
       marginLeft: 7,
       textAlignVertical: 'center',
@@ -39,7 +40,7 @@ export class ViewQuizSectionList extends React.Component {
     textDescription: {
       ...iOSUIKit.subheadObject,
       marginTop: 3,
-      color: Colors.GREY[900],
+      color: Colors.GREY[800],
     },
   });
 
@@ -53,7 +54,7 @@ export class ViewQuizSectionList extends React.Component {
   };
 
   render(){
-    const { styles } = ViewQuizSectionList;
+    const { styles } = ViewQuizSectionItem;
     const { index, ...props } = this.props;
 
     const section = props?.section ?? {};
