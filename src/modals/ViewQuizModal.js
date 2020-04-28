@@ -58,13 +58,13 @@ export class ViewQuizModal extends React.Component {
     ];
 
     const sectionData = sections.map(section =>
-      ({type: VQMSectionTypes.SECTIONS, ...section})
+      ({type: VQMSectionTypes.SECTIONS, section})
     );
 
     const sessionData = ((sessions.length == 0)
-      ? [{ type: VQMSectionTypes.SESSION, isEmptyCard: true }]
+      ? [{ type: VQMSectionTypes.SESSION, isEmpty: true }]
       : sessions.map(sesssion => (
-        ({ type: VQMSectionTypes.SESSION, ...sesssion })
+        ({ type: VQMSectionTypes.SESSION, sesssion })
       ))
     );
 
@@ -80,7 +80,7 @@ export class ViewQuizModal extends React.Component {
 
     switch (type) {
       case VQMSectionTypes.DETAILS : return (`${type}-${index}`);
-      case VQMSectionTypes.SECTIONS: return (item[QuizSectionKeys.sectionID]);
+      case VQMSectionTypes.SECTIONS: return (item.section[QuizSectionKeys.sectionID]);
       case VQMSectionTypes.SESSION : return (index); //todo: impl.
     };
   };
@@ -198,7 +198,7 @@ export class ViewQuizModal extends React.Component {
   };
 
   _renderSectionSeperator = (data) => {
-    if(data.trailingItem) return null;
+    if(data?.trailingItem) return null;
 
     return(
       <View style={{marginBottom: 20}}/>
@@ -241,11 +241,14 @@ export class ViewQuizModal extends React.Component {
       );
       case VQMSectionTypes.SECTIONS: return (
         <ViewQuizSectionItem
+          section={item.section}
           {...{index}}
         />
       );
       case VQMSectionTypes.SESSION: return (
         <ViewQuizSessionItem
+          isEmpty={item.isEmpty}
+          session={item.session}
           {...{index}}
         />
       );
