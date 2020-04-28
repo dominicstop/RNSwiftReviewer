@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     bottom: MODAL_FOOTER_HEIGHT,
   },
   background: {
-    backgroundColor: 'rgba(249,249,249,0.6)',
+    backgroundColor: 'rgba(252,252,252,0.8)',
     //fill space
     position: 'absolute',
     top: MODAL_HEADER_HEIGHT,

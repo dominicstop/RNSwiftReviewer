@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
   },
   background: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'white',
-    opacity: 0.8,
+    backgroundColor: 'rgba(255,255,255,0.9)',
   },
   titleIconContainer: {
   },
@@ -90,6 +89,7 @@ export class ModalSectionHeader extends React.PureComponent {
       <View style={[styles.rootContainer, rootContainerStyle, props.containerStyle]}>
         <BlurView
           style={styles.blurBackground}
+          blurAmount={75}
           blurType={'light'}
         />
         <View style={styles.background}/>

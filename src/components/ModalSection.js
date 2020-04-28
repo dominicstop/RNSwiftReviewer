@@ -9,7 +9,7 @@ import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 const styles = StyleSheet.create({
   rootContainer: {
     top: -BORDER_WIDTH,
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderColor: Colors.GREY[500],
     borderBottomWidth: BORDER_WIDTH,
   },
