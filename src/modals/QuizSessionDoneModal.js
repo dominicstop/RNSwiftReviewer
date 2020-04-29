@@ -161,7 +161,7 @@ export class QuizSessionDoneModal extends React.Component {
       case QSDSectionTypes.QUESTIONS: return (
         <ModalSectionHeader
           title={'Questions & Answers'}
-          subtitle={'List of all the questions in this session'}
+          subtitle={'Tap on an item to jump to that question'}
           titleIcon={(
             <Ionicon
               name={'ios-albums'}
