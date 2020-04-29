@@ -135,10 +135,10 @@ export class QuizSessionDoneModal extends React.Component {
           )}
         />
       );
-      case QSDSectionTypes.SESSION: return (
+      case QSDSectionTypes.QUESTIONS: return (
         <ModalSectionHeader
-          title={'Quiz Sessions'}
-          subtitle={`Your previous session history`}
+          title={'Questions & Answers'}
+          subtitle={'List of all the questions in this session'}
           titleIcon={(
             <Ionicon
               name={'ios-albums'}
@@ -188,7 +188,9 @@ export class QuizSessionDoneModal extends React.Component {
       );
       case QSDSectionTypes.QUESTIONS: return (
         <QuestionAnswerItem
-
+          question={item.question}
+          answer={item.answer}
+          {...{index}}
         />
       );
     };
