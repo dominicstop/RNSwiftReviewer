@@ -29,10 +29,12 @@ import * as Helpers from 'app/src/functions/helpers';
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
+import { QuizSessionDetails } from '../components/QuizSessionDoneModal/QuizSessionDetails';
 
 // QSD: QuizSessionDone 🤣
 const QSDSectionTypes = {
   DETAILS  : 'DETAILS'  ,
+  SESSION  : 'SESSION'  ,
   SECTIONS : 'SECTIONS' ,
   QUESTIONS: 'QUESTIONS',
 };
@@ -74,12 +76,17 @@ export class QuizSessionDoneModal extends React.Component {
       { type: QSDSectionTypes.DETAILS }
     ];
 
+    const sessionData = [
+      { type: QSDSectionTypes.SESSION }
+    ];
+
     const sectionData = sections.map(section =>
       ({type: QSDSectionTypes.SECTIONS, ...section})
     );
 
     return ([
       { type: QSDSectionTypes.DETAILS  , data: detailsData },
+      { type: QSDSectionTypes.SESSION  , data: sessionData },
       { type: QSDSectionTypes.SECTIONS , data: sectionData },
       { type: QSDSectionTypes.QUESTIONS, data: questionAnswerData },
     ]);
@@ -90,6 +97,7 @@ export class QuizSessionDoneModal extends React.Component {
 
     switch (type) {
       case QSDSectionTypes.DETAILS  : return (`${type}-${index}`);
+      case QSDSectionTypes.SESSION  : return (`${type}-${index}`);
       case QSDSectionTypes.SECTIONS : return (item[QuizSectionKeys.sectionID]);
       case QSDSectionTypes.QUESTIONS: return (item?.questionID ?? index);
     };
@@ -152,6 +160,18 @@ export class QuizSessionDoneModal extends React.Component {
           )}
         />
       );
+      case QSDSectionTypes.SESSION: return (
+        <ModalSectionHeader
+          title={'Session Details'}
+          subtitle={`Information about this session`}
+          titleIcon={(
+            <Ionicon
+              name={'ios-paper'}
+              size={25}
+            />
+          )}
+        />
+      );
       case QSDSectionTypes.SECTIONS: return (
         <ModalSectionHeader
           title={'Quiz Sections'}
@@ -202,13 +222,21 @@ export class QuizSessionDoneModal extends React.Component {
   _renderItem = ({item, index, section}) => {
     const props = this.props;
 
-    const quiz          = props[MNPQuizSessionDoneModal.quiz] ?? {};
+    const quiz          = props[MNPQuizSessionDoneModal.quiz        ] ?? {};
+    const session       = props[MNPQuizSessionDoneModal.session     ] ?? {};
+    const answers       = props[MNPQuizSessionDoneModal.answers     ] ?? {};
+    const questions     = props[MNPQuizSessionDoneModal.questions   ] ?? [];
     const currentIndex  = props[MNPQuizSessionDoneModal.currentIndex];
 
     switch (section.type) {
       case QSDSectionTypes.DETAILS: return (
         <ViewQuizDetails
           {...{quiz}}
+        />
+      );
+      case QSDSectionTypes.SESSION: return (
+        <QuizSessionDetails
+          {...{quiz, session, answers, questions}}
         />
       );
       case QSDSectionTypes.SECTIONS: return (
