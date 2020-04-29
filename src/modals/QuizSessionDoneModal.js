@@ -95,9 +95,21 @@ export class QuizSessionDoneModal extends React.Component {
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
 
-    await Helpers.timeout(200);
-    //close modal
-    Navigation.dismissModal(componentId);
+    const confirm = await Helpers.asyncActionSheetConfirm({
+      title: 'Done answering?',
+      message: "Are you sure you want to save and end this quiz session?",
+      confirmText: 'End Quiz',
+      isDestructive: false,
+    });
+
+    if(confirm){
+      const onPressDone = props[MNPQuizSessionDoneModal.onPressDone];
+      onPressDone && onPressDone();
+
+      await Helpers.timeout(200);
+      //close modal
+      Navigation.dismissModal(componentId);
+    };
   };
 
   _handleOnPressButtonRight = async () => {
@@ -108,8 +120,15 @@ export class QuizSessionDoneModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
-  _handleOnPressQuestion = ({answer, question, index}) => {
-    alert(index);
+  _handleOnPressQuestion = async ({answer, question, index}) => {
+    const { componentId, ...props } = this.props;
+
+    const onPressQuestion = props[MNPQuizSessionDoneModal.onPressQuestion];
+    onPressQuestion && onPressQuestion({answer, question, index});
+
+    await Helpers.timeout(200);
+    //close modal
+    Navigation.dismissModal(componentId);
   };
 
   // #region - render methods

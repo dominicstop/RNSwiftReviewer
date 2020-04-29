@@ -79,6 +79,7 @@ export const MNPQuizSessionDoneModal = {
   questions      : 'questions'      ,
   currentIndex   : 'currentIndex'   ,
   currentQuestion: 'currentQuestion',
+  onPressQuestion: 'onPressDone'    ,
   onPressDone    : 'onPressDone'    ,
 };
 

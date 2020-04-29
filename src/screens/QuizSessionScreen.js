@@ -127,7 +127,8 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionDoneModal.questions      ]: questions      ,
         [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
-        [MNPQuizSessionDoneModal.onPressDone    ]: null,
+        [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion,
+        [MNPQuizSessionDoneModal.onPressDone    ]: this._handleModalOnPressDone,
       },
     });
   };
@@ -211,6 +212,14 @@ export class QuizSessionScreen extends React.Component {
       ...prevState,
       answers: this.answers.answerMap,
     });
+  };
+
+  _handleModalOnPressQuestion = () => {
+    alert('_handleModalOnPressQuestion');
+  };
+
+  _handleModalOnPressDone = () => {
+    alert('_handleModalOnPressDone');
   };
   //#endregion
 
