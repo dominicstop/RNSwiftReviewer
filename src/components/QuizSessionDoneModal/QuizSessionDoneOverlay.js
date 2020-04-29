@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ActivityIndicator } from 'react-native';
 
 import Reanimated from 'react-native-reanimated';
 import { Easing } from 'react-native-reanimated';
@@ -14,25 +14,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.5)'
-  },
-  loadingContainer: {
-    width: 55,
-    height: 55,
-    borderRadius: 55/2,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // shadow
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-  },
-  overlay: {
+    backgroundColor: 'rgba(255,255,255,0.6)'
   },
 });
 
@@ -83,7 +65,10 @@ export class QuizSessionDoneOverlay extends React.PureComponent {
         style={[styles.overlayContainer, overlayContainerStyle]}
         pointerEvents={'auto'}
       >
-  
+        <ActivityIndicator
+          size={'large'}
+          color={Colors.BLUE.A700}
+        />
       </Reanimated.View>
     );
   };
