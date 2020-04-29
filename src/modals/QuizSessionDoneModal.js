@@ -24,7 +24,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { MNPQuizSessionChooseAnswer, MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
+import { MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
 import { QuestionAnswerItem } from '../components/QuizSessionDoneModal/QuestionAnswerItem';
 
 // QSD: QuizSessionDone 🤣
@@ -108,6 +108,10 @@ export class QuizSessionDoneModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
+  _handleOnPressQuestion = ({answer, question, index}) => {
+    alert(index);
+  };
+
   // #region - render methods
   _renderSectionHeader = ({section}) => {
     switch (section.type) {
@@ -188,6 +192,7 @@ export class QuizSessionDoneModal extends React.Component {
       );
       case QSDSectionTypes.QUESTIONS: return (
         <QuestionAnswerItem
+          onPressQuestion={this._handleOnPressQuestion}
           question={item.question}
           answer={item.answer}
           {...{index}}

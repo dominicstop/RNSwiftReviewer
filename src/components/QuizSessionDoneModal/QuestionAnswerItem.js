@@ -65,6 +65,17 @@ export class QuestionAnswerItem extends React.Component {
     },
   });
 
+  _handleOnPress = () => {
+    const { onPressQuestion, ...props } = this.props;
+    
+    this.rootContainer.pulse(300);
+    onPressQuestion && onPressQuestion({
+      index   : props.index   ,
+      answer  : props.answer  ,
+      question: props.question,
+    });
+  };
+
   render(){
     const { styles } = QuestionAnswerItem;
     const { question, answer, index } = this.props;
@@ -89,6 +100,7 @@ export class QuestionAnswerItem extends React.Component {
         useNativeDriver={true}
       >
         <TouchableOpacity 
+          onPress={this._handleOnPress}
           activeOpacity={0.5}
         >
           <View style={styles.questionContainer}>
