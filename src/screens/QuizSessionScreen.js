@@ -139,7 +139,7 @@ export class QuizSessionScreen extends React.Component {
 
     const confirm = await Helpers.asyncActionSheetConfirm({
       title: 'Discard Quiz Session',
-      message: "Are you sure you want to discard the current quiz session and go back?",
+      message: "Are you sure you want to discard the current quiz session and go back? None of your progress will be saved.",
       confirmText: 'Quit Session',
       isDestructive: true,
     });
@@ -214,8 +214,13 @@ export class QuizSessionScreen extends React.Component {
     });
   };
 
-  _handleModalOnPressQuestion = () => {
-    alert('_handleModalOnPressQuestion');
+  _handleModalOnPressQuestion = async ({index}) => {
+    const { currentIndex } = this.state;
+
+    if(index != currentIndex){
+      this.flatlistCarouselRef.scrollToIndex(index, false);
+      this.setState({ currentIndex: index });
+    };
   };
 
   _handleModalOnPressDone = () => {

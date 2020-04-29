@@ -19,7 +19,8 @@ export class FlatListCarousel extends React.PureComponent {
   constructor(props){
     super(props);
 
-    this.scrollY = 0;
+    this.scrollY      = 0;
+    this.currentIndex = 0;
   };
 
   async componentDidMount(){
@@ -39,6 +40,41 @@ export class FlatListCarousel extends React.PureComponent {
     return props;
   };
 
+  scrollToIndex = async (index, animated = true) => {
+    const offsetTarget  = (ITEM_HEIGHT * index);
+    const offsetCurrent = this.scrollY;
+
+    const shouldScroll = (offsetTarget != this.scrollY);
+
+    // scrollY must be ITEM_HEIGHT * n
+    const isScrollYAccurate = (
+      ((offsetCurrent % ITEM_HEIGHT) == 0) &&
+      (Number.isInteger(offsetCurrent / ITEM_HEIGHT))
+    );
+
+    if(shouldScroll){
+      animated && this.flatlistRef.setNativeProps({scrollEnabled: false });
+      animated && await Helpers.timeout(100);
+
+      const offsetDiff = Math.abs(offsetTarget - offsetCurrent);
+
+      const offsetAdj = ((offsetTarget > this.scrollY)
+        ? (this.scrollY + offsetDiff)
+        : (this.scrollY - offsetDiff)
+      );
+
+      this.scrollY = offsetAdj;
+
+      this.flatlistRef.scrollToOffset({
+        offset: offsetAdj,
+        animated,
+      });
+
+      animated && await Helpers.timeout(500);
+      animated && this.flatlistRef.setNativeProps({scrollEnabled: false });
+    };
+  };
+
   _handleOnScrollEndDrag = async ({nativeEvent}) => {
     const { onBeforeSnap } = this.props;
     const { contentOffset: {y} } = nativeEvent;
@@ -46,12 +82,14 @@ export class FlatListCarousel extends React.PureComponent {
     const scrollY      = ((y < 0)? 0 : y);
     const currentIndex = Math.round(scrollY / ITEM_HEIGHT);
 
+    this.scrollY      = scrollY;
+    this.currentIndex = currentIndex;
+
     onBeforeSnap && onBeforeSnap({
       prevIndex: this.currentIndex,
       nextIndex: currentIndex,
     });
 
-    this.scrollY = scrollY;
     this.flatlistRef.setNativeProps({scrollEnabled: false });
 
     await Helpers.timeout(250);

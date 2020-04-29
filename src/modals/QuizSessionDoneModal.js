@@ -19,13 +19,16 @@ import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
 
+import { QuestionAnswerItem     } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
+import { QuizSessionDoneOverlay } from 'app/src/components/QuizSessionDoneModal/QuizSessionDoneOverlay';
+
+
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
-import { QuestionAnswerItem } from '../components/QuizSessionDoneModal/QuestionAnswerItem';
 
 // QSD: QuizSessionDone 🤣
 const QSDSectionTypes = {
@@ -122,12 +125,15 @@ export class QuizSessionDoneModal extends React.Component {
 
   _handleOnPressQuestion = async ({answer, question, index}) => {
     const { componentId, ...props } = this.props;
-
     const onPressQuestion = props[MNPQuizSessionDoneModal.onPressQuestion];
-    onPressQuestion && onPressQuestion({answer, question, index});
 
-    await Helpers.timeout(200);
-    //close modal
+    await Promise.all([
+      Helpers.timeout(500),
+      this.overlay.show(),
+      onPressQuestion && onPressQuestion({answer, question, index}),
+    ]);
+
+    // close modal
     Navigation.dismissModal(componentId);
   };
 
@@ -250,11 +256,17 @@ export class QuizSessionDoneModal extends React.Component {
       </ModalFooter>
     );
 
+    const overlay = (
+      <QuizSessionDoneOverlay
+        ref={r => this.overlay = r}
+      />
+    );
+
     return (
       <ModalBackground
         wrapInScrollView={false}
         animateAsGroup={true}
-        {...{modalHeader, modalFooter}}
+        {...{modalHeader, modalFooter, overlay}}
       >
         <SectionList
           ref={r => this.sectionList = r}
