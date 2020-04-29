@@ -78,7 +78,7 @@ export class QuestionAnswerItem extends React.Component {
 
   render(){
     const { styles } = QuestionAnswerItem;
-    const { question, answer, index } = this.props;
+    const { question, answer, currentIndex, index } = this.props;
 
     const questionText = question?.[QuizQuestionKeys.questionText] ?? 'N/A';
 
@@ -93,10 +93,17 @@ export class QuestionAnswerItem extends React.Component {
       (answer != undefined)
     );
 
+    const isActive = (currentIndex == index)
+    const rootContainerStyle = {
+      ...(isActive && {
+        backgroundColor: Colors.BLUE[50]
+      })
+    };
+
     return (
       <Animatable.View
         ref={r => this.rootContainer = r}
-        style={styles.rootContainer}
+        style={[styles.rootContainer, rootContainerStyle]}
         useNativeDriver={true}
       >
         <TouchableOpacity 
@@ -109,9 +116,15 @@ export class QuestionAnswerItem extends React.Component {
               initFontSize={12}
               value={(index + 1)}
               textStyle={{fontWeight: '900'}}
-              color={Colors.BLUE[100]}
-              textColor={Colors.BLUE.A700}
               containerStyle={styles.itemBadge}
+              color={(isActive
+                ? Colors.BLUE.A400
+                : Colors.BLUE[100]
+              )}
+              textColor={(isActive
+                ? 'white'
+                : Colors.BLUE.A700
+              )}
             />
             <Text
               style={styles.textQuestion}

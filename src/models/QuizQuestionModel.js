@@ -41,6 +41,18 @@ export class QuizQuestionModel {
     return copy;
   };
 
+  static compare(prev = {}, next = {}){
+    return (
+      (prev[QuizQuestionKeys.quizID             ] != next[QuizQuestionKeys.quizID             ]) ||
+      (prev[QuizQuestionKeys.sectionID          ] != next[QuizQuestionKeys.sectionID          ]) ||
+      (prev[QuizQuestionKeys.sectionType        ] != next[QuizQuestionKeys.sectionType        ]) ||
+      (prev[QuizQuestionKeys.questionID         ] != next[QuizQuestionKeys.questionID         ]) ||
+      (prev[QuizQuestionKeys.questionText       ] != next[QuizQuestionKeys.questionText       ]) ||
+      (prev[QuizQuestionKeys.questionAnswer     ] != next[QuizQuestionKeys.questionAnswer     ]) ||
+      (prev[QuizQuestionKeys.questionDateCreated] != next[QuizQuestionKeys.questionDateCreated])
+    );
+  };
+
   constructor(values = {}){
     this.values = QuizQuestionModel.wrap(values);
   };

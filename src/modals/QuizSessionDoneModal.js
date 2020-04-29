@@ -201,7 +201,9 @@ export class QuizSessionDoneModal extends React.Component {
 
   _renderItem = ({item, index, section}) => {
     const props = this.props;
-    const quiz  = props[MNPQuizSessionDoneModal.quiz] ?? {};
+
+    const quiz          = props[MNPQuizSessionDoneModal.quiz] ?? {};
+    const currentIndex  = props[MNPQuizSessionDoneModal.currentIndex];
 
     switch (section.type) {
       case QSDSectionTypes.DETAILS: return (
@@ -220,7 +222,7 @@ export class QuizSessionDoneModal extends React.Component {
           onPressQuestion={this._handleOnPressQuestion}
           question={item.question}
           answer={item.answer}
-          {...{index}}
+          {...{index, currentIndex}}
         />
       );
     };

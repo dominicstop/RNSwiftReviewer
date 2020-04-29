@@ -53,6 +53,8 @@ export class QuizSessionScreen extends React.Component {
     answers.initFromSession(session.values);
     this.answers = answers;
 
+    this.keyboardVisible = false;
+
     this.state = {
       currentIndex: 0,
       questions: session.questions,
@@ -75,6 +77,7 @@ export class QuizSessionScreen extends React.Component {
   // #region - event handlers / callbacks
   _keyboardWillShow = (event) => {
     const { currentIndex, questions } = this.state;
+    this.keyboardVisible = true;
 
     // get current question
     const question = questions[currentIndex];
@@ -90,6 +93,7 @@ export class QuizSessionScreen extends React.Component {
 
   _keyboardWillHide = (event) => {
     const { currentIndex, questions } = this.state;
+    this.keyboardVisible = false;
 
     // get current question
     const question = questions[currentIndex];
@@ -109,13 +113,19 @@ export class QuizSessionScreen extends React.Component {
   );
 
   // QuizSessionHeader: onPress Done
-  _handleOnPressDone = () => {
+  _handleOnPressDone = async () => {
     const { questions, currentIndex } = this.state;
     const currentQuestion = questions[currentIndex];
 
     const quiz    = { ...this.quiz };
     const answers = this.answers.answerMap;
     const session = this.session.values;
+
+    const sectionType = currentQuestion[QuizQuestionKeys.sectionType];
+    if(sectionType == SectionTypes.IDENTIFICATION && this.keyboardVisible){
+      Keyboard.dismiss();
+      await Helpers.timeout(750);
+    };
 
     // open QuizSessionDoneModal
     ModalController.showModal({
