@@ -23,23 +23,49 @@ import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
-import { QuizSectionKeys, QuizKeys } from 'app/src/constants/PropKeys';
+import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionChooseAnswer, MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
+import { QuestionAnswerItem } from '../components/QuizSessionDoneModal/QuestionAnswerItem';
 
 // QSD: QuizSessionDone 🤣
 const QSDSectionTypes = {
-  DETAILS : 'DETAILS' ,
-  SECTIONS: 'SECTIONS',
+  DETAILS  : 'DETAILS'  ,
+  SECTIONS : 'SECTIONS' ,
+  QUESTIONS: 'QUESTIONS',
 };
 
+function combineQuestionsAndAnswers(questions, answers){
+  return questions.map((question) => {
+    const questionID = question[QuizQuestionKeys.questionID];
+
+    return {
+      questionID, question,
+      type  : QSDSectionTypes.QUESTIONS,
+      answer: answers[questionID],
+    };
+  });
+};
 
 export class QuizSessionDoneModal extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      sections: this.getSections(),
+    };
+  };
 
   getSections = () => {
     const props = this.props;
 
-    const quiz     = props[MNPQuizSessionDoneModal.quiz] ?? {};
+    const quiz      = props[MNPQuizSessionDoneModal.quiz] ?? {};
+    const answers   = props[MNPQuizSessionDoneModal.answers  ] ?? {};
+    const questions = props[MNPQuizSessionDoneModal.questions] ?? [];
+    
     const sections = quiz [QuizKeys.quizSections] ?? [];
+
+    const questionAnswerData = 
+      combineQuestionsAndAnswers(questions, answers);
 
     const detailsData = [
       { type: QSDSectionTypes.DETAILS }
@@ -50,8 +76,9 @@ export class QuizSessionDoneModal extends React.Component {
     );
 
     return ([
-      { type: QSDSectionTypes.DETAILS , data: detailsData },
-      { type: QSDSectionTypes.SECTIONS, data: sectionData },
+      { type: QSDSectionTypes.DETAILS  , data: detailsData },
+      { type: QSDSectionTypes.SECTIONS , data: sectionData },
+      { type: QSDSectionTypes.QUESTIONS, data: questionAnswerData },
     ]);
   };
 
@@ -59,8 +86,9 @@ export class QuizSessionDoneModal extends React.Component {
     const type = item.type;
 
     switch (type) {
-      case QSDSectionTypes.DETAILS : return (`${type}-${index}`);
-      case QSDSectionTypes.SECTIONS: return (item[QuizSectionKeys.sectionID]);
+      case QSDSectionTypes.DETAILS  : return (`${type}-${index}`);
+      case QSDSectionTypes.SECTIONS : return (item[QuizSectionKeys.sectionID]);
+      case QSDSectionTypes.QUESTIONS: return (item?.questionID ?? index);
     };
   };
 
@@ -158,12 +186,16 @@ export class QuizSessionDoneModal extends React.Component {
           {...{index}}
         />
       );
+      case QSDSectionTypes.QUESTIONS: return (
+        <QuestionAnswerItem
+
+        />
+      );
     };
   };
   
   render(){
-    const props = this.props;
-    const sections = this.getSections();
+    const state = this.state;
 
     const modalHeader = (
       <ModalHeader
@@ -200,12 +232,12 @@ export class QuizSessionDoneModal extends React.Component {
       >
         <SectionList
           ref={r => this.sectionList = r}
+          sections={state.sections}
           keyExtractor={this._handleKeyExtractor}
           renderItem={this._renderItem}
           renderSectionHeader={this._renderSectionHeader}
           SectionSeparatorComponent={this._renderSectionSeperator}
           ListFooterComponent={this._renderListFooter}
-          {...{sections}}
         />
       </ModalBackground>
     );
