@@ -14,12 +14,13 @@ import { QuizSessionModel } from 'app/src/models/QuizSession';
 import { SNPQuizSession, MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
-import { SectionTypes    } from 'app/src/constants/SectionTypes';
-import { RNN_ROUTES      } from 'app/src/constants/Routes';
+import { SectionTypes } from 'app/src/constants/SectionTypes';
+import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
 import { ModalController } from 'app/src/functions/ModalController';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 import { QuizSessionAnswerModel } from 'app/src/models/QuizSessionAnswerModel';
+import { QuizSessionStore } from '../functions/QuizSessionStore';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -233,14 +234,27 @@ export class QuizSessionScreen extends React.Component {
     };
   };
 
-  _handleModalOnPressDone = () => {
+  _handleModalOnPressDone = async () => {
+    const { navigation } = this.props;
+
     const answers = this.answers.answerMap;
     this.session.answers = answers;
 
     this.session.initResults();
     this.session.setEndDate();
 
-    console.log(JSON.stringify(this.session.values));
+    await QuizSessionStore.insertSession(
+      this.session.values
+    );
+
+    navigation.dispatch(
+      StackActions.replace({
+        routeName: ROUTES.quizSessionResultRoute,
+        params: {
+
+        },
+      })
+    );
   };
   //#endregion
 

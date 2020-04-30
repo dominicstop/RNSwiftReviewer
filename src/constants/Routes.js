@@ -4,9 +4,10 @@ export const ROUTES = {
   authRoute: 'authRoute',
   appRoute : 'appRoute' ,
   // appstack routes
-  homeRoute       : 'homeRoute'       ,
-  createQuizRoute : 'createQuizRoute' ,
-  quizSessionRoute: 'quizSessionRoute',
+  homeRoute             : 'homeRoute'             ,
+  createQuizRoute       : 'createQuizRoute'       ,
+  quizSessionRoute      : 'quizSessionRoute'      ,
+  quizSessionResultRoute: 'quizSessionResultRoute',
   // home tabnav routes
   TabQuizRoute   : 'TabQuizRoute'   ,
   TabExamRoute   : 'TabExamRoute'   ,
