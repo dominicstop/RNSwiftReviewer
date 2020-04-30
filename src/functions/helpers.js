@@ -260,17 +260,18 @@ export function sizeSelectSimple({normal, large}){
 };
 
 export function stringHash(string = '') {
-    let length = string?.length ?? 0;
-    let hash = 0, char;
+  let length = string?.length ?? 0;
+  let hash = 0, char;
 
-    if (length === 0) return hash;
+  if (length === 0) return hash;
 
-    while (length--) {
-      char = string.charCodeAt(length);
-      hash = ((hash << 5) - hash) + char;
-      // Convert to 32bit integer
-      hash |= 0; 
-    };
-
-    return hash;
+  while (length--) {
+    char = string.charCodeAt(length);
+    hash = ((hash << 5) - hash) + char;
+    // Convert to 32bit integer
+    hash |= 0; 
   };
+
+  return hash;
+};
+

@@ -107,8 +107,8 @@ export class QuizSessionDoneModal extends React.Component {
     const { componentId, ...props } = this.props;
 
     const confirm = await Helpers.asyncActionSheetConfirm({
-      title: 'Done answering?',
-      message: "Are you sure you want to save and end this quiz session?",
+      title: 'Are you done answering?',
+      message: "Are you sure you want to save and end this quiz session? Your answers will be checked and saved.",
       confirmText: 'End Quiz',
       isDestructive: false,
     });

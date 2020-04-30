@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   subtitle: {
-    ...iOSUIKit.bodyObject,
+    ...iOSUIKit.subheadEmphasizedObject,
     ...sanFranciscoWeights.semibold,
     color: 'white',
     shadowColor: 'white', 

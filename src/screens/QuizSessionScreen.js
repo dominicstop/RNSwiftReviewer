@@ -261,7 +261,7 @@ export class QuizSessionScreen extends React.Component {
 
   render(){
     const { styles } = QuizSessionScreen;
-    const { currentIndex, questions: data, answers } = this.state;
+    const { currentIndex, questions: data } = this.state;
 
     const extraData = {
       currentIndex
