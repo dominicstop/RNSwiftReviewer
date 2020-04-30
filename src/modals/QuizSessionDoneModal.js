@@ -12,6 +12,7 @@ import { ListItemBadge } from 'app/src/components/ListItemBadge';
 import { ModalBackground    } from 'app/src/components/ModalBackground';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
+import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
@@ -114,10 +115,16 @@ export class QuizSessionDoneModal extends React.Component {
     });
 
     if(confirm){
-      const onPressDone = props[MNPQuizSessionDoneModal.onPressDone];
-      onPressDone && onPressDone();
+      const onPressDone = 
+        props[MNPQuizSessionDoneModal.onPressDone];
 
-      await Helpers.timeout(200);
+      await Promise.all([
+        // wait for callback
+        onPressDone && onPressDone(),
+        // wait for overlay animation
+        this.overlayCheck.start(1000)
+      ]);
+
       //close modal
       Navigation.dismissModal(componentId);
     };
@@ -137,7 +144,7 @@ export class QuizSessionDoneModal extends React.Component {
 
     await Promise.all([
       Helpers.timeout(500),
-      this.overlay.show(),
+      this.overlayLoading.show(),
       onPressQuestion && onPressQuestion({answer, question, index}),
     ]);
 
@@ -287,9 +294,14 @@ export class QuizSessionDoneModal extends React.Component {
     );
 
     const overlay = (
-      <QuizSessionDoneOverlay
-        ref={r => this.overlay = r}
-      />
+      <Fragment>
+        <QuizSessionDoneOverlay
+          ref={r => this.overlayLoading = r}
+        />
+        <ModalOverlayCheck
+          ref={r => this.overlayCheck = r}
+        />
+      </Fragment>
     );
 
     return (

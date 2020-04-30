@@ -24,9 +24,10 @@ export class QuizSessionAnswerModel {
   };
 
   addAnswer(question = {}, answerValue){
-    const sectionID   = question[QuizQuestionKeys.sectionID  ];
-    const sectionType = question[QuizQuestionKeys.sectionType];
-    const questionID  = question[QuizQuestionKeys.questionID ];
+    const sectionID   = question[QuizQuestionKeys.sectionID     ];
+    const sectionType = question[QuizQuestionKeys.sectionType   ];
+    const questionID  = question[QuizQuestionKeys.questionID    ];
+    const answerKey   = question[QuizQuestionKeys.questionAnswer];
 
     // get timestamp now
     const date      = new Date();
@@ -35,7 +36,6 @@ export class QuizSessionAnswerModel {
     // check if answer already exists
     const doesAnswerExist =
       (this.answerMap[questionID] !== undefined);
-    
 
     if(!doesAnswerExist){
       // create answerID
@@ -52,9 +52,9 @@ export class QuizSessionAnswerModel {
         [QuizSessionAnswerKeys.sectionType]: sectionType,
         [QuizSessionAnswerKeys.questionID ]: questionID ,
         // init values - answer
-        [QuizSessionAnswerKeys.answerID       ]: answerID    ,
-        [QuizSessionAnswerKeys.answerValue    ]: answerValue ,
-        [QuizSessionAnswerKeys.answerTimestamp]: timestamp   ,
+        [QuizSessionAnswerKeys.answerID       ]: answerID   ,
+        [QuizSessionAnswerKeys.answerValue    ]: answerValue,
+        [QuizSessionAnswerKeys.answerTimestamp]: timestamp  ,
         // init answerValueHistory w/ empty array
         [QuizSessionAnswerKeys.answerValueHistory]: [],
       };

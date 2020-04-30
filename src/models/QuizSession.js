@@ -2,7 +2,10 @@ import { IS_DEBUG } from "app/src/constants/Options";
 import { QuizSessionKeys, QuizKeys, QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes } from "app/src/constants/SectionTypes";
 
+import isEmpty from 'lodash/isEmpty';
 import * as Helpers from "app/src/functions/helpers";
+import { QuizSessionResultModel } from "./QuizSessionResultsModel";
+
 
 function extractQuestionsFromSections(sections = []){
   let questions = [];
@@ -83,6 +86,7 @@ export class QuizSessionModel {
     this.values = QuizSessionModel.wrap(values);
 
     this.questions = [];
+    this.results = new QuizSessionResultModel();
   };
 
   initFromQuiz(quiz = {}){
@@ -108,6 +112,19 @@ export class QuizSessionModel {
     this.values[QuizSessionKeys.matchingTypeChoices] = matchingTypeChoices;
   };
 
+  set quizID(id = ''){
+    this.values[QuizSessionKeys.quizID] = id;
+  };
+
+  set sessionID(id = ''){
+    this.values[QuizSessionKeys.sessionID] = id;
+  };
+
+  set answers(answerMap = {}){
+    this.values[QuizSessionKeys.sessionAnswers] =
+      { ...answerMap };
+  };
+
   setStartDate(){
     // get timestamp today
     const date = new Date();
@@ -117,18 +134,27 @@ export class QuizSessionModel {
   };
 
   setEndDate(){
+    const start = this.values[QuizSessionKeys.sessionDateStart];
+
     // get timestamp today
     const date = new Date();
     const ts   = date.getTime();
 
-    this.values[QuizSessionKeys.sessionDateEnd] = ts;
+    const duration = (ts - start);
+    
+    this.values[QuizSessionKeys.sessionDateEnd ] = ts;
+    this.values[QuizSessionKeys.sessionDuration] = duration;
   };
 
-  set quizID(id = ''){
-    this.values[QuizSessionKeys.quizID] = id;
-  };
+  initResults(){
+    this.results.setQuestions(this.questions);
+    this.results.initFromSession(this.values);
+    this.results.processResults();
 
-  set sessionID(id = ''){
-    this.values[QuizSessionKeys.sessionID] = id;
+    const score   = this.results.score;
+    const results = this.results.results;
+
+    this.values[QuizSessionKeys.sessionScore  ] = { ...score };
+    this.values[QuizSessionKeys.sessionResults] = [ ...results ];
   };
 };

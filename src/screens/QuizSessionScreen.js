@@ -234,7 +234,13 @@ export class QuizSessionScreen extends React.Component {
   };
 
   _handleModalOnPressDone = () => {
-    alert('_handleModalOnPressDone');
+    const answers = this.answers.answerMap;
+    this.session.answers = answers;
+
+    this.session.initResults();
+    this.session.setEndDate();
+
+    console.log(JSON.stringify(this.session.values));
   };
   //#endregion
 

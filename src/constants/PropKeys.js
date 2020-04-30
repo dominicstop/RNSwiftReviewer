@@ -44,7 +44,10 @@ export const QuizSessionKeys = {
   sessionID          : 'sessionID'          ,
   sessionDateStart   : 'sessionDateStart'   ,
   sessionDateEnd     : 'sessionDateEnd'     ,
+  sessionDuration    : 'sessionDuration'    ,
   sessionAnswers     : 'sessionAnswers'     ,
+  sessionScore       : 'sessionScore'       ,
+  sessionResults     : 'sessionResults'     ,
   matchingTypeChoices: 'matchingTypeChoices',
 };
 
@@ -59,4 +62,27 @@ export const QuizSessionAnswerKeys = {
   answerValue       : 'answerValue'       ,
   answerTimestamp   : 'answerTimestamp'   ,
   answerValueHistory: 'answerValueHistory',
+};
+
+export const QuizSessionResultKeys = {
+  quizID         : 'quizID'         ,
+  sessionID      : 'sessionID'      ,
+  sectionID      : 'sectionID'      ,
+  sectionType    : 'sectionType'    ,
+  questionID     : 'questionID'     ,
+  answerID       : 'answerID'       ,
+  resultHasAnswer: 'resultHasAnswer',
+  resultIsCorrect: 'resultIsCorrect',
+};
+
+export const QuizSessionScoreKeys = {
+  scoreWrong            : 'scoreWrong'            , // answered wrong
+  scoreCorrect          : 'scoreCorrect'          , // answered correctly
+  scoreIncorrect        : 'scoreIncorrect'        , // answered wrong / no answer
+  scoreUnanswered       : 'scoreUnanswered'       , // no answer / empty
+  scoreTotalItems       : 'scoreTotalItems'       , // number of questions
+  scorePercentWrong     : 'scorePercentWrong'     ,
+  scorePercentCorrect   : 'scorePercentCorrect'   ,
+  scorePercentIncorrect : 'scorePercentIncorrect' ,
+  scorePercentUnanswered: 'scorePercentUnanswered',
 };
