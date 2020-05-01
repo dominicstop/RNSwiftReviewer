@@ -5,7 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+		"postinstall": "react-native-inhibit-warnings"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
@@ -50,6 +51,7 @@
     "babel-jest": "~24.9.0",
     "jest": "~24.9.0",
     "metro-react-native-babel-preset": "~0.56.0",
+    "react-native-inhibit-warnings": "^1.0.1",
     "react-test-renderer": "~16.9.0"
   },
   "jest": {
