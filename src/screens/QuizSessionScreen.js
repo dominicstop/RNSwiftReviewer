@@ -11,7 +11,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { QuizSessionModel } from 'app/src/models/QuizSession';
 
-import { SNPQuizSession, MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
+import { SNPQuizSession, MNPQuizSessionDoneModal, SNPQuizSessionResult } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 import { SectionTypes } from 'app/src/constants/SectionTypes';
@@ -21,6 +21,7 @@ import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 import { QuizSessionAnswerModel } from 'app/src/models/QuizSessionAnswerModel';
 import { QuizSessionStore } from '../functions/QuizSessionStore';
+import { QuizStore } from '../functions/QuizStore';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -243,15 +244,17 @@ export class QuizSessionScreen extends React.Component {
     this.session.initResults();
     this.session.setEndDate();
 
-    await QuizSessionStore.insertSession(
-      this.session.values
-    );
+    const session = this.session.values;
+    await QuizSessionStore.insertSession(session);
 
     navigation.dispatch(
       StackActions.replace({
         routeName: ROUTES.quizSessionResultRoute,
         params: {
-
+          [SNPQuizSessionResult.quiz    ]: this.quiz,
+          [SNPQuizSessionResult.quizes  ]: QuizStore.getCache(),
+          [SNPQuizSessionResult.session ]: session,
+          [SNPQuizSessionResult.sessions]: QuizSessionStore.getCache(),
         },
       })
     );

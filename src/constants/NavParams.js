@@ -13,6 +13,14 @@ export const SNPQuizSession = {
   quiz: 'quiz',
 };
 
+// QuizSessionResultScreen nav params
+export const SNPQuizSessionResult = {
+  quiz    : 'quiz'    ,
+  quizes  : 'quiz'    ,
+  session : 'session' ,
+  sessions: 'sessions',
+};
+
 // #region - open modal params
 // These are params you need to pass when opening a modal
 
@@ -82,5 +90,4 @@ export const MNPQuizSessionDoneModal = {
   onPressQuestion: 'onPressQuestion',
   onPressDone    : 'onPressDone'    ,
 };
-
 // #endregion
