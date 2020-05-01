@@ -149,21 +149,21 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 940;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = ZC7A6XV8GR;
 						LastSwiftMigration = 1130;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNSwiftReviewer" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -327,12 +327,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ZC7A6XV8GR;
 				INFOPLIST_FILE = RNSwiftReviewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -340,6 +343,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicgo.RNSwiftReviewer;
 				PRODUCT_NAME = RNSwiftReviewer;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNSwiftReviewer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -353,11 +357,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZC7A6XV8GR;
 				INFOPLIST_FILE = RNSwiftReviewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -365,6 +372,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicgo.RNSwiftReviewer;
 				PRODUCT_NAME = RNSwiftReviewer;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNSwiftReviewer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -375,6 +383,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -428,6 +437,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -466,6 +476,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
