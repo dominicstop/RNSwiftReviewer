@@ -8,18 +8,21 @@ import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { ROUTES } from 'app/src/constants/Routes';
-import { QuizStore } from 'app/src/functions/QuizStore';
+
+import { QuizStore        } from 'app/src/functions/QuizStore';
+import { QuizSessionStore } from 'app/src/functions/QuizSessionStore';
+
 
 export class AuthLoadingScreen extends Component {
-
   async componentDidMount(){
     const { navigation } = this.props;
     StatusBar.setBarStyle("light-content");
 
     await Promise.all([
       this.animatedLoading.zoomIn(1000),
-      // preload quiz cahce
-      QuizStore.getQuizes(),
+      // preload store data
+      QuizStore       .getQuizes  (),
+      QuizSessionStore.getSessions(),
     ]);
 
     navigation.navigate(ROUTES.homeRoute);
@@ -27,10 +30,15 @@ export class AuthLoadingScreen extends Component {
 
   render(){
     return(
-      <View style={styles.rootContainer}>
+      <Animatable.View 
+        style={styles.rootContainer}
+        animation={'fadeIn'}
+        duration={500}
+        useNativeDriver={true}
+      >
         <Animatable.View
-          style={styles.indicatorContainer}
           ref={r => this.animatedLoading = r}
+          style={styles.indicatorContainer}
           useNativeDriver={true}
         >
           <BarIndicator 
@@ -40,7 +48,7 @@ export class AuthLoadingScreen extends Component {
             animationDuration={1500}
           />
         </Animatable.View>
-      </View>
+      </Animatable.View>
     );
   };
 };
