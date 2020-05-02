@@ -52,7 +52,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - lottie-ios (3.1.6)
+  - lottie-ios (3.1.8)
   - lottie-react-native (3.3.2):
     - lottie-ios (~> 3.1.3)
     - React
@@ -521,7 +521,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 51477b84b1bf7ab6f9ef307c24e3dd675391be44
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 2a1a82bb326ae51331a5520de0cf706733c6db69
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
