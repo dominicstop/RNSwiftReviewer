@@ -27,6 +27,19 @@ Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionDone        , () => Quiz
 Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionChooseAnswer, () => QuizSessionChooseAnswerModal);
 
 Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setDefaultOptions({
+    layout: {
+      backgroundColor: 'white',
+    },
+    animations: {
+      setRoot: {
+        waitForRender: true,
+      },
+      showModal: {
+        waitForRender: true,
+      },
+    },
+  });
   Navigation.setRoot({
     root: {
       component: {
@@ -35,6 +48,9 @@ Navigation.events().registerAppLaunchedListener(() => {
     }
   });
 });
+
+
+
 
 // register animations for react-native-animatable
 Animatable.initializeRegistryWithDefinitions({

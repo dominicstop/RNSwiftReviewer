@@ -102,6 +102,7 @@ export class QuizSessionResultModel {
 
     // set score values
     this.score = {
+      [QuizSessionScoreKeys.scoreWrong            ]: wrong            ,
       [QuizSessionScoreKeys.scoreCorrect          ]: correct          ,
       [QuizSessionScoreKeys.scoreIncorrect        ]: incorrect        ,
       [QuizSessionScoreKeys.scoreUnanswered       ]: unanswered       ,

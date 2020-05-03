@@ -273,7 +273,7 @@ export class LargeTitleWithSnap extends React.PureComponent {
   componentDidMount = async () => {
     this.setState({enableSnap: true});
 
-    await Helpers.timeout(250);
+    await Helpers.timeout(10);
     this.scrollToTop();
     this.setExtraHeight();
   };

@@ -22,7 +22,7 @@ export class  ViewQuizSessionItem extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
       paddingHorizontal: 12,
-      paddingVertical: 10,
+      paddingVertical: 12,
       backgroundColor: 'rgba(255,255,255,0.9)',
       borderBottomWidth: BORDER_WIDTH,
       borderBottomColor: 'rgba(0,0,0,0.2)',
@@ -53,7 +53,7 @@ export class  ViewQuizSessionItem extends React.Component {
     },
     detailContainer: {
       flexDirection: 'row',
-      marginTop: 8,
+      marginTop: 10,
       alignItems: 'center',
     },
     scoreContainer: {
@@ -89,10 +89,16 @@ export class  ViewQuizSessionItem extends React.Component {
 
     const textDuration = Helpers.formatMsToDuration(duration);
 
-    const percentCorrect = scores?.[QuizSessionScoreKeys.scorePercentCorrect] ?? 'N/A';
-    const scoreWrong     = scores?.[QuizSessionScoreKeys.scoreWrong         ] ?? 'N/A';
-    const scoreCorrect   = scores?.[QuizSessionScoreKeys.scoreCorrect       ] ?? 'N/A';
-    const scoreSkipped   = scores?.[QuizSessionScoreKeys.scoreUnanswered    ] ?? 'N/A';
+    const percentCorrect = scores?.[QuizSessionScoreKeys.scorePercentCorrect] ?? null;
+    const scoreWrong     = scores?.[QuizSessionScoreKeys.scoreWrong         ] ?? null;
+    const scoreCorrect   = scores?.[QuizSessionScoreKeys.scoreCorrect       ] ?? null;
+    const scoreSkipped   = scores?.[QuizSessionScoreKeys.scoreUnanswered    ] ?? null;
+
+    const textPercentCorrect = percentCorrect? `${Math.trunc(percentCorrect)}%` : 'N/A' ;
+
+    const textScoreWrong   = scoreWrong    ? `${scoreWrong  } ${Helpers.plural('item', scoreWrong  )}`: 'N/A' ;
+    const textScoreCorrect = scoreCorrect  ? `${scoreCorrect} ${Helpers.plural('item', scoreCorrect)}`: 'N/A' ;
+    const textScoreSkipped = scoreSkipped  ? `${scoreSkipped} ${Helpers.plural('item', scoreSkipped)}`: 'N/A' ;
 
     const scoreContainerStyle = {
       backgroundColor: (
@@ -141,16 +147,16 @@ export class  ViewQuizSessionItem extends React.Component {
         <View style={styles.detailContainer}>
           <View style={[styles.scoreContainer, scoreContainerStyle]}>
             <Text style={styles.textPercent}>
-              {`${percentCorrect}%`}
+              {textPercentCorrect}
             </Text>
           </View>
           <TableLabelValue
             containerStyle={styles.detailTableContainer}
             labelValueMap={[
-              ['Correct:' , scoreCorrect],
-              ['Wrong:'   , scoreWrong  ],
-              ['Skipped:' , scoreSkipped],
-              ['Duration:', textDuration],
+              ['Correct:' , textScoreCorrect],
+              ['Wrong:'   , textScoreWrong  ],
+              ['Skipped:' , textScoreSkipped],
+              ['Duration:', textDuration    ],
             ]}
           />
         </View>
