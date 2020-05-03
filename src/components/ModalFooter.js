@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   background: {
+    backgroundColor: 'rgba(255,255,255,0.4)',
     borderTopWidth: BORDER_WIDTH,
     borderColor: 'rgba(0,0,0,0.3)',
-    backgroundColor: 'rgba(255,255,255,0.85)',
     //fill space
     position: 'absolute',
     top: 0,
@@ -139,7 +139,7 @@ export class ModalFooter extends React.Component {
       }]}>
         <BlurView
           style={styles.blurBackground}
-          blurType={'light'}
+          blurType={'thinMaterialLight'}
           blurAmount={100}
         />
         <View style={styles.background}/>

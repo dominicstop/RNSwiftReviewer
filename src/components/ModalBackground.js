@@ -98,7 +98,7 @@ export class ModalBackground extends React.Component {
       // check if state changed
       (prevState.mount           != nextState.mount          ) ||
       (prevState.keyboardVisible != nextState.keyboardVisible) ||
-      (prevState.footerBGVisible != nextState.footerBGVisible) 
+      (prevState.footerBGVisible != nextState.footerBGVisible)
     );
   };
 
@@ -150,14 +150,6 @@ export class ModalBackground extends React.Component {
     });
 
     animation.start();
-  };
-
-  _handleOnFooterDidShow = () => {
-    this.setState({ footerBGVisible: false });
-  };
-
-  _handleOnFooterDidHide = () => {
-    this.setState({ footerBGVisible: true });
   };
 
   _renderScrollView(){
@@ -258,11 +250,8 @@ export class ModalBackground extends React.Component {
         <Reanimated.View
           style={{ height: this._height }}
         />
-        {modalFooter && React.cloneElement(modalFooter, {
-          onFooterDidShow: this._handleOnFooterDidShow,
-          onFooterDidHide: this._handleOnFooterDidHide,
-        })}
         {modalHeader}
+        {modalFooter}
         {overlay}
       </View>
     );
