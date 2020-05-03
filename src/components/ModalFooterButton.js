@@ -128,9 +128,8 @@ export class ModalFooterButton extends React.PureComponent {
       <Animatable.View 
         style={styles.rootContainer}
         ref={r => this.rootContainerRef = r}
-        animation={'fadeInUp'}
-        duration={300}
-        delay={200}
+        animation={'pulse'}
+        duration={750}
         useNativeDriver={true}
       >
         <View style={styles.buttonWrapper}>

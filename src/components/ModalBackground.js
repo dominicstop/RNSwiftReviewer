@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 // Used for creating modals
 // Used as a root comp. as a wrapper
 // blurred background + header/footer support
-export class ModalBackground extends React.PureComponent {
+export class ModalBackground extends React.Component {
   static propTypes = {
     overlay         : PropTypes.element,
     modalHeader     : PropTypes.element,
@@ -71,7 +71,7 @@ export class ModalBackground extends React.PureComponent {
 
     this.keyboardHeight = 0;
     
-    this. progress           = new Value(0);
+    this.progress            = new Value(0);
     this.keyboardHeightValue = new Value(0);
 
     this._height = interpolate(this.progress, {
@@ -83,7 +83,23 @@ export class ModalBackground extends React.PureComponent {
     this.state = {
       mount: false,
       keyboardVisible: false,
+      footerBGVisible: true,
     };
+  };
+
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    return (
+      // check if props changed
+      (prevProps.animateAsGroup   != nextProps.animateAsGroup  ) ||
+      (prevProps.wrapInScrollView != nextProps.wrapInScrollView) ||
+      // check if state changed
+      (prevState.mount           != nextState.mount          ) ||
+      (prevState.keyboardVisible != nextState.keyboardVisible) ||
+      (prevState.footerBGVisible != nextState.footerBGVisible) 
+    );
   };
 
   async componentDidMount(){
@@ -91,6 +107,7 @@ export class ModalBackground extends React.PureComponent {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow' , this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
 
+    await Helpers.timeout(50);
     this.setState({ mount: true });
   };
 
@@ -135,6 +152,14 @@ export class ModalBackground extends React.PureComponent {
     animation.start();
   };
 
+  _handleOnFooterDidShow = () => {
+    this.setState({ footerBGVisible: false });
+  };
+
+  _handleOnFooterDidHide = () => {
+    this.setState({ footerBGVisible: true });
+  };
+
   _renderScrollView(){
     const props = this.props;
     const { mount, keyboardVisible } = this.state;
@@ -153,8 +178,7 @@ export class ModalBackground extends React.PureComponent {
       },
     };
 
-    if(props.animateAsGroup){
-      if(!mount) return null;
+    if(props.animateAsGroup && mount){
       return(
         <Animatable.View
           style={{flex: 1}}
@@ -191,18 +215,26 @@ export class ModalBackground extends React.PureComponent {
 
   render(){
     const { modalHeader, modalFooter, overlay, ...props } = this.props;
-    const { mount, keyboardVisible } = this.state;
+    const { mount, keyboardVisible, footerBGVisible } = this.state;
 
     const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
-    
+
+    const blurBackgroundStyle = {
+      bottom: (footerBGVisible? 0 : MODAL_FOOTER_HEIGHT),
+    };
+
+    const backgroundStyle = {
+      bottom: (footerBGVisible? 0 : MODAL_FOOTER_HEIGHT),
+    };
+
     return(
       <View style={styles.rootContainer}>
         <BlurView 
-          style={styles.blurBackground}
+          style={[styles.blurBackground, blurBackgroundStyle]}
           blurType={'light'}
           blurAmount={75}
         />
-        <View style={styles.background}/>
+        <View style={[styles.background, backgroundStyle]}/>
         {props.wrapInScrollView? (
           this._renderScrollView()
         ):(mount && (
@@ -226,8 +258,11 @@ export class ModalBackground extends React.PureComponent {
         <Reanimated.View
           style={{ height: this._height }}
         />
+        {modalFooter && React.cloneElement(modalFooter, {
+          onFooterDidShow: this._handleOnFooterDidShow,
+          onFooterDidHide: this._handleOnFooterDidHide,
+        })}
         {modalHeader}
-        {modalFooter}
         {overlay}
       </View>
     );
