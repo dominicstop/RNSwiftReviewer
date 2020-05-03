@@ -36,7 +36,7 @@ Navigation.events().registerAppLaunchedListener(() => {
         waitForRender: true,
       },
       showModal: {
-        waitForRender: true,
+        waitForRender: false,
       },
     },
   });

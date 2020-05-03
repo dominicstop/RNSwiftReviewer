@@ -20,7 +20,7 @@ import { INSET_TOP     } from 'app/src/constants/UIValues';
 import { RNN_ROUTES    } from 'app/src/constants/Routes';
 import { MNPCreateQuiz, MNPViewQuiz } from 'app/src/constants/NavParams';
 
-import { QuizKeys } from 'app/src/constants/PropKeys';
+import { QuizKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from 'app/src/functions/helpers';
 
@@ -127,11 +127,16 @@ export class QuizListScreen extends React.Component {
     const { navigation } = this.props;
     const { sessions } = this.state;
 
+    const quizID = quiz[QuizKeys.quizID];
+    const filtered = sessions.filter((session) => 
+      (quizID == session[QuizSessionKeys.quizID])
+    );
+
     ModalController.showModal({
       routeName: RNN_ROUTES.ModalViewQuiz,
       navProps: {
         [MNPViewQuiz.quiz      ]: quiz      ,
-        [MNPViewQuiz.sessions  ]: sessions  ,
+        [MNPViewQuiz.sessions  ]: filtered  ,
         [MNPViewQuiz.navigation]: navigation,
         [MNPViewQuiz.onPressStartQuiz ]: this._handleOnPressStartQuiz ,
         [MNPViewQuiz.onPressDeleteQuiz]: this._handleOnPressDeleteQuiz,

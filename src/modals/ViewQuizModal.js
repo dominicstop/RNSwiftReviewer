@@ -20,7 +20,7 @@ import { ViewQuizSessionItem } from 'app/src/components/ViewQuizModal/ViewQuizSe
 
 import { ROUTES } from 'app/src/constants/Routes';
 
-import { QuizKeys, QuizSectionKeys, QuizSessionKeys   } from 'app/src/constants/PropKeys';
+import { QuizKeys, QuizSectionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 import { MNPViewQuiz, SNPQuizSession } from 'app/src/constants/NavParams';
 
 import * as Helpers from 'app/src/functions/helpers';
@@ -80,8 +80,8 @@ export class ViewQuizModal extends React.Component {
 
     switch (type) {
       case VQMSectionTypes.DETAILS : return (`${type}-${index}`);
-      case VQMSectionTypes.SECTIONS: return (item.section[QuizSectionKeys.sectionID]);
-      case VQMSectionTypes.SESSIONS : return (item.session[QuizSessionKeys.sessionID]);
+      case VQMSectionTypes.SECTIONS: return (item?.section?.[QuizSectionKeys.sectionID] ?? `${type}-${index}`);
+      case VQMSectionTypes.SESSIONS: return (item?.session?.[QuizSessionKeys.sessionID] ?? `${type}-${index}`);
     };
   };
 

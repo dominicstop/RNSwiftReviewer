@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
-
 import moment  from 'moment';
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
@@ -73,9 +72,28 @@ export class  ViewQuizSessionItem extends React.Component {
     },
   });
 
-  render(){
+  _renderEmpty(){
     const { styles } =  ViewQuizSessionItem;
-    const { isEmpty, session, index } = this.props;
+
+    return (
+      <ModalSection
+        containerStyle={styles.rootContainerEmpty}
+        showBorderTop={false}
+        hasMarginBottom={false}
+      >
+        <ImageTitleSubtitle
+          hasPadding={false}
+          imageSource={require('app/assets/icons/e-test-tube.png')}
+          title={"No Sessions to show"}
+          subtitle={"Oops, looks like you haven't taken this quiz yet. You can take this quiz by tapping the \"Start Quiz\" button."}
+        />
+      </ModalSection>
+    );
+  };
+
+  _renderSession(){
+    const { styles } =  ViewQuizSessionItem;
+    const { session, index } = this.props;
 
     const scores    = session?.[QuizSessionKeys.sessionScore    ] ?? 0;
     const dateStart = session?.[QuizSessionKeys.sessionDateStart] ?? 0;
@@ -96,9 +114,9 @@ export class  ViewQuizSessionItem extends React.Component {
 
     const textPercentCorrect = percentCorrect? `${Math.trunc(percentCorrect)}%` : 'N/A' ;
 
-    const textScoreWrong   = scoreWrong    ? `${scoreWrong  } ${Helpers.plural('item', scoreWrong  )}`: 'N/A' ;
-    const textScoreCorrect = scoreCorrect  ? `${scoreCorrect} ${Helpers.plural('item', scoreCorrect)}`: 'N/A' ;
-    const textScoreSkipped = scoreSkipped  ? `${scoreSkipped} ${Helpers.plural('item', scoreSkipped)}`: 'N/A' ;
+    const textScoreWrong   = (scoreWrong   != null)? `${scoreWrong  } ${Helpers.plural('item', scoreWrong  )}`: 'N/A' ;
+    const textScoreCorrect = (scoreCorrect != null)? `${scoreCorrect} ${Helpers.plural('item', scoreCorrect)}`: 'N/A' ;
+    const textScoreSkipped = (scoreSkipped != null)? `${scoreSkipped} ${Helpers.plural('item', scoreSkipped)}`: 'N/A' ;
 
     const scoreContainerStyle = {
       backgroundColor: (
@@ -109,20 +127,7 @@ export class  ViewQuizSessionItem extends React.Component {
       ),
     };
 
-    return (isEmpty? (
-      <ModalSection
-        containerStyle={styles.rootContainerEmpty}
-        showBorderTop={false}
-        hasMarginBottom={false}
-      >
-        <ImageTitleSubtitle
-          hasPadding={false}
-          imageSource={require('app/assets/icons/e-test-tube.png')}
-          title={"No Sessions to show"}
-          subtitle={"Oops, looks like you haven't taken this quiz yet. You can take this quiz by tapping the \"Start Quiz\" button."}
-        />
-      </ModalSection>
-    ):(
+    return (
       <View style={styles.rootContainer}>
         <View style={styles.titleContainer}>
           <ListItemBadge
@@ -161,6 +166,15 @@ export class  ViewQuizSessionItem extends React.Component {
           />
         </View>
       </View>
-    ));
+    );
+  };
+
+  render(){
+    const { isEmpty } = this.props;
+
+    return (isEmpty
+      ? this._renderEmpty()
+      : this._renderSession()
+    );
   };
 };

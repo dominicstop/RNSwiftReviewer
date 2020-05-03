@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { QuizStore } from '../functions/QuizStore';
+import { QuizSessionStore } from '../functions/QuizSessionStore';
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -32,7 +33,14 @@ export class ToBeImplementedScreen extends React.Component {
           QuizStore.clearQuizes();
         }}>
           <Text style={styles.textButton}>
-            {'Clear Store ☹️'}
+            {'Clear Quiz Store ☹️'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          QuizSessionStore.clearSessions();
+        }}>
+          <Text style={styles.textButton}>
+            {'Clear Session Store 🥺'}
           </Text>
         </TouchableOpacity>
       </View>
