@@ -26,18 +26,21 @@ export const SNPQuizSessionResult = {
 
 // ViewQuizModal
 export const MNPViewQuiz = {
-  quiz      : 'quiz',
+  quiz      : 'quiz'      ,
+  sessions  : 'sessions'  ,
   navigation: 'navigation',
+  // events
   onPressStartQuiz : 'onPressStartQuiz' ,
   onPressDeleteQuiz: 'onPressDeleteQuiz',
 };
 
 // CreateQuizModal
 export const MNPCreateQuiz = {
-  navigation   : 'navigation'   ,
-  isEditing    : 'isEditing'    ,
-  quizTitle    : 'quizTitle'    ,
-  quizDesc     : 'quizDesc'     ,
+  navigation: 'navigation',
+  isEditing : 'isEditing' ,
+  quizTitle : 'quizTitle' ,
+  quizDesc  : 'quizDesc'  ,
+  // events
   onPressDone  : 'onPressDone'  ,
   onPressDelete: 'onPressDelete',
 };

@@ -20,7 +20,7 @@ import { ViewQuizSessionItem } from 'app/src/components/ViewQuizModal/ViewQuizSe
 
 import { ROUTES } from 'app/src/constants/Routes';
 
-import { QuizKeys, QuizSectionKeys   } from 'app/src/constants/PropKeys';
+import { QuizKeys, QuizSectionKeys, QuizSessionKeys   } from 'app/src/constants/PropKeys';
 import { MNPViewQuiz, SNPQuizSession } from 'app/src/constants/NavParams';
 
 import * as Helpers from 'app/src/functions/helpers';
@@ -29,7 +29,7 @@ import * as Helpers from 'app/src/functions/helpers';
 const VQMSectionTypes = {
   DETAILS : 'DETAILS' ,
   SECTIONS: 'SECTIONS',
-  SESSION : 'SESSION' ,
+  SESSIONS : 'SESSIONS' ,
 };
 
 // Since it isn't recc to wrap a VirtualizedList inside a scrollview
@@ -50,8 +50,8 @@ export class ViewQuizModal extends React.Component {
     const props = this.props;
 
     const quiz     = props[MNPViewQuiz.quiz     ] ?? {};
+    const sessions = props[MNPViewQuiz.sessions ] ?? [];
     const sections = quiz [QuizKeys.quizSections] ?? [];
-    const sessions = []; // todo: impl.
 
     const detailsData = [
       { type: VQMSectionTypes.DETAILS }
@@ -62,16 +62,16 @@ export class ViewQuizModal extends React.Component {
     );
 
     const sessionData = ((sessions.length == 0)
-      ? [{ type: VQMSectionTypes.SESSION, isEmpty: true }]
-      : sessions.map(sesssion => (
-        ({ type: VQMSectionTypes.SESSION, sesssion })
+      ? [{ type: VQMSectionTypes.SESSIONS, isEmpty: true }]
+      : sessions.map(session => (
+        ({ type: VQMSectionTypes.SESSIONS, session })
       ))
     );
 
     return ([
       { type: VQMSectionTypes.DETAILS , data: detailsData },
       { type: VQMSectionTypes.SECTIONS, data: sectionData },
-      { type: VQMSectionTypes.SESSION , data: sessionData },
+      { type: VQMSectionTypes.SESSIONS, data: sessionData },
     ]);
   };
 
@@ -81,7 +81,7 @@ export class ViewQuizModal extends React.Component {
     switch (type) {
       case VQMSectionTypes.DETAILS : return (`${type}-${index}`);
       case VQMSectionTypes.SECTIONS: return (item.section[QuizSectionKeys.sectionID]);
-      case VQMSectionTypes.SESSION : return (index); //todo: impl.
+      case VQMSectionTypes.SESSIONS : return (item.session[QuizSessionKeys.sessionID]);
     };
   };
 
@@ -182,7 +182,7 @@ export class ViewQuizModal extends React.Component {
           )}
         />
       );
-      case VQMSectionTypes.SESSION: return (
+      case VQMSectionTypes.SESSIONS: return (
         <ModalSectionHeader
           title={'Quiz Sessions'}
           subtitle={`Your previous session history`}
@@ -245,7 +245,7 @@ export class ViewQuizModal extends React.Component {
           {...{index}}
         />
       );
-      case VQMSectionTypes.SESSION: return (
+      case VQMSectionTypes.SESSIONS: return (
         <ViewQuizSessionItem
           isEmpty={item.isEmpty}
           session={item.session}

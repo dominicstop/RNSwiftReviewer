@@ -24,22 +24,11 @@ import { QuizKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from 'app/src/functions/helpers';
 
-import { ModalController } from 'app/src/functions/ModalController';
-import { sortQuizItems   } from 'app/src/functions/SortItems';
-import { QuizStore       } from 'app/src/functions/QuizStore';
+import { ModalController  } from 'app/src/functions/ModalController';
+import { sortQuizItems    } from 'app/src/functions/SortItems';
+import { QuizStore        } from 'app/src/functions/QuizStore';
+import { QuizSessionStore } from '../functions/QuizSessionStore';
 
-
-async function refreshQuizes(that){
-  const { index } = QuizStore.getCache();
-
-  if(index != that.quizStoreIndex){
-    const result = await QuizStore.getQuizes();
-
-    that.setState({
-      quizes: result.quizes,
-    });
-  };
-};
 
 export class QuizListScreen extends React.Component {
   static styles = StyleSheet.create({
@@ -55,14 +44,20 @@ export class QuizListScreen extends React.Component {
   constructor(props){
     super(props);
 
-    const cache = QuizStore.getCache();
-    this.quizStoreIndex = cache.index;
+    const cacheQuiz    = QuizStore       .getCache();
+    const cacheSession = QuizSessionStore.getCache();
+
+    // init cache index
+    this.storeIndexQuiz    = cacheQuiz   .index;
+    this.storeIndexSession = cacheSession.index;
 
     this.state = {
-      scrollEnabled: true,
-      isAsc: false,
       sortIndex: 0,
-      quizes: cache.quizes,
+      isAsc: false,
+      loading: false,
+      scrollEnabled: true,
+      quizes: cacheQuiz.quizes,
+      sessions: cacheSession.sessions,
     };
   };
 
@@ -78,8 +73,34 @@ export class QuizListScreen extends React.Component {
     this.focusListener.remove();
   };
 
-  componentDidFocus = () => {
-    refreshQuizes(this);
+  componentDidFocus = async () => {
+    this.refresh();
+  };
+
+  refresh = async () => {
+    const cacheQuiz    = QuizStore       .getCache();
+    const cacheSession = QuizSessionStore.getCache();
+
+    const refreshQuiz    = (cacheQuiz   .index != this.storeIndexQuiz   );
+    const refreshSession = (cacheSession.index != this.storeIndexSession);
+
+    if(refreshQuiz || refreshSession){
+      if(refreshQuiz   ) this.storeIndexQuiz    = cacheQuiz   .index;
+      if(refreshSession) this.storeIndexSession = cacheSession.index;
+
+      await Helpers.setStateAsync(this, { 
+        loading: true 
+      });
+
+      const resultQuiz    = refreshQuiz    && await QuizStore       .getQuizes  ();
+      const resultSession = refreshSession && await QuizSessionStore.getSessions();
+
+      await Helpers.setStateAsync(this, {
+        loading: false,
+        ...(refreshQuiz    && {quizes  : resultQuiz   .quizes  }),
+        ...(refreshSession && {sessions: resultSession.sessions}),
+      });
+    };
   };
 
   //#region - event handlers / callbacks
@@ -104,11 +125,13 @@ export class QuizListScreen extends React.Component {
   // QuizListItem - onPress
   _handleOnPressQuizItem = ({quiz, index}) => {
     const { navigation } = this.props;
+    const { sessions } = this.state;
 
     ModalController.showModal({
       routeName: RNN_ROUTES.ModalViewQuiz,
       navProps: {
-        [MNPViewQuiz.quiz      ]: quiz,
+        [MNPViewQuiz.quiz      ]: quiz      ,
+        [MNPViewQuiz.sessions  ]: sessions  ,
         [MNPViewQuiz.navigation]: navigation,
         [MNPViewQuiz.onPressStartQuiz ]: this._handleOnPressStartQuiz ,
         [MNPViewQuiz.onPressDeleteQuiz]: this._handleOnPressDeleteQuiz,
