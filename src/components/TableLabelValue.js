@@ -49,11 +49,11 @@ export class TableLabelValue extends React.PureComponent {
     },
     columnLeftContainer: {
       flex: 1,
-      marginRight: 5,
+      marginRight: 8,
     },
     columnRightContainer: {
       flex: 1,
-      marginLeft: 5,
+      marginLeft: 8,
     },
     textDetailContainer: {
       flexDirection: 'row',

@@ -15,7 +15,7 @@ const iconSize = Helpers.sizeSelectVerbose({
 
 const spacerSize = Helpers.sizeSelectVerbose({
   xsmall: 12, small : 12, normal: 15,
-  large : 17, xlarge: 17,
+  large : 18, xlarge: 18,
 });
 
 
@@ -70,7 +70,6 @@ export class LargeTitleHeaderCard  extends React.Component {
     textBody: {
       ...iOSUIKit.subheadObject,
       textAlignVertical: 'center',
-      maxWidth: 290,
     },
     textTitle: {
       ...iOSUIKit.bodyEmphasizedObject,

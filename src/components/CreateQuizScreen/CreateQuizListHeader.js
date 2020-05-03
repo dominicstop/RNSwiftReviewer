@@ -22,7 +22,7 @@ const TextConstants = {
   // LargeTitleHeaderCard textBody
   HeaderBody: Helpers.sizeSelectSimple({
     normal: 'Quizes are a collection of sections, which in turn, holds related questions together.',
-    large : 'Quizes are a collection of different sections, which in turn, holds several related questions that are grouped together.',
+    large : 'A Quiz is basically just a collection of different sections. Those sections in turn, can hold several related questions together.',
   }),
   // ImageTitleSubtitleCard subtitle
   EmptyText: Helpers.sizeSelectSimple({

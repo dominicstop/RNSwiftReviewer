@@ -1,14 +1,23 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
-
-import { Divider  } from "react-native-elements";
+import { Divider } from "react-native-elements";
 
 import { LargeTitleHeaderCard   } from 'app/src/components/LargeTitleHeaderCard';
 import { ImageTitleSubtitleCard } from 'app/src/components/ImageTitleSubtitleCard';
 import { ButtonGradient         } from 'app/src/components/ButtonGradient';
+
+import * as Helpers from 'app/src/functions/helpers';
+
+const TextConstants = {
+  HeaderBody: Helpers.sizeSelectSimple({
+    normal: "Here are all the quizes you've created. Tap on an item to view the details about the quiz.",
+    large : `Here are all the quizes that you've created so far. Tap on an item to view the details about that quiz. Or you can create a new quiz.`,
+  }),
+};
+
 
 // used in components/QuizListScreen
 // LargeTitleWithSnap: renderHeader comp
@@ -45,6 +54,7 @@ export class QuizListHeader extends React.PureComponent {
           imageSource={require('app/assets/icons/circle_paper_pencil.png')}
           isTitleAnimated={true}
           textTitle={'Your Quizes'}
+          textBody={TextConstants.HeaderBody}
           scrollY={props.scrollY}
           inputRange={props.inputRange}
           {...{addShadow}}
