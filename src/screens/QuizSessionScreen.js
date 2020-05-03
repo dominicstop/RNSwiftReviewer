@@ -247,14 +247,17 @@ export class QuizSessionScreen extends React.Component {
     const session = this.session.values;
     await QuizSessionStore.insertSession(session);
 
+    const quizes   = QuizStore.getCache();
+    const sessions = QuizSessionStore.getCache();
+
     navigation.dispatch(
       StackActions.replace({
         routeName: ROUTES.quizSessionResultRoute,
         params: {
           [SNPQuizSessionResult.quiz    ]: this.quiz,
-          [SNPQuizSessionResult.quizes  ]: QuizStore.getCache(),
-          [SNPQuizSessionResult.session ]: session,
-          [SNPQuizSessionResult.sessions]: QuizSessionStore.getCache(),
+          [SNPQuizSessionResult.quizes  ]: quizes   ,
+          [SNPQuizSessionResult.session ]: session  ,
+          [SNPQuizSessionResult.sessions]: sessions ,
         },
       })
     );

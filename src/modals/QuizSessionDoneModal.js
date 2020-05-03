@@ -64,7 +64,7 @@ export class QuizSessionDoneModal extends React.Component {
   getSections = () => {
     const props = this.props;
 
-    const quiz      = props[MNPQuizSessionDoneModal.quiz] ?? {};
+    const quiz      = props[MNPQuizSessionDoneModal.quiz     ] ?? {};
     const answers   = props[MNPQuizSessionDoneModal.answers  ] ?? {};
     const questions = props[MNPQuizSessionDoneModal.questions] ?? [];
     
@@ -97,7 +97,7 @@ export class QuizSessionDoneModal extends React.Component {
     const type = item.type;
 
     switch (type) {
-      case QSDSectionTypes.DETAILS  : return (`${type}-${index}`);
+      case QSDSectionTypes.DETAILS  :
       case QSDSectionTypes.SESSION  : return (`${type}-${index}`);
       case QSDSectionTypes.SECTIONS : return (item[QuizSectionKeys.sectionID]);
       case QSDSectionTypes.QUESTIONS: return (item?.questionID ?? index);

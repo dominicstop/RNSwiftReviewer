@@ -5,16 +5,18 @@ import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } fro
 import moment  from 'moment';
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
-import { ModalSection } from 'app/src/components/ModalSection';
+import { ModalSection    } from 'app/src/components/ModalSection';
+import { ListItemBadge   } from 'app/src/components//ListItemBadge';
+import { TableLabelValue } from 'app/src/components/TableLabelValue';
+
+import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';
 
-import { ImageTitleSubtitle } from '../ImageTitleSubtitle';
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
-import { ListItemBadge } from '../ListItemBadge';
 import { QuizSessionKeys, QuizSessionScoreKeys } from 'app/src/constants/PropKeys';
-import { TableLabelValue } from '../TableLabelValue';
+
 
 export class  ViewQuizSessionItem extends React.Component {
   static styles = StyleSheet.create({
