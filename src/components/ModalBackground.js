@@ -87,21 +87,6 @@ export class ModalBackground extends React.Component {
     };
   };
 
-  shouldComponentUpdate(nextProps, nextState){
-    const prevProps = this.props;
-    const prevState = this.state;
-
-    return (
-      // check if props changed
-      (prevProps.animateAsGroup   != nextProps.animateAsGroup  ) ||
-      (prevProps.wrapInScrollView != nextProps.wrapInScrollView) ||
-      // check if state changed
-      (prevState.mount           != nextState.mount          ) ||
-      (prevState.keyboardVisible != nextState.keyboardVisible) ||
-      (prevState.footerBGVisible != nextState.footerBGVisible)
-    );
-  };
-
   async componentDidMount(){
     // subscribe to event listeners
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow' , this._keyboardDidShow);
