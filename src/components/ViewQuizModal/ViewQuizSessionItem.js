@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
-import moment  from 'moment';
+import moment         from 'moment';
+import Feather        from '@expo/vector-icons/Feather';
+import LinearGradient from 'react-native-linear-gradient';
+
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
 import { ModalSection    } from 'app/src/components/ModalSection';
@@ -15,7 +18,61 @@ import * as Helpers  from 'app/src/functions/helpers';
 
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizSessionKeys, QuizSessionScoreKeys } from 'app/src/constants/PropKeys';
+import { LabelPill } from '../LabelPill';
 
+const BAR_HEIGHT = 12;
+
+const { width: screenWidth } = Dimensions.get('screen');
+
+class ScoreBar extends React.Component {
+  static styles = StyleSheet.create({
+    rootContainer: {
+      opacity: 0.75,
+      marginTop: 5,
+      height: BAR_HEIGHT,
+      borderRadius: BAR_HEIGHT/2,
+      paddingVertical: 1.5,
+      paddingHorizontal: 2,
+      borderColor: Colors.BLUE.A700,
+      borderWidth: 1,
+    },
+    scoreBarContainer: {
+      height: '100%',
+      borderRadius: BAR_HEIGHT/2,
+      overflow: 'hidden',
+    },
+    scoreBar: {
+      position: 'absolute', 
+      height: '100%',
+      width: screenWidth - 10, 
+    },
+  });
+
+  render(){
+    const { styles } = ScoreBar;
+    const { scorePercent } = this.props;
+
+    const scoreBarContainerStyle = {
+      width: ((scorePercent < BAR_HEIGHT)
+        ? BAR_HEIGHT 
+        : `${scorePercent}%`
+      ),
+    };
+
+    return(
+      <View style={styles.rootContainer}>
+        <View style={[styles.scoreBarContainer, scoreBarContainerStyle]}>
+          <LinearGradient
+            style={styles.scoreBar}
+            colors={[Colors.BLUE.A700, Colors.BLUE.A700]}
+            start={{ x: 0, y: 1 }}
+            end  ={{ x: 1, y: 1 }}
+          />
+        </View>
+      </View>
+    );
+  };
+};
 
 export class  ViewQuizSessionItem extends React.Component {
   static styles = StyleSheet.create({
@@ -30,45 +87,57 @@ export class  ViewQuizSessionItem extends React.Component {
       paddingVertical: 25,
       paddingHorizontal: 13,
     },
+    titleScoreContainer: {
+      flexDirection: 'row',
+    },
+    textDateTitle: {
+      ...iOSUIKit.subheadObject,
+      ...sanFranciscoWeights.bold,
+      marginLeft: 8,
+      color: Colors.BLUE.A700,
+    },
+    titleSubtitleContainer: {
+      flex: 1,
+    },
     titleContainer: {
       flexDirection: 'row',
       alignItems: 'center',
     },
-    textTitle: {
-      ...iOSUIKit.subheadObject,
-      flex: 1,
-      marginLeft: 7,
-    },
-    textTitleDate: {
-      ...sanFranciscoWeights.semibold,
-      color: Colors.GREY[900],
-    },
-    textTitleFromNow: {
-      color: Colors.GREY[700],
-    },
-    textTitleTime: {
-      ...iOSUIKit.subheadObject,
-      color: Colors.GREY[800],
-    },
-    detailContainer: {
-      flexDirection: 'row',
-      marginTop: 10,
-      alignItems: 'center',
-    },
     scoreContainer: {
       aspectRatio: 1,
-      width: 40,
-      borderRadius: 50/2,
+      width: 42,
+      borderRadius: 42/2,
       alignItems: 'center',
       justifyContent: 'center',
+      marginRight: 5,
     },
     textPercent: {
       ...iOSUIKit.footnoteEmphasizedWhiteObject,
       ...sanFranciscoWeights.heavy,
     },
+    subtitleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 5,
+    },
+    textSubtitle: {
+      ...iOSUIKit.subheadObject,
+      marginLeft: 5,
+    },
+    textLabelSubtitle: {
+      ...sanFranciscoWeights.semibold,
+      color: Colors.BLUE[1000],
+    },
+    textSubtitleFromNow: {
+      color: Colors.GREY[800],
+    },
+    textSubtitleTime: {
+      ...iOSUIKit.footnoteObject,
+      ...sanFranciscoWeights.light,
+      color: Colors.GREY[600],
+    },
     detailTableContainer: {
-      flex: 1,
-      marginLeft: 10,
+      marginVertical: 3
     },
   });
 
@@ -101,22 +170,25 @@ export class  ViewQuizSessionItem extends React.Component {
     const duration  = session?.[QuizSessionKeys.sessionDuration ] ?? 0;
 
     const dateEndMoment  = moment.unix(dateEnd / 1000);
-    const dateEndFormat  = dateEndMoment.format('MMM D, ddd YYYY');
-    const timeEndFormat  = dateEndMoment.format('hh:mm a');
+    const dateEndFormat  = dateEndMoment.format('MMMM DD dddd, YYYY');
+    const timeEndFormat  = dateEndMoment.format('hh:mm A');
     const dateEndFromNow = dateEndMoment.fromNow();
 
     const textDuration = Helpers.formatMsToDuration(duration);
 
+    const totalItems     = scores?.[QuizSessionScoreKeys.scoreTotalItems    ] ?? null;
     const percentCorrect = scores?.[QuizSessionScoreKeys.scorePercentCorrect] ?? null;
-    const scoreWrong     = scores?.[QuizSessionScoreKeys.scoreWrong         ] ?? null;
-    const scoreCorrect   = scores?.[QuizSessionScoreKeys.scoreCorrect       ] ?? null;
-    const scoreSkipped   = scores?.[QuizSessionScoreKeys.scoreUnanswered    ] ?? null;
+    
+    const scoreWrong   = scores?.[QuizSessionScoreKeys.scoreWrong     ] ?? null;
+    const scoreCorrect = scores?.[QuizSessionScoreKeys.scoreCorrect   ] ?? null;
+    const scoreSkipped = scores?.[QuizSessionScoreKeys.scoreUnanswered] ?? null;
 
     const textPercentCorrect = percentCorrect? `${Math.trunc(percentCorrect)}%` : 'N/A' ;
 
     const textScoreWrong   = (scoreWrong   != null)? `${scoreWrong  } ${Helpers.plural('item', scoreWrong  )}`: 'N/A' ;
-    const textScoreCorrect = (scoreCorrect != null)? `${scoreCorrect} ${Helpers.plural('item', scoreCorrect)}`: 'N/A' ;
     const textScoreSkipped = (scoreSkipped != null)? `${scoreSkipped} ${Helpers.plural('item', scoreSkipped)}`: 'N/A' ;
+    
+    const textScoreCorrect = (scoreCorrect != null)? `${scoreCorrect}/${totalItems}`: 'N/A' ;
 
     const scoreContainerStyle = {
       backgroundColor: (
@@ -129,42 +201,62 @@ export class  ViewQuizSessionItem extends React.Component {
 
     return (
       <View style={styles.rootContainer}>
-        <View style={styles.titleContainer}>
-          <ListItemBadge
-            size={20}
-            value={(index + 1)}
-            textStyle={{fontWeight: '900'}}
-            color={Colors.BLUE[100]}
-            textColor={Colors.BLUE.A700}
-          />
-          <Text style={styles.textTitle}>
-            <Text style={styles.textTitleDate}>
-              {dateEndFormat}
-            </Text>
-            <Text style={styles.textTitleFromNow}>
-              {`  (${dateEndFromNow})`}
-            </Text>
-          </Text>
-          <Text style={styles.textTitleTime}>
-            {timeEndFormat}
-          </Text>
-        </View>
-        <View style={styles.detailContainer}>
+        <View style={styles.titleScoreContainer}>
+          <View style={styles.titleSubtitleContainer}>
+            <View style={styles.titleContainer}>
+              <ListItemBadge
+                size={19}
+                initFontSize={12}
+                value={(index + 1)}
+                textStyle={{fontWeight: '900'}}
+                color={Colors.BLUE[100]}
+                textColor={Colors.BLUE.A700}
+              />
+              <Text style={styles.textDateTitle}>
+                {dateEndFormat}
+              </Text>
+            </View>
+            <View style={styles.subtitleContainer}>
+              <Feather
+                style={{opacity: 0.75}}
+                name={'clock'}
+                size={16}
+                color={Colors.BLUE[1000]}
+              />
+              <Text style={styles.textSubtitle}>
+                <Text style={styles.textLabelSubtitle}>
+                  {'Taken: '}
+                </Text>
+                <Text style={styles.textSubtitleFromNow}>
+                  {dateEndFromNow}
+                </Text>
+                <Text style={styles.textSubtitleTime}>
+                  {` (at ${timeEndFormat})`}
+                </Text>
+              </Text>
+            </View>
+          </View>
           <View style={[styles.scoreContainer, scoreContainerStyle]}>
-            <Text style={styles.textPercent}>
+            <Text 
+              style={styles.textPercent}
+              numberOfLines={1}
+            >
               {textPercentCorrect}
             </Text>
           </View>
-          <TableLabelValue
-            containerStyle={styles.detailTableContainer}
-            labelValueMap={[
-              ['Correct:' , textScoreCorrect],
-              ['Wrong:'   , textScoreWrong  ],
-              ['Skipped:' , textScoreSkipped],
-              ['Duration:', textDuration    ],
-            ]}
-          />
         </View>
+        <TableLabelValue
+          containerStyle={styles.detailTableContainer}
+          labelValueMap={[
+            ['Score:' , textScoreCorrect],
+            ['Wrong:'   , textScoreWrong  ],
+            ['Skipped:' , textScoreSkipped],
+            ['Duration:', textDuration    ],
+          ]}
+        />
+        <ScoreBar
+          scorePercent={percentCorrect}
+        />
       </View>
     );
   };
