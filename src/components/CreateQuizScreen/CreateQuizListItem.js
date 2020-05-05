@@ -221,17 +221,21 @@ export class CreateQuizListItem extends React.Component {
       }),
     ]);
 
-    // early exit if cancel
-    if(!confirm) return null;
+    if(confirm){
+      // update height
+      this.layoutHeight.setValue(height);
 
-    // update height
-    this.layoutHeight.setValue(height);
+      // wait for animation to finish
+      await new Promise((resolve) => {
+        this.timing.start(() => {
+          resolve();
+        });
+      });
 
-    this.timing.start(() => {
       onPressSectionDelete && onPressSectionDelete(
         { section, index }
       );
-    });
+    };
   };
 
   _handleOnPressLeftButton = () => {
