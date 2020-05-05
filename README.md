@@ -1,5 +1,19 @@
 ## Todo
 
+- [ ] Add support for adding Images
+- [ ] QuizCreateQuestionModal - Improve UI
+- [ ] QuizCreateQuestionModal - Identification: add options for how the answer is checked (i.e numerical, numerical accuracy, text, ignore case, ignore whitespace, ignore special characters, min. levenstein distance for checking how similar the answer is, max/min characters, fuzzy checking etc.)
+- [ ] QuizCreateQuestionModal - Identification: add section for typing the answer to try out the options
+- [ ] QuizCreateQuestionModal - Add character count
+- [ ] QuizCreateQuestionModal - Multiple Choice: add swipe to delete choices
+- [ ] QuizCreateQuestionModal - Increase choices limit to 5
+- [ ] QuizCreateQuestionModal - Add input limit
+- [ ] QuizAddQuestionModal - Add footer
+- [ ] QuizAddSectionModal - Editing: allow editng of type when there's no questions yet
+- [ ] CreateQuizScreen: fixed transition from 1 item to 0.
+
+- [ ] Create generic button component with custom press in/out animations, active/inactive state and debouncing
+- [ ] Dark Mode support
 
 - [ ] Refactor to use Immutability helper for nested state
 - [ ] Refactor wrap on press handlers inside debounce to prevent multiple invocations
@@ -8,9 +22,13 @@
 - [ ] Record header height + Add snap to offset for header
 - [ ] CreateQuizModal: replace input icons
 - [ ] Refactor:  QuizListItem - pass down quizes as props, and use PropKeys to access them
-- [ ] When cancel is pressed, prompt actionSheet/Alert and ask to discard changes 
-- [ ] Don't show check animation when no changes in modal
 - [ ] enable/disable colors for footer section buttons
+- [ ] ModalInputField: Add character count when focused
+- [ ] ModalInputField: add support for separate sticky header
+- [ ] ModalInputField: combine with ModalInputMultiline
+- [ ] Modals - prevent swipeToDimss when there are unsaved changes
+- [x] When cancel is pressed, prompt actionSheet/Alert and ask to discard changes 
+- [x] Don't show check animation when no changes in modal
 - [x] Refactor: rename ListCardEmpty to ListCardImageTitleBody
 - [x] Create Initial QuizScreenList layout
 - [x] Finish TabBar
