@@ -118,11 +118,20 @@ export class QuizSessionDoneModal extends React.Component {
       const onPressDone = 
         props[MNPQuizSessionDoneModal.onPressDone];
 
+      // disable swipe gesture
+      Navigation.mergeOptions(componentId, {
+        modal: {
+          swipeToDismiss: false,
+        }
+      });
+
       await Promise.all([
         // wait for callback
         onPressDone && onPressDone(),
         // wait for overlay animation
-        this.overlayCheck.start(1000)
+        this.overlayCheck.start(1000),
+        // wait for footer hide animation
+        this.modalFooterRef.setVisibility(false),
       ]);
 
       //close modal
@@ -142,9 +151,17 @@ export class QuizSessionDoneModal extends React.Component {
     const { componentId, ...props } = this.props;
     const onPressQuestion = props[MNPQuizSessionDoneModal.onPressQuestion];
 
+    // disable swipe gesture
+    Navigation.mergeOptions(componentId, {
+      modal: {
+        swipeToDismiss: false,
+      }
+    });
+
     await Promise.all([
       Helpers.timeout(500),
       this.overlayLoading.show(),
+      this.modalFooterRef.setVisibility(false),
       onPressQuestion && onPressQuestion({answer, question, index}),
     ]);
 
@@ -282,7 +299,7 @@ export class QuizSessionDoneModal extends React.Component {
     );
 
     const modalFooter = (
-      <ModalFooter>
+      <ModalFooter ref={r => this.modalFooterRef = r}>
         <ModalFooterButton
           buttonLeftTitle={'End Session'}
           buttonLeftSubtitle={'Save & end quiz'}

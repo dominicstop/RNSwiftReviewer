@@ -130,10 +130,17 @@ export class ViewQuizModal extends React.Component {
 
     const quiz = props[MNPViewQuiz.quiz];
     const onPressStartQuiz = props[MNPViewQuiz.onPressStartQuiz];
+    
+    // disable swipe gesture
+    Navigation.mergeOptions(componentId, {
+      modal: {
+        swipeToDismiss: false,
+      }
+    });
 
     // call callback
     onPressStartQuiz && onPressStartQuiz({quiz});
-    
+    // navigate to QuizSessonScreen
     navigation.navigate(ROUTES.quizSessionRoute, {
       [SNPQuizSession.quiz]: quiz,
     });
@@ -141,6 +148,7 @@ export class ViewQuizModal extends React.Component {
     await Promise.all([
       Helpers.timeout(1000),
       this.overlayRef.show(),
+      this.modalFooterRef.setVisibility(false)
     ]);
 
     //close modal
@@ -275,7 +283,7 @@ export class ViewQuizModal extends React.Component {
     );
 
     const modalFooter = (
-      <ModalFooter>
+      <ModalFooter ref={r => this.modalFooterRef = r}>
         <ModalFooterButton
           buttonLeftTitle={'Start Quiz'}
           buttonLeftSubtitle={'New Session'}
