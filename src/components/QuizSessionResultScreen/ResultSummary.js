@@ -9,8 +9,9 @@ import Reanimated from 'react-native-reanimated';
 
 import { Easing } from 'react-native-reanimated';
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
+import { Divider } from 'react-native-elements';
 
-import { ListCard } from 'app/src/components/ListCard';
+import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { HeaderValues } from 'app/src/constants/HeaderValues';
 import { SNPQuizSessionResult } from 'app/src/constants/NavParams';
 import { QuizSessionKeys, QuizSessionScoreKeys } from 'app/src/constants/PropKeys';
@@ -119,6 +120,15 @@ class OptionButton extends React.Component {
 
     const digits = (max?.toString()?.length ?? 0);
     this.textScoreWidth = (digits * 20);
+  };
+
+  shouldComponentUpdate(nextProps){
+    const prevProps = this.props;
+
+    return(
+      prevProps.mode  != nextProps.mode  ||
+      prevProps.value != nextProps.value 
+    );
   };
 
   _handleOnPress = () => {
@@ -277,6 +287,16 @@ class ScorePieChart extends React.Component {
     });
   };
 
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    return(
+      prevProps.mode        != nextProps.mode        ||
+      prevState.showPercent != nextState.showPercent 
+    );
+  };
+
   componentDidUpdate(prevProps){
     const nextProps = this.props;
 
@@ -358,14 +378,8 @@ class ScorePieChart extends React.Component {
     const { session, mode } = this.props;
     const { showPercent } = this.state;
 
+    const modeProps    = this.getPropsFromMode();
     const noneSelected = (mode === MODES.DEFAULT);
-
-    const scores = session[QuizSessionKeys.sessionScore];
-
-    const totalItems   = scores[QuizSessionScoreKeys.scoreTotalItems];
-    const scoreCorrect = scores[QuizSessionScoreKeys.scoreCorrect];
-
-    const modeProps = this.getPropsFromMode();
 
     const chartWrapper = {
       transform: [
@@ -383,6 +397,9 @@ class ScorePieChart extends React.Component {
       <Animatable.View 
         style={styles.rootContainer}
         ref={r => this.rootContainerRef = r}
+        animation={'fadeIn'}
+        duration={1000}
+        delay={500}
         useNativeDriver={true}
       >
         <TouchableOpacity
@@ -430,6 +447,56 @@ class ScorePieChart extends React.Component {
   };
 };
 
+class SummaryDecription extends React.Component {
+  static styles = StyleSheet.create({
+
+  });
+
+  getDescription(){
+    const { scores } = this.props;
+
+    const totalItems   = scores[QuizSessionScoreKeys.scoreTotalItems];
+    const scoreCorrect = scores[QuizSessionScoreKeys.scoreCorrect];
+
+    const percentCorrect = scores[QuizSessionScoreKeys.scorePercentCorrect];
+    const percentSkipped = scores[QuizSessionScoreKeys.scorePercentUnanswered];
+
+    const passingGrade = Math.ceil(totalItems / 2);
+
+    const itemsNeededToPass = (passingGrade - scoreCorrect);
+    const itemsAbovePassing = (scoreCorrect - passingGrade);
+
+    const didPass = (percentCorrect >= 50);
+
+    if     (scoreCorrect   == passingGrade) return "Woah, it looks like you have exactly enough points to pass. Good job!";
+    else if(percentCorrect == 100         ) return "Wow, looks like you have a perfect score! Congratulations, you did great!";
+    else if(percentSkipped == 100         ) return "Whoops, it looks like you skipped all of the questions. Try answering some questions!";
+    else if(percentCorrect == 0           ) return "Oops, looks like you got every question wrong? Don't worry, you just need to keep practicing.";
+    else if(percentCorrect <  50          ) return `You needed ${itemsNeededToPass} ${plural('item', itemsNeededToPass)} more to pass. Your score is ${scoreCorrect}/${totalItems}. The passing score is ${passingGrade} ${plural('item', passingGrade)}.`;
+    else if(percentCorrect >  50          ) return `The passing score is ${passingGrade} ${plural('item', passingGrade)} and you scored ${scoreCorrect}/${totalItems}. You're ${itemsAbovePassing} ${plural('item', itemsAbovePassing)} above the passing score. `;
+  };
+
+  render(){
+    const { scores } = this.props;
+    const percentCorrect = scores[QuizSessionScoreKeys.scorePercentCorrect];
+
+    const didPass = (percentCorrect >= 50);
+    const title  = (didPass? 'You Passed' : 'You Failed');
+
+    const subtitle = this.getDescription();
+    
+
+    return(
+      <ImageTitleSubtitle
+        imageSource={require('app/assets/icons/e-calc.png')}
+        imageSize={80}
+        hasPadding={false}
+        {...{title, subtitle}}
+      />
+    );
+  };
+};
+
 export class ResultSummary extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
@@ -455,6 +522,15 @@ export class ResultSummary extends React.Component {
     };
   };
 
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    return(
+      prevState.mode != nextState.mode 
+    );
+  };
+
   _handleOnPressOption = (value) => {
     const { mode } = this.state;
     const selected = (value == mode);
@@ -473,6 +549,10 @@ export class ResultSummary extends React.Component {
 
     return (
       <View style={styles.rootContainer}>
+        <SummaryDecription
+          {...{scores}}
+        />
+        <Divider style={{margin: 20}}/>
         <View style={styles.chartButtonsContainer}>
           <View style={styles.buttonsContainer}>
             <OptionButton
