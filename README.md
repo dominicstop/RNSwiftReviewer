@@ -12,6 +12,15 @@
 - [ ] QuizAddSectionModal - Editing: allow editng of type when there's no questions yet
 - [ ] CreateQuizScreen: fixed transition from 1 item to 0.
 
+- [ ] QuizCreateQuestionModal - Add Question preview when choosing answer
+- [ ] QuizSessionDoneModal - Change the loading indicator when tap to jump
+- [ ] ViewQuizModal - Make quiz session item title thicker/bigger
+- [ ] ViewQuizModal - Sort quiz session list from newest to oldest
+- [ ] ViewQuizModal - Adj. section title style
+- [ ] AddNewSectionModal - Fix AddNewSection discard logic
+- [ ] Store - Update clear logic to clear cache + index
+- [ ] Add haptic feedback
+
 - [ ] Create generic button component with custom press in/out animations, active/inactive state and debouncing
 - [ ] Dark Mode support
 
