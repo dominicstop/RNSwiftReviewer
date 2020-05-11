@@ -2,10 +2,7 @@ import React, { Fragment } from 'react';
 import { View, SectionList } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
-
 import { Navigation } from 'react-native-navigation';
-
-import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
 import { ModalBody          } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
@@ -18,7 +15,7 @@ import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDe
 import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
 
 import { QuestionAnswerItem     } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
-import { QuizSessionDetails     } from 'app/src/components/components/QuizSessionDoneModal/QuizSessionDetails';
+import { QuizSessionDetails     } from 'app/src/components/QuizSessionDoneModal/QuizSessionDetails';
 import { QuizSessionDoneOverlay } from 'app/src/components/QuizSessionDoneModal/QuizSessionDoneOverlay';
 
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
