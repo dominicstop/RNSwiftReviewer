@@ -54,16 +54,18 @@ const styles = StyleSheet.create({
 // blurred background + header/footer support
 export class ModalBody extends React.Component {
   static propTypes = {
-    overlay         : PropTypes.element,
-    modalHeader     : PropTypes.element,
-    modalFooter     : PropTypes.element,
-    animateAsGroup  : PropTypes.bool   ,
-    wrapInScrollView: PropTypes.bool   ,
+    overlay            : PropTypes.element,
+    modalHeader        : PropTypes.element,
+    modalFooter        : PropTypes.element,
+    animateAsGroup     : PropTypes.bool   ,
+    wrapInScrollView   : PropTypes.bool   ,
+    passScrollviewProps: PropTypes.bool   ,
   };
 
   static defaultProps = {
-    animateAsGroup  : false,
-    wrapInScrollView: true ,
+    animateAsGroup     : false,
+    wrapInScrollView   : true ,
+    passScrollviewProps: true ,
   };
 
   constructor(props){
@@ -222,13 +224,18 @@ export class ModalBody extends React.Component {
             duration={300}
             useNativeDriver={true}
           >
-            {React.cloneElement(props.children, {
+            {React.cloneElement(props.children, props.passScrollviewProps? {
+              // pass down scrollview props to child
               style: styles.scrollView,
               contentContainerStyle: styles.scrollviewContent,
               scrollIndicatorInsets: { 
                 top   : MODAL_HEADER_HEIGHT,
                 bottom: insetBottom,
               },
+            }:{
+              // pass down props to child
+              topSpace   :MODAL_HEADER_HEIGHT,
+              bottomSpace: insetBottom,
             })}
           </Animatable.View>
         ))}
