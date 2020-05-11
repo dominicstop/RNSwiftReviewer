@@ -10,10 +10,10 @@ import { Navigation } from 'react-native-navigation';
 import { ListItemBadge  } from 'app/src/components/ListItemBadge';
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 
-import { ModalBody         } from 'app/src/components/ModalBody';
-import { ModalHeader       } from 'app/src/components/ModalHeader';
-import { ModalFooter       } from 'app/src/components/ModalFooter';
-import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
+import { ModalBody         } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader       } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter       } from 'app/src/components/Modal/ModalFooter';
+import { ModalFooterButton } from 'app/src/components/Modal/ModalFooterButton';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';

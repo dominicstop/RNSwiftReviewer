@@ -4,13 +4,14 @@ import { StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-na
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBody         } from 'app/src/components/ModalBody';
-import { ModalHeader       } from 'app/src/components/ModalHeader';
-import { ModalFooter       } from 'app/src/components/ModalFooter';
-import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
-import { ModalSection      } from 'app/src/components/ModalSection';
-import { ModalOverlayCheck } from 'app/src/components/ModalOverlayCheck';
-import { ModalInputField   } from 'app/src/components/ModalInputField';
+import { ModalBody         } from 'app/src/components/Modal/ModalBody';
+import { ModalFooter       } from 'app/src/components/Modal/ModalFooter';
+
+import { ModalHeader       } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooterButton } from 'app/src/components/Modal/ModalFooterButton';
+import { ModalSection      } from 'app/src/components/Modal/ModalSection';
+import { ModalOverlayCheck } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalInputField   } from 'app/src/components/Modal/ModalInputField';
 import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
 
 import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';

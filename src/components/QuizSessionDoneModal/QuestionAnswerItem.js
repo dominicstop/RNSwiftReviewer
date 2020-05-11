@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import Feather from '@expo/vector-icons/Feather';
 import moment  from 'moment';
 
-import { ModalSection    } from 'app/src/components/ModalSection';
+import { ModalSection    } from 'app/src/components/Modal/ModalSection';
 import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
 import * as Colors  from 'app/src/constants/Colors';

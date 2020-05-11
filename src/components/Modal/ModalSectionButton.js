@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import throttle from "lodash/throttle";
 import { iOSUIKit } from 'react-native-typography';
 
-import { ModalSection } from 'app/src/components/ModalSection';
+import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';

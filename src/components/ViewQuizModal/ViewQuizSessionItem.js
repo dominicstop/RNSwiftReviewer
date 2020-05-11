@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
-import { ModalSection    } from 'app/src/components/ModalSection';
+import { ModalSection    } from 'app/src/components/Modal/ModalSection';
 import { ListItemBadge   } from 'app/src/components//ListItemBadge';
 import { TableLabelValue } from 'app/src/components/TableLabelValue';
 

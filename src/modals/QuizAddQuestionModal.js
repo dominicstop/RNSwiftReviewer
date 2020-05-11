@@ -7,13 +7,13 @@ import Reanimated from 'react-native-reanimated';
 import { Navigation } from 'react-native-navigation';
 import { createNativeWrapper } from 'react-native-gesture-handler';
 
-import { ModalBody          } from 'app/src/components/ModalBody';
-import { ModalHeader        } from 'app/src/components/ModalHeader';
-import { ModalFooter        } from 'app/src/components/ModalFooter';
-import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
-import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
-import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
-import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
+import { ModalBody          } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
+import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
+import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
+import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
 
 import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
 import { QuizAddQuestionModalItem   } from 'app/src/components/QuizAddQuestionModalItem';

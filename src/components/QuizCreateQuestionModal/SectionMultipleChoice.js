@@ -9,7 +9,7 @@ import * as Animatable from 'react-native-animatable';
 import { Divider } from 'react-native-elements';
 import { iOSUIKit } from 'react-native-typography';
 
-import { ModalSection       } from 'app/src/components/ModalSection';
+import { ModalSection       } from 'app/src/components/Modal/ModalSection';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { ButtonGradient     } from 'app/src/components/ButtonGradient';
 import { ListItemBadge      } from 'app/src/components/ListItemBadge';

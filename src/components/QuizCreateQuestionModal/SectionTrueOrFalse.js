@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import SegmentedControlIOS from '@react-native-community/segmented-control';
 
-import { ModalSection } from 'app/src/components/ModalSection';
+import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';

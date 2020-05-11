@@ -9,12 +9,12 @@ import { Navigation } from 'react-native-navigation';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import { ModalBody          } from 'app/src/components/ModalBody';
-import { ModalHeader        } from 'app/src/components/ModalHeader';
-import { ModalFooter        } from 'app/src/components/ModalFooter';
-import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
-import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
-import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
+import { ModalBody          } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
+import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
+import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';

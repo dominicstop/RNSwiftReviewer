@@ -8,7 +8,7 @@ import { Divider } from 'react-native-elements';
 
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
-import { ModalSection    } from 'app/src/components/ModalSection';
+import { ModalSection    } from 'app/src/components/Modal/ModalSection';
 import { TableLabelValue } from 'app/src/components/TableLabelValue';
 
 import * as Colors  from 'app/src/constants/Colors';

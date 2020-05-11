@@ -7,15 +7,15 @@ import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBody           } from 'app/src/components/ModalBody';
-import { ModalHeader         } from 'app/src/components/ModalHeader';
-import { ModalFooter         } from 'app/src/components/ModalFooter';
-import { ModalFooterButton   } from 'app/src/components/ModalFooterButton';
-import { ModalSection        } from 'app/src/components/ModalSection';
-import { ModalSectionButton  } from 'app/src/components/ModalSectionButton';
-import { ModalOverlayCheck   } from 'app/src/components/ModalOverlayCheck';
-import { ModalSectionHeader  } from 'app/src/components/ModalSectionHeader';
-import { ModalInputMultiline } from 'app/src/components/ModalInputMultiline';
+import { ModalBody           } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader         } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter         } from 'app/src/components/Modal/ModalFooter';
+import { ModalFooterButton   } from 'app/src/components/Modal/ModalFooterButton';
+import { ModalSection        } from 'app/src/components/Modal/ModalSection';
+import { ModalSectionButton  } from 'app/src/components/Modal/ModalSectionButton';
+import { ModalOverlayCheck   } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalSectionHeader  } from 'app/src/components/Modal/ModalSectionHeader';
+import { ModalInputMultiline } from 'app/src/components/Modal/ModalInputMultiline';
 import { ListFooterIcon      } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
 

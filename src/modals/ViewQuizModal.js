@@ -5,12 +5,12 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBody          } from 'app/src/components/ModalBody';
-import { ModalHeader        } from 'app/src/components/ModalHeader';
-import { ModalFooter        } from 'app/src/components/ModalFooter';
-import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
-import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
-import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
+import { ModalBody          } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
+import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
+import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
+import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';

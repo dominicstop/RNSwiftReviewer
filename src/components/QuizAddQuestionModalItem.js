@@ -11,7 +11,7 @@ import { Easing     } from 'react-native-reanimated';
 import { iOSUIKit   } from 'react-native-typography'; 
 import { RectButton } from 'react-native-gesture-handler';
 
-import { ModalSection } from 'app/src/components/ModalSection';
+import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
 import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes } from 'app/src/constants/SectionTypes';
