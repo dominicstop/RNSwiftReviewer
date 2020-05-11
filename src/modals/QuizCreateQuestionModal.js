@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Ionicon           from '@expo/vector-icons/Ionicons';
@@ -16,10 +16,9 @@ import { ModalSectionButton  } from 'app/src/components/Modal/ModalSectionButton
 import { ModalOverlayCheck   } from 'app/src/components/Modal/ModalOverlayCheck';
 import { ModalSectionHeader  } from 'app/src/components/Modal/ModalSectionHeader';
 import { ModalInputMultiline } from 'app/src/components/Modal/ModalInputMultiline';
-import { ListFooterIcon      } from 'app/src/components/ListFooterIcon';
-import { ImageTitleSubtitle  } from 'app/src/components/ImageTitleSubtitle';
 
-import { MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
+import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
+import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 
 import { SectionTrueOrFalse    } from 'app/src/components/QuizCreateQuestionModal/SectionTrueOrFalse';
 import { SectionMatchingType   } from 'app/src/components/QuizCreateQuestionModal/SectionMatchingType';
@@ -29,6 +28,7 @@ import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
+import { MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
 import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes, SectionTypeTitles, SectionTypeDescs } from 'app/src/constants/SectionTypes';
 

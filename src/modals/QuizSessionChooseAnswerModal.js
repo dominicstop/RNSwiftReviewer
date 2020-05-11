@@ -18,8 +18,8 @@ import { ModalFooterButton } from 'app/src/components/Modal/ModalFooterButton';
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { BORDER_WIDTH } from 'app/src/constants/UIValues';
-import { QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
+import { BORDER_WIDTH               } from 'app/src/constants/UIValues';
+import { QuizSessionAnswerKeys      } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 

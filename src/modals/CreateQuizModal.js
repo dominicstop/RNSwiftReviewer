@@ -1,31 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBody         } from 'app/src/components/Modal/ModalBody';
-import { ModalFooter       } from 'app/src/components/Modal/ModalFooter';
-
 import { ModalHeader       } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter       } from 'app/src/components/Modal/ModalFooter';
 import { ModalFooterButton } from 'app/src/components/Modal/ModalFooterButton';
 import { ModalSection      } from 'app/src/components/Modal/ModalSection';
-import { ModalOverlayCheck } from 'app/src/components/Modal/ModalOverlayCheck';
 import { ModalInputField   } from 'app/src/components/Modal/ModalInputField';
-import { ListFooterIcon    } from 'app/src/components/ListFooterIcon';
+import { ModalOverlayCheck } from 'app/src/components/Modal/ModalOverlayCheck';
 
-import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
+import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
+
+import { ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
-
-import { BLUE } from 'app/src/constants/Colors';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
-
-import { ModalController } from 'app/src/functions/ModalController';
 
 
 export class CreateQuizModal extends React.PureComponent {

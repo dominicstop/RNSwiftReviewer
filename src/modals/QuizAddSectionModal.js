@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Alert, Keyboard, Animated, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Alert, Keyboard, Animated } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-
 import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Divider    } from 'react-native-elements';
@@ -14,17 +13,17 @@ import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
 import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
 import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalInputField    } from 'app/src/components/Modal/ModalInputField';
 import { ModalSection       } from 'app/src/components/Modal/ModalSection';
 import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
-import { ModalInputField    } from 'app/src/components/Modal/ModalInputField';
+
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ListItemBadge      } from 'app/src/components/ListItemBadge';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 
 import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
-import { ROUTES, RNN_ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
+import { MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
 import { SectionTypes, SectionTypesRadioValuesMap } from 'app/src/constants/SectionTypes';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';

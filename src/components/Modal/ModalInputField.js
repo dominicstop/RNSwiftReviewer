@@ -13,6 +13,7 @@ import * as Helpers from 'app/src/functions/helpers';
 import Reanimated, { Easing }  from 'react-native-reanimated';
 const { Value, interpolate, timing, concat, floor, Extrapolate } = Reanimated; 
 
+
 const MODES = {
   'INITIAL': 'INITIAL',
   'FOCUSED': 'FOCUSED',

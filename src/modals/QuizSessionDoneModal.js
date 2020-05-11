@@ -1,10 +1,8 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, View, SectionList } from 'react-native';
+import { View, SectionList } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
 import Ionicon from '@expo/vector-icons/Ionicons';
 
-import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
@@ -15,22 +13,22 @@ import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
 import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
 import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
 import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
-import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
 
 import { QuestionAnswerItem     } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
+import { QuizSessionDetails     } from 'app/src/components/components/QuizSessionDoneModal/QuizSessionDetails';
 import { QuizSessionDoneOverlay } from 'app/src/components/QuizSessionDoneModal/QuizSessionDoneOverlay';
 
+import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { BORDER_WIDTH } from 'app/src/constants/UIValues';
-import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
-import { QuizSessionDetails } from '../components/QuizSessionDoneModal/QuizSessionDetails';
+import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
+
 
 // QSD: QuizSessionDone 🤣
 const QSDSectionTypes = {

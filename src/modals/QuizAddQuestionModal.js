@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, SectionList } from 'react-native';
 
-import Ionicon    from '@expo/vector-icons/Ionicons';
-import Reanimated from 'react-native-reanimated';
+import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 import { createNativeWrapper } from 'react-native-gesture-handler';
@@ -15,10 +14,11 @@ import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
 import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
 import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
 
-import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
 import { QuizAddQuestionModalItem   } from 'app/src/components/QuizAddQuestionModalItem';
+import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
+
 import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
 import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 

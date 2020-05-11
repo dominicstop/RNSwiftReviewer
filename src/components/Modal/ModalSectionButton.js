@@ -10,6 +10,7 @@ import { ModalSection } from 'app/src/components/Modal/ModalSection';
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';
 
+
 export class ModalSectionButton extends React.PureComponent {
   static propTypes = {
     label        : PropTypes.string ,

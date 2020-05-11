@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { StyleSheet, View, SectionList } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
-
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBody          } from 'app/src/components/Modal/ModalBody';
@@ -11,19 +10,21 @@ import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
 import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
 import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
-import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 
 import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
 import { ViewQuizSessionItem } from 'app/src/components/ViewQuizModal/ViewQuizSessionItem';
 
+import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
+
 import { ROUTES } from 'app/src/constants/Routes';
 
-import { QuizKeys, QuizSectionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 import { MNPViewQuiz, SNPQuizSession } from 'app/src/constants/NavParams';
+import { QuizKeys, QuizSectionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from 'app/src/functions/helpers';
+
 
 // VQM: ViewQuizModal 🤣
 const VQMSectionTypes = {
@@ -32,10 +33,10 @@ const VQMSectionTypes = {
   SESSIONS : 'SESSIONS' ,
 };
 
+
 // Since it isn't recc to wrap a VirtualizedList inside a scrollview
 // this modal is using SectionList to emulate scrollview + flatlist.
 // Replace w/ custom VirtualizedList impl.
-
 
 export class ViewQuizModal extends React.Component {
   static options() {
