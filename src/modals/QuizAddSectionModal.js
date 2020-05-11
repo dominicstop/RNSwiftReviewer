@@ -9,7 +9,7 @@ import { Divider    } from 'react-native-elements';
 import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground    } from 'app/src/components/ModalBackground';
+import { ModalBody          } from 'app/src/components/ModalBody';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
@@ -367,7 +367,7 @@ export class QuizAddSectionModal extends React.Component {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         {...{modalHeader, modalFooter, overlay}}
       >
         <ModalSection>
@@ -452,7 +452,7 @@ export class QuizAddSectionModal extends React.Component {
           show={true}
           marginTop={0}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
 };

@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// used as children in: components/ModalBackground
-// used for displaying a ModalBackground item
+// used as children in: components/ModalBody
+// used for displaying a ModalBody item
 // Wraps element and adds a bg + border
 export class ModalSection extends React.PureComponent {
   static propTypes = {

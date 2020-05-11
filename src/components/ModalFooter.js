@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// Used in ModalBackground props: modalFooter
+// Used in ModalBody props: modalFooter
 // accepts ModalFooterButton as children
 export class ModalFooter extends React.Component {
 

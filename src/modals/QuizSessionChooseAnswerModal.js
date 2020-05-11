@@ -7,13 +7,13 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';
 
-import { ListItemBadge } from 'app/src/components/ListItemBadge';
+import { ListItemBadge  } from 'app/src/components/ListItemBadge';
+import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 
-import { ModalBackground    } from 'app/src/components/ModalBackground';
-import { ModalHeader        } from 'app/src/components/ModalHeader';
-import { ModalFooter        } from 'app/src/components/ModalFooter';
-import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
-import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
+import { ModalBody         } from 'app/src/components/ModalBody';
+import { ModalHeader       } from 'app/src/components/ModalHeader';
+import { ModalFooter       } from 'app/src/components/ModalFooter';
+import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -188,7 +188,7 @@ export class QuizSessionChooseAnswerModal extends React.Component {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         wrapInScrollView={true}
         animateAsGroup={true}
         {...{modalHeader, modalFooter}}
@@ -204,7 +204,7 @@ export class QuizSessionChooseAnswerModal extends React.Component {
           show={true}
           hasEntranceAnimation={false}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
 };

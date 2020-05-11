@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// Used in ModalBackground props: modalHeader
+// Used in ModalBody props: modalHeader
 // Displays a Icon, title/subtitle on the top of the modal
 export class ModalHeader extends React.PureComponent {
   static propTypes = {

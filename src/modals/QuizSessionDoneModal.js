@@ -9,7 +9,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
-import { ModalBackground    } from 'app/src/components/ModalBackground';
+import { ModalBody          } from 'app/src/components/ModalBody';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
@@ -322,7 +322,7 @@ export class QuizSessionDoneModal extends React.Component {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         wrapInScrollView={false}
         animateAsGroup={true}
         {...{modalHeader, modalFooter, overlay}}
@@ -336,7 +336,7 @@ export class QuizSessionDoneModal extends React.Component {
           SectionSeparatorComponent={this._renderSectionSeperator}
           ListFooterComponent={this._renderListFooter}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
   //#endregion

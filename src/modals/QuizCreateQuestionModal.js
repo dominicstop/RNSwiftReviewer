@@ -7,7 +7,7 @@ import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground     } from 'app/src/components/ModalBackground';
+import { ModalBody           } from 'app/src/components/ModalBody';
 import { ModalHeader         } from 'app/src/components/ModalHeader';
 import { ModalFooter         } from 'app/src/components/ModalFooter';
 import { ModalFooterButton   } from 'app/src/components/ModalFooterButton';
@@ -373,7 +373,7 @@ export class QuizCreateQuestionModal extends React.Component {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         stickyHeaderIndices={[0, 1, 3]}
         animateAsGroup={true}
         {...{modalHeader, modalFooter, overlay}}
@@ -441,7 +441,7 @@ export class QuizCreateQuestionModal extends React.Component {
           show={true}
           marginTop={0}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
 };

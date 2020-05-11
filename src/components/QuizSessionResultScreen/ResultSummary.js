@@ -502,6 +502,7 @@ export class ResultSummary extends React.Component {
     rootContainer: {
       backgroundColor: 'white',
       padding: 15,
+      paddingBottom: 25,
     },
     chartButtonsContainer: {
       flexDirection: 'row',

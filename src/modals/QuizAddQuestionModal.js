@@ -7,12 +7,12 @@ import Reanimated from 'react-native-reanimated';
 import { Navigation } from 'react-native-navigation';
 import { createNativeWrapper } from 'react-native-gesture-handler';
 
-import { ModalBackground    } from 'app/src/components/ModalBackground';
-import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
+import { ModalBody          } from 'app/src/components/ModalBody';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalFooterButton  } from 'app/src/components/ModalFooterButton';
 import { ModalOverlayCheck  } from 'app/src/components/ModalOverlayCheck';
+import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
 import { ModalSectionButton } from 'app/src/components/ModalSectionButton';
 
 import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
@@ -387,7 +387,7 @@ export class QuizAddQuestionModal extends React.Component {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         ref={r => this.modalBgRef = r}
         wrapInScrollView={false}
         {...{modalHeader, modalFooter, overlay}}
@@ -401,7 +401,7 @@ export class QuizAddQuestionModal extends React.Component {
           ListHeaderComponent={this._renderListHeader}
           ListFooterComponent={this._renderListFooter}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
   //#endregion

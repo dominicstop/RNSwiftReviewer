@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ScrollView, Keyboard, Animated } from 'react-na
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground   } from 'app/src/components/ModalBackground';
+import { ModalBody         } from 'app/src/components/ModalBody';
 import { ModalHeader       } from 'app/src/components/ModalHeader';
 import { ModalFooter       } from 'app/src/components/ModalFooter';
 import { ModalFooterButton } from 'app/src/components/ModalFooterButton';
@@ -193,7 +193,7 @@ export class CreateQuizModal extends React.PureComponent {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         {...{modalHeader, modalFooter, overlay}}
       >
         <ModalSection showBorderTop={false}>
@@ -249,7 +249,7 @@ export class CreateQuizModal extends React.PureComponent {
           show={true}
           marginTop={0}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
 };

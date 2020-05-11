@@ -5,7 +5,7 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBackground    } from 'app/src/components/ModalBackground';
+import { ModalBody          } from 'app/src/components/ModalBody';
 import { ModalHeader        } from 'app/src/components/ModalHeader';
 import { ModalFooter        } from 'app/src/components/ModalFooter';
 import { ModalSectionHeader } from 'app/src/components/ModalSectionHeader';
@@ -301,7 +301,7 @@ export class ViewQuizModal extends React.Component {
     );
 
     return (
-      <ModalBackground
+      <ModalBody
         wrapInScrollView={false}
         {...{modalHeader, modalFooter, overlay}}
       >
@@ -314,7 +314,7 @@ export class ViewQuizModal extends React.Component {
           ListFooterComponent={this._renderListFooter}
           {...{sections}}
         />
-      </ModalBackground>
+      </ModalBody>
     );
   };
   // #endregion

@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 // used in conjuction w/ components/ModalSection
-// used inside of ModalBackground
+// used inside of ModalBody
 // displays an icon + title/subtitle w/ a blurred bg
 export class ModalSectionHeader extends React.PureComponent {
   static propTypes = {

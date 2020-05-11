@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 // Used for creating modals
 // Used as a root comp. as a wrapper
 // blurred background + header/footer support
-export class ModalBackground extends React.Component {
+export class ModalBody extends React.Component {
   static propTypes = {
     overlay         : PropTypes.element,
     modalHeader     : PropTypes.element,

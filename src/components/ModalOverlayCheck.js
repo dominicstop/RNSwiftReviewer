@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// used in components/ModalBackground as prop for modalOverlay
+// used in components/ModalBody as prop for modalOverlay
 // shows a check overlay animation
 export class ModalOverlayCheck extends React.PureComponent {
   constructor(props){
