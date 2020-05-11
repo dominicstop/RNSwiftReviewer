@@ -303,6 +303,7 @@ export class ViewQuizModal extends React.Component {
 
     return (
       <ModalBody
+        useCompactHeader={true}
         wrapInScrollView={false}
         {...{modalHeader, modalFooter, overlay}}
       >

@@ -11,7 +11,8 @@ import { BlurView } from "@react-native-community/blur";
 import { AnimatedListItem } from 'app/src/components/AnimatedListItem';
 
 import * as Helpers from 'app/src/functions/helpers';
-import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT } from 'app/src/constants/UIValues';
+import { MODAL_HEADER_HEIGHT, MODAL_FOOTER_HEIGHT, MODAL_HEADER_HEIGHT_COMPACT } from 'app/src/constants/UIValues';
+import { ModalHeaderCompact } from './ModalHeaderCompact';
 
 const { Value, Extrapolate, interpolate, timing } = Reanimated;
 
@@ -42,7 +43,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    paddingTop: MODAL_HEADER_HEIGHT,
   },
   scrollviewContent: {
     paddingBottom: MODAL_FOOTER_HEIGHT + 100,
@@ -59,12 +59,14 @@ export class ModalBody extends React.Component {
     modalFooter        : PropTypes.element,
     animateAsGroup     : PropTypes.bool   ,
     wrapInScrollView   : PropTypes.bool   ,
+    useCompactHeader   : PropTypes.bool   ,
     passScrollviewProps: PropTypes.bool   ,
   };
 
   static defaultProps = {
     animateAsGroup     : false,
     wrapInScrollView   : true ,
+    useCompactHeader   : false,
     passScrollviewProps: true ,
   };
 
@@ -193,23 +195,25 @@ export class ModalBody extends React.Component {
   };
 
   render(){
-    const { modalHeader, modalFooter, overlay, ...props } = this.props;
+    const { useCompactHeader, modalHeader, modalFooter, overlay, ...props } = this.props;
     const { mount, keyboardVisible, footerBGVisible } = this.state;
 
+    const insetTop    = (useCompactHeader? MODAL_HEADER_HEIGHT_COMPACT : MODAL_HEADER_HEIGHT);
     const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
 
-    const blurBackgroundStyle = {
-      bottom: (footerBGVisible? 0 : MODAL_FOOTER_HEIGHT),
+    const backgroundStyle = {
+      top   : (useCompactHeader? 0 : MODAL_HEADER_HEIGHT),
+      bottom: (footerBGVisible ? 0 : MODAL_FOOTER_HEIGHT),
     };
 
-    const backgroundStyle = {
-      bottom: (footerBGVisible? 0 : MODAL_FOOTER_HEIGHT),
+    const scrollViewStyle = {
+      paddingTop: insetTop,
     };
 
     return(
       <View style={styles.rootContainer}>
         <BlurView 
-          style={[styles.blurBackground, blurBackgroundStyle]}
+          style={[styles.blurBackground, backgroundStyle]}
           blurType={'light'}
           blurAmount={75}
         />
@@ -226,15 +230,15 @@ export class ModalBody extends React.Component {
           >
             {React.cloneElement(props.children, props.passScrollviewProps? {
               // pass down scrollview props to child
-              style: styles.scrollView,
+              style: [styles.scrollView, scrollViewStyle],
               contentContainerStyle: styles.scrollviewContent,
               scrollIndicatorInsets: { 
-                top   : MODAL_HEADER_HEIGHT,
+                top   : insetTop,
                 bottom: insetBottom,
               },
             }:{
               // pass down props to child
-              topSpace   :MODAL_HEADER_HEIGHT,
+              topSpace   : insetTop,
               bottomSpace: insetBottom,
             })}
           </Animatable.View>
@@ -242,7 +246,10 @@ export class ModalBody extends React.Component {
         <Reanimated.View
           style={{ height: this._height }}
         />
-        {modalHeader}
+        {(useCompactHeader)
+          ? <ModalHeaderCompact/>
+          : modalHeader
+        }
         {modalFooter}
         {overlay}
       </View>
