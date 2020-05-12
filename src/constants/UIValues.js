@@ -13,7 +13,7 @@ export const LIST_SECTION_HEIGHT = 27;
 
 // modal values
 export const MODAL_HEADER_HEIGHT = 70;
-export const MODAL_HEADER_HEIGHT_COMPACT = 25;
+export const MODAL_HEADER_HEIGHT_COMPACT = 20;
 
 export const MODAL_FOOTER_HEIGHT  = 78 + INSET_BOTTOM;
 export const MODAL_BOTTOM_PADDING = 100;

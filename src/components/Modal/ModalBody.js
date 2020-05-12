@@ -147,9 +147,16 @@ export class ModalBody extends React.Component {
 
     const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
 
+    const scrollViewStyle = {
+      paddingTop: (props.useCompactHeader
+        ? MODAL_HEADER_HEIGHT_COMPACT 
+        : MODAL_HEADER_HEIGHT
+      ),
+    };
+
     const scrollViewProps = {
       ...props,
-      style: styles.scrollView,
+      style: [styles.scrollView, scrollViewStyle],
       contentContainerStyle: styles.scrollviewContent,
       keyboardShouldPersistTaps: 'never',
       keyboardDismissMode: 'interactive',
@@ -199,7 +206,7 @@ export class ModalBody extends React.Component {
     const { mount, keyboardVisible, footerBGVisible } = this.state;
 
     const insetTop    = (useCompactHeader? MODAL_HEADER_HEIGHT_COMPACT : MODAL_HEADER_HEIGHT);
-    const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
+    const insetBottom = (keyboardVisible ? 0 : MODAL_FOOTER_HEIGHT);
 
     const backgroundStyle = {
       top   : (useCompactHeader? 0 : MODAL_HEADER_HEIGHT),

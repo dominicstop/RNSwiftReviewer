@@ -2,13 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import * as Animatable from 'react-native-animatable';
-
 import { BlurView } from "@react-native-community/blur";
 import { iOSUIKit } from 'react-native-typography';
 
-import * as Colors from 'app/src/constants/Colors';
+import { ModalDragIndicator } from 'app/src/components/Modal/ModalDragIndicator';
 
+import * as Colors from 'app/src/constants/Colors';
 import { MODAL_HEADER_HEIGHT, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
@@ -28,16 +27,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(255,255,255,0.95)',
     alignItems: 'center',
-    paddingTop: 7,
     borderColor: Colors.GREY[400],
     borderBottomWidth: BORDER_WIDTH,
-  },
-  dragIndicator: {
-    width: 40,
-    height: 6,
-    backgroundColor: Colors.BLUE[900],
-    borderRadius: 10,
-    opacity: 0.25,
   },
   headerContainer: {
     flex: 1,
@@ -111,14 +102,7 @@ export class ModalHeader extends React.PureComponent {
           blurType={'light'}
         />
         <View style={[styles.headerWrapper, props.containerStyle]}>
-          <Animatable.View 
-            style={styles.dragIndicator}
-            animation={'pulse'}
-            duration={2000}
-            iterationCount={'infinite'}
-            iterationDelay={2000}
-            useNativeDriver={true}
-          />
+          <ModalDragIndicator/>
           <View style={styles.headerContainer}>
             {LeftHeaderIcon}
             <View style={styles.headerTextContainer}>
