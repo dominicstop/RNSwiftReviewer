@@ -4,19 +4,18 @@ import { View, SectionList } from 'react-native';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBody          } from 'app/src/components/Modal/ModalBody';
-import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
-import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
-import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
-import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
-import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
+import { ModalBody           } from 'app/src/components/Modal/ModalBody';
+import { ModalFooter         } from 'app/src/components/Modal/ModalFooter';
+import { ModalOverlayCheck   } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalSectionHeader  } from 'app/src/components/Modal/ModalSectionHeader';
+import { ModalFooterButton   } from 'app/src/components/Modal/ModalFooterButton';
+import { ModalOverlayLoading } from 'app/src/components/Modal/ModalOverlayLoading';
 
 import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
 import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
 
-import { QuestionAnswerItem     } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
-import { QuizSessionDetails     } from 'app/src/components/QuizSessionDoneModal/QuizSessionDetails';
-import { QuizSessionDoneOverlay } from 'app/src/components/QuizSessionDoneModal/QuizSessionDoneOverlay';
+import { QuestionAnswerItem } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
+import { QuizSessionDetails } from 'app/src/components/QuizSessionDoneModal/QuizSessionDetails';
 
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 
@@ -171,6 +170,8 @@ export class QuizSessionDoneModal extends React.Component {
         <ModalSectionHeader
           title={'Quiz Details'}
           subtitle={`Information about this quiz`}
+          topOverflow={true}
+          showTopBorder={false}
           titleIcon={(
             <Ionicon
               name={'ios-bookmarks'}
@@ -278,21 +279,6 @@ export class QuizSessionDoneModal extends React.Component {
   render(){
     const state = this.state;
 
-    const modalHeader = (
-      <ModalHeader
-        title={'Quiz Session'}
-        subtitle={`Press "End Session" when you're done`}
-        headerIcon={(
-          <Ionicon
-            style={{marginTop: 3}}
-            name={'ios-book'}
-            size={24}
-            color={'white'}
-          />
-        )}
-      />
-    );
-
     const modalFooter = (
       <ModalFooter ref={r => this.modalFooterRef = r}>
         <ModalFooterButton
@@ -307,7 +293,7 @@ export class QuizSessionDoneModal extends React.Component {
 
     const overlay = (
       <Fragment>
-        <QuizSessionDoneOverlay
+        <ModalOverlayLoading
           ref={r => this.overlayLoading = r}
         />
         <ModalOverlayCheck
@@ -318,9 +304,10 @@ export class QuizSessionDoneModal extends React.Component {
 
     return (
       <ModalBody
+        headerMode={'NONE'}
         wrapInScrollView={false}
         animateAsGroup={true}
-        {...{modalHeader, modalFooter, overlay}}
+        {...{modalFooter, overlay}}
       >
         <SectionList
           ref={r => this.sectionList = r}

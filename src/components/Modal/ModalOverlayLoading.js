@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 import Reanimated from 'react-native-reanimated';
+
 import { Easing } from 'react-native-reanimated';
+import { VibrancyView } from "@react-native-community/blur";
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -14,11 +16,21 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.6)'
+  },
+  blurBackground: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.BLUE[50],
+    aspectRatio: 1,
+    width: 60,
+    borderRadius: 60/2,
   },
 });
 
-export class QuizSessionDoneOverlay extends React.PureComponent {
+export class ModalOverlayLoading extends React.PureComponent {
   constructor(props){
     super(props);
 
@@ -65,10 +77,17 @@ export class QuizSessionDoneOverlay extends React.PureComponent {
         style={[styles.overlayContainer, overlayContainerStyle]}
         pointerEvents={'auto'}
       >
-        <ActivityIndicator
-          size={'large'}
-          color={Colors.BLUE.A700}
+        <VibrancyView
+          style={styles.blurBackground}
+          blurType={'regular'}
+          blurAmount={0}
         />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator
+            size={'large'}
+            color={Colors.BLUE.A700}
+          />
+        </View>
       </Reanimated.View>
     );
   };
