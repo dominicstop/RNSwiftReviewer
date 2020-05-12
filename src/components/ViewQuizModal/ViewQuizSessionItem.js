@@ -93,6 +93,7 @@ export class  ViewQuizSessionItem extends React.Component {
     textDateTitle: {
       ...iOSUIKit.subheadObject,
       ...sanFranciscoWeights.bold,
+      fontSize: (iOSUIKit.subheadEmphasizedObject.fontSize + 2),
       marginLeft: 8,
       color: Colors.BLUE.A700,
     },

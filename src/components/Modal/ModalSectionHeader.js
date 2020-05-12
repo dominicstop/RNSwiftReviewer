@@ -10,6 +10,8 @@ import { iOSUIKit } from 'react-native-typography';
 import * as Colors from 'app/src/constants/Colors';
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 
+const OVERFLOW_HEIGHT = 200;
+
 
 const styles = StyleSheet.create({
   topOverflow: {
@@ -17,8 +19,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.9)',
     left: 0,
     right: 0,
-    top: -100,
-    height: 100,
+    top: -OVERFLOW_HEIGHT,
+    height: OVERFLOW_HEIGHT,
   },
   rootContainer: {
     top: -BORDER_WIDTH,
@@ -53,7 +55,6 @@ const styles = StyleSheet.create({
   textSubtitle: {
     ...iOSUIKit.subheadObject,
     color: Colors.GREY[700],
-    marginTop: -1,
   },
 });
 
@@ -112,7 +113,7 @@ export class ModalSectionHeader extends React.PureComponent {
             <Animatable.View 
               style={styles.titleIconContainer}
               animation={'pulse'}
-              duration={10000}
+              duration={7500}
               iterationCount={'infinite'}
               delay={1000}
               useNativeDriver={true}
