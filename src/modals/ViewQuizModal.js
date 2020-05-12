@@ -171,6 +171,9 @@ export class ViewQuizModal extends React.Component {
         <ModalSectionHeader
           title={'Quiz Details'}
           subtitle={`Information about this quiz`}
+          // diff style bc it's first
+          topOverflow={true}
+          showTopBorder={false}
           titleIcon={(
             <Ionicon
               name={'ios-bookmarks'}
@@ -303,7 +306,7 @@ export class ViewQuizModal extends React.Component {
 
     return (
       <ModalBody
-        useCompactHeader={true}
+        headerMode={'NONE'}
         wrapInScrollView={false}
         {...{modalHeader, modalFooter, overlay}}
       >

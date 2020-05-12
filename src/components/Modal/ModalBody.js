@@ -16,6 +16,31 @@ import { ModalHeaderCompact } from './ModalHeaderCompact';
 
 const { Value, Extrapolate, interpolate, timing } = Reanimated;
 
+const HEADER_MODES = {
+  NONE   : 'NONE'   ,
+  DEFAULT: 'DEFAULT',
+  COMPACT: 'COMPACT',
+};
+
+function getHeaderValues(mode){
+  switch (mode) {
+    case HEADER_MODES.NONE: return {
+      insetTop: 0,
+      scrollviewStyle: { top: 0 },
+      backgroundStyle: { top: 0 },
+    };
+    case HEADER_MODES.DEFAULT: return {
+      insetTop: MODAL_HEADER_HEIGHT,
+      scrollviewStyle: { top: MODAL_HEADER_HEIGHT },
+      backgroundStyle: { top: MODAL_HEADER_HEIGHT },
+    };
+    case HEADER_MODES.COMPACT: return {
+      insetTop: MODAL_HEADER_HEIGHT_COMPACT,
+      scrollviewStyle: { top: MODAL_HEADER_HEIGHT_COMPACT },
+      backgroundStyle: { top: 0 },
+    };
+  };
+};
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -54,19 +79,19 @@ const styles = StyleSheet.create({
 // blurred background + header/footer support
 export class ModalBody extends React.Component {
   static propTypes = {
+    headerMode         : PropTypes.string ,
     overlay            : PropTypes.element,
     modalHeader        : PropTypes.element,
     modalFooter        : PropTypes.element,
     animateAsGroup     : PropTypes.bool   ,
     wrapInScrollView   : PropTypes.bool   ,
-    useCompactHeader   : PropTypes.bool   ,
     passScrollviewProps: PropTypes.bool   ,
   };
 
   static defaultProps = {
+    headerMode         : HEADER_MODES.DEFAULT,
     animateAsGroup     : false,
     wrapInScrollView   : true ,
-    useCompactHeader   : false,
     passScrollviewProps: true ,
   };
 
@@ -145,18 +170,12 @@ export class ModalBody extends React.Component {
     const props = this.props;
     const { mount, keyboardVisible } = this.state;
 
-    const insetBottom = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
-
-    const scrollViewStyle = {
-      paddingTop: (props.useCompactHeader
-        ? MODAL_HEADER_HEIGHT_COMPACT 
-        : MODAL_HEADER_HEIGHT
-      ),
-    };
+    const insetBottom  = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
+    const headerValues = getHeaderValues(props.headerMode);
 
     const scrollViewProps = {
       ...props,
-      style: [styles.scrollView, scrollViewStyle],
+      style: [styles.scrollView, headerValues.scrollviewStyle],
       contentContainerStyle: styles.scrollviewContent,
       keyboardShouldPersistTaps: 'never',
       keyboardDismissMode: 'interactive',
@@ -202,19 +221,15 @@ export class ModalBody extends React.Component {
   };
 
   render(){
-    const { useCompactHeader, modalHeader, modalFooter, overlay, ...props } = this.props;
+    const { headerMode, modalHeader, modalFooter, overlay, ...props } = this.props;
     const { mount, keyboardVisible, footerBGVisible } = this.state;
 
-    const insetTop    = (useCompactHeader? MODAL_HEADER_HEIGHT_COMPACT : MODAL_HEADER_HEIGHT);
-    const insetBottom = (keyboardVisible ? 0 : MODAL_FOOTER_HEIGHT);
+    const headerValues = getHeaderValues(headerMode);
+    const insetBottom  = (keyboardVisible ? 0 : MODAL_FOOTER_HEIGHT);
 
     const backgroundStyle = {
-      top   : (useCompactHeader? 0 : MODAL_HEADER_HEIGHT),
+      ...headerValues.backgroundStyle,
       bottom: (footerBGVisible ? 0 : MODAL_FOOTER_HEIGHT),
-    };
-
-    const scrollViewStyle = {
-      paddingTop: insetTop,
     };
 
     return(
@@ -237,15 +252,15 @@ export class ModalBody extends React.Component {
           >
             {React.cloneElement(props.children, props.passScrollviewProps? {
               // pass down scrollview props to child
-              style: [styles.scrollView, scrollViewStyle],
+              style: [styles.scrollView, headerValues.scrollviewStyle],
               contentContainerStyle: styles.scrollviewContent,
               scrollIndicatorInsets: { 
-                top   : insetTop,
+                top   : headerValues.insetTop,
                 bottom: insetBottom,
               },
             }:{
               // pass down props to child
-              topSpace   : insetTop,
+              topSpace   : headerValues.insetTop,
               bottomSpace: insetBottom,
             })}
           </Animatable.View>
@@ -253,9 +268,9 @@ export class ModalBody extends React.Component {
         <Reanimated.View
           style={{ height: this._height }}
         />
-        {(useCompactHeader)
-          ? <ModalHeaderCompact/>
-          : modalHeader
+        {(headerMode == HEADER_MODES.NONE   )? null :
+         (headerMode == HEADER_MODES.DEFAULT)? modalHeader :
+         (headerMode == HEADER_MODES.COMPACT)? <ModalHeaderCompact/> : null
         }
         {modalFooter}
         {overlay}

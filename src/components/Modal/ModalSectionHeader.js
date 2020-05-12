@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -12,6 +12,14 @@ import { BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
 const styles = StyleSheet.create({
+  topOverflow: {
+    position: 'absolute',
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    left: 0,
+    right: 0,
+    top: -100,
+    height: 100,
+  },
   rootContainer: {
     top: -BORDER_WIDTH,
     borderColor: Colors.GREY[400],
@@ -33,7 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 12,
     alignItems: 'center',
-    marginTop: 7,
+    marginVertical: 10,
   },
   textTitle: {
     ...iOSUIKit.subheadEmphasizedObject,
@@ -45,7 +53,7 @@ const styles = StyleSheet.create({
   textSubtitle: {
     ...iOSUIKit.subheadObject,
     color: Colors.GREY[700],
-    marginBottom: 7,
+    marginTop: -1,
   },
 });
 
@@ -54,14 +62,17 @@ const styles = StyleSheet.create({
 // displays an icon + title/subtitle w/ a blurred bg
 export class ModalSectionHeader extends React.PureComponent {
   static propTypes = {
-    title    : PropTypes.string,
-    subtitle : PropTypes.string,
-    titleIcon: PropTypes.element,
+    title        : PropTypes.string,
+    subtitle     : PropTypes.string,
+    titleIcon    : PropTypes.element,
+    topOverflow  : PropTypes.bool,
+    showTopBorder: PropTypes.bool,
   };
 
   static defaultProps = {
     title: 'Section Title',
     showTopBorder: true,
+    topOverflow: false,
   };
 
   render(){
@@ -86,38 +97,43 @@ export class ModalSectionHeader extends React.PureComponent {
     };
     
     return(
-      <View style={[styles.rootContainer, rootContainerStyle, props.containerStyle]}>
-        <BlurView
-          style={styles.blurBackground}
-          blurAmount={75}
-          blurType={'light'}
-        />
-        <View style={styles.background}/>
-        <View style={[styles.titleContainer, titleContainerStyle]}>
-          <Animatable.View 
-            style={styles.titleIconContainer}
-            animation={'pulse'}
-            duration={10000}
-            iterationCount={'infinite'}
-            delay={1000}
-            useNativeDriver={true}
-          >
-            {React.cloneElement(props.titleIcon, 
-              { color: Colors.INDIGO.A400 }
-            )}
-          </Animatable.View>
-          <View style={[styles.titleSubtitleContainer, titleSubtitleContainerStyle]}>
-            <Text style={styles.textTitle}>
-              {props.title}
-            </Text>
-            {props.subtitle && (
-              <Text style={styles.textSubtitle}>
-                {props.subtitle}
+      <Fragment>
+        {props.topOverflow && (
+          <View style={styles.topOverflow}/>
+        )}
+        <View style={[styles.rootContainer, rootContainerStyle, props.containerStyle]}>
+          <BlurView
+            style={styles.blurBackground}
+            blurAmount={50}
+            blurType={'light'}
+          />
+          <View style={styles.background}/>
+          <View style={[styles.titleContainer, titleContainerStyle]}>
+            <Animatable.View 
+              style={styles.titleIconContainer}
+              animation={'pulse'}
+              duration={10000}
+              iterationCount={'infinite'}
+              delay={1000}
+              useNativeDriver={true}
+            >
+              {React.cloneElement(props.titleIcon, 
+                { color: Colors.INDIGO.A400 }
+              )}
+            </Animatable.View>
+            <View style={[styles.titleSubtitleContainer, titleSubtitleContainerStyle]}>
+              <Text style={styles.textTitle}>
+                {props.title}
               </Text>
-            )}
+              {props.subtitle && (
+                <Text style={styles.textSubtitle}>
+                  {props.subtitle}
+                </Text>
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      </Fragment>
     );
   };
 };
