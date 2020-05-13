@@ -91,6 +91,7 @@ export class ModalBody extends React.Component {
   static defaultProps = {
     headerMode         : HEADER_MODES.DEFAULT,
     animateAsGroup     : false,
+    footerBGVisible    : true ,
     wrapInScrollView   : true ,
     passScrollviewProps: true ,
   };
@@ -112,7 +113,7 @@ export class ModalBody extends React.Component {
     this.state = {
       mount: false,
       keyboardVisible: false,
-      footerBGVisible: true,
+      footerBGVisible: props.footerBGVisible,
     };
   };
 

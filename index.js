@@ -9,6 +9,7 @@ import { QuizAddSectionModal          } from "app/src/modals/QuizAddSectionModal
 import { QuizAddQuestionModal         } from "app/src/modals/QuizAddQuestionModal";
 import { QuizCreateQuestionModal      } from "app/src/modals/QuizCreateQuestionModal";
 import { QuizSessionDoneModal         } from "app/src/modals/QuizSessionDoneModal";
+import { QuizSessionQuestionsModal    } from "app/src/modals/QuizSessionQuestionsModal";
 import { QuizSessionChooseAnswerModal } from "app/src/modals/QuizSessionChooseAnswerModal";
 
 
@@ -24,6 +25,7 @@ Navigation.registerComponent(RNN_ROUTES.ModalQuizAddSection         , () => Quiz
 Navigation.registerComponent(RNN_ROUTES.ModalQuizAddQuestions       , () => QuizAddQuestionModal        );
 Navigation.registerComponent(RNN_ROUTES.ModalQuizCreateQuestion     , () => QuizCreateQuestionModal     );
 Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionDone        , () => QuizSessionDoneModal        );
+Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionQuestions   , () => QuizSessionQuestionsModal   );
 Navigation.registerComponent(RNN_ROUTES.ModalQuizSessionChooseAnswer, () => QuizSessionChooseAnswerModal);
 
 Navigation.events().registerAppLaunchedListener(() => {

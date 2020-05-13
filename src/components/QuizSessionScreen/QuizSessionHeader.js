@@ -3,16 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboa
 
 import * as Animatable from 'react-native-animatable';
 
-import Ionicon  from '@expo/vector-icons/Ionicons';
-import debounce from "lodash/debounce";
-
+import Ionicon from '@expo/vector-icons/Ionicons';
 import { iOSUIKit } from 'react-native-typography';
 
 import { ScreenHeaderOverlay } from 'app/src/components/ScreenHeaderOverlay';
+import { Pressable } from 'app/src/components/Pressable';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
-
 
 
 class CenterPill extends React.PureComponent {
@@ -112,33 +110,15 @@ export class QuizSessionHeader extends React.PureComponent {
     },
   });
 
-  constructor(props){
-    super(props);
-
-    this._handleOnPressDone   = debounce(this._handleOnPressDone  , 750, {leading: true});
-    this._handleOnPressCancel = debounce(this._handleOnPressCancel, 750, {leading: true});
-  };
-
-  _handleOnPressCancel = () => {
-    const { onPressCancel } = this.props;
-    onPressCancel && onPressCancel();
-  };
-
-  _handleOnPressDone = () => {
-    const { onPressDone } = this.props;
-    onPressDone && onPressDone();
-  };
-
   render(){
     const { styles } = QuizSessionHeader;
-    const { ...props } = this.props;
+    const props = this.props;
 
     return(
       <ScreenHeaderOverlay containerStyle={styles.rootContainer}>
-        <TouchableOpacity 
-          style={styles.leftContainer}
-          activeOpacity={0.75}
-          onPress={this._handleOnPressCancel}
+        <Pressable
+          containerStyle={styles.leftContainer}
+          onPress={props.onPressCancel}
         >
           <Ionicon
             style={{marginTop: 1}}
@@ -149,17 +129,19 @@ export class QuizSessionHeader extends React.PureComponent {
           <Text style={styles.textIconLabel}>
             {'Cancel'}
           </Text>
-        </TouchableOpacity>
-        <View style={styles.centerContainer}>
+        </Pressable>
+        <Pressable
+          containerStyle={styles.centerContainer}
+          onPress={props.onPressPill}
+        >
           <CenterPill
             totalCount={props.totalCount}
             currentIndex={props.currentIndex}
           />
-        </View>
-        <TouchableOpacity 
-          style={styles.rightContainer}
-          activeOpacity={0.75}
-          onPress={this._handleOnPressDone}
+        </Pressable>
+        <Pressable
+          containerStyle={styles.rightContainer}
+          onPress={props.onPressDone}
         >
           <Ionicon
             style={{marginTop: 2}}
@@ -170,7 +152,7 @@ export class QuizSessionHeader extends React.PureComponent {
           <Text style={styles.textIconLabel}>
             {'Done'}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </ScreenHeaderOverlay>
     );
   };

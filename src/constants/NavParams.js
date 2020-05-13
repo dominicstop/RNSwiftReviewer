@@ -93,4 +93,14 @@ export const MNPQuizSessionDoneModal = {
   onPressQuestion: 'onPressQuestion',
   onPressDone    : 'onPressDone'    ,
 };
+
+// QuizSessionQuestionModal
+export const MNPQuizSessionQuestion = {
+  quiz           : 'quiz'           ,
+  answers        : 'answers'        ,
+  session        : 'session'        ,
+  questions      : 'questions'      ,
+  currentIndex   : 'currentIndex'   ,
+  currentQuestion: 'currentQuestion',
+};
 // #endregion

@@ -11,8 +11,8 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { QuizSessionModel } from 'app/src/models/QuizSession';
 
-import { SNPQuizSession, MNPQuizSessionDoneModal, SNPQuizSessionResult } from 'app/src/constants/NavParams';
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
+import { SNPQuizSession, SNPQuizSessionResult, MNPQuizSessionDoneModal, MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
 
 import { SectionTypes } from 'app/src/constants/SectionTypes';
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
@@ -164,6 +164,35 @@ export class QuizSessionScreen extends React.Component {
     };
   };
   
+  // QuizSessionHeader: onPress Center Pill
+  _handleOnPressPill = async () => {
+    const { questions, currentIndex } = this.state;
+    const currentQuestion = questions[currentIndex];
+
+    const quiz    = { ...this.quiz };
+    const answers = this.answers.answerMap;
+    const session = this.session.values;
+
+    const sectionType = currentQuestion[QuizQuestionKeys.sectionType];
+    if(sectionType == SectionTypes.IDENTIFICATION && this.keyboardVisible){
+      Keyboard.dismiss();
+      await Helpers.timeout(750);
+    };
+
+    // open QuizSessionQuestionsModal
+    ModalController.showModal({
+      routeName: RNN_ROUTES.ModalQuizSessionQuestions,
+      navProps: {
+        [MNPQuizSessionQuestion.quiz           ]: quiz           ,
+        [MNPQuizSessionQuestion.answers        ]: answers        ,
+        [MNPQuizSessionQuestion.session        ]: session        ,
+        [MNPQuizSessionQuestion.questions      ]: questions      ,
+        [MNPQuizSessionQuestion.currentIndex   ]: currentIndex   ,
+        [MNPQuizSessionQuestion.currentQuestion]: currentQuestion,
+      },
+    });
+  };
+  
   // FlatListCarousel
   _handleSnap = ({index}) => {
     const { currentIndex } = this.state;
@@ -306,6 +335,7 @@ export class QuizSessionScreen extends React.Component {
         <QuizSessionHeader
           totalCount={data.length}
           currentIndex={(currentIndex + 1)}
+          onPressPill={this._handleOnPressPill}
           onPressDone={this._handleOnPressDone}
           onPressCancel={this._handleOnPressCancel}
         />
