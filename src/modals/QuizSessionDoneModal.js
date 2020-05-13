@@ -143,22 +143,31 @@ export class QuizSessionDoneModal extends React.Component {
 
   _handleOnPressQuestion = async ({answer, question, index}) => {
     const { componentId, ...props } = this.props;
+
+    const currentQuestion = props[MNPQuizSessionDoneModal.currentQuestion];
     const onPressQuestion = props[MNPQuizSessionDoneModal.onPressQuestion];
 
-    // disable swipe gesture
-    Navigation.mergeOptions(componentId, {
-      modal: {
-        swipeToDismiss: false,
-      }
-    });
+    const nextQuizID = question       [QuizQuestionKeys.quizID];
+    const currQuizID = currentQuestion[QuizQuestionKeys.quizID];
 
-    await Promise.all([
-      Helpers.timeout(500),
-      this.overlayLoading.show(),
-      this.modalFooterRef.setVisibility(false),
-      onPressQuestion && onPressQuestion({answer, question, index}),
-    ]);
+    if(currQuizID != nextQuizID){
+      // disable swipe gesture
+      Navigation.mergeOptions(componentId, {
+        modal: {
+          swipeToDismiss: false,
+        }
+      });
 
+      await Promise.all([
+        // wait for show overlay
+        this.overlayLoading.show(),
+        // wait for hide footer button
+        this.modalFooterRef.setVisibility(false),
+        // call and wait for question jump
+        onPressQuestion && onPressQuestion({answer, question, index}),
+      ]);
+    };
+    
     // close modal
     Navigation.dismissModal(componentId);
   };
