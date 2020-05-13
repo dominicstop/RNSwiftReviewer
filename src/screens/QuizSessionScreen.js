@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 
+import * as Animatable from 'react-native-animatable';
 import { StackActions } from 'react-navigation';
 
 import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
@@ -139,7 +140,7 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionDoneModal.questions      ]: questions      ,
         [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
-        [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion,
+        [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion1,
         [MNPQuizSessionDoneModal.onPressDone    ]: this._handleModalOnPressDone,
       },
     });
@@ -189,6 +190,7 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionQuestion.questions      ]: questions      ,
         [MNPQuizSessionQuestion.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionQuestion.currentQuestion]: currentQuestion,
+        [MNPQuizSessionQuestion.onPressQuestion]: this._handleModalOnPressQuestion2,
       },
     });
   };
@@ -255,12 +257,26 @@ export class QuizSessionScreen extends React.Component {
     });
   };
 
-  _handleModalOnPressQuestion = async ({index}) => {
+  _handleModalOnPressQuestion1 = async ({index}) => {
     const { currentIndex } = this.state;
 
     if(index != currentIndex){
       this.flatlistCarouselRef.scrollToIndex(index, false);
       this.setState({ currentIndex: index });
+    };
+  };
+
+  _handleModalOnPressQuestion2 = async ({index}) => {
+    const { currentIndex } = this.state;
+
+    if(index != currentIndex){
+      this.flatlistCarouselRef.scrollToIndex(index, true);
+      this.setState({ currentIndex: index });
+
+      if(this.rootContainerRef){
+        await Helpers.timeout(600);
+        this.rootContainerRef.pulse(500);
+      };
     };
   };
 
@@ -323,7 +339,11 @@ export class QuizSessionScreen extends React.Component {
     };
 
     return(
-      <View style={styles.rootContainer}>
+      <Animatable.View 
+        ref={r => this.rootContainerRef = r}
+        style={styles.rootContainer}
+        useNativeDriver={true}
+      >
         <FlatListCarousel
           ref={r => this.flatlistCarouselRef = r}
           keyExtractor={this._handleKeyExtractor}
@@ -339,7 +359,7 @@ export class QuizSessionScreen extends React.Component {
           onPressDone={this._handleOnPressDone}
           onPressCancel={this._handleOnPressCancel}
         />
-      </View>
+      </Animatable.View>
     );
   };
   //#endregion

@@ -102,5 +102,6 @@ export const MNPQuizSessionQuestion = {
   questions      : 'questions'      ,
   currentIndex   : 'currentIndex'   ,
   currentQuestion: 'currentQuestion',
+  onPressQuestion: 'onPressQuestion',
 };
 // #endregion
