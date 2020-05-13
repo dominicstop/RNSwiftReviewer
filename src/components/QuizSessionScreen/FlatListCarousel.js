@@ -71,7 +71,7 @@ export class FlatListCarousel extends React.PureComponent {
       });
 
       animated && await Helpers.timeout(500);
-      animated && this.flatlistRef.setNativeProps({scrollEnabled: false });
+      animated && this.flatlistRef.setNativeProps({scrollEnabled: true });
     };
   };
 

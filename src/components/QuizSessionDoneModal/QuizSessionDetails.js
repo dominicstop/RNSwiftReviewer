@@ -65,7 +65,7 @@ export class QuizSessionDetails extends React.Component {
 
   render(){
     const { styles } = QuizSessionDetails;
-    const { session } = this.props;
+    const { session, ...props } = this.props;
     const { questionCount, answerCount } = this.state;
 
     const sessionDateStart = session[QuizSessionKeys.sessionDateStart];
@@ -77,7 +77,7 @@ export class QuizSessionDetails extends React.Component {
 
     return(
       <ModalSection
-        containerStyle={styles.rootContainer}
+        containerStyle={[styles.rootContainer, props.containerStyle]}
         showBorderTop={false}
         hasMarginBottom={false}
       >

@@ -147,8 +147,8 @@ export class QuizSessionDoneModal extends React.Component {
     const currentQuestion = props[MNPQuizSessionDoneModal.currentQuestion];
     const onPressQuestion = props[MNPQuizSessionDoneModal.onPressQuestion];
 
-    const nextQuizID = question       [QuizQuestionKeys.quizID];
-    const currQuizID = currentQuestion[QuizQuestionKeys.quizID];
+    const nextQuizID = question       [QuizQuestionKeys.questionID];
+    const currQuizID = currentQuestion[QuizQuestionKeys.questionID];
 
     if(currQuizID != nextQuizID){
       // disable swipe gesture

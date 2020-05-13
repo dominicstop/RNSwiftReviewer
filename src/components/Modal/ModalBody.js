@@ -26,18 +26,18 @@ function getHeaderValues(mode){
   switch (mode) {
     case HEADER_MODES.NONE: return {
       insetTop: 0,
-      scrollviewStyle: { top: 0 },
       backgroundStyle: { top: 0 },
+      scrollviewStyle: { top: 0 },
     };
     case HEADER_MODES.DEFAULT: return {
       insetTop: MODAL_HEADER_HEIGHT,
-      scrollviewStyle: { top: MODAL_HEADER_HEIGHT },
-      backgroundStyle: { top: MODAL_HEADER_HEIGHT },
+      backgroundStyle: { top       : MODAL_HEADER_HEIGHT },
+      scrollviewStyle: { paddingTop: MODAL_HEADER_HEIGHT },
     };
     case HEADER_MODES.COMPACT: return {
       insetTop: MODAL_HEADER_HEIGHT_COMPACT,
-      scrollviewStyle: { top: MODAL_HEADER_HEIGHT_COMPACT },
       backgroundStyle: { top: 0 },
+      scrollviewStyle: { paddingTop: MODAL_HEADER_HEIGHT_COMPACT },
     };
   };
 };
