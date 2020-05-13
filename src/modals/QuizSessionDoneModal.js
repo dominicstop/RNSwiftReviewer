@@ -160,7 +160,7 @@ export class QuizSessionDoneModal extends React.Component {
 
       await Promise.all([
         // wait for show overlay
-        this.overlayLoading.show(),
+        this.overlayLoading.setVisibility(true),
         // wait for hide footer button
         this.modalFooterRef.setVisibility(false),
         // call and wait for question jump

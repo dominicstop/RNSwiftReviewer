@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
@@ -7,6 +7,8 @@ import { StackActions } from 'react-navigation';
 import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
 import { QuizQuestionItem  } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
 import { QuizSessionHeader } from 'app/src/components/QuizSessionScreen/QuizSessionHeader';
+
+import { ScreenOverlayLoading } from 'app/src/components/ScreenOverlayLoading';
 
 import * as Helpers from 'app/src/functions/helpers';
 
@@ -257,6 +259,7 @@ export class QuizSessionScreen extends React.Component {
     });
   };
 
+  // QuizSessionDoneModal
   _handleModalOnPressQuestion1 = async ({index}) => {
     const { currentIndex } = this.state;
 
@@ -266,15 +269,27 @@ export class QuizSessionScreen extends React.Component {
     };
   };
 
+  // QuizSessionQuestionModal
   _handleModalOnPressQuestion2 = async ({index}) => {
     const { currentIndex } = this.state;
+
+    const showLoading = (
+      (Math.abs(currentIndex - index) > 10)
+    );
 
     if(index != currentIndex){
       this.flatlistCarouselRef.scrollToIndex(index, true);
       this.setState({ currentIndex: index });
 
-      if(this.rootContainerRef){
-        await Helpers.timeout(600);
+      if(showLoading){
+        await this.overlayRef.setVisibility(true);
+        await Helpers.timeout(300);
+
+        await this.overlayRef.setVisibility(false);
+        this.rootContainerRef.pulse(500);
+
+      } else {
+        await Helpers.timeout(700);
         this.rootContainerRef.pulse(500);
       };
     };
@@ -339,19 +354,21 @@ export class QuizSessionScreen extends React.Component {
     };
 
     return(
-      <Animatable.View 
-        ref={r => this.rootContainerRef = r}
-        style={styles.rootContainer}
-        useNativeDriver={true}
-      >
-        <FlatListCarousel
-          ref={r => this.flatlistCarouselRef = r}
-          keyExtractor={this._handleKeyExtractor}
-          renderItem={this._renderItem}
-          onSnap={this._handleSnap}
-          onBeforeSnap={this._handleOnBeforeSnap}
-          {...{data, extraData}}
-        />
+      <Fragment>
+        <Animatable.View 
+          ref={r => this.rootContainerRef = r}
+          style={styles.rootContainer}
+          useNativeDriver={true}
+        >
+          <FlatListCarousel
+            ref={r => this.flatlistCarouselRef = r}
+            keyExtractor={this._handleKeyExtractor}
+            renderItem={this._renderItem}
+            onSnap={this._handleSnap}
+            onBeforeSnap={this._handleOnBeforeSnap}
+            {...{data, extraData}}
+          />
+        </Animatable.View>
         <QuizSessionHeader
           totalCount={data.length}
           currentIndex={(currentIndex + 1)}
@@ -359,7 +376,11 @@ export class QuizSessionScreen extends React.Component {
           onPressDone={this._handleOnPressDone}
           onPressCancel={this._handleOnPressCancel}
         />
-      </Animatable.View>
+        <ScreenOverlayLoading
+          ref={r => this.overlayRef = r}
+          excludeHeader={true}
+        />
+      </Fragment>
     );
   };
   //#endregion

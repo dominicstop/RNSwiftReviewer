@@ -1,15 +1,22 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Dimensions } from 'react-native';
+import PropTypes from 'prop-types';
 
 import Reanimated from 'react-native-reanimated';
 
 import { Easing } from 'react-native-reanimated';
-import { VibrancyView } from "@react-native-community/blur";
+import { BlurView } from "@react-native-community/blur";
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
+import { HeaderValues } from 'app/src/constants/HeaderValues';
+
 const { Value, Extrapolate, interpolate, timing } = Reanimated;
+
+const headerHeight = HeaderValues.getHeaderHeight(true);
+const { height: screenHeight } = Dimensions.get('screen');
+
 
 const styles = StyleSheet.create({
   overlayContainer: {
@@ -21,18 +28,22 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
     paddingLeft: 4,
     paddingTop: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     aspectRatio: 1,
-    width: 55,
-    borderRadius: 55/2,
+    width: 50,
+    borderRadius: 50/2,
   },
 });
 
-export class ModalOverlayLoading extends React.PureComponent {
+export class ScreenOverlayLoading extends React.PureComponent {
+  static propTypes = {
+    excludeHeader: PropTypes.bool,
+  };
+
   constructor(props){
     super(props);
 
@@ -56,7 +67,7 @@ export class ModalOverlayLoading extends React.PureComponent {
     const animation = timing(this.progress, {
       easing  : Easing.inOut(Easing.ease),
       toValue : (visibility? 100 : 0),
-      duration: 300,
+      duration: 200,
     });
 
     await new Promise(resolve => {
@@ -71,11 +82,24 @@ export class ModalOverlayLoading extends React.PureComponent {
   };
 
   render(){
+    const props = this.props;
     const { mount } = this.state;
+
     if(!mount) return null;
 
     const overlayContainerStyle = {
       opacity: this._opacity,
+      ...(props.excludeHeader && {
+        top: headerHeight,
+        height: (screenHeight - headerHeight),
+      })
+    };
+
+    const loadingContainer = {
+      ...(props.excludeHeader && {
+        // center loading indicator
+        marginBottom: headerHeight,
+      })
     };
 
     return (
@@ -83,12 +107,12 @@ export class ModalOverlayLoading extends React.PureComponent {
         style={[styles.overlayContainer, overlayContainerStyle]}
         pointerEvents={'auto'}
       >
-        <VibrancyView
+        <BlurView
           style={styles.blurBackground}
           blurType={'light'}
           blurAmount={3}
         />
-        <View style={styles.loadingContainer}>
+        <View style={[styles.loadingContainer, loadingContainer]}>
           <ActivityIndicator
             size={'large'}
             color={Colors.BLUE.A700}
