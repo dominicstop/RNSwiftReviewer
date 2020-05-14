@@ -8,50 +8,43 @@ import { ModalBody          } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
 import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
 import { ModalSection       } from 'app/src/components/Modal/ModalSection';
-import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
-import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
-import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
 
 import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
-import { ViewQuizDetails     } from 'app/src/components/ViewQuizModal/ViewQuizDetails';
-import { ViewQuizSectionItem } from 'app/src/components/ViewQuizModal/ViewQuizSectionItem';
-import { ViewQuizSessionItem } from 'app/src/components/ViewQuizModal/ViewQuizSessionItem';
 
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 import { QuizSessionDetails } from 'app/src/components/QuizSessionDoneModal/QuizSessionDetails';
 
-import { ROUTES } from 'app/src/constants/Routes';
-
+import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
-import { QuizKeys, QuizSectionKeys, QuizSessionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
-import * as Helpers from 'app/src/functions/helpers';
-import { QuestionAnswerItem } from '../components/QuizSessionDoneModal/QuestionAnswerItem';
-import { BORDER_WIDTH } from '../constants/UIValues';
-import { ImageTitleSubtitle } from '../components/ImageTitleSubtitle';
+import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
+import { QuestionAnswerItem } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
 
-function combineQuestionsAndAnswers(questions, answers){
+
+// combine questions, answers and bookmarks
+function combineItemsWithQuestions(questions, answers, bookmarks){
   return questions.map((question) => {
     const questionID = question[QuizQuestionKeys.questionID];
 
     return {
       questionID, question, 
-      answer: answers[questionID],
+      answer  : answers  [questionID],
+      bookmark: bookmarks[questionID],
     };
   });
 };
-
 
 export class QuizSessionQuestionsModal extends React.Component {
   constructor(props){
     super(props);
 
     const answers   = props[MNPQuizSessionQuestion.answers  ] ?? {};
+    const bookmarks = props[MNPQuizSessionQuestion.bookmarks] ?? {};
     const questions = props[MNPQuizSessionQuestion.questions] ?? [];
 
     this.state = {
       questions: 
-        combineQuestionsAndAnswers(questions, answers)
+        combineItemsWithQuestions(questions, answers, bookmarks)
     };
   };
 
@@ -90,8 +83,9 @@ export class QuizSessionQuestionsModal extends React.Component {
     return(
       <QuestionAnswerItem
         onPressQuestion={this._handleOnPressQuestion}
-        question={item.question}
         answer={item.answer}
+        question={item.question}
+        bookmark={item.bookmark}
         {...{index, currentIndex}}
       />
     );

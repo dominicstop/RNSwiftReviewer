@@ -34,14 +34,17 @@ const QSDSectionTypes = {
   QUESTIONS: 'QUESTIONS',
 };
 
-function combineQuestionsAndAnswers(questions, answers){
+// combine questions, answers and bookmarks
+function combineItemsWithQuestions(questions, answers, bookmarks){
   return questions.map((question) => {
     const questionID = question[QuizQuestionKeys.questionID];
 
     return {
+      type    : QSDSectionTypes.QUESTIONS,
+      answer  : answers  [questionID],
+      bookmark: bookmarks[questionID],
+      // pass down
       questionID, question,
-      type  : QSDSectionTypes.QUESTIONS,
-      answer: answers[questionID],
     };
   });
 };
@@ -60,12 +63,13 @@ export class QuizSessionDoneModal extends React.Component {
 
     const quiz      = props[MNPQuizSessionDoneModal.quiz     ] ?? {};
     const answers   = props[MNPQuizSessionDoneModal.answers  ] ?? {};
+    const bookmarks = props[MNPQuizSessionDoneModal.bookmarks] ?? {};
     const questions = props[MNPQuizSessionDoneModal.questions] ?? [];
     
     const sections = quiz [QuizKeys.quizSections] ?? [];
 
     const questionAnswerData = 
-      combineQuestionsAndAnswers(questions, answers);
+      combineItemsWithQuestions(questions, answers, bookmarks);
 
     const detailsData = [
       { type: QSDSectionTypes.DETAILS }
@@ -251,11 +255,11 @@ export class QuizSessionDoneModal extends React.Component {
   _renderItem = ({item, index, section}) => {
     const props = this.props;
 
-    const quiz          = props[MNPQuizSessionDoneModal.quiz        ] ?? {};
-    const session       = props[MNPQuizSessionDoneModal.session     ] ?? {};
-    const answers       = props[MNPQuizSessionDoneModal.answers     ] ?? {};
-    const questions     = props[MNPQuizSessionDoneModal.questions   ] ?? [];
-    const currentIndex  = props[MNPQuizSessionDoneModal.currentIndex];
+    const quiz         = props[MNPQuizSessionDoneModal.quiz        ] ?? {};
+    const session      = props[MNPQuizSessionDoneModal.session     ] ?? {};
+    const answers      = props[MNPQuizSessionDoneModal.answers     ] ?? {};
+    const questions    = props[MNPQuizSessionDoneModal.questions   ] ?? [];
+    const currentIndex = props[MNPQuizSessionDoneModal.currentIndex];
 
     switch (section.type) {
       case QSDSectionTypes.DETAILS: return (
@@ -277,8 +281,9 @@ export class QuizSessionDoneModal extends React.Component {
       case QSDSectionTypes.QUESTIONS: return (
         <QuestionAnswerItem
           onPressQuestion={this._handleOnPressQuestion}
+          answer  ={item.answer  }
           question={item.question}
-          answer={item.answer}
+          bookmark={item.bookmark}
           {...{index, currentIndex}}
         />
       );

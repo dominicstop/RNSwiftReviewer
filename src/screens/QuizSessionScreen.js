@@ -128,9 +128,10 @@ export class QuizSessionScreen extends React.Component {
     const { questions, currentIndex } = this.state;
     const currentQuestion = questions[currentIndex];
 
-    const quiz    = { ...this.quiz };
-    const answers = this.answers.answerMap;
-    const session = this.session.values;
+    const quiz      = { ...this.quiz };
+    const answers   = this.answers.answerMap;
+    const session   = this.session.values;
+    const bookmarks = this.bookmarks.bookmarkMap;
 
     const sectionType = currentQuestion[QuizQuestionKeys.sectionType];
     if(sectionType == SectionTypes.IDENTIFICATION && this.keyboardVisible){
@@ -145,6 +146,7 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionDoneModal.quiz           ]: quiz           ,
         [MNPQuizSessionDoneModal.answers        ]: answers        ,
         [MNPQuizSessionDoneModal.session        ]: session        ,
+        [MNPQuizSessionDoneModal.bookmarks      ]: bookmarks      ,
         [MNPQuizSessionDoneModal.questions      ]: questions      ,
         [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
@@ -178,10 +180,11 @@ export class QuizSessionScreen extends React.Component {
     const { questions, currentIndex } = this.state;
     const currentQuestion = questions[currentIndex];
 
-    const quiz    = { ...this.quiz };
-    const answers = this.answers.answerMap;
-    const session = this.session.values;
-
+    const quiz      = { ...this.quiz };
+    const answers   = this.answers.answerMap;
+    const session   = this.session.values;
+    const bookmarks = this.bookmarks.bookmarkMap;
+    
     const sectionType = currentQuestion[QuizQuestionKeys.sectionType];
     if(sectionType == SectionTypes.IDENTIFICATION && this.keyboardVisible){
       Keyboard.dismiss();
@@ -196,6 +199,7 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionQuestion.answers        ]: answers        ,
         [MNPQuizSessionQuestion.session        ]: session        ,
         [MNPQuizSessionQuestion.questions      ]: questions      ,
+        [MNPQuizSessionQuestion.bookmarks      ]: bookmarks      ,
         [MNPQuizSessionQuestion.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionQuestion.currentQuestion]: currentQuestion,
         [MNPQuizSessionQuestion.onPressQuestion]: this._handleModalOnPressQuestion2,

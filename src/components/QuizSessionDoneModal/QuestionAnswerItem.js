@@ -1,31 +1,37 @@
 import React from 'react';
-import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 
+import moment from 'moment';
 import * as Animatable from 'react-native-animatable';
 
-import Feather from '@expo/vector-icons/Feather';
-import moment  from 'moment';
+import { iOSUIKit } from 'react-native-typography';
 
-import { ModalSection    } from 'app/src/components/Modal/ModalSection';
-import { TableLabelValue } from 'app/src/components/TableLabelValue';
+import { ListItemBadge } from 'app/src/components/ListItemBadge';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
-import { QuizKeys, QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 import { BORDER_WIDTH } from 'app/src/constants/UIValues';
-import { iOSUIKit } from 'react-native-typography';
-import { ListItemBadge } from '../ListItemBadge';
-import { SectionTypes } from 'app/src/constants/SectionTypes';
+import { QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
+
+const MODES = {
+  'INACTIVE'         : 'INACTIVE',
+  'SELECTED'         : 'SELECTED',
+  'INACTIVE_BOOKMARK': 'INACTIVE_BOOKMARK',
+  'SELECTED_BOOKMARK': 'SELECTED_BOOKMARK',
+};
 
 
 export class QuestionAnswerItem extends React.Component {
+  static propTypes = {
+  };
+
   static styles = StyleSheet.create({
     rootContainer: {
       paddingTop: 10,
       paddingHorizontal: 12,
       paddingBottom: 10,
-      backgroundColor: 'rgba(255,255,255,0.9)',
       borderBottomWidth: BORDER_WIDTH,
       borderBottomColor: 'rgba(0,0,0,0.2)',
     },
@@ -65,6 +71,55 @@ export class QuestionAnswerItem extends React.Component {
     },
   });
 
+  getModeFromProps(){
+    const { index, currentIndex, bookmark } = this.props;
+
+    const isActive    = (currentIndex == index);
+    const hasBookmark = (bookmark != undefined);
+
+    return (
+      ( isActive &&  hasBookmark)? MODES.SELECTED_BOOKMARK :
+      ( isActive && !hasBookmark)? MODES.SELECTED          :
+      (!isActive &&  hasBookmark)? MODES.INACTIVE_BOOKMARK :
+      (!isActive && !hasBookmark)? MODES.INACTIVE          : MODES.INACTIVE
+    );
+  };
+
+  derivePropsFromMode(){
+    const mode = this.getModeFromProps();
+
+    switch (mode) {
+      case MODES.INACTIVE: return {
+        badgeColor    : Colors.BLUE[100],
+        badgeTextColor: Colors.BLUE.A700,
+        rootContainerStyle: {
+          backgroundColor: 'rgba(255,255,255,0.9)',
+        },
+      };
+      case MODES.SELECTED: return {
+        badgeColor    : Colors.BLUE.A400,
+        badgeTextColor: 'white',
+        rootContainerStyle: {
+          backgroundColor: Colors.BLUE[50],
+        },
+      };
+      case MODES.INACTIVE_BOOKMARK: return {
+        badgeColor    : Colors.ORANGE[100],
+        badgeTextColor: Colors.ORANGE.A700,
+        rootContainerStyle: {
+          backgroundColor: Colors.ORANGE[50],
+        },
+      };
+      case MODES.SELECTED_BOOKMARK: return {
+        badgeColor    : Colors.BLUE.A400,
+        badgeTextColor: 'white',
+        rootContainerStyle: {
+          backgroundColor: Colors.BLUE[50],
+        },
+      };
+    };
+  };
+
   _handleOnPress = () => {
     const { onPressQuestion, ...props } = this.props;
     
@@ -78,7 +133,10 @@ export class QuestionAnswerItem extends React.Component {
 
   render(){
     const { styles } = QuestionAnswerItem;
-    const { question, answer, currentIndex, index } = this.props;
+    const { index, question, answer } = this.props;
+    
+    const hasAnswer = (answer != undefined);
+    const modeProps = this.derivePropsFromMode();
 
     const questionText = question?.[QuizQuestionKeys.questionText] ?? 'N/A';
 
@@ -88,22 +146,10 @@ export class QuestionAnswerItem extends React.Component {
     const dateAnswerTime = moment.unix(answerTime / 1000);
     const textAnswerTime = dateAnswerTime.format('hh:mm');
 
-    const hasAnswer = (
-      (answer != null     ) ||
-      (answer != undefined)
-    );
-
-    const isActive = (currentIndex == index)
-    const rootContainerStyle = {
-      ...(isActive && {
-        backgroundColor: Colors.BLUE[50]
-      })
-    };
-
     return (
       <Animatable.View
         ref={r => this.rootContainer = r}
-        style={[styles.rootContainer, rootContainerStyle]}
+        style={[styles.rootContainer, modeProps.rootContainerStyle]}
         useNativeDriver={true}
       >
         <TouchableOpacity 
@@ -117,14 +163,8 @@ export class QuestionAnswerItem extends React.Component {
               value={(index + 1)}
               textStyle={{fontWeight: '900'}}
               containerStyle={styles.itemBadge}
-              color={(isActive
-                ? Colors.BLUE.A400
-                : Colors.BLUE[100]
-              )}
-              textColor={(isActive
-                ? 'white'
-                : Colors.BLUE.A700
-              )}
+              color={modeProps.badgeColor}
+              textColor={modeProps.badgeTextColor}
             />
             <Text
               style={styles.textQuestion}
