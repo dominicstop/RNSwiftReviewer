@@ -1,9 +1,7 @@
-import { IS_DEBUG } from "app/src/constants/Options";
 import { QuizSessionKeys, QuizQuestionKeys, QuizSessionResultKeys, QuizSessionAnswerKeys, QuizSessionScoreKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes } from "app/src/constants/SectionTypes";
 
 import isEmpty from 'lodash/isEmpty';
-
 import * as Helpers from "app/src/functions/helpers";
 
 
@@ -29,7 +27,6 @@ function checkIfCorrect(question, answer){
       return (ansValTrimmed == ansKeyTrimmed);
   };
 };
-
 
 export class QuizSessionResultModel {
   constructor(props){
