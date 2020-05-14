@@ -100,28 +100,51 @@ export class QuizModel {
   };
 
   updateSection(updatedSection = {}, updateQuestions = false){
+    const updatedSectionID = updatedSection[QuizSectionKeys.sectionID];
+
+    // check if updatedSection has a valid sectionID
+    const isSectionIDValid = (
+      (updatedSectionID != null     ) ||
+      (isSectionIDValid != undefined) ||
+      (!Helpers.isStringEmpty(updatedSectionID))
+    );
+
+    if(!isSectionIDValid) throw 'Invalid SectionID';
+
     // create copy of sections
     const sectionsCopy = [
       ...(this.values[QuizKeys.quizSections] ?? [])
     ];
 
-    const updatedSectionID = updatedSection[QuizSectionKeys.sectionID];
 
+    const updatedQuestions     = updatedSection?.[QuizSectionKeys.sectionQuestions    ] ?? [];
+    const updatedQuestionCount = updatedSection?.[QuizSectionKeys.sectionQuestionCount] ?? 0;
+
+    const updatedHasQuestions = (
+      updatedQuestionCount    > 0 ||
+      updatedQuestions.length > 0
+    );
+
+    let didUpdate = false;
     for (let index = 0; index < sectionsCopy.length; index++) {
       const section   = sectionsCopy[index];
       const sectionID = section[QuizSectionKeys.sectionID];
-      
+
       if(updatedSectionID == sectionID){
+        didUpdate = true;
         sectionsCopy[index] = { ...section,
           // pass down updated section values, excluding id/date created etc.
           [QuizSectionKeys.sectionTitle]: updatedSection[QuizSectionKeys.sectionTitle],
           [QuizSectionKeys.sectionDesc ]: updatedSection[QuizSectionKeys.sectionDesc ],
-          [QuizSectionKeys.sectionType ]: updatedSection[QuizSectionKeys.sectionType ],
-          ...(updateQuestions && {
+          // do not update section type if it already has questions
+          ...(!updatedHasQuestions && {
+            [QuizSectionKeys.sectionType ]: updatedSection[QuizSectionKeys.sectionType ],
+          }),
+          ...((updateQuestions && updatedHasQuestions) && {
             [QuizSectionKeys.sectionQuestions    ]: updatedSection[QuizSectionKeys.sectionQuestions    ],
             [QuizSectionKeys.sectionQuestionCount]: updatedSection[QuizSectionKeys.sectionQuestionCount],
           })
-        };
+        }; break;
       };
     };
 
@@ -130,6 +153,8 @@ export class QuizModel {
     this.values[QuizKeys.quizSectionCount ] = sectionsCopy.length;
     // update question count
     this.setQuestionCount();
+    
+    return didUpdate;
   };
 
   deleteSection(deletedSection){

@@ -23,7 +23,8 @@ import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 
 import { RadioList, RadioListKeys } from 'app/src/components/RadioList';
 
-import { MNPCreateQuiz, MNPQuizAddSection } from 'app/src/constants/NavParams';
+import { QuizSectionKeys   } from 'app/src/constants/PropKeys';
+import { MNPQuizAddSection } from 'app/src/constants/NavParams';
 import { SectionTypes, SectionTypesRadioValuesMap } from 'app/src/constants/SectionTypes';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
@@ -159,13 +160,16 @@ export class QuizAddSectionModal extends React.Component {
   constructor(props){
     super(props);
 
-    const isEditing   = props[MNPQuizAddSection.isEditing];
-    const sectionType = props[MNPQuizAddSection.sectionType];
+    const section   = props[MNPQuizAddSection.section  ];
+    const isEditing = props[MNPQuizAddSection.isEditing];
+
+    console.log(section[QuizSectionKeys.sectionType]);
+    
 
     this.state = {
       //initial selected type
       selectedSectionType: (isEditing
-        ? sectionType
+        ? section[QuizSectionKeys.sectionType]
         : SectionTypes.IDENTIFICATION
       ),
     };
@@ -182,11 +186,14 @@ export class QuizAddSectionModal extends React.Component {
     const props = this.props;
     const { selectedSectionType: nextType } = this.state;
 
-    const isEditing = props[MNPQuizAddSection.isEditing   ];
-    const prevTitle = props[MNPQuizAddSection.sectionTitle];
-    const prevDesc  = props[MNPQuizAddSection.sectionDesc ];
-    const prevType  = props[MNPQuizAddSection.sectionType ];
-    const initType  = SectionTypes.IDENTIFICATION;
+    const initType = SectionTypes.IDENTIFICATION;
+
+    const section   = props[MNPQuizAddSection.section  ];
+    const isEditing = props[MNPQuizAddSection.isEditing];
+
+    const prevTitle = section[QuizSectionKeys.sectionTitle];
+    const prevDesc  = section[QuizSectionKeys.sectionDesc ];
+    const prevType  = section[QuizSectionKeys.sectionType ];
 
     const nextTitle = this.inputFieldRefTitle.getText();
     const nextDesc  = this.inputFieldRefDesc .getText();
@@ -198,18 +205,29 @@ export class QuizAddSectionModal extends React.Component {
     ):(
       (nextTitle != ''      ) ||
       (nextDesc  != ''      ) ||
-      (nextDesc  != initType) 
+      (nextType  != initType)
     ));
   };
 
   _handleOnPressSectionItem = ({type}) => {
     const props = this.props;
-    const isEditing = props[MNPCreateQuiz.isEditing];
+    
+    const section   = props[MNPQuizAddSection.section  ];
+    const isEditing = props[MNPQuizAddSection.isEditing];
 
-    if(isEditing){
+    const questions     = section?.[QuizSectionKeys.sectionQuestions    ] ?? [];
+    const questionCount = section?.[QuizSectionKeys.sectionQuestionCount] ?? 0;
+
+    const hasQuestions = (
+      questionCount    > 0 ||
+      questions.length > 0
+    );
+
+
+    if(isEditing && hasQuestions){
       Alert.alert(
         "Can't Change Type",
-        'Ornare Dolor Ipsum Vestibulum Magna'
+        'This section already has questions.'
       );
 
     } else {
@@ -231,8 +249,10 @@ export class QuizAddSectionModal extends React.Component {
   _handleOnPressDelete = async () => {
     const { componentId, ...props } = this.props;
 
-    const sectionID     = props[MNPQuizAddSection.sectionID    ];
+    const section       = props[MNPQuizAddSection.section      ];
     const onPressDelete = props[MNPQuizAddSection.onPressDelete];
+
+    const sectionID = section[MNPQuizAddSection.sectionID];
 
     const confirm = await Helpers.asyncActionSheetConfirm({
       title: `Delete this Section?`,
@@ -254,12 +274,13 @@ export class QuizAddSectionModal extends React.Component {
   _handleOnPressButtonLeft = async () => {
     const { componentId, ...props } = this.props;
     const { selectedSectionType } = this.state;
-
     const hasChanges = this.hasUnsavedChanges();
 
+    const section     = props[MNPQuizAddSection.section    ];
     const isEditing   = props[MNPQuizAddSection.isEditing  ];
-    const sectionID   = props[MNPQuizAddSection.sectionID  ];
     const onPressDone = props[MNPQuizAddSection.onPressDone];
+
+    const sectionID = section[QuizSectionKeys.sectionID];
 
     const isValidTitle    = this.inputFieldRefTitle.isValid(false);
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
@@ -323,7 +344,8 @@ export class QuizAddSectionModal extends React.Component {
     const props = this.props;
     const state = this.state;
 
-    const isEditing = props[MNPCreateQuiz.isEditing];
+    const section   = props[MNPQuizAddSection.section  ];
+    const isEditing = props[MNPQuizAddSection.isEditing];
 
     const modalHeader = (
       <ModalHeader
@@ -377,7 +399,7 @@ export class QuizAddSectionModal extends React.Component {
             title={'Section Title'}
             subtitle={'Give this section a title (ex: Math Prelims etc.)'}
             placeholder={'Enter Section Title'}
-            initialValue={props[MNPQuizAddSection.sectionTitle]}
+            initialValue={section[QuizSectionKeys.sectionTitle]}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
@@ -402,7 +424,7 @@ export class QuizAddSectionModal extends React.Component {
             title={'Description'}
             subtitle={'Give this section a short description.'}
             placeholder={'Enter Section Description'}
-            initialValue={props[MNPQuizAddSection.sectionDesc]}
+            initialValue={section[QuizSectionKeys.sectionDesc]}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
               <SvgIcon

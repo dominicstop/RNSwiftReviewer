@@ -47,12 +47,9 @@ export const MNPCreateQuiz = {
 
 // CreateQuizAddSectionModal
 export const MNPQuizAddSection = {
-  navigation   : 'navigation'   ,
+  section      : 'section'      ,
   isEditing    : 'isEditing'    ,
-  sectionTitle : 'sectionTitle' ,
-  sectionDesc  : 'sectionDesc'  ,
-  sectionType  : 'sectionType'  ,
-  sectionID    : 'sectionID'    ,
+  navigation   : 'navigation'   ,
   onPressDone  : 'onPressDone'  ,
   onPressDelete: 'onPressDelete',
 };

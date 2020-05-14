@@ -154,16 +154,12 @@ export class CreateQuizScreen extends React.Component {
 
   // onPress: Add New Section
   _handleOnPressAddSection = () => {
-
     // open QuizAddSectionModal
     ModalController.showModal({
       routeName: RNN_ROUTES.ModalQuizAddSection,
       navProps: {
-        [MNPQuizAddSection.isEditing   ]: false,
-        [MNPQuizAddSection.sectionTitle]: null ,
-        [MNPQuizAddSection.sectionDesc ]: null ,
-        [MNPQuizAddSection.sectionType ]: null ,
-        [MNPQuizAddSection.sectionID   ]: null ,
+        [MNPQuizAddSection.isEditing]: false,
+        [MNPQuizAddSection.section  ]: {},
         //event: attach onPress done/save handler
         [MNPQuizAddSection.onPressDone]: this._handleAddSectionModalOnPressCreate,
       },
@@ -172,21 +168,12 @@ export class CreateQuizScreen extends React.Component {
 
   // CreateQuizListItem - edit
   _handleOnPressSectionEdit = ({section, index}) => {
-
-    const title = section[QuizSectionKeys.sectionTitle];
-    const desc  = section[QuizSectionKeys.sectionDesc ];
-    const type  = section[QuizSectionKeys.sectionType ];
-    const id    = section[QuizSectionKeys.sectionID   ];
-
     // open QuizAddSectionModal
     ModalController.showModal({
       routeName: RNN_ROUTES.ModalQuizAddSection,
       navProps: {
-        [MNPQuizAddSection.isEditing   ]: true,
-        [MNPQuizAddSection.sectionTitle]: title,
-        [MNPQuizAddSection.sectionDesc ]: desc ,
-        [MNPQuizAddSection.sectionType ]: type ,
-        [MNPQuizAddSection.sectionID   ]: id   ,
+        [MNPQuizAddSection.section  ]: section,
+        [MNPQuizAddSection.isEditing]: true,
         //event: attach onPress done/save handler
         [MNPQuizAddSection.onPressDone  ]: this._handleAddSectionModalOnPressEdit,
         [MNPQuizAddSection.onPressDelete]: this._handleAddSectionModalOnPressDelete,
@@ -246,19 +233,32 @@ export class CreateQuizScreen extends React.Component {
 
   // modal callback: QuizAddSectionModal - edit
   _handleAddSectionModalOnPressEdit = ({title, desc, sectionType, sectionID}) => {
-    const section = new QuizSectionModel();
-    //set values
-    section.title = title;
-    section.desc  = desc;
-    section.type  = sectionType;
+    try {
+      const section = new QuizSectionModel();
+      
+      //set values
+      section.title     = title;
+      section.desc      = desc;
+      section.type      = sectionType;
+      section.sectionID = sectionID;
 
-    section.sectionID = sectionID;
+      // update section, excluding questions
+      this.quiz.updateSection(section.values, false);
+      this.setState({
+        ...this.quiz.values,
+      });
 
-    // update section, excluding questions
-    this.quiz.updateSection(section.values, false);
-    this.setState({
-      ...this.quiz.values,
-    });
+    } catch(error){
+      console.log('_handleAddSectionModalOnPressEdit - error');
+      console.log(error);
+
+      setTimeout(() => {
+        Alert.alert(
+          'Error',
+          'Could not update section',
+        );
+      }, 500);
+    };
   };
 
   _handleAddSectionModalOnPressDelete = (sectionID) => {
