@@ -51,7 +51,7 @@ export const QuizSessionKeys = {
   matchingTypeChoices: 'matchingTypeChoices',
 };
 
-// QuizSessionAnswerModel
+// property names for QuizSessionAnswerModel
 export const QuizSessionAnswerKeys = {
   quizID            : 'quizID'            ,
   sessionID         : 'sessionID'         ,
@@ -64,6 +64,7 @@ export const QuizSessionAnswerKeys = {
   answerValueHistory: 'answerValueHistory',
 };
 
+// property names for QuizSessionResultModel
 export const QuizSessionResultKeys = {
   quizID         : 'quizID'         ,
   sessionID      : 'sessionID'      ,
@@ -85,4 +86,9 @@ export const QuizSessionScoreKeys = {
   scorePercentCorrect   : 'scorePercentCorrect'   ,
   scorePercentIncorrect : 'scorePercentIncorrect' ,
   scorePercentUnanswered: 'scorePercentUnanswered',
+};
+
+// property names for QuizSessionBookmarkModel
+export const QuizSessionBookmarkKeys = {
+  questionID: 'questionID'
 };

@@ -10,21 +10,22 @@ import { QuizSessionHeader } from 'app/src/components/QuizSessionScreen/QuizSess
 
 import { ScreenOverlayLoading } from 'app/src/components/ScreenOverlayLoading';
 
-import * as Helpers from 'app/src/functions/helpers';
-
-import { QuizSessionModel } from 'app/src/models/QuizSession';
-
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 import { SNPQuizSession, SNPQuizSessionResult, MNPQuizSessionDoneModal, MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
 
 import { SectionTypes } from 'app/src/constants/SectionTypes';
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
-import { ModalController } from 'app/src/functions/ModalController';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
-import { QuizSessionAnswerModel } from 'app/src/models/QuizSessionAnswerModel';
-import { QuizSessionStore } from '../functions/QuizSessionStore';
-import { QuizStore } from '../functions/QuizStore';
+import * as Helpers from 'app/src/functions/helpers';
+
+import { QuizStore        } from 'app/src/functions/QuizStore';
+import { ModalController  } from 'app/src/functions/ModalController';
+import { QuizSessionStore } from 'app/src/functions/QuizSessionStore';
+
+import { QuizSessionModel         } from 'app/src/models/QuizSession';
+import { QuizSessionAnswerModel   } from 'app/src/models/QuizSessionAnswerModel';
+import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -58,12 +59,17 @@ export class QuizSessionScreen extends React.Component {
     answers.initFromSession(session.values);
     this.answers = answers;
 
+    const bookmarks = new QuizSessionBookmarkModel();
+    this.bookmarks = bookmarks;
+
     this.keyboardVisible = false;
 
     this.state = {
+      updateIndex : 0,
       currentIndex: 0,
-      questions: session.questions,
-      answers: answers.answerMap,
+      answers  : answers  .answerMap  ,
+      questions: session  .questions  ,
+      bookmarks: bookmarks.bookmarkMap,
     };
   };
 
@@ -249,6 +255,51 @@ export class QuizSessionScreen extends React.Component {
     });
   };
 
+  // QuizQuestionItem
+  _handleOnLongPress = async ({index, question}) => {
+    const questionID = question[QuizQuestionKeys.questionID];
+    const bookmark   = this.bookmarks.bookmarkMap[questionID];
+
+    const isBookmarked = (
+      (bookmark != null     ) ||
+      (bookmark != undefined)
+    );
+
+    const confirm = await Helpers.asyncActionSheetConfirm(isBookmarked?{
+      title: '',
+      message: "Are you sure that you want to remove the bookmark for this question.",
+      confirmText: 'Remove Bookmark',
+      isDestructive: true,
+    }:{
+      title: '',
+      message: "Are you sure that you want to bookmark this question?",
+      confirmText: 'Add Bookmark',
+      isDestructive: false,
+    });
+
+    if(confirm && !isBookmarked){
+      this.rootContainerRef.pulse(500);
+      this.bookmarks.addBookmark(questionID);
+
+      this.setState((prevState) => ({
+        ...prevState,
+        answers: this.answers.answerMap,
+        updateIndex: (prevState.updateIndex + 1),
+      }));
+
+    } else if(confirm && isBookmarked) {
+      this.rootContainerRef.pulse(500);
+      this.bookmarks.removeBookmark(questionID);
+
+      this.setState((prevState) => ({
+        ...prevState,
+        answers: this.answers.answerMap,
+        updateIndex: (prevState.updateIndex + 1),
+      }));
+    };
+  };
+
+  // QuizQuestionItem - AnswerMatchingType
   _handleOnAnswerSelected = ({question, answer}) => {
     const prevState = this.state;
 
@@ -285,7 +336,7 @@ export class QuizSessionScreen extends React.Component {
         await this.overlayRef.setVisibility(true);
         await Helpers.timeout(300);
 
-        await this.overlayRef.setVisibility(false);
+        this.overlayRef.setVisibility(false);
         this.rootContainerRef.pulse(500);
 
       } else {
@@ -295,6 +346,7 @@ export class QuizSessionScreen extends React.Component {
     };
   };
 
+  // QuizSessionDoneModal
   _handleModalOnPressDone = async () => {
     const { navigation } = this.props;
 
@@ -327,31 +379,30 @@ export class QuizSessionScreen extends React.Component {
   // #region - render functions
   // FlatListCarousel - flatlist
   _renderItem = ({item, index}) => {
-    const { currentIndex, answers } = this.state;
-
+    const { currentIndex, answers, bookmarks } = this.state;
     const questionID = item[QuizQuestionKeys.questionID];
-    // undefined when no matching answer
-    const answer = answers[questionID];
+
+    // undefined when no matching answer/bookmark
+    const answer   = answers  [questionID];
+    const bookmark = bookmarks[questionID];
 
     return(
       <QuizQuestionItem
         ref={r => this[`item-${index}`] = r}
-        isFocused={(currentIndex == index)}
         question={item}
+        isFocused={(currentIndex == index)}
+        onLongPress={this._handleOnLongPress}
         onAnswerSelected={this._handleOnAnswerSelected}
         onPressChooseAnswer={this._handleOnPressChooseAnswer}
-        {...{index, answer, currentIndex}}
+        {...{index, answer, bookmark, currentIndex}}
       />
     );
   };
 
   render(){
     const { styles } = QuizSessionScreen;
-    const { currentIndex, questions: data } = this.state;
-
-    const extraData = {
-      currentIndex
-    };
+    const { currentIndex, updateIndex, questions: data } = this.state;
+    const extraData = { currentIndex, updateIndex };
 
     return(
       <Fragment>

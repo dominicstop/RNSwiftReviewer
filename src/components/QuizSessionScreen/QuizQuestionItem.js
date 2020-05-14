@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, TouchableWithoutFeedback, Text, View } from 'react-native';
 
 import { iOSUIKit     } from 'react-native-typography';
 import { VibrancyView } from "@react-native-community/blur";
@@ -102,10 +102,11 @@ export class QuizQuestionItem extends React.Component {
       prevState.extraBottomSpace != nextState.extraBottomSpace ||
       // update when focused
       prevProps.isFocused != nextProps.isFocused ||
+      // update when bookmark changes
+      prevProps.bookmark != nextProps.bookmark ||
       // update when the answer changed
       prevAnsVal != nextAnsVal
     );
-
   };
 
   // this is triggered from QuizSessionScreen
@@ -122,35 +123,46 @@ export class QuizQuestionItem extends React.Component {
     };
   };
 
-  _renderAnswer(){
-    const { isFocused, question, answer, ...props } = this.props;
+  _handleOnLongPress = () => {
+    const { onLongPress, index, question } = this.props;
+    onLongPress && onLongPress({index, question});
+  };
 
+  _renderAnswer(){
+    const { question, ...props } = this.props;
     const sectionType = question[QuizQuestionKeys.sectionType];
+
+    const sharedProps = {
+      answer   : props.answer   ,
+      bookmark : props.bookmark ,
+      isFocused: props.isFocused,
+      ...question,
+    };
     
     switch (sectionType) {
       case SectionTypes.MATCHING_TYPE: return (
         <AnswerMatchingType
           onPressChooseAnswer={props.onPressChooseAnswer}
-          {...{isFocused, answer, ...question}}
+          {...sharedProps}
         />
       );
       case SectionTypes.TRUE_OR_FALSE: return (
         <AnswerTrueOrFalse
           onAnswerSelected={props.onAnswerSelected}
-          {...{isFocused, answer, ...question}}
+          {...sharedProps}
         />
       );
       case SectionTypes.IDENTIFICATION: return (
         <AnswerIdentification
           ref={r => this.answerIdentificationRef = r}
           onAnswerSelected={props.onAnswerSelected}
-          {...{isFocused, answer, ...question}}
+          {...sharedProps}
         />
       );
       case SectionTypes.MULTIPLE_CHOICE: return (
         <AnswerMultipleChoice
           onAnswerSelected={props.onAnswerSelected}
-          {...{isFocused, answer, ...question}}
+          {...sharedProps}
         />
       );
     };
@@ -158,7 +170,7 @@ export class QuizQuestionItem extends React.Component {
 
   render(){
     const { styles } = QuizQuestionItem;
-    const { index, question, ...props } = this.props;
+    const { index, question, bookmark } = this.props;
     const { extraBottomSpace } = this.state;
 
     const sectionType  = question[QuizQuestionKeys.sectionType];
@@ -167,6 +179,19 @@ export class QuizQuestionItem extends React.Component {
     const choices      = question[QuizQuestionKeys.questionChoices];
     const choicesCount = choices?.length ?? 0;
 
+    const isBookmarked = (
+      (bookmark != null     ) ||
+      (bookmark != undefined)
+    );
+
+    const listItemBadgeProps = (isBookmarked? {
+      color    : Colors.ORANGE[100],
+      textColor: Colors.ORANGE.A700,
+    }:{
+      color    : Colors.BLUE[100],
+      textColor: Colors.BLUE.A700,
+    });
+
     const bottomSpace = (
       (sectionType == SectionTypes.MATCHING_TYPE  )? 100 : //todo
       (sectionType == SectionTypes.TRUE_OR_FALSE  )? 200 : //todo
@@ -174,40 +199,39 @@ export class QuizQuestionItem extends React.Component {
       (sectionType == SectionTypes.MULTIPLE_CHOICE)? (choicesCount * 40) : 0
     );
 
-    //console.log(`render: ${index}`);
-    
     return(
-      <View style={styles.rootContainer}>
-        <View style={styles.rootWrapper}>
-          <ScrollView
-            style={styles.scrollview}
-            contentContainerStyle={{paddingBottom: bottomSpace}}
-            showsVerticalScrollIndicator={false}
-          >
-            <ListItemBadge
-              size={20}
-              value={(index + 1)}
-              textStyle={{fontWeight: '900'}}
-              color={Colors.BLUE[100]}
-              textColor={Colors.BLUE.A700}
-              containerStyle={styles.listItemBadge}
-            />
-            <View style={styles.contentContainer}>
-              <Text style={styles.textQuestion}>
-                {`      ${questionText}`}
-              </Text>
+      <TouchableWithoutFeedback onLongPress={this._handleOnLongPress}>
+        <View style={styles.rootContainer}>
+          <View style={styles.rootWrapper}>
+            <ScrollView
+              style={styles.scrollview}
+              contentContainerStyle={{paddingBottom: bottomSpace}}
+              showsVerticalScrollIndicator={false}
+            >
+              <ListItemBadge
+                size={20}
+                value={(index + 1)}
+                textStyle={{fontWeight: '900'}}
+                containerStyle={styles.listItemBadge}
+                {...listItemBadgeProps}
+              />
+              <View style={styles.contentContainer}>
+                <Text style={styles.textQuestion}>
+                  {`      ${questionText}`}
+                </Text>
+              </View>
+            </ScrollView>
+            <View style={styles.answerContainer}>
+              <VibrancyView
+                style={styles.answerBackgroundBlur}
+                blurType={"light"}
+                intensity={100}
+              />
+              {this._renderAnswer()}
             </View>
-          </ScrollView>
-          <View style={styles.answerContainer}>
-            <VibrancyView
-              style={styles.answerBackgroundBlur}
-              blurType={"light"}
-              intensity={100}
-            />
-            {this._renderAnswer()}
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   };
 };

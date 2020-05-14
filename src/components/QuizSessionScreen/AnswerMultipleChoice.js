@@ -14,16 +14,26 @@ import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 import { QuizQuestionKeys, QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
 
 
-const scale = Chroma.scale([
+const scaleBlue = Chroma.scale([
   Colors.BLUE[800 ],
   Colors.BLUE[900 ],
   Colors.BLUE[1000],
 ]);
 
-const bgColors = Array.from({length: 10}, (x, i) => (
-  scale.colors(i)
-));
+const scaleOrange = Chroma.scale([
+  Colors.ORANGE[700 ],
+  Colors.ORANGE[800 ],
+  Colors.ORANGE[900 ],
+  Colors.ORANGE[1000],
+]);
 
+const bgColorsBlue = Array.from({length: 10},
+  (x, i) => (scaleBlue.colors(i))
+);
+
+const bgColorsOrange = Array.from({length: 10},
+  (x, i) => (scaleOrange.colors(i))
+);
 
 class ChoiceItem extends React.Component {
   static styles = StyleSheet.create({
@@ -55,12 +65,13 @@ class ChoiceItem extends React.Component {
 
   shouldComponentUpdate(nextProps){
     const prevProps = this.props;
-
+    
     return (
       (prevProps.index        != nextProps.index       ) ||
       (prevProps.choice       != nextProps.choice      ) ||
       (prevProps.isSelected   != nextProps.isSelected  ) ||
-      (prevProps.choicesCount != nextProps.choicesCount) 
+      (prevProps.hasBookmark  != nextProps.hasBookmark ) ||
+      (prevProps.choicesCount != nextProps.choicesCount)
     );
   };
 
@@ -73,7 +84,7 @@ class ChoiceItem extends React.Component {
 
   render(){
     const { styles } = ChoiceItem;
-    const { index, choice, choicesCount, isSelected } = this.props;
+    const { index, choice, choicesCount, isSelected, hasBookmark } = this.props;
 
     return(
       <Animatable.View
@@ -84,10 +95,17 @@ class ChoiceItem extends React.Component {
           key={`choice-${choice}`}
           activeOpacity={0.9}
           onPress={this._handleOnPressChoice}
-          style={[styles.choiceContainer, (isSelected
-            ? { backgroundColor: Colors.BLUE.A700 }
-            : { backgroundColor: bgColors[choicesCount][index] }
-          )]}
+          style={[styles.choiceContainer, (isSelected?{
+            backgroundColor: (hasBookmark
+              ? Colors.YELLOW.A700 
+              : Colors.INDIGO.A700 
+            )
+          }:{
+            backgroundColor: (hasBookmark
+              ? bgColorsOrange[choicesCount][index]
+              : bgColorsBlue  [choicesCount][index]
+            )
+          })]}
         >
           <Text style={(isSelected
             ? styles.textLetterSelected
@@ -139,7 +157,8 @@ export class AnswerMultipleChoice extends React.Component {
     const nextAnsVal = nextAnswer[QuizSessionAnswerKeys.answerValue];
 
     return(
-      prevAnsVal != nextAnsVal
+      (prevAnsVal         != nextAnsVal        ) ||
+      (prevProps.bookmark != nextProps.bookmark)
     );
   };
 
@@ -164,7 +183,8 @@ export class AnswerMultipleChoice extends React.Component {
     const choices      = props[QuizQuestionKeys.questionChoices] ?? [];
     const choicesCount = choices.length;
 
-    const answerVal = answer?.[QuizSessionAnswerKeys.answerValue];
+    const answerVal   = answer?.[QuizSessionAnswerKeys.answerValue];
+    const hasBookmark = (props.bookmark != undefined);
 
     return(
       <Animatable.View 
@@ -176,7 +196,7 @@ export class AnswerMultipleChoice extends React.Component {
           <ChoiceItem
             isSelected={(choice == answerVal)}
             onPressChoice={this._handleOnPressChoice}
-            {...{choice, choicesCount, index}}
+            {...{choice, choicesCount, index, hasBookmark}}
           />
         ))}
       </Animatable.View>

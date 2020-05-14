@@ -49,6 +49,13 @@ class InactiveButton extends React.PureComponent {
     const { styles } = InactiveButton;
     const props = this.props;
 
+    const buttonTextTitleStyle = {
+      color: (props.hasBookmark
+        ? Colors.ORANGE[900]
+        : Colors.BLUE  .A700
+      ),
+    };
+
     return (
       <TouchableOpacity 
         style={styles.button}
@@ -56,11 +63,14 @@ class InactiveButton extends React.PureComponent {
         onPress={props.onPressChooseAnswer}
       >
         <Ionicon
-          name={'ios-filing'}
-          color={Colors.BLUE.A700}
           size={26}
+          name={'ios-filing'}
+          color={(props.hasBookmark
+            ? Colors.ORANGE[900]
+            : Colors.BLUE  .A700
+          )}
         />
-        <Text style={styles.buttonTextTitle}>
+        <Text style={[styles.buttonTextTitle, buttonTextTitleStyle]}>
           {'Choose Answer...'}
         </Text>
       </TouchableOpacity>
@@ -88,7 +98,6 @@ class ActiveButton extends React.PureComponent {
       },
     },
     iconContainer: {
-      backgroundColor: Colors.BLUE[900],
       paddingHorizontal: 14,
       alignSelf: 'stretch',
       alignItems: 'center',
@@ -105,11 +114,10 @@ class ActiveButton extends React.PureComponent {
       ...iOSUIKit.subheadEmphasizedObject,
       flex: 1,
       fontWeight: '800',
-      color: Colors.BLUE.A700,
     },
     buttonTextSubtitle: {
       ...iOSUIKit.footnoteObject,
-      color: Colors.BLUE[1000],
+      color: Colors.GREY[700],
       opacity: 0.9,
       marginTop: -2,
     },
@@ -117,9 +125,22 @@ class ActiveButton extends React.PureComponent {
 
   render(){
     const { styles } = ActiveButton;
-    const { answer, ...props } = this.props;
-
+    const { answer, hasBookmark, ...props } = this.props;
     const answerText = answer[QuizSessionAnswerKeys.answerValue];
+
+    const iconContainerStyle = {
+      backgroundColor: (hasBookmark
+        ? Colors.ORANGE[900]
+        : Colors.BLUE  [900]
+      ),
+    };
+
+    const buttonTextTitleStyle = {
+      color: (hasBookmark
+        ? Colors.ORANGE[900]
+        : Colors.BLUE  .A700
+      ),
+    };
 
     return (
       <TouchableOpacity 
@@ -127,7 +148,7 @@ class ActiveButton extends React.PureComponent {
         activeOpacity={0.8}
         onPress={props.onPressChooseAnswer}
       >
-        <View style={styles.iconContainer}>
+        <View style={[styles.iconContainer, iconContainerStyle]}>
           <Ionicon
             name={'ios-filing'}
             color={'white'}
@@ -135,7 +156,7 @@ class ActiveButton extends React.PureComponent {
           />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.buttonTextTitle}>
+          <Text style={[styles.buttonTextTitle, buttonTextTitleStyle]}>
             {answerText}
           </Text>
           <Text style={styles.buttonTextSubtitle}>
@@ -148,12 +169,6 @@ class ActiveButton extends React.PureComponent {
 };
 
 export class AnswerMatchingType extends React.PureComponent {
-  static styles = StyleSheet.create({
-    rootContainer: {
-      backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.9),
-    },
-  });
-
   _handleOnPressChooseAnswer = () => {
     const { onPressChooseAnswer, answer, ...props } = this.props;
 
@@ -164,21 +179,27 @@ export class AnswerMatchingType extends React.PureComponent {
   };
 
   render(){
-    const { styles } = AnswerMatchingType;
-    const { question, answer } = this.props;
-    const hasAnswer = (answer !== undefined);
+    const { question, answer, bookmark } = this.props;
+
+    const hasAnswer   = (answer   != undefined);
+    const hasBookmark = (bookmark != undefined);
+
+    const backgroundColor = (hasBookmark
+      ? Helpers.hexToRGBA(Colors.ORANGE.A700, 0.75)
+      : Helpers.hexToRGBA(Colors.BLUE  .A700, 0.9 )
+    );
 
     return (
-      <View style={styles.rootContainer}>
+      <View style={{backgroundColor}}>
         {hasAnswer? (
           <ActiveButton
             onPressChooseAnswer={this._handleOnPressChooseAnswer}
-            {...{question, answer}}
+            {...{question, answer, hasBookmark}}
           />
         ):(
           <InactiveButton
             onPressChooseAnswer={this._handleOnPressChooseAnswer}
-            {...{question, answer}}
+            {...{question, answer, hasBookmark}}
           />
         )}
       </View>

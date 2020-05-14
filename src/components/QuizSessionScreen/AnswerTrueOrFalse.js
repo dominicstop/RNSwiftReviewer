@@ -29,14 +29,29 @@ export class AnswerTrueOrFalse extends React.Component {
   };
 
   render(){
-    const { answer } = this.props;
-    const hasAnswer = (answer != undefined);
+    const { answer, bookmark } = this.props;
     const answerValue = answer?.[QuizSessionAnswerKeys.answerValue];
+
+    const hasAnswer   = (answer   != undefined);
+    const hasBookmark = (bookmark != undefined);
+
+    const backgroundColor = (hasBookmark
+      ? Helpers.hexToRGBA(Colors.ORANGE.A700, 0.7)
+      : Helpers.hexToRGBA(Colors.BLUE  .A700, 0.9)
+    );
+
+    const segmentedControlProps = hasBookmark? {
+      textColor: Colors.ORANGE[900],
+      tintColor: Colors.ORANGE.A700,
+    }:{
+      textColor: Colors.BLUE[1000],
+      tintColor: Colors.BLUE.A700,
+    };
 
     return(
       <Animatable.View
         ref={r => this.rootContainerRef = r}
-        style={styles.rootContainer}
+        style={{backgroundColor}}
         useNativeDriver={true}
       >
         <Animatable.View 
@@ -45,12 +60,11 @@ export class AnswerTrueOrFalse extends React.Component {
           useNativeDriver={true}
         >
           <SegmentedControl
+            {...segmentedControlProps}
             style={styles.segmentedControl}
             onChange={this._handleSegmentOnChange}
             values={['True', 'False']}
-            textColor={Colors.BLUE[1000]}
             activeTextColor={'white'}
-            tintColor={Colors.BLUE.A700}
             appearance={'light'}
             backgroundColor={'white'}
             selectedIndex={(hasAnswer
@@ -75,7 +89,5 @@ const styles = StyleSheet.create({
   },
   segmentedControl: {
     height: 33,
-    borderWidth: 1,
-    borderColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.5),
   },
 });

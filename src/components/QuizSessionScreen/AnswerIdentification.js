@@ -23,8 +23,6 @@ const BOTTOM_MARGIN = (21 + INSET_BOTTOM);
 export class AnswerIdentification extends React.Component {
   static styles = StyleSheet.create({
     rootContainer: {
-      backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.8),
-      borderTopColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.5),
       borderTopWidth: BORDER_WIDTH,
     },
     inputContainer: {
@@ -46,11 +44,6 @@ export class AnswerIdentification extends React.Component {
       flex: 1,
       fontSize: 14,
       fontWeight:'700',
-      color: Helpers.hexToRGBA(Colors.BLUE[900], 0.9),
-    },
-    textInputFocused: {
-      fontWeight:'800',
-      color: Helpers.hexToRGBA(Colors.BLUE[1000], 0.8),
     },
   });
 
@@ -94,7 +87,8 @@ export class AnswerIdentification extends React.Component {
 
     return(
       // check if props changed
-      (prevAnsVal != nextAnsVal) ||
+      (prevAnsVal         != nextAnsVal        ) ||
+      (prevProps.bookmark != nextProps.bookmark) ||
       // check if state changed
       (prevState.textInput       != nextState.textInput      ) ||
       (prevState.inputFocused    != nextState.inputFocused   ) ||
@@ -169,15 +163,43 @@ export class AnswerIdentification extends React.Component {
 
   render(){
     const { styles } = AnswerIdentification;
-    const { answer } = this.props;
+    const { answer, bookmark } = this.props;
     const { inputFocused } = this.state;
 
     // get answer value from answer obj
     const answerValue = answer?.[QuizSessionAnswerKeys.answerValue];
+    const hasBookmark = (bookmark != undefined);
 
     const rootContainerStyle = {
       borderTopLeftRadius : this._borderRadius,
       borderTopRightRadius: this._borderRadius,
+      ...(hasBookmark? {
+        borderTopColor : Helpers.hexToRGBA(Colors.ORANGE[900], 0.5),
+        backgroundColor: Helpers.hexToRGBA(Colors.ORANGE.A700, 0.8),
+      }:{
+        borderTopColor : Helpers.hexToRGBA(Colors.BLUE[900], 0.5),
+        backgroundColor: Helpers.hexToRGBA(Colors.BLUE.A700, 0.8),
+      }),
+    };
+
+    const colorFocused = (hasBookmark
+      ? Helpers.hexToRGBA(Colors.ORANGE[900 ], 0.8)
+      : Helpers.hexToRGBA(Colors.BLUE  [1000], 0.8)
+    );
+
+    const colorBlurred = (hasBookmark
+      ? Helpers.hexToRGBA(Colors.ORANGE[800], 0.8)
+      : Helpers.hexToRGBA(Colors.BLUE  [900], 0.8)
+    );
+
+    const textInputStyle = {
+      ...(inputFocused && {
+        fontWeight: '800',
+      }),
+      color: (inputFocused
+        ? colorFocused
+        : colorBlurred
+      ),
     };
 
     return(
@@ -185,7 +207,7 @@ export class AnswerIdentification extends React.Component {
         <View style={styles.inputContainer}>
           <View style={styles.inputBackground}/>
           <TextInput
-            style={[styles.textInput, (inputFocused && styles.textInputFocused)]}
+            style={[styles.textInput, textInputStyle]}
             defaultValue={answerValue}
             onBlur={this._handleOnBlur}
             onFocus={this._handleOnFocus}
@@ -194,6 +216,10 @@ export class AnswerIdentification extends React.Component {
             placeholderTextColor={(inputFocused
               ? Helpers.hexToRGBA(Colors.BLUE[900], 0.5)
               : Helpers.hexToRGBA(Colors.BLUE.A700, 0.6)
+            )}
+            selectionColor={(hasBookmark
+              ? Colors.ORANGE[900]
+              : Colors.BLUE.A700
             )}
           />
         </View>
