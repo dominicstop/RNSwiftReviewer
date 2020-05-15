@@ -110,7 +110,7 @@ export class ScreenOverlayLoading extends React.PureComponent {
         <BlurView
           style={styles.blurBackground}
           blurType={'light'}
-          blurAmount={3}
+          blurAmount={5}
         />
         <View style={[styles.loadingContainer, loadingContainer]}>
           <ActivityIndicator

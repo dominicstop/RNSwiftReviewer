@@ -63,16 +63,44 @@ class ChoiceItem extends React.Component {
     },
   });
 
-  shouldComponentUpdate(nextProps){
+  constructor(props){
+    super(props);
+
+    this.state = {
+      showCheck: props.isSelected,
+    };
+  };
+
+  shouldComponentUpdate(nextProps, nextState){
     const prevProps = this.props;
-    
+    const prevState = this.state;
+
     return (
+      // check if state changed
+      (prevState.showCheck    != nextState.showCheck   ) ||
+      // check if props changed
       (prevProps.index        != nextProps.index       ) ||
       (prevProps.choice       != nextProps.choice      ) ||
       (prevProps.isSelected   != nextProps.isSelected  ) ||
       (prevProps.hasBookmark  != nextProps.hasBookmark ) ||
       (prevProps.choicesCount != nextProps.choicesCount)
     );
+  };
+
+  async componentDidUpdate(prevProps){
+    const currProps = this.props;
+    const currState = this.state;
+
+    const didSelect   = (!prevProps.isSelected &&  currProps.isSelected);
+    const didUnselect = ( prevProps.isSelected && !currProps.isSelected);
+    
+    if(didSelect && !currState.showCheck){
+      this.setState({showCheck: true});
+
+    } else if(didUnselect && currState.showCheck){
+      this.checkRef && await this.checkRef.fadeOutRight(200);
+      this.setState({showCheck: false});
+    };
   };
 
   _handleOnPressChoice = () => {
@@ -85,6 +113,7 @@ class ChoiceItem extends React.Component {
   render(){
     const { styles } = ChoiceItem;
     const { index, choice, choicesCount, isSelected, hasBookmark } = this.props;
+    const { showCheck } = this.state;
 
     return(
       <Animatable.View
@@ -119,8 +148,9 @@ class ChoiceItem extends React.Component {
           )}>
             {choice}
           </Text>
-          {(isSelected) && (
+          {(showCheck) && (
             <Animatable.View
+              ref={r => this.checkRef = r}
               animation={'fadeInRight'}
               duration={250}
               useNativeDriver={true}
