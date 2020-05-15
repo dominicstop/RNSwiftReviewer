@@ -1,20 +1,15 @@
 import React from 'react';
-import { StyleSheet, Keyboard, Text, View, TouchableOpacity, FlatList, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, View, TextInput } from 'react-native';
 
 import Reanimated from 'react-native-reanimated';
-
-import { Easing   } from 'react-native-reanimated';
-import { iOSUIKit } from 'react-native-typography';
-
-import   SvgIcon    from 'app/src/components/SvgIcon';
-import { SVG_KEYS } from 'app/src/components/SvgIcons';
+import { Easing } from 'react-native-reanimated';
 
 import * as Helpers from 'app/src/functions/helpers';
 import * as Colors  from 'app/src/constants/Colors';
 
-import { INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
 import { QuizQuestionModel } from 'app/src/models/QuizQuestionModel';
 import { QuizSessionAnswerKeys } from 'app/src/constants/PropKeys';
+import { INSET_BOTTOM, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 const { Value, Extrapolate, interpolate, timing, sub } = Reanimated;
 const BOTTOM_MARGIN = (21 + INSET_BOTTOM);
@@ -213,10 +208,15 @@ export class AnswerIdentification extends React.Component {
             onFocus={this._handleOnFocus}
             placeholder={'Type your answer...'}
             returnKeyType={'done'}
-            placeholderTextColor={(inputFocused
-              ? Helpers.hexToRGBA(Colors.BLUE[900], 0.5)
-              : Helpers.hexToRGBA(Colors.BLUE.A700, 0.6)
-            )}
+            placeholderTextColor={hasBookmark
+              ? (inputFocused
+                ? Helpers.hexToRGBA(Colors.ORANGE[900], 0.5)
+                : Helpers.hexToRGBA(Colors.ORANGE.A700, 0.6)
+              ):(inputFocused
+                ? Helpers.hexToRGBA(Colors.BLUE[900], 0.5)
+                : Helpers.hexToRGBA(Colors.BLUE.A700, 0.6)
+              )
+            }
             selectionColor={(hasBookmark
               ? Colors.ORANGE[900]
               : Colors.BLUE.A700

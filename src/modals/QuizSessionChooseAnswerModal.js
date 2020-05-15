@@ -167,7 +167,7 @@ export class QuizSessionChooseAnswerModal extends React.Component {
         headerIcon={(
           <Ionicon
             style={{marginTop: 3}}
-            name={'ios-book'}
+            name={'ios-filing'}
             size={24}
             color={'white'}
           />
