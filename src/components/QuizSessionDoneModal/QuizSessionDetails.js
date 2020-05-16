@@ -1,24 +1,16 @@
 import React from 'react';
-import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Feather from '@expo/vector-icons/Feather';
-import moment  from 'moment';
+import moment from 'moment';
 
-import { Divider } from 'react-native-elements';
+import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
-import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
+import { DetailPill  } from 'app/src/components/DetailPill';
+import { TimeElasped } from 'app/src/components/TimeElapsed';
 
-import { ModalSection    } from 'app/src/components/Modal/ModalSection';
-import { TableLabelValue } from 'app/src/components/TableLabelValue';
-
-import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
-
-import { QuizKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
-import { DetailPill } from '../DetailPill';
-import { TimeElasped } from '../TimeElapsed';
-
+import { QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 
 export class QuizSessionDetails extends React.Component {
@@ -62,6 +54,15 @@ export class QuizSessionDetails extends React.Component {
     };
   };
 
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    return (
+      (prevState.answerCount   != nextState.answerCount  ) ||
+      (prevState.questionCount != nextState.questionCount)
+    );
+  };
 
   render(){
     const { styles } = QuizSessionDetails;

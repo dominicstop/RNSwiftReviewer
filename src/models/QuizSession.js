@@ -20,7 +20,6 @@ function extractQuestionsFromSections(sections = []){
   return questions;
 };
 
-
 function extractMatchingTypeChoicesFromSections(sections = []){
   let choices = {};
 

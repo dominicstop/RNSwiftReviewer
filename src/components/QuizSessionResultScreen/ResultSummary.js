@@ -472,8 +472,8 @@ class SummaryDecription extends React.Component {
     else if(percentCorrect == 100         ) return "Wow, looks like you have a perfect score! Congratulations, you did great!";
     else if(percentSkipped == 100         ) return "Whoops, it looks like you skipped all of the questions. Try answering some questions!";
     else if(percentCorrect == 0           ) return "Oops, looks like you got every question wrong? Don't worry, you just need to keep practicing.";
-    else if(percentCorrect <  50          ) return `You needed ${itemsNeededToPass} ${plural('item', itemsNeededToPass)} more to pass. Your score is ${scoreCorrect}/${totalItems}. The passing score is ${passingGrade} ${plural('item', passingGrade)}.`;
-    else if(percentCorrect >  50          ) return `The passing score is ${passingGrade} ${plural('item', passingGrade)} and you scored ${scoreCorrect}/${totalItems}. You're ${itemsAbovePassing} ${plural('item', itemsAbovePassing)} above the passing score. `;
+    else if(percentCorrect <  50          ) return `You needed ${itemsNeededToPass} ${Helpers.plural('item', itemsNeededToPass)} more to pass. Your score is ${scoreCorrect}/${totalItems}. The passing score is ${passingGrade} ${Helpers.plural('item', passingGrade)}.`;
+    else if(percentCorrect >  50          ) return `The passing score is ${passingGrade} ${Helpers.plural('item', passingGrade)} and you scored ${scoreCorrect}/${totalItems}. You're ${itemsAbovePassing} ${Helpers.plural('item', itemsAbovePassing)} above the passing score. `;
   };
 
   render(){

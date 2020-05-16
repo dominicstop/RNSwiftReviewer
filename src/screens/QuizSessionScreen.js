@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, View, Keyboard } from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 import { StackActions } from 'react-navigation';

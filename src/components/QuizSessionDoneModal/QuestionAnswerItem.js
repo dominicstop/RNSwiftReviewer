@@ -2,9 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import moment from 'moment';
-import * as Animatable from 'react-native-animatable';
+import moment  from 'moment';
+import Ionicon from "@expo/vector-icons/Ionicons";
 
+import * as Animatable from 'react-native-animatable';
 import { iOSUIKit } from 'react-native-typography';
 
 import { ListItemBadge } from 'app/src/components/ListItemBadge';
@@ -34,6 +35,9 @@ export class QuestionAnswerItem extends React.Component {
       paddingBottom: 10,
       borderBottomWidth: BORDER_WIDTH,
       borderBottomColor: 'rgba(0,0,0,0.2)',
+    },
+    contentContainer: {
+      flex: 1,
     },
     questionContainer: {
       flexDirection: 'row',
@@ -70,6 +74,34 @@ export class QuestionAnswerItem extends React.Component {
       marginLeft: 5,
     },
   });
+
+  constructor(props){
+    super(props);
+
+    const hasBookmark = (props.bookmark != undefined);
+
+    this.state = {
+      showBookmarkIcon: hasBookmark,
+    };
+  };
+
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    return (
+      (prevProps.bookmark         != nextProps.bookmark        ) ||
+      (prevState.showBookmarkIcon != nextState.showBookmarkIcon)
+    );
+  };
+
+  componentDidUpdate(prevProps){
+    const nextProps = this.props;
+
+    if(prevProps.bookmark != nextProps.bookmark){
+      this.rootContainer.pulse(300);
+    };
+  };
 
   getModeFromProps(){
     const { index, currentIndex, bookmark } = this.props;
@@ -163,7 +195,8 @@ export class QuestionAnswerItem extends React.Component {
         style={[styles.rootContainer, modeProps.rootContainerStyle]}
         useNativeDriver={true}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
+          style={styles.contentContainer}
           onPress={this._handleOnPress}
           onLongPress={this._handleOnLongPress}
           activeOpacity={0.5}
