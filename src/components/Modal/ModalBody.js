@@ -25,7 +25,7 @@ const HEADER_MODES = {
 function getHeaderValues(mode){
   switch (mode) {
     case HEADER_MODES.NONE: return {
-      insetTop: 0,
+      insetTop: 15,
       backgroundStyle: { top: 0 },
       scrollviewStyle: { top: 0 },
     };
@@ -83,53 +83,69 @@ export class ModalBody extends React.Component {
     overlay            : PropTypes.element,
     modalHeader        : PropTypes.element,
     modalFooter        : PropTypes.element,
+    delayMount         : PropTypes.bool   ,
     animateAsGroup     : PropTypes.bool   ,
     wrapInScrollView   : PropTypes.bool   ,
+    useKeyboardSpacer  : PropTypes.bool   ,
     passScrollviewProps: PropTypes.bool   ,
   };
 
   static defaultProps = {
     headerMode         : HEADER_MODES.DEFAULT,
+    delayMount         : true ,
     animateAsGroup     : false,
     footerBGVisible    : true ,
     wrapInScrollView   : true ,
+    useKeyboardSpacer  : true ,
     passScrollviewProps: true ,
   };
 
   constructor(props){
     super(props);
 
-    this.keyboardHeight = 0;
+    if(props.useKeyboardSpacer){
+      this.keyboardHeight = 0;
     
-    this.progress            = new Value(0);
-    this.keyboardHeightValue = new Value(0);
+      this.progress            = new Value(0);
+      this.keyboardHeightValue = new Value(0);
 
-    this._height = interpolate(this.progress, {
-      inputRange : [0, 100],
-      outputRange: [0, this.keyboardHeightValue],
-      extrapolate: Extrapolate.CLAMP,
-    });
+      this._height = interpolate(this.progress, {
+        inputRange : [0, 100],
+        outputRange: [0, this.keyboardHeightValue],
+        extrapolate: Extrapolate.CLAMP,
+      });
+    };
 
     this.state = {
-      mount: false,
+      mount: !props.delayMount,
       keyboardVisible: false,
       footerBGVisible: props.footerBGVisible,
     };
   };
 
   async componentDidMount(){
-    // subscribe to event listeners
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow' , this._keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
+    const props =  this.props;
 
-    await Helpers.timeout(50);
-    this.setState({ mount: true });
+    if(props.useKeyboardSpacer){
+      // subscribe to event listeners
+      this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow' , this._keyboardDidShow);
+      this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardWillHide);
+    };
+
+    if(props.delayMount){
+      await Helpers.timeout(50);
+      this.setState({ mount: true });
+    };
   };
 
   componentWillUnmount() {
-    // ubsubsrcibe to event listeners
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
+    const props = this.props;
+
+    if(props.useKeyboardSpacer){
+      // ubsubsrcibe to event listeners
+      this.keyboardDidShowListener.remove();
+      this.keyboardDidHideListener.remove();
+    };
   };
 
   _keyboardDidShow = (event) => {
@@ -222,7 +238,7 @@ export class ModalBody extends React.Component {
   };
 
   render(){
-    const { headerMode, modalHeader, modalFooter, overlay, ...props } = this.props;
+    const { headerMode, ...props } = this.props;
     const { mount, keyboardVisible, footerBGVisible } = this.state;
 
     const headerValues = getHeaderValues(headerMode);
@@ -266,15 +282,17 @@ export class ModalBody extends React.Component {
             })}
           </Animatable.View>
         ))}
-        <Reanimated.View
-          style={{ height: this._height }}
-        />
-        {(headerMode == HEADER_MODES.NONE   )? null :
-         (headerMode == HEADER_MODES.DEFAULT)? modalHeader :
-         (headerMode == HEADER_MODES.COMPACT)? <ModalHeaderCompact/> : null
+        {props.useKeyboardSpacer && (
+          <Reanimated.View
+            style={{ height: this._height }}
+          />
+        )}
+        {(headerMode == HEADER_MODES.NONE   )? (null) :
+         (headerMode == HEADER_MODES.DEFAULT)? (props.modalHeader    ) :
+         (headerMode == HEADER_MODES.COMPACT)? (<ModalHeaderCompact/>) : (null)
         }
-        {modalFooter}
-        {overlay}
+        {props.modalFooter}
+        {props.overlay}
       </View>
     );
   };

@@ -389,6 +389,7 @@ export class QuizAddSectionModal extends React.Component {
 
     return (
       <ModalBody
+        useKeyboardSpacer={true}
         {...{modalHeader, modalFooter, overlay}}
       >
         <ModalSection>

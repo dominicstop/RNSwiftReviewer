@@ -375,6 +375,7 @@ export class QuizCreateQuestionModal extends React.Component {
     return (
       <ModalBody
         stickyHeaderIndices={[0, 1, 3]}
+        useKeyboardSpacer={true}
         animateAsGroup={true}
         {...{modalHeader, modalFooter, overlay}}
       >

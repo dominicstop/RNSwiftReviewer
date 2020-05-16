@@ -191,6 +191,7 @@ export class CreateQuizModal extends React.PureComponent {
 
     return (
       <ModalBody
+        useKeyboardSpacer={true}
         {...{modalHeader, modalFooter, overlay}}
       >
         <ModalSection showBorderTop={false}>

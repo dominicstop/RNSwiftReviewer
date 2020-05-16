@@ -392,8 +392,9 @@ export class QuizSessionDoneModal extends React.Component {
     return (
       <ModalBody
         headerMode={'NONE'}
-        wrapInScrollView={false}
+        delayMount={false}
         animateAsGroup={true}
+        wrapInScrollView={false}
         {...{modalFooter, overlay}}
       >
         <SectionList
