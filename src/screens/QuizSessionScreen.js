@@ -365,8 +365,9 @@ export class QuizSessionScreen extends React.Component {
   _handleModalOnPressDone = async () => {
     const { navigation } = this.props;
 
-    const answers = this.answers.answerMap;
-    this.session.answers = answers;
+    // save bookmarks/answers in session
+    this.session.answers   = this.answers  .answerMap;
+    this.session.bookmarks = this.bookmarks.bookmarkMap;
 
     this.session.initResults();
     this.session.setEndDate();

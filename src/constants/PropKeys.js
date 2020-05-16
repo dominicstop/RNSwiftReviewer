@@ -48,6 +48,7 @@ export const QuizSessionKeys = {
   sessionAnswers     : 'sessionAnswers'     ,
   sessionScore       : 'sessionScore'       ,
   sessionResults     : 'sessionResults'     ,
+  sessionBookmarks   : 'sessionBookmarks'   ,
   matchingTypeChoices: 'matchingTypeChoices',
 };
 

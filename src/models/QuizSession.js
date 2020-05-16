@@ -1,8 +1,7 @@
 import { IS_DEBUG } from "app/src/constants/Options";
-import { QuizSessionKeys, QuizKeys, QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import { SectionTypes } from "app/src/constants/SectionTypes";
+import { QuizSessionKeys, QuizKeys, QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
-import isEmpty from 'lodash/isEmpty';
 import * as Helpers from "app/src/functions/helpers";
 import { QuizSessionResultModel } from "./QuizSessionResultsModel";
 
@@ -51,7 +50,6 @@ function extractMatchingTypeChoicesFromSections(sections = []){
 
   return choices;
 };
-
 
 // create object with keys and ass. null values
 const defaultValues = IS_DEBUG && Helpers.createObjectFromKeys(QuizSessionKeys);
@@ -121,8 +119,15 @@ export class QuizSessionModel {
   };
 
   set answers(answerMap = {}){
-    this.values[QuizSessionKeys.sessionAnswers] =
-      { ...answerMap };
+    this.values[QuizSessionKeys.sessionAnswers] = { 
+      ...answerMap
+    };
+  };
+
+  set bookmarks(bookmarks = {}){
+    this.values[QuizSessionKeys.sessionBookmarks] = {
+      ...bookmarks
+    };
   };
 
   setStartDate(){
