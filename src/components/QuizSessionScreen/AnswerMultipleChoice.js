@@ -104,10 +104,12 @@ class ChoiceItem extends React.Component {
   };
 
   _handleOnPressChoice = () => {
-    const { choice, index, onPressChoice } = this.props;
+    const { onPressChoice, choice, index, isSelected } = this.props;
 
-    onPressChoice && onPressChoice(choice, index);
-    this.rootContainerRef.pulse(300);
+    if(!isSelected){
+      this.rootContainerRef.pulse(300);
+      onPressChoice && onPressChoice(choice, index);
+    };
   };
 
   render(){
