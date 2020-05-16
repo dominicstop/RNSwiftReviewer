@@ -88,8 +88,9 @@ export const MNPQuizSessionDoneModal = {
   questions      : 'questions'      ,
   currentIndex   : 'currentIndex'   ,
   currentQuestion: 'currentQuestion',
-  onPressQuestion: 'onPressQuestion',
   onPressDone    : 'onPressDone'    ,
+  onPressQuestion: 'onPressQuestion',
+  updateBookmarks: 'updateBookmarks',
 };
 
 // QuizSessionQuestionModal
@@ -102,5 +103,6 @@ export const MNPQuizSessionQuestion = {
   currentIndex   : 'currentIndex'   ,
   currentQuestion: 'currentQuestion',
   onPressQuestion: 'onPressQuestion',
+  updateBookmarks: 'updateBookmarks',
 };
 // #endregion

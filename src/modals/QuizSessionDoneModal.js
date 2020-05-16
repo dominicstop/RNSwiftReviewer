@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { View, SectionList } from 'react-native';
+import { View, SectionList, Alert } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
@@ -24,6 +24,7 @@ import * as Helpers from 'app/src/functions/helpers';
 
 import { MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
 import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
+import { QuizSessionBookmarkModel } from '../models/QuizSessionBookmarkModel';
 
 
 // QSD: QuizSessionDone 🤣
@@ -40,9 +41,8 @@ function combineItemsWithQuestions(questions, answers, bookmarks){
     const questionID = question[QuizQuestionKeys.questionID];
 
     return {
-      type    : QSDSectionTypes.QUESTIONS,
-      answer  : answers  [questionID],
-      bookmark: bookmarks[questionID],
+      type  : QSDSectionTypes.QUESTIONS,
+      answer: answers [questionID],
       // pass down
       questionID, question,
     };
@@ -53,8 +53,17 @@ export class QuizSessionDoneModal extends React.Component {
   constructor(props){
     super(props);
 
+    const prevBookmarks = 
+      props[MNPQuizSessionDoneModal.bookmarks] ?? {};
+
+    const bookmarks = new QuizSessionBookmarkModel();
+    bookmarks.setBookmarks(prevBookmarks);
+    this.bookmarks = bookmarks;
+
     this.state = {
-      sections: this.getSections(),
+      sections   : this.getSections(),
+      bookmarks  : bookmarks.bookmarkMap,
+      updateIndex: 0,
     };
   };
 
@@ -63,13 +72,12 @@ export class QuizSessionDoneModal extends React.Component {
 
     const quiz      = props[MNPQuizSessionDoneModal.quiz     ] ?? {};
     const answers   = props[MNPQuizSessionDoneModal.answers  ] ?? {};
-    const bookmarks = props[MNPQuizSessionDoneModal.bookmarks] ?? {};
     const questions = props[MNPQuizSessionDoneModal.questions] ?? [];
     
     const sections = quiz [QuizKeys.quizSections] ?? [];
 
     const questionAnswerData = 
-      combineItemsWithQuestions(questions, answers, bookmarks);
+      combineItemsWithQuestions(questions, answers);
 
     const detailsData = [
       { type: QSDSectionTypes.DETAILS }
@@ -176,6 +184,63 @@ export class QuizSessionDoneModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
+  _handleOnLongPressQuestion = async ({question}) => {
+    try {
+      const props = this.props;
+      let updateBookmarks = false;
+
+      const questionID = question[QuizQuestionKeys.questionID];
+      const prevBookmarks = this.bookmarks.bookmarkMap;
+
+      const bookmark = prevBookmarks[questionID];
+      const isBookmarked = (
+        (bookmark != null     ) ||
+        (bookmark != undefined)
+      );
+
+      if(isBookmarked){
+        const confirm = await Helpers.asyncActionSheetConfirm({
+          title: '',
+          message: "Are you sure that you want to remove the bookmark for this question.",
+          confirmText: 'Remove Bookmark',
+          isDestructive: true,
+        });
+
+        if(confirm){
+          this.bookmarks.removeBookmark(questionID);
+          updateBookmarks = true;
+        };
+
+      } else {
+        this.bookmarks.addBookmark(questionID);
+        updateBookmarks = true;
+      };
+
+      if(updateBookmarks){
+        const updateBookmarks = props[MNPQuizSessionDoneModal.updateBookmarks];
+        // call updateBookmarks from QuizSessionScreen
+        updateBookmarks && updateBookmarks(
+          this.bookmarks.bookmarkMap
+        );
+
+        this.setState((prevState) => ({
+          ...prevState,
+          bookmarks  : this.bookmarks.bookmarkMap ,
+          updateIndex: (prevState.updateIndex + 1),
+        }));
+      };
+
+    } catch(error){
+      console.log('_handleOnLongPressQuestion error - unable to bookmark');
+      console.log(error);
+
+      Alert.alert(
+        'Error Occured',
+        'Unable to bookmark question.',
+      );
+    };
+  };
+
   // #region - render methods
   _renderSectionHeader = ({section}) => {
     switch (section.type) {
@@ -255,11 +320,14 @@ export class QuizSessionDoneModal extends React.Component {
   _renderItem = ({item, index, section}) => {
     const props = this.props;
 
+    const bookmarks  = this.bookmarks.bookmarkMap;
+    const questionID = item?.question?.[QuizQuestionKeys.questionID];
+
     const quiz         = props[MNPQuizSessionDoneModal.quiz        ] ?? {};
     const session      = props[MNPQuizSessionDoneModal.session     ] ?? {};
     const answers      = props[MNPQuizSessionDoneModal.answers     ] ?? {};
     const questions    = props[MNPQuizSessionDoneModal.questions   ] ?? [];
-    const currentIndex = props[MNPQuizSessionDoneModal.currentIndex];
+    const currentIndex = props[MNPQuizSessionDoneModal.currentIndex] ?? -1;
 
     switch (section.type) {
       case QSDSectionTypes.DETAILS: return (
@@ -280,10 +348,11 @@ export class QuizSessionDoneModal extends React.Component {
       );
       case QSDSectionTypes.QUESTIONS: return (
         <QuestionAnswerItem
-          onPressQuestion={this._handleOnPressQuestion}
           answer  ={item.answer  }
           question={item.question}
-          bookmark={item.bookmark}
+          bookmark={bookmarks[questionID]}
+          onPressQuestion={this._handleOnPressQuestion}
+          onLongPressQuestion={this._handleOnLongPressQuestion}
           {...{index, currentIndex}}
         />
       );
@@ -292,6 +361,10 @@ export class QuizSessionDoneModal extends React.Component {
   
   render(){
     const state = this.state;
+
+    const extraData = {
+      bookmarks: state.bookmarks,
+    };
 
     const modalFooter = (
       <ModalFooter ref={r => this.modalFooterRef = r}>
@@ -331,6 +404,7 @@ export class QuizSessionDoneModal extends React.Component {
           renderSectionHeader={this._renderSectionHeader}
           SectionSeparatorComponent={this._renderSectionSeperator}
           ListFooterComponent={this._renderListFooter}
+          {...{extraData}}
         />
       </ModalBody>
     );

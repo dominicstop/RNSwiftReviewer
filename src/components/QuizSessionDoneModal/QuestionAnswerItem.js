@@ -131,6 +131,17 @@ export class QuestionAnswerItem extends React.Component {
     });
   };
 
+  _handleOnLongPress = () => {
+    const { onLongPressQuestion, ...props } = this.props;
+
+    onLongPressQuestion && onLongPressQuestion({
+      index   : props.index   ,
+      answer  : props.answer  ,
+      question: props.question,
+      bookmark: props.bookmark,
+    });
+  };
+
   render(){
     const { styles } = QuestionAnswerItem;
     const { index, question, answer } = this.props;
@@ -154,6 +165,7 @@ export class QuestionAnswerItem extends React.Component {
       >
         <TouchableOpacity 
           onPress={this._handleOnPress}
+          onLongPress={this._handleOnLongPress}
           activeOpacity={0.5}
         >
           <View style={styles.questionContainer}>

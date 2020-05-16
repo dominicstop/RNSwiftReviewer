@@ -1,35 +1,36 @@
 import React, { Fragment } from 'react';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
-import { ModalBody          } from 'app/src/components/Modal/ModalBody';
-import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
-import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
-import { ModalSection       } from 'app/src/components/Modal/ModalSection';
+import { ModalBody    } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader  } from 'app/src/components/Modal/ModalHeader';
+import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
-import { ViewQuizOverlay     } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
+import { ViewQuizOverlay } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
 
-import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
+import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { QuizSessionDetails } from 'app/src/components/QuizSessionDoneModal/QuizSessionDetails';
-
-import { QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
-
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { QuestionAnswerItem } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
 
+import * as Helpers from 'app/src/functions/helpers';
+
+import { QuizQuestionKeys       } from 'app/src/constants/PropKeys';
+import { MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
+
+import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
+
 
 // combine questions, answers and bookmarks
-function combineItemsWithQuestions(questions, answers, bookmarks){
+function combineItemsWithQuestions(questions, answers){
   return questions.map((question) => {
     const questionID = question[QuizQuestionKeys.questionID];
 
     return {
       questionID, question, 
-      answer  : answers  [questionID],
-      bookmark: bookmarks[questionID],
+      answer: answers[questionID],
     };
   });
 };
@@ -38,13 +39,18 @@ export class QuizSessionQuestionsModal extends React.Component {
   constructor(props){
     super(props);
 
-    const answers   = props[MNPQuizSessionQuestion.answers  ] ?? {};
-    const bookmarks = props[MNPQuizSessionQuestion.bookmarks] ?? {};
-    const questions = props[MNPQuizSessionQuestion.questions] ?? [];
+    const answers       = props[MNPQuizSessionQuestion.answers  ] ?? {};
+    const questions     = props[MNPQuizSessionQuestion.questions] ?? [];
+    const prevBookmarks = props[MNPQuizSessionQuestion.bookmarks] ?? {};
+
+    const bookmarks = new QuizSessionBookmarkModel();
+    bookmarks.setBookmarks(prevBookmarks);
+    this.bookmarks = bookmarks;
 
     this.state = {
-      questions: 
-        combineItemsWithQuestions(questions, answers, bookmarks)
+      questions  : combineItemsWithQuestions(questions, answers),
+      bookmarks  : bookmarks.bookmarkMap,
+      updateIndex: 0,
     };
   };
 
@@ -76,17 +82,80 @@ export class QuizSessionQuestionsModal extends React.Component {
     Navigation.dismissModal(componentId);
   };
 
+  _handleOnLongPressQuestion = async ({question}) => {
+    try {
+      const props = this.props;
+      let updateBookmarks = false;
+
+      const questionID = question[QuizQuestionKeys.questionID];
+      const prevBookmarks = this.bookmarks.bookmarkMap;
+
+      const bookmark = prevBookmarks[questionID];
+      const isBookmarked = (
+        (bookmark != null     ) ||
+        (bookmark != undefined)
+      );
+
+      if(isBookmarked){
+        const confirm = await Helpers.asyncActionSheetConfirm({
+          title: '',
+          message: "Are you sure that you want to remove the bookmark for this question.",
+          confirmText: 'Remove Bookmark',
+          isDestructive: true,
+        });
+
+        if(confirm){
+          this.bookmarks.removeBookmark(questionID);
+          updateBookmarks = true;
+        };
+
+      } else {
+        this.bookmarks.addBookmark(questionID);
+        updateBookmarks = true;
+      };
+
+      if(updateBookmarks){
+        const updateBookmarks = props[MNPQuizSessionQuestion.updateBookmarks];
+        // call updateBookmarks from QuizSessionScreen
+        updateBookmarks && updateBookmarks(
+          this.bookmarks.bookmarkMap
+        );
+
+        this.setState((prevState) => ({
+          ...prevState,
+          bookmarks  : this.bookmarks.bookmarkMap ,
+          updateIndex: (prevState.updateIndex + 1),
+        }));
+      };
+
+    } catch(error){
+      console.log('QuizSessionQuestionsModal - _handleOnLongPressQuestion error');
+      console.log('Unable to add bookmark');
+      console.log(error);
+
+      Alert.alert(
+        'Error Occured',
+        'Unable to bookmark question.',
+      );
+    };
+  };
+
   _renderItem = ({item, index}) => {
     const props = this.props;
+    const { bookmarks } = this.state;
     const currentIndex = props[MNPQuizSessionQuestion.currentIndex];
+
+    const question   = item?.question ?? {};
+    const questionID = question[QuizQuestionKeys.questionID];
 
     return(
       <QuestionAnswerItem
-        onPressQuestion={this._handleOnPressQuestion}
         answer={item.answer}
         question={item.question}
-        bookmark={item.bookmark}
-        {...{index, currentIndex}}
+        bookmark={bookmarks[questionID]}
+        onPressQuestion={this._handleOnPressQuestion}
+        onLongPressQuestion={this._handleOnLongPressQuestion}
+        {...{index, question, currentIndex}}
       />
     );
   };
@@ -158,6 +227,7 @@ export class QuizSessionQuestionsModal extends React.Component {
       >
         <FlatList
           data={state.questions}
+          extraData={this.state.updateIndex}
           keyExtractor={this._handleKeyExtractor}
           renderItem={this._renderItem}
           ListHeaderComponent={this._renderListHeader}

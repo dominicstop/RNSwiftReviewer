@@ -7,6 +7,14 @@ export class QuizSessionBookmarkModel {
     this.bookmarkMap = {};
   };
 
+  setBookmarks(bookmarks){
+    if(bookmarks){
+      this.bookmarkMap = { 
+        ...bookmarks
+      };
+    };
+  };
+
   addBookmark(questionID){
     const isIDValid = (
       (questionID != null     ) ||

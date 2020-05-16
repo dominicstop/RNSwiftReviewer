@@ -84,6 +84,15 @@ export class QuizSessionScreen extends React.Component {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   };
+
+  updateBookmarks = (bookmarks) => {
+    this.bookmarks.setBookmarks(bookmarks);
+    this.setState((prevState) => ({
+      ...prevState,
+      bookmarks  : this.bookmarks.bookmarkMap ,
+      updateIndex: (prevState.updateIndex + 1),
+    }));
+  };
   
   // #region - event handlers / callbacks
   _keyboardWillShow = (event) => {
@@ -150,8 +159,9 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionDoneModal.questions      ]: questions      ,
         [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
-        [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion1,
         [MNPQuizSessionDoneModal.onPressDone    ]: this._handleModalOnPressDone,
+        [MNPQuizSessionDoneModal.updateBookmarks]: this.updateBookmarks,
+        [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion1,
       },
     });
   };
@@ -202,6 +212,7 @@ export class QuizSessionScreen extends React.Component {
         [MNPQuizSessionQuestion.bookmarks      ]: bookmarks      ,
         [MNPQuizSessionQuestion.currentIndex   ]: currentIndex   ,
         [MNPQuizSessionQuestion.currentQuestion]: currentQuestion,
+        [MNPQuizSessionQuestion.updateBookmarks]: this.updateBookmarks,
         [MNPQuizSessionQuestion.onPressQuestion]: this._handleModalOnPressQuestion2,
       },
     });
