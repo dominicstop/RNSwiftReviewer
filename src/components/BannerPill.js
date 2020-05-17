@@ -124,6 +124,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 7,
     borderRadius: 20,
+    // shadow
+    shadowColor: "#000",
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
   },
   textContainer: {
   },

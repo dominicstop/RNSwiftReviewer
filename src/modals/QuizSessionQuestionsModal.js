@@ -17,6 +17,7 @@ import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 import { QuestionAnswerItem } from 'app/src/components/QuizSessionDoneModal/QuestionAnswerItem';
 
 import * as Helpers from 'app/src/functions/helpers';
+import * as Colors  from 'app/src/constants/Colors';
 
 import { QuizQuestionKeys       } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
@@ -108,6 +109,7 @@ export class QuizSessionQuestionsModal extends React.Component {
         this.bannerPillRef.show({
           message: 'Bookmark Added',
           iconKey: iconMapKeys.bookmark,
+          bgColor: Colors.ORANGE.A700,
         });
       };
 
