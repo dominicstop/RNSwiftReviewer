@@ -25,7 +25,7 @@ const HEADER_MODES = {
 function getHeaderValues(mode){
   switch (mode) {
     case HEADER_MODES.NONE: return {
-      insetTop: 15,
+      insetTop: 10,
       backgroundStyle: { top: 0 },
       scrollviewStyle: { top: 0 },
     };
@@ -242,7 +242,10 @@ export class ModalBody extends React.Component {
     const { mount, keyboardVisible, footerBGVisible } = this.state;
 
     const headerValues = getHeaderValues(headerMode);
-    const insetBottom  = (keyboardVisible ? 0 : MODAL_FOOTER_HEIGHT);
+    const insetBottom  = (
+      keyboardVisible  ? 0 : 
+      props.modalFooter? MODAL_FOOTER_HEIGHT : 0
+    );
 
     const backgroundStyle = {
       ...headerValues.backgroundStyle,
@@ -286,6 +289,9 @@ export class ModalBody extends React.Component {
           <Reanimated.View
             style={{ height: this._height }}
           />
+        )}
+        {props.modalBanner && React.cloneElement(props.modalBanner,
+          { offsetTop: headerValues.insetTop }
         )}
         {(headerMode == HEADER_MODES.NONE   )? (null) :
          (headerMode == HEADER_MODES.DEFAULT)? (props.modalHeader    ) :

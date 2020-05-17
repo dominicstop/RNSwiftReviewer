@@ -21,19 +21,9 @@ import { QuizQuestionKeys       } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
 
 import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
+import { ModalBannerPill } from '../components/Modal/ModalBannerPill';
 
 
-// combine questions, answers and bookmarks
-function combineItemsWithQuestions(questions, answers){
-  return questions.map((question) => {
-    const questionID = question[QuizQuestionKeys.questionID];
-
-    return {
-      questionID, question, 
-      answer: answers[questionID],
-    };
-  });
-};
 
 export class QuizSessionQuestionsModal extends React.Component {
   constructor(props){
@@ -85,7 +75,7 @@ export class QuizSessionQuestionsModal extends React.Component {
   _handleOnLongPressQuestion = async ({question}) => {
     try {
       const props = this.props;
-      let updateBookmarks = false;
+      let shouldUpdateBookmarks = false;
 
       const questionID = question[QuizQuestionKeys.questionID];
       const prevBookmarks = this.bookmarks.bookmarkMap;
@@ -106,15 +96,23 @@ export class QuizSessionQuestionsModal extends React.Component {
 
         if(confirm){
           this.bookmarks.removeBookmark(questionID);
-          updateBookmarks = true;
+          shouldUpdateBookmarks = true;
+          this.bannerPillRef.show({
+            message: 'Bookmark Removed',
+            iconKey: iconMapKeys.removed,
+          });
         };
 
       } else {
         this.bookmarks.addBookmark(questionID);
-        updateBookmarks = true;
+        shouldUpdateBookmarks = true;
+        this.bannerPillRef.show({
+          message: 'Bookmark Added',
+          iconKey: iconMapKeys.bookmark,
+        });
       };
 
-      if(updateBookmarks){
+      if(shouldUpdateBookmarks){
         const updateBookmarks = props[MNPQuizSessionQuestion.updateBookmarks];
         // call updateBookmarks from QuizSessionScreen
         updateBookmarks && updateBookmarks(
@@ -214,6 +212,13 @@ export class QuizSessionQuestionsModal extends React.Component {
       />
     );
 
+    const modalBanner = (
+      <ModalBannerPill
+        ref={r => this.bannerPillRef = r}
+        iconMap={iconMap}
+      />
+    );
+
     const overlay = (
       <ViewQuizOverlay
         ref={r => this.overlayRef = r}
@@ -223,7 +228,7 @@ export class QuizSessionQuestionsModal extends React.Component {
     return (
       <ModalBody
         wrapInScrollView={false}
-        {...{modalHeader, overlay}}
+        {...{modalHeader, modalBanner, overlay}}
       >
         <FlatList
           data={state.questions}
@@ -236,4 +241,41 @@ export class QuizSessionQuestionsModal extends React.Component {
       </ModalBody>
     );
   };
+};
+
+
+// combine questions, answers and bookmarks
+function combineItemsWithQuestions(questions, answers){
+  return questions.map((question) => {
+    const questionID = question[QuizQuestionKeys.questionID];
+
+    return {
+      questionID, question, 
+      answer: answers[questionID],
+    };
+  });
+};
+
+
+const iconMapKeys = {
+  removed : 'removed' ,
+  bookmark: 'bookmark',
+};
+
+const iconMap = {
+  [iconMapKeys.bookmark]: (
+    <Ionicon
+      style={{marginTop: 3}}
+      name={'ios-bookmark'}
+      size={18}
+      color={'white'}
+    />
+  ),
+  [iconMapKeys.removed]: (
+    <Ionicon
+      name={'ios-remove-circle'}
+      size={18}
+      color={'white'}
+    />
+  ),
 };
