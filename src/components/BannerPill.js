@@ -9,16 +9,14 @@ import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 
-export class ModalBannerPill extends React.Component {
+export class BannerPill extends React.Component {
   static propTypes = {
     iconMap: PropTypes.object,
     offsetTop: PropTypes.number,
-    bgColor: PropTypes.string,
   };
 
   static defaultProps = {
     offsetTop: 0,
-    bgColor: Colors.BLUE.A400,
   };
 
   constructor(props){
@@ -29,6 +27,7 @@ export class ModalBannerPill extends React.Component {
       iconKey: null,
       messageTitle: null,
       messageBody : null,
+      bgColor: Colors.BLUE.A400,
     };
   };
 
@@ -37,12 +36,13 @@ export class ModalBannerPill extends React.Component {
     const prevState = this.state;
 
     return(
-      (prevProps.offsetTop    != nextProps.offsetTop   ) ||
       (prevProps.bgColor      != nextProps.bgColor     ) ||
+      (prevProps.offsetTop    != nextProps.offsetTop   ) ||
       (prevState.mount        != nextState.mount       ) ||
       (prevState.iconKey      != nextState.iconKey     ) ||
-      (prevState.messageTitle != nextState.messageTitle) ||
-      (prevState.messageBody  != nextState.messageBody )
+      (prevState.bgColor      != nextState.bgColor     ) || 
+      (prevState.messageBody  != nextState.messageBody ) ||
+      (prevState.messageTitle != nextState.messageTitle) 
     );
   };
 
@@ -52,10 +52,11 @@ export class ModalBannerPill extends React.Component {
       iconKey: null,
       messageTitle: null,
       messageBody : null,
+      bgColor: Colors.BLUE.A400
     });
   };
 
-  show = async ({iconKey, message}) => {
+  show = async ({iconKey, message, bgColor}) => {
     const state = this.state;
 
     if(!state.mount){
@@ -63,11 +64,12 @@ export class ModalBannerPill extends React.Component {
         iconKey,
         mount: true,
         messageTitle: message,
+        bgColor: (bgColor ?? Colors.BLUE.A400),
       });
 
       await this.rootContainerRef.fadeInDown(300);
       await this.rootContainerRef.pulse(750);
-      await this.rootContainerRef.slideOutUp(500);
+      await this.rootContainerRef.fadeOutUp(500);
       await this.clear();
     };
   };
@@ -87,7 +89,7 @@ export class ModalBannerPill extends React.Component {
 
     const rootContainerStyle = {
       top: props.offsetTop,
-      backgroundColor: props.bgColor,
+      backgroundColor: state.bgColor,
     };
 
     const textContainerStyle = {

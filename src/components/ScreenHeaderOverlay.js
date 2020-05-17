@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { INSET_TOP } from 'app/src/constants/UIValues';
-import { NavHeader } from './NavHeader';
+import { NavHeader } from 'app/src/components/NavHeader';
+
+import { INSET_TOP    } from 'app/src/constants/UIValues';
+import { HeaderValues } from 'app/src/constants/HeaderValues';
+
+const headerHeight =  HeaderValues.getHeaderHeight(false);
+
 
 export class ScreenHeaderOverlay extends React.PureComponent {
   render(){
     const { containerStyle, ...props } = this.props;
 
     return(
-      <NavHeader 
-        containerStyle={[styles.rootContainer, containerStyle]}
-        {...props}
-      >
-        {this.props.children}
-      </NavHeader>
+      <Fragment>
+        {props.banner && React.cloneElement(props.banner,
+          { offsetTop: (INSET_TOP + headerHeight) }
+        )}
+        <NavHeader 
+          containerStyle={[styles.rootContainer, containerStyle]}
+          {...props}
+        >
+          {this.props.children}
+        </NavHeader>
+      </Fragment>
     );
   };
 };

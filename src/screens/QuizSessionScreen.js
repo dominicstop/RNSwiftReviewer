@@ -2,12 +2,15 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Keyboard } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
+import Ionicon from '@expo/vector-icons/Ionicons';
+
 import { StackActions } from 'react-navigation';
 
 import { FlatListCarousel  } from 'app/src/components/QuizSessionScreen/FlatListCarousel';
 import { QuizQuestionItem  } from 'app/src/components/QuizSessionScreen/QuizQuestionItem';
 import { QuizSessionHeader } from 'app/src/components/QuizSessionScreen/QuizSessionHeader';
 
+import { BannerPill           } from 'app/src/components/BannerPill';
 import { ScreenOverlayLoading } from 'app/src/components/ScreenOverlayLoading';
 
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
@@ -17,6 +20,7 @@ import { SectionTypes } from 'app/src/constants/SectionTypes';
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
+import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { QuizStore        } from 'app/src/functions/QuizStore';
@@ -295,6 +299,11 @@ export class QuizSessionScreen extends React.Component {
     if(confirm && !isBookmarked){
       this.rootContainerRef.pulse(500);
       this.bookmarks.addBookmark(questionID);
+      this.bannerPillRef.show({
+        message: 'Bookmark Added',
+        iconKey: iconMapKeys.bookmark,
+        bgColor: Colors.ORANGE.A700,
+      });
 
       this.setState((prevState) => ({
         ...prevState,
@@ -305,6 +314,10 @@ export class QuizSessionScreen extends React.Component {
     } else if(confirm && isBookmarked) {
       this.rootContainerRef.pulse(500);
       this.bookmarks.removeBookmark(questionID);
+      this.bannerPillRef.show({
+        message: 'Bookmark Removed',
+        iconKey: iconMapKeys.removed,
+      });
 
       this.setState((prevState) => ({
         ...prevState,
@@ -442,6 +455,12 @@ export class QuizSessionScreen extends React.Component {
           onPressPill={this._handleOnPressPill}
           onPressDone={this._handleOnPressDone}
           onPressCancel={this._handleOnPressCancel}
+          banner={(
+            <BannerPill
+              ref={r => this.bannerPillRef = r}
+              iconMap={iconMap}
+            />
+          )}
         />
         <ScreenOverlayLoading
           ref={r => this.overlayRef = r}
@@ -451,4 +470,28 @@ export class QuizSessionScreen extends React.Component {
     );
   };
   //#endregion
+};
+
+
+const iconMapKeys = {
+  removed : 'removed' ,
+  bookmark: 'bookmark',
+};
+
+const iconMap = {
+  [iconMapKeys.bookmark]: (
+    <Ionicon
+      style={{marginTop: 3}}
+      name={'ios-bookmark'}
+      size={18}
+      color={'white'}
+    />
+  ),
+  [iconMapKeys.removed]: (
+    <Ionicon
+      name={'ios-remove-circle'}
+      size={18}
+      color={'white'}
+    />
+  ),
 };

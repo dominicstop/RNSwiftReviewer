@@ -10,6 +10,7 @@ import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
 import { ViewQuizOverlay } from 'app/src/components/ViewQuizModal/ViewQuizOverlay';
 
+import { BannerPill         } from 'app/src/components/BannerPill';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { QuizSessionDetails } from 'app/src/components/QuizSessionDoneModal/QuizSessionDetails';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
@@ -21,8 +22,6 @@ import { QuizQuestionKeys       } from 'app/src/constants/PropKeys';
 import { MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
 
 import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
-import { ModalBannerPill } from '../components/Modal/ModalBannerPill';
-
 
 
 export class QuizSessionQuestionsModal extends React.Component {
@@ -213,7 +212,7 @@ export class QuizSessionQuestionsModal extends React.Component {
     );
 
     const modalBanner = (
-      <ModalBannerPill
+      <BannerPill
         ref={r => this.bannerPillRef = r}
         iconMap={iconMap}
       />

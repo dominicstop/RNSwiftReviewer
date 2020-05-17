@@ -115,7 +115,10 @@ export class QuizSessionHeader extends React.PureComponent {
     const props = this.props;
 
     return(
-      <ScreenHeaderOverlay containerStyle={styles.rootContainer}>
+      <ScreenHeaderOverlay 
+        containerStyle={styles.rootContainer}
+        banner={props.banner}
+      >
         <Pressable
           containerStyle={styles.leftContainer}
           onPress={props.onPressCancel}
