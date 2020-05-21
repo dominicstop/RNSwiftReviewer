@@ -348,7 +348,6 @@ export class QuizCreateQuestionModal extends React.Component {
             style={{marginTop: 3}}
             name={'ios-add-circle'}
             size={24}
-            color={'white'}
           />
         )}
       />

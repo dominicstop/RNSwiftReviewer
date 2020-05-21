@@ -169,7 +169,6 @@ export class QuizSessionChooseAnswerModal extends React.Component {
             style={{marginTop: 3}}
             name={'ios-filing'}
             size={24}
-            color={'white'}
           />
         )}
       />

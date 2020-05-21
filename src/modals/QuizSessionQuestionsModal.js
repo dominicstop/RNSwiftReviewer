@@ -207,7 +207,6 @@ export class QuizSessionQuestionsModal extends React.Component {
             style={{marginTop: 3}}
             name={'ios-book'}
             size={24}
-            color={'white'}
           />
         )}
       />

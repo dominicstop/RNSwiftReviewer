@@ -163,7 +163,6 @@ export class CreateQuizModal extends React.PureComponent {
             style={{marginLeft: 3, marginBottom: 1}}
             name={'ios-create'}
             size={24}
-            color={'white'}
           />
         )}
       />

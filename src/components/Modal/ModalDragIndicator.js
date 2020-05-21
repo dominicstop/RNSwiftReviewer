@@ -25,10 +25,9 @@ export class ModalDragIndicator extends React.PureComponent {
 const styles = StyleSheet.create({
   dragIndicator: {
     width: 40,
-    height: 6,
-    backgroundColor: Colors.BLUE[900],
+    height: 5,
+    backgroundColor: 'rgba(255,255,255,0.6)',
     borderRadius: 10,
-    opacity: 0.25,
     marginTop: 7,
     alignSelf: 'center',
   },

@@ -6,9 +6,9 @@ import { MODAL_FOOTER_HEIGHT, INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 import * as Animatable from 'react-native-animatable';
 
-import Ionicon         from '@expo/vector-icons/Ionicons';
-import debounce        from "lodash/debounce";
-import LinearGradient  from 'react-native-linear-gradient';
+import Ionicon        from '@expo/vector-icons/Ionicons';
+import debounce       from "lodash/debounce";
+import LinearGradient from 'react-native-linear-gradient';
 
 import { iOSUIKit } from 'react-native-typography';
 
@@ -69,7 +69,7 @@ export class ModalFooterButton extends React.PureComponent {
       paddingHorizontal: 12,
     },
     buttonIcon: {
-      opacity: 0.8,
+      opacity: 0.9,
       //glow
       shadowColor: "white",
       shadowOpacity: 0.25,

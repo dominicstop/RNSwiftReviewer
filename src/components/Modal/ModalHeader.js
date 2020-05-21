@@ -8,6 +8,8 @@ import { iOSUIKit } from 'react-native-typography';
 import { ModalDragIndicator } from 'app/src/components/Modal/ModalDragIndicator';
 
 import * as Colors from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
+
 import { MODAL_HEADER_HEIGHT, BORDER_WIDTH } from 'app/src/constants/UIValues';
 
 
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.95)',
+    backgroundColor: Helpers.hexToRGBA(Colors.INDIGO.A700, 0.8),
     alignItems: 'center',
     borderColor: Colors.GREY[400],
     borderBottomWidth: BORDER_WIDTH,
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 38/2,
-    backgroundColor: Colors.INDIGO.A700,
+    backgroundColor: 'rgba(255,255,255,0.95)',
     alignItems: 'center',
     justifyContent: 'center',
     aspectRatio: 1,
@@ -54,17 +56,18 @@ const styles = StyleSheet.create({
   },
   headerTextContainer: {
     flex: 1,
-    marginLeft: 9,
+    marginLeft: 10,
   },
   textTitle: {
     ...iOSUIKit.subheadEmphasizedObject,
     fontSize: 17,
     fontWeight: '800',
-    color: Colors.INDIGO[1000],
+    color: 'white',
   },
   textSubtitle: {
     ...iOSUIKit.subheadObject,
-    opacity: 0.75,
+    color: 'white',
+    opacity: 0.9,
   },
 });
 
@@ -89,7 +92,9 @@ export class ModalHeader extends React.PureComponent {
     const LeftHeaderIcon = (
       <View style={styles.iconContainer}>
         <View style={styles.iconStyle}>
-          {headerIcon}
+          {React.cloneElement(headerIcon, {
+            color: Colors.BLUE.A700
+          })}
         </View>
       </View>
     );
@@ -98,7 +103,7 @@ export class ModalHeader extends React.PureComponent {
       <View style={styles.rootContainer}>
         <BlurView
           style={styles.blurBackground}
-          blurAmount={75}
+          blurAmount={50}
           blurType={'light'}
         />
         <View style={[styles.headerWrapper, props.containerStyle]}>

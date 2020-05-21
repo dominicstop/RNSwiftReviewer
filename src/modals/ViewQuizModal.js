@@ -280,7 +280,6 @@ export class ViewQuizModal extends React.Component {
             style={{marginTop: 3}}
             name={'ios-book'}
             size={24}
-            color={'white'}
           />
         )}
       />
@@ -308,6 +307,7 @@ export class ViewQuizModal extends React.Component {
       <ModalBody
         headerMode={'NONE'}
         wrapInScrollView={false}
+        delayMount={false}
         {...{modalHeader, modalFooter, overlay}}
       >
         <SectionList

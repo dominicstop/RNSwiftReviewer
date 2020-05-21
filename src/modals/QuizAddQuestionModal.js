@@ -362,7 +362,6 @@ export class QuizAddQuestionModal extends React.Component {
             style={{marginTop: 3}}
             name={'ios-journal'}
             size={22}
-            color={'white'}
           />
         )}
       />
