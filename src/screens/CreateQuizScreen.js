@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { StackActions } from 'react-navigation';
 

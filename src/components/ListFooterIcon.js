@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { BLUE } from 'app/src/constants/Colors';
 
 import * as Animatable from 'react-native-animatable';
-import Ionicon         from '@expo/vector-icons/Ionicons';
+import Ionicon         from 'react-native-vector-icons/Ionicons';
 
 
 export class ListFooterIcon extends React.Component {

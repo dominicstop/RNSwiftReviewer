@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Keyboard, Text, View, TouchableOpacity, FlatList, TextInput, Dimensions } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { iOSUIKit } from 'react-native-typography';
 
 import * as Helpers from 'app/src/functions/helpers';

@@ -1,15 +1,4 @@
 {
   "name": "RNSwiftReviewer",
-  "displayName": "Review",
-  "expo": {
-    "name": "RNSwiftReviewer",
-    "slug": "expo-template-bare",
-    "privacy": "unlisted",
-    "version": "1.0.0",
-    "entryPoint": "node_modules/expo/AppEntry.js",
-    "platforms": [
-      "ios",
-      "web"
-    ]
-  }
+  "displayName": "Review"
 }

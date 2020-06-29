@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Keyboard } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBody         } from 'app/src/components/Modal/ModalBody';

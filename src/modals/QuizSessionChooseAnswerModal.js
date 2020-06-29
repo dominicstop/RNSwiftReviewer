@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { iOSUIKit   } from 'react-native-typography';
 import { Navigation } from 'react-native-navigation';

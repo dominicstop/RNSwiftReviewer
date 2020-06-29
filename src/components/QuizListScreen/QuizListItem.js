@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 
 import moment   from 'moment';
-import Feather  from '@expo/vector-icons/Feather';
+import Feather  from 'react-native-vector-icons/Feather';
 import debounce from 'lodash/debounce';
 
 import { iOSUIKit         } from 'react-native-typography';

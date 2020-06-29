@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import * as animatable from "react-native-animatable";
 
 import   moment     from 'moment';
-import   Feather    from '@expo/vector-icons/Feather';
+import   Feather    from 'react-native-vector-icons/Feather';
 import { iOSUIKit } from 'react-native-typography';
 import { Divider  } from 'react-native-elements';
 

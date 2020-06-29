@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, SectionList } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { Navigation } from 'react-native-navigation';
 import { createNativeWrapper } from 'react-native-gesture-handler';

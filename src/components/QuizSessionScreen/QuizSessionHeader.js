@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Clipboa
 
 import * as Animatable from 'react-native-animatable';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { iOSUIKit } from 'react-native-typography';
 
 import { ScreenHeaderOverlay } from 'app/src/components/ScreenHeaderOverlay';

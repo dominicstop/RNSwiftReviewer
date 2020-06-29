@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Alert, FlatList } from 'react-native';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Navigation } from 'react-native-navigation';
 
 import { ModalBody    } from 'app/src/components/Modal/ModalBody';

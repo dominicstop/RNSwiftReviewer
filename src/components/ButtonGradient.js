@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import LinearGradient from 'react-native-linear-gradient';
-import Feather        from '@expo/vector-icons/Feather';
+import Feather        from 'react-native-vector-icons/Feather';
 
 import { iOSUIKit } from 'react-native-typography';
 

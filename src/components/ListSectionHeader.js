@@ -6,7 +6,7 @@ import debounce from "lodash/debounce";
 
 import * as Animatable  from 'react-native-animatable';
 import { iOSUIKit     } from 'react-native-typography';
-import { Feather      } from '@expo/vector-icons';
+import { Feather      } from 'react-native-vector-icons';
 import { BlurView     } from "@react-native-community/blur";
 
 import { ListSortItems        } from 'app/src/components/ListSortItems';

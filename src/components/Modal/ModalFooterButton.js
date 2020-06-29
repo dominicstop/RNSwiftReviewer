@@ -6,7 +6,7 @@ import { MODAL_FOOTER_HEIGHT, INSET_BOTTOM } from 'app/src/constants/UIValues';
 
 import * as Animatable from 'react-native-animatable';
 
-import Ionicon        from '@expo/vector-icons/Ionicons';
+import Ionicon        from 'react-native-vector-icons/Ionicons';
 import debounce       from "lodash/debounce";
 import LinearGradient from 'react-native-linear-gradient';
 

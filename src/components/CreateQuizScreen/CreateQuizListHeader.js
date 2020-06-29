@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import * as Animatable from 'react-native-animatable';
 
-import   Ionicon    from '@expo/vector-icons/Ionicons';
+import   Ionicon    from 'react-native-vector-icons/Ionicons';
 import { iOSUIKit } from 'react-native-typography';
 
 import { Divider } from "react-native-elements";

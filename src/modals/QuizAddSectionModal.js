@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Alert, Keyboard, Animated } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { Divider    } from 'react-native-elements';
 import { iOSUIKit   } from 'react-native-typography';

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Divider } from "react-native-elements";
 
 import { LargeTitleHeaderCard   } from 'app/src/components/LargeTitleHeaderCard';

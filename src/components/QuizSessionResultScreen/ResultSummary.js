@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import Pie        from 'react-native-pie';
-import Ionicon    from '@expo/vector-icons/Ionicons';
+import Ionicon    from 'react-native-vector-icons/Ionicons';
 import Reanimated from 'react-native-reanimated';
 
 import { Easing } from 'react-native-reanimated';

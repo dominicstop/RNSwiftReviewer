@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
-import Feather from '@expo/vector-icons/Feather';
+import Feather from 'react-native-vector-icons/Feather';
 import moment  from 'moment';
 
 import { Divider } from 'react-native-elements';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Reanimated from 'react-native-reanimated';
 
-import Ionicon  from '@expo/vector-icons/Ionicons';
+import Ionicon  from 'react-native-vector-icons/Ionicons';
 import debounce from "lodash/debounce";
 
 import { iOSUIKit } from 'react-native-typography';

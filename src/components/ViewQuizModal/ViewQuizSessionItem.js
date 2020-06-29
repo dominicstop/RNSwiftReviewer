@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 import moment         from 'moment';
-import Feather        from '@expo/vector-icons/Feather';
+import Feather        from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';

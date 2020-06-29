@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Keyboard } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-import Ionicon from '@expo/vector-icons/Ionicons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { StackActions } from 'react-navigation';
 

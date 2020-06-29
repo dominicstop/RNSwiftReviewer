@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Ionicon           from '@expo/vector-icons/Ionicons';
-import MaterialCommunity from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicon           from 'react-native-vector-icons/Ionicons';
+import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Navigation } from 'react-native-navigation';
 
