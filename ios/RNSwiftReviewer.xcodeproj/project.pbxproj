@@ -12,6 +12,19 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1563EBD36772598DCED87EDC /* libPods-RNSwiftReviewer-RNSwiftReviewerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B28AB7DA98B63773F3915CC /* libPods-RNSwiftReviewer-RNSwiftReviewerTests.a */; };
 		88C542E124AA5CAD00DCDF15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E024AA5CAD00DCDF15 /* AppDelegate.swift */; };
+		88C5431024AB140A00DCDF15 /* UIModalTransitionStyle+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E324AB140800DCDF15 /* UIModalTransitionStyle+Helpers.swift */; };
+		88C5431124AB140A00DCDF15 /* RCTSwiftLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E424AB140800DCDF15 /* RCTSwiftLog.m */; };
+		88C5431224AB140A00DCDF15 /* UIBlurEffect+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E524AB140800DCDF15 /* UIBlurEffect+Helpers.swift */; };
+		88C5431324AB140A00DCDF15 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E624AB140800DCDF15 /* UIView+Helpers.swift */; };
+		88C5431424AB140A00DCDF15 /* RCTLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E724AB140800DCDF15 /* RCTLog.swift */; };
+		88C5431524AB140A00DCDF15 /* UIModalPresentationStyle+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542E924AB140800DCDF15 /* UIModalPresentationStyle+Helpers.swift */; };
+		88C5431624AB140A00DCDF15 /* KeyWindow+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C542EA24AB140800DCDF15 /* KeyWindow+Helpers.swift */; };
+		88C5432824AB140A00DCDF15 /* RCTModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430424AB140A00DCDF15 /* RCTModalView.swift */; };
+		88C5432924AB140B00DCDF15 /* RCTModalViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430524AB140A00DCDF15 /* RCTModalViewDelegate.swift */; };
+		88C5432A24AB140B00DCDF15 /* RCTModalViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430624AB140A00DCDF15 /* RCTModalViewManager.swift */; };
+		88C5432B24AB140B00DCDF15 /* RCTModalViewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430724AB140A00DCDF15 /* RCTModalViewError.swift */; };
+		88C5432C24AB140B00DCDF15 /* RCTModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430824AB140A00DCDF15 /* RCTModalViewController.swift */; };
+		88C5432D24AB140B00DCDF15 /* RCTModalViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430924AB140A00DCDF15 /* RCTModalViewManager.m */; };
 		A683E433441EE504DC6E2762 /* libPods-RNSwiftReviewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +67,20 @@
 		86933DDD59A6459D801D421E /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		88C542DF24AA5CAC00DCDF15 /* RNSwiftReviewer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSwiftReviewer-Bridging-Header.h"; sourceTree = "<group>"; };
 		88C542E024AA5CAD00DCDF15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		88C542E324AB140800DCDF15 /* UIModalTransitionStyle+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIModalTransitionStyle+Helpers.swift"; sourceTree = "<group>"; };
+		88C542E424AB140800DCDF15 /* RCTSwiftLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTSwiftLog.m; sourceTree = "<group>"; };
+		88C542E524AB140800DCDF15 /* UIBlurEffect+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBlurEffect+Helpers.swift"; sourceTree = "<group>"; };
+		88C542E624AB140800DCDF15 /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
+		88C542E724AB140800DCDF15 /* RCTLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTLog.swift; sourceTree = "<group>"; };
+		88C542E824AB140800DCDF15 /* RCTSwiftLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTSwiftLog.h; sourceTree = "<group>"; };
+		88C542E924AB140800DCDF15 /* UIModalPresentationStyle+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIModalPresentationStyle+Helpers.swift"; sourceTree = "<group>"; };
+		88C542EA24AB140800DCDF15 /* KeyWindow+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyWindow+Helpers.swift"; sourceTree = "<group>"; };
+		88C5430424AB140A00DCDF15 /* RCTModalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalView.swift; sourceTree = "<group>"; };
+		88C5430524AB140A00DCDF15 /* RCTModalViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalViewDelegate.swift; sourceTree = "<group>"; };
+		88C5430624AB140A00DCDF15 /* RCTModalViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalViewManager.swift; sourceTree = "<group>"; };
+		88C5430724AB140A00DCDF15 /* RCTModalViewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalViewError.swift; sourceTree = "<group>"; };
+		88C5430824AB140A00DCDF15 /* RCTModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalViewController.swift; sourceTree = "<group>"; };
+		88C5430924AB140A00DCDF15 /* RCTModalViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTModalViewManager.m; sourceTree = "<group>"; };
 		91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSwiftReviewer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B14B87BA8B741BDBEA87686 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		9B2045AEA8644F168D329C17 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -108,6 +135,8 @@
 		13B07FAE1A68108700A75B9A /* RNSwiftReviewer */ = {
 			isa = PBXGroup;
 			children = (
+				88C542E224AB140800DCDF15 /* Extensions */,
+				88C542EB24AB140A00DCDF15 /* React Native */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -184,6 +213,66 @@
 				00E356EE1AD99517003FC87E /* RNSwiftReviewerTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		88C542E224AB140800DCDF15 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				88C542E324AB140800DCDF15 /* UIModalTransitionStyle+Helpers.swift */,
+				88C542E424AB140800DCDF15 /* RCTSwiftLog.m */,
+				88C542E524AB140800DCDF15 /* UIBlurEffect+Helpers.swift */,
+				88C542E624AB140800DCDF15 /* UIView+Helpers.swift */,
+				88C542E724AB140800DCDF15 /* RCTLog.swift */,
+				88C542E824AB140800DCDF15 /* RCTSwiftLog.h */,
+				88C542E924AB140800DCDF15 /* UIModalPresentationStyle+Helpers.swift */,
+				88C542EA24AB140800DCDF15 /* KeyWindow+Helpers.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		88C542EB24AB140A00DCDF15 /* React Native */ = {
+			isa = PBXGroup;
+			children = (
+				88C542EC24AB140A00DCDF15 /* Components */,
+				88C5430E24AB140A00DCDF15 /* Helpers */,
+			);
+			path = "React Native";
+			sourceTree = "<group>";
+		};
+		88C542EC24AB140A00DCDF15 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				88C5430324AB140A00DCDF15 /* RCTModalView */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		88C5430324AB140A00DCDF15 /* RCTModalView */ = {
+			isa = PBXGroup;
+			children = (
+				88C5430424AB140A00DCDF15 /* RCTModalView.swift */,
+				88C5430524AB140A00DCDF15 /* RCTModalViewDelegate.swift */,
+				88C5430624AB140A00DCDF15 /* RCTModalViewManager.swift */,
+				88C5430724AB140A00DCDF15 /* RCTModalViewError.swift */,
+				88C5430824AB140A00DCDF15 /* RCTModalViewController.swift */,
+				88C5430924AB140A00DCDF15 /* RCTModalViewManager.m */,
+			);
+			path = RCTModalView;
+			sourceTree = "<group>";
+		};
+		88C5430E24AB140A00DCDF15 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				88C5430F24AB140A00DCDF15 /* RCTSwiftLog */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		88C5430F24AB140A00DCDF15 /* RCTSwiftLog */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RCTSwiftLog;
 			sourceTree = "<group>";
 		};
 		F3A6B306DEB7ACF539C5CF4D /* Pods */ = {
@@ -489,7 +578,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88C5431324AB140A00DCDF15 /* UIView+Helpers.swift in Sources */,
+				88C5432924AB140B00DCDF15 /* RCTModalViewDelegate.swift in Sources */,
+				88C5431624AB140A00DCDF15 /* KeyWindow+Helpers.swift in Sources */,
+				88C5432C24AB140B00DCDF15 /* RCTModalViewController.swift in Sources */,
+				88C5431024AB140A00DCDF15 /* UIModalTransitionStyle+Helpers.swift in Sources */,
 				88C542E124AA5CAD00DCDF15 /* AppDelegate.swift in Sources */,
+				88C5431124AB140A00DCDF15 /* RCTSwiftLog.m in Sources */,
+				88C5431424AB140A00DCDF15 /* RCTLog.swift in Sources */,
+				88C5432D24AB140B00DCDF15 /* RCTModalViewManager.m in Sources */,
+				88C5432824AB140A00DCDF15 /* RCTModalView.swift in Sources */,
+				88C5432A24AB140B00DCDF15 /* RCTModalViewManager.swift in Sources */,
+				88C5432B24AB140B00DCDF15 /* RCTModalViewError.swift in Sources */,
+				88C5431524AB140A00DCDF15 /* UIModalPresentationStyle+Helpers.swift in Sources */,
+				88C5431224AB140A00DCDF15 /* UIBlurEffect+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
