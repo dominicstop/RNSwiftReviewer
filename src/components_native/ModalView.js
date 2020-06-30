@@ -97,15 +97,21 @@ export class ModalView extends React.PureComponent {
     onModalDidDismiss    : Proptypes.func,
     onModalWillDismiss   : Proptypes.func,
     onModalAttemptDismiss: Proptypes.func,
-    // Props: Bool/Flags -----------------
-    presentViaMount      : Proptypes.bool,
-    isModalBGBlurred     : Proptypes.bool,
-    isModalBGTransparent : Proptypes.bool,
-    isModalInPresentation: Proptypes.bool,
+    // Props: Bool/Flags --------------------------
+    presentViaMount                : Proptypes.bool,
+    isModalBGBlurred               : Proptypes.bool,
+    isModalBGTransparent           : Proptypes.bool,
+    isModalInPresentation          : Proptypes.bool,
+    setModalInPresentationFromProps: Proptypes.bool,
     // Props: String ------------------------
     modalTransitionStyle  : Proptypes.string,
     modalPresentationStyle: Proptypes.string,
     modalBGBlurEffectStyle: Proptypes.string,
+  };
+
+  static defaultProps = {
+    isModalInPresentation: false,
+    setModalInPresentationFromProps: false,
   };
 
   constructor(props){
@@ -117,7 +123,8 @@ export class ModalView extends React.PureComponent {
     this._childRef = null;
 
     this.state = {
-      visible: false
+      visible: false,
+      isModalInPresentation: props.isModalInPresentation,
     };
   };
 
@@ -167,6 +174,10 @@ export class ModalView extends React.PureComponent {
 
       return false;
     };
+  };
+
+  setIsModalInPresentation = (bool) => {
+    this.setState({ isModalInPresentation: bool });
   };
 
   _handleOnLayout = () => {
@@ -224,13 +235,17 @@ export class ModalView extends React.PureComponent {
   _handleOnModalDismiss = () => {
     this.props     .onModalDismiss?.();
     this._childRef?.onModalDismiss?.();
+
+    this.setState({ 
+      visible: false,
+      isModalInPresentation:
+        this.props.isModalInPresentation
+    });
   };
 
   _handleOnModalDidDismiss = () => {
     this.props     .onModalDidDismiss?.();
     this._childRef?.onModalDidDismiss?.();
-
-    this.setState({ visible: false });
   };
 
   _handleOnModalWillDismiss = () => {
@@ -246,7 +261,7 @@ export class ModalView extends React.PureComponent {
   //#endregion
 
   render(){
-    const { visible } = this.state;
+    const { visible, isModalInPresentation } = this.state;
 
     const nativeProps = {
       [PROP_KEYS.onModalShow          ]: this._handleOnModalShow          ,
@@ -257,7 +272,13 @@ export class ModalView extends React.PureComponent {
       [PROP_KEYS.onModalAttemptDismiss]: this._handleOnModalAttemptDismiss,
     };
 
-    const props = { ...this.props, ...nativeProps };
+    const props = {
+      ...this.props ,
+      ...nativeProps,
+      ...(this.props.setModalInPresentationFromProps && {
+        [PROP_KEYS.isModalInPresentation]: isModalInPresentation
+      }),
+    };
 
     return(
       <NativeModalView
@@ -272,7 +293,7 @@ export class ModalView extends React.PureComponent {
             onLayout={this._handleOnLayout}
           >
             {React.cloneElement(this.props.children, {
-              ref: this._handleChildRef,
+              ref        : this._handleChildRef   ,
               getModalRef: this._handleChildGetRef,
             })}
           </View>

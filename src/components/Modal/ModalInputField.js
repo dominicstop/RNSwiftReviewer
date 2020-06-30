@@ -253,6 +253,7 @@ export class ModalInputField extends React.PureComponent {
   };
 
   _handleOnChangeText = (input) => {
+    this.props.onChangeText?.(input);
     this.setState({textInput: input});
   };
 

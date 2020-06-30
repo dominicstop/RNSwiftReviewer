@@ -39,7 +39,8 @@ export class ModalOverlayCheck extends React.PureComponent {
   start = async (duration = 750) => {
     const animation = Animated.timing(this.progress, {
       duration,
-      toValue: 1
+      toValue: 1,
+      useNativeDriver: true,
     });
 
     await Helpers.setStateAsync(this, {
