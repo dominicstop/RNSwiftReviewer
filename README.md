@@ -60,6 +60,15 @@
   * both rnn modals and rn's modals supports the native ios 12 modalPresentation style, but rnn impl. is more customizable and concise. Both has support for scroll view drag to close.
   * Use RNN modal in situations where swipeDown gesture needs to be disabled.
 
+### Migrae from Expo-Bare to Vanilla React-Native
+- [x] Create New RN Proj
+- [x] Transfer packages/dep and install
+- [x] Run and show starter/welcome screen
+- [x] Transplant Files/Src/etc from new proj.
+- [x] Fix errors until it runs again
+- [x] Use AppDelegate.swift as entrypoint
+- [x] import/tranf. RCTModalView from test project
+
 ### Bugs
 - [ ] Bugfix: Dark Apperance affects blur views
 - [ ] Bugfix: Fix scroll offset bug when on production build
