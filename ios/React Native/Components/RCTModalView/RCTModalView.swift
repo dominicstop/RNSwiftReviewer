@@ -161,7 +161,6 @@ class RCTModalView: UIView {
     
     self.modalVC = {
       let vc = RCTModalViewController();
-      vc.presentationController?.delegate = self;
       vc.isBGBlurred     = self.isModalBGBlurred;
       vc.isBGTransparent = self.isModalBGTransparent;
       
@@ -180,6 +179,7 @@ class RCTModalView: UIView {
     
     self.modalNVC = {
       let nvc = UINavigationController(rootViewController: self.modalVC);
+      nvc.presentationController?.delegate = self;
       nvc.setNavigationBarHidden(true, animated: false);
       
       return nvc;
@@ -365,6 +365,7 @@ class RCTModalView: UIView {
       return;
     };
     
+    self.modalNVC.presentationController?.delegate = self;
     self.modalNVC.modalTransitionStyle   = self._modalTransitionStyle;
     self.modalNVC.modalPresentationStyle = self._modalPresentationStyle;
     
@@ -445,6 +446,8 @@ extension RCTModalView: UIAdaptivePresentationControllerDelegate {
   };
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    self.isPresented = false;
+    
     self.onModalDismiss?([:]);
     self.onModalDidDismiss?([:]);
     
