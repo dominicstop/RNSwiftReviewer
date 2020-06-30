@@ -111,7 +111,7 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressCreateQuiz = () => {
-    this.createQuizModalRef.setVisibilty(true);
+    this.modalViewRef.setVisibilty(true);
   };
 
   // QuizListItem - onPress
@@ -234,10 +234,12 @@ export class QuizListScreen extends React.Component {
     };
 
     return(
-      <CreateQuizModal
-        modalRef={r => this.createQuizModalRef = r}
-        {...modalProps}
-      />
+      <ModalView 
+        ref={r => this.modalViewRef = r}
+        setModalInPresentationFromProps={true}
+      >
+        <CreateQuizModal {...modalProps}/>
+      </ModalView>
     );
   };
 

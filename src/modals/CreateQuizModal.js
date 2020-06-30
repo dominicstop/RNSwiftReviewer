@@ -43,23 +43,29 @@ export class CreateQuizModal extends React.PureComponent {
   constructor(props){
     super(props);
 
-    this.modalRef = React.createRef();
+    const isEditing = props[MNPCreateQuiz.isEditing];
+    const prevTitle = props[MNPCreateQuiz.quizTitle];
+    const prevDesc  = props[MNPCreateQuiz.quizDesc ];
+
+    this.textTitle = isEditing? prevTitle : '';
+    this.textDesc  = isEditing? prevDesc  : '';
   };
 
   componentDidMount(){
-    this.props.modalRef?.(this.modalRef.current);
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
   };
 
   // check if values were edited
-  hasUnsavedChanges = () => {
+  hasUnsavedChanges = ({nextTitle, nextDesc}) => {
     const props = this.props;
 
     const isEditing = props[MNPCreateQuiz.isEditing];
     const prevTitle = props[MNPCreateQuiz.quizTitle];
     const prevDesc  = props[MNPCreateQuiz.quizDesc ];
-
-    const nextTitle = this.inputFieldRefTitle.getText();
-    const nextDesc  = this.inputFieldRefDesc .getText();
 
     return (isEditing? (
       (prevTitle != nextTitle) ||
@@ -79,12 +85,56 @@ export class CreateQuizModal extends React.PureComponent {
     };
   };
 
+  _handleOnChangeTextTitle = (text) => {
+    this.textTitle = text;
+    this.modalRef.setIsModalInPresentation(
+      this.hasUnsavedChanges({
+        nextTitle: text, 
+        nextDesc : this.textDesc,
+      })
+    );
+  };
+
+  _handleOnChangeTextDesc = (text) => {
+    this.textDesc = text;
+    this.modalRef.setIsModalInPresentation(
+      this.hasUnsavedChanges({
+        nextTitle: this.textTitle,
+        nextDesc : text,
+      })
+    );
+  };
+
+  //#region - ModalView Events/Handlers
+  // ModalView: isModalInPresentation event
+  onModalAttemptDismiss = async () => {
+    const hasChanges = this.hasUnsavedChanges({
+      nextTitle: this.textTitle,
+      nextDesc : this.textDesc ,
+    });
+
+    if (!hasChanges) return;
+    const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+      title        : 'Discard Changes',
+      message      : 'Looks like you have some unsaved changes, are you sure you want to discard them?',
+      confirmText  : 'Discard',
+      isDestructive: true,
+    });
+
+    if(shouldDiscard){
+      this.modalRef.setVisibilty(false);
+    };
+  };
+  //#endregion
+
   // modalFooter: confirm onPress
   _handleOnPressButtonLeft = async () => {
     const { navigation, ...props } = this.props;
     
-    const modalRef   = this.modalRef.current;
-    const hasChanges = this.hasUnsavedChanges();
+    const hasChanges = this.hasUnsavedChanges({
+      nextTitle: this.textTitle,
+      nextDesc : this.textDesc ,
+    });
 
     const isEditing   = props[MNPCreateQuiz.isEditing  ];
     const onPressDone = props[MNPCreateQuiz.onPressDone];
@@ -94,7 +144,7 @@ export class CreateQuizModal extends React.PureComponent {
 
     if(!hasChanges && isEditing){
       //no changes, close modal
-      modalRef.setVisibilty(false);
+      this.modalRef.setVisibilty(false);
 
     } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
@@ -112,7 +162,7 @@ export class CreateQuizModal extends React.PureComponent {
       onPressDone?.({title, desc});
 
       //close modal
-      modalRef.setVisibilty(false);
+      this.modalRef.setVisibilty(false);
 
     } else {
       await Helpers.asyncAlert({
@@ -128,9 +178,12 @@ export class CreateQuizModal extends React.PureComponent {
   
   // modalFooter: cancel onPress
   _handleOnPressButtonRight = async () => {
-    const didChange = this.hasUnsavedChanges();
-    await Helpers.timeout(200);
+    const didChange = this.hasUnsavedChanges({
+      nextTitle: this.textTitle,
+      nextDesc : this.textDesc ,
+    });
 
+    await Helpers.timeout(200);
     if(didChange){
       const shouldDiscard = await Helpers.asyncActionSheetConfirm({
         title: 'Discard Changes',
@@ -144,12 +197,11 @@ export class CreateQuizModal extends React.PureComponent {
     };
 
     //close modal
-    this.modalRef.current.setVisibilty(false);
+    this.modalRef.setVisibilty(false);
   };
 
   render(){
     const props = this.props;
-
     const isEditing = props[MNPCreateQuiz.isEditing];
 
     const modalHeader = (
@@ -193,10 +245,7 @@ export class CreateQuizModal extends React.PureComponent {
     );
 
     return (
-      <ModalView
-        ref={this.modalRef}
-      >
-        <ModalBody
+      <ModalBody
         useKeyboardSpacer={true}
         {...{modalHeader, modalFooter, overlay}}
       >
@@ -213,6 +262,7 @@ export class CreateQuizModal extends React.PureComponent {
             placeholder={'Enter Quiz Title'}
             initialValue={props[MNPCreateQuiz.quizTitle]}
             onSubmitEditing={this._handleOnSubmitEditing}
+            onChangeText={this._handleOnChangeTextTitle}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
               <SvgIcon
@@ -236,6 +286,8 @@ export class CreateQuizModal extends React.PureComponent {
             title={'Description'}
             subtitle={'Give this quiz a short description.'}
             placeholder={'Enter Quiz Title'}
+            returnKeyType={'done'}
+            onChangeText={this._handleOnChangeTextDesc}
             initialValue={props[MNPCreateQuiz.quizDesc]}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
@@ -257,7 +309,6 @@ export class CreateQuizModal extends React.PureComponent {
           marginTop={0}
         />
       </ModalBody>
-      </ModalView>
     );
   };
 };
