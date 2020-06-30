@@ -219,11 +219,8 @@
 			isa = PBXGroup;
 			children = (
 				88C542E324AB140800DCDF15 /* UIModalTransitionStyle+Helpers.swift */,
-				88C542E424AB140800DCDF15 /* RCTSwiftLog.m */,
 				88C542E524AB140800DCDF15 /* UIBlurEffect+Helpers.swift */,
 				88C542E624AB140800DCDF15 /* UIView+Helpers.swift */,
-				88C542E724AB140800DCDF15 /* RCTLog.swift */,
-				88C542E824AB140800DCDF15 /* RCTSwiftLog.h */,
 				88C542E924AB140800DCDF15 /* UIModalPresentationStyle+Helpers.swift */,
 				88C542EA24AB140800DCDF15 /* KeyWindow+Helpers.swift */,
 			);
@@ -271,6 +268,9 @@
 		88C5430F24AB140A00DCDF15 /* RCTSwiftLog */ = {
 			isa = PBXGroup;
 			children = (
+				88C542E824AB140800DCDF15 /* RCTSwiftLog.h */,
+				88C542E424AB140800DCDF15 /* RCTSwiftLog.m */,
+				88C542E724AB140800DCDF15 /* RCTLog.swift */,
 			);
 			path = RCTSwiftLog;
 			sourceTree = "<group>";
