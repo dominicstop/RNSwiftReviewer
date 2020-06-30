@@ -111,19 +111,7 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressCreateQuiz = () => {
-    this.modalViewRef.setVisibilty(true);
-    return;
-    const { navigation } = this.props;
-
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalCreateQuiz,
-      navProps: {
-        [MNPCreateQuiz.navigation]: navigation,
-        [MNPCreateQuiz.isEditing ]: false     ,
-        [MNPCreateQuiz.quizTitle ]: null      ,
-        [MNPCreateQuiz.quizDesc  ]: null      ,
-      },
-    });
+    this.createQuizModalRef.setVisibilty(true);
   };
 
   // QuizListItem - onPress
@@ -238,7 +226,7 @@ export class QuizListScreen extends React.Component {
 
   //#region - render functions
   _renderModal(){
-    const propsModal = {
+    const modalProps = {
       [MNPCreateQuiz.navigation]: this.props.navigation,
       [MNPCreateQuiz.isEditing ]: false,
       [MNPCreateQuiz.quizTitle ]: null ,
@@ -246,9 +234,10 @@ export class QuizListScreen extends React.Component {
     };
 
     return(
-      <ModalView ref={r => this.modalViewRef = r}>
-        <CreateQuizModal {...propsModal}/>
-      </ModalView>
+      <CreateQuizModal
+        modalRef={r => this.createQuizModalRef = r}
+        {...modalProps}
+      />
     );
   };
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Keyboard } from 'react-native';
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { Navigation } from 'react-native-navigation';
 
 import { ModalBody         } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader       } from 'app/src/components/Modal/ModalHeader';
@@ -12,6 +11,7 @@ import { ModalSection      } from 'app/src/components/Modal/ModalSection';
 import { ModalInputField   } from 'app/src/components/Modal/ModalInputField';
 import { ModalOverlayCheck } from 'app/src/components/Modal/ModalOverlayCheck';
 
+import { ModalView } from 'app/src/components_native/ModalView';
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 
 import { ROUTES } from 'app/src/constants/Routes';
@@ -42,10 +42,12 @@ export class CreateQuizModal extends React.PureComponent {
 
   constructor(props){
     super(props);
+
+    this.modalRef = React.createRef();
   };
 
   componentDidMount(){
-    this.modalRef = this.props.getModalRef();
+    this.props.modalRef?.(this.modalRef.current);
   };
 
   // check if values were edited
@@ -79,7 +81,9 @@ export class CreateQuizModal extends React.PureComponent {
 
   // modalFooter: confirm onPress
   _handleOnPressButtonLeft = async () => {
-    const { navigation, componentId, ...props } = this.props;
+    const { navigation, ...props } = this.props;
+    
+    const modalRef   = this.modalRef.current;
     const hasChanges = this.hasUnsavedChanges();
 
     const isEditing   = props[MNPCreateQuiz.isEditing  ];
@@ -90,7 +94,7 @@ export class CreateQuizModal extends React.PureComponent {
 
     if(!hasChanges && isEditing){
       //no changes, close modal
-      Navigation.dismissModal(componentId);
+      modalRef.setVisibilty(false);
 
     } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
@@ -105,10 +109,10 @@ export class CreateQuizModal extends React.PureComponent {
       await this.overlay.start();
 
       // trigger event callback
-      onPressDone && onPressDone({title, desc});
+      onPressDone?.({title, desc});
 
       //close modal
-      Navigation.dismissModal(componentId);
+      modalRef.setVisibilty(false);
 
     } else {
       await Helpers.asyncAlert({
@@ -124,9 +128,7 @@ export class CreateQuizModal extends React.PureComponent {
   
   // modalFooter: cancel onPress
   _handleOnPressButtonRight = async () => {
-    const { componentId, ...props } = this.props;
     const didChange = this.hasUnsavedChanges();
-
     await Helpers.timeout(200);
 
     if(didChange){
@@ -142,11 +144,10 @@ export class CreateQuizModal extends React.PureComponent {
     };
 
     //close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.current.setVisibilty(false);
   };
 
   render(){
-    const { styles } = CreateQuizModal;
     const props = this.props;
 
     const isEditing = props[MNPCreateQuiz.isEditing];
@@ -192,7 +193,10 @@ export class CreateQuizModal extends React.PureComponent {
     );
 
     return (
-      <ModalBody
+      <ModalView
+        ref={this.modalRef}
+      >
+        <ModalBody
         useKeyboardSpacer={true}
         {...{modalHeader, modalFooter, overlay}}
       >
@@ -253,6 +257,7 @@ export class CreateQuizModal extends React.PureComponent {
           marginTop={0}
         />
       </ModalBody>
+      </ModalView>
     );
   };
 };
