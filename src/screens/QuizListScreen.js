@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { Fragment } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { LargeTitleWithSnap } from 'app/src/components/LargeTitleFlatList';
@@ -28,6 +28,8 @@ import { ModalController  } from 'app/src/functions/ModalController';
 import { sortQuizItems    } from 'app/src/functions/SortItems';
 import { QuizStore        } from 'app/src/functions/QuizStore';
 import { QuizSessionStore } from '../functions/QuizSessionStore';
+import { ModalView } from '../components_native/ModalView';
+import { CreateQuizModal } from '../modals/CreateQuizModal';
 
 
 export class QuizListScreen extends React.Component {
@@ -109,6 +111,8 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressCreateQuiz = () => {
+    this.modalViewRef.setVisibilty(true);
+    return;
     const { navigation } = this.props;
 
     ModalController.showModal({
@@ -233,6 +237,21 @@ export class QuizListScreen extends React.Component {
   //#endregion
 
   //#region - render functions
+  _renderModal(){
+    const propsModal = {
+      [MNPCreateQuiz.navigation]: this.props.navigation,
+      [MNPCreateQuiz.isEditing ]: false,
+      [MNPCreateQuiz.quizTitle ]: null ,
+      [MNPCreateQuiz.quizDesc  ]: null ,
+    };
+
+    return(
+      <ModalView ref={r => this.modalViewRef = r}>
+        <CreateQuizModal {...propsModal}/>
+      </ModalView>
+    );
+  };
+
   // receives params from LargeTitleWithSnap comp
   _renderListHeader = ({scrollY, inputRange}) => {
     const { styles } = QuizListScreen;
@@ -308,28 +327,31 @@ export class QuizListScreen extends React.Component {
     const itemSize  = 200;
 
     return (
-      <View style={styles.rootContainer}>
-        <LargeTitleWithSnap
-          ref={r => this.largeTitleRef = r}
-          titleText={'Quizzes'}
-          subtitleText={'Your Quiz Reviewers'}
-          showSubtitle={true}
-          useTransition={true}
-          //render handlers
-          renderHeader={this._renderListHeader}
-          renderTitleIcon={this._renderTitleIcon}
-          {...{itemCount, itemSize}}
-        >
-          <REASectionList
-            ref={r => this.sectionList = r}
-            sections={[{ data: quizes }]}
-            renderSectionHeader={this._renderSectionHeader}
-            keyExtractor={this._handleKeyExtractor}
-            renderItem={this._renderItem}
-            {...{scrollEnabled}}
-          />
-        </LargeTitleWithSnap>
-      </View>
+      <Fragment>
+        {this._renderModal()}
+        <View style={styles.rootContainer}>
+          <LargeTitleWithSnap
+            ref={r => this.largeTitleRef = r}
+            titleText={'Quizzes'}
+            subtitleText={'Your Quiz Reviewers'}
+            showSubtitle={true}
+            useTransition={true}
+            //render handlers
+            renderHeader={this._renderListHeader}
+            renderTitleIcon={this._renderTitleIcon}
+            {...{itemCount, itemSize}}
+          >
+            <REASectionList
+              ref={r => this.sectionList = r}
+              sections={[{ data: quizes }]}
+              renderSectionHeader={this._renderSectionHeader}
+              keyExtractor={this._handleKeyExtractor}
+              renderItem={this._renderItem}
+              {...{scrollEnabled}}
+            />
+          </LargeTitleWithSnap>
+        </View>
+      </Fragment>
     );
   };
   //#endregion

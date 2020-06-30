@@ -4,7 +4,6 @@ import { Navigation } from "react-native-navigation";
 import App from 'app/App';
 
 import { ViewQuizModal                } from 'app/src/modals/ViewQuizModal';
-import { CreateQuizModal              } from "app/src/modals/CreateQuizModal";
 import { QuizAddSectionModal          } from "app/src/modals/QuizAddSectionModal";
 import { QuizAddQuestionModal         } from "app/src/modals/QuizAddQuestionModal";
 import { QuizCreateQuestionModal      } from "app/src/modals/QuizCreateQuestionModal";
@@ -20,7 +19,6 @@ import { RNN_ROUTES } from 'app/src/constants/Routes';
 Navigation.registerComponent(RNN_ROUTES.RootReactNavigationRoute, () => App);
 // register RNN modals
 Navigation.registerComponent(RNN_ROUTES.ModalViewQuiz               , () => ViewQuizModal               );
-Navigation.registerComponent(RNN_ROUTES.ModalCreateQuiz             , () => CreateQuizModal             );
 Navigation.registerComponent(RNN_ROUTES.ModalQuizAddSection         , () => QuizAddSectionModal         );
 Navigation.registerComponent(RNN_ROUTES.ModalQuizAddQuestions       , () => QuizAddQuestionModal        );
 Navigation.registerComponent(RNN_ROUTES.ModalQuizCreateQuestion     , () => QuizCreateQuestionModal     );

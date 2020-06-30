@@ -44,6 +44,10 @@ export class CreateQuizModal extends React.PureComponent {
     super(props);
   };
 
+  componentDidMount(){
+    this.modalRef = this.props.getModalRef();
+  };
+
   // check if values were edited
   hasUnsavedChanges = () => {
     const props = this.props;
@@ -138,13 +142,12 @@ export class CreateQuizModal extends React.PureComponent {
     };
 
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   render(){
     const { styles } = CreateQuizModal;
     const props = this.props;
-
 
     const isEditing = props[MNPCreateQuiz.isEditing];
 
@@ -193,7 +196,10 @@ export class CreateQuizModal extends React.PureComponent {
         useKeyboardSpacer={true}
         {...{modalHeader, modalFooter, overlay}}
       >
-        <ModalSection showBorderTop={false}>
+        <ModalSection
+          extraPaddingTop={true}
+          showBorderTop={false}
+        >
           <ModalInputField
             index={0}
             ref={r => this.inputFieldRefTitle = r}
