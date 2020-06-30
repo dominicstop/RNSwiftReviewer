@@ -114,6 +114,8 @@ export class ModalView extends React.PureComponent {
     this.requestID  = 0;
     this.requestMap = new Map();
 
+    this._childRef = null;
+
     this.state = {
       visible: false
     };
@@ -171,21 +173,30 @@ export class ModalView extends React.PureComponent {
     const { didOnLayout } = this;
     didOnLayout && didOnLayout();
   };
+  
+  _handleChildRef = (node) => {
+    // store a copy of the child comp ref
+    this._childRef = node;
+    
+    // pass down ref
+    const { ref } = this.props.children;
+    if (typeof ref === 'function') {
+      ref(node);
+      
+    } else if (ref !== null) {
+      ref.current = node;
+    };
+  };
+
+  // the child comp can call `props.getModalRef` to receive
+  // a ref to this modal comp
+  _handleChildGetRef = () => {
+    return this;
+  };
 
   //#region - Native Event Handlers
 
-  _handleOnModalShow = () => {
-    const { onModalShow } = this.props;
-    onModalShow && onModalShow();
-  };
-
-  _handleOnModalDismiss = () => {
-    const { onModalDismiss } = this.props;
-    onModalDismiss && onModalDismiss();
-  };
-
   _handleOnRequestResult = ({nativeEvent}) => {
-    const { onRequestResult } = this.props;
     const { requestID, success, errorCode, errorMessage } = nativeEvent;
 
     const promise = this.requestMap[requestID];
@@ -195,7 +206,8 @@ export class ModalView extends React.PureComponent {
 
     try {
       (success? promise.resolve : promise.reject)(params);
-      onRequestResult && onRequestResult(params);
+      this.props     .onRequestResult?.();
+      this._childRef?.onRequestResult?.();
   
     } catch(error){
       promise.reject(params);
@@ -204,20 +216,31 @@ export class ModalView extends React.PureComponent {
     };
   };
 
+  _handleOnModalShow = () => {
+    this.props     .onModalShow?.();
+    this._childRef?.onModalShow?.();
+  };
+
+  _handleOnModalDismiss = () => {
+    this.props     .onModalDismiss?.();
+    this._childRef?.onModalDismiss?.();
+  };
+
   _handleOnModalDidDismiss = () => {
-    const { onModalDidDismiss } = this.props;
-    onModalDidDismiss && onModalDidDismiss();
+    this.props     .onModalDidDismiss?.();
+    this._childRef?.onModalDidDismiss?.();
+
     this.setState({ visible: false });
   };
 
   _handleOnModalWillDismiss = () => {
-    const { onModalWillDismiss } = this.props;
-    onModalWillDismiss && onModalWillDismiss();
+    this.props     .onModalWillDismiss?.();
+    this._childRef?.onModalWillDismiss?.();
   };
 
   _handleOnModalAttemptDismiss = () => {
-    const { onModalAttemptDismiss } = this.props;
-    onModalAttemptDismiss && onModalAttemptDismiss();
+    this.props     .onModalAttemptDismiss?.();
+    this._childRef?.onModalAttemptDismiss?.();
   };
 
   //#endregion
@@ -248,7 +271,10 @@ export class ModalView extends React.PureComponent {
             style={[styles.modalContainer, props.containerStyle]}
             onLayout={this._handleOnLayout}
           >
-            {this.props.children}
+            {React.cloneElement(this.props.children, {
+              ref: this._handleChildRef,
+              getModalRef: this._handleChildGetRef,
+            })}
           </View>
         )}
       </NativeModalView>

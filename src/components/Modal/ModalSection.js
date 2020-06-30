@@ -24,9 +24,10 @@ export class ModalSection extends React.PureComponent {
   };
 
   static defaultProps = {
-    showBorderTop  : true,
-    hasMarginBottom: true,
-    hasPadding     : true,
+    showBorderTop  : true ,
+    hasMarginBottom: true ,
+    extraPaddingTop: false,
+    hasPadding     : true ,
     paddingBottom  : 15,
     marginBottom   : 20,
     marginTop      : 0 ,
@@ -48,6 +49,9 @@ export class ModalSection extends React.PureComponent {
         paddingHorizontal: 10,
         paddingTop: 12,
       }),
+      ...(props.extraPaddingTop && {
+        paddingTop: 17,
+      })
     };
 
     return(
