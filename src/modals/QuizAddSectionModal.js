@@ -492,7 +492,7 @@ export class QuizAddSectionModal extends React.Component {
           />
         </ModalSection>
         <ModalSection 
-          containerStyle={{paddingBottom:0}}
+          containerStyle={{paddingBottom: 0}}
         >
           <SectionTypeHeader
             listItems={SectionTypesRadioValuesMap}

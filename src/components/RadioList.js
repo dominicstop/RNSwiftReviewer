@@ -196,6 +196,7 @@ export class RadioList extends React.Component {
           <ListSortItem
             key={`${radioListType}-${index}`}
             listItemsCount={listItems.length}
+            paddingBottom={12}
             // pass down  values
             {...{index, onPressListItem, selectedType, ...values}}
           />
