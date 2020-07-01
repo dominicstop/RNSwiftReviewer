@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 
-import Ionicon from 'react-native-vector-icons/Ionicons';
-
+import  Ionicon from 'react-native-vector-icons/Ionicons';
 import { StackActions } from 'react-navigation';
 
 import { LargeTitleWithSnap } from 'app/src/components/LargeTitleFlatList';
@@ -16,6 +15,9 @@ import { CreateQuizListItem   } from 'app/src/components/CreateQuizScreen/Create
 import { CreateQuizListHeader } from 'app/src/components/CreateQuizScreen/CreateQuizListHeader';
 import { CreateQuizListFooter } from 'app/src/components/CreateQuizScreen/CreateQuizListFooter';
 
+import { ModalView       } from 'app/src/components_native/ModalView';
+import { CreateQuizModal } from 'app/src/modals/CreateQuizModal';
+
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
@@ -23,14 +25,14 @@ import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
-import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection, MNPQuizAddQuestion } from 'app/src/constants/NavParams';
 import { QuizKeys, QuizSectionKeys } from 'app/src/constants/PropKeys';
+import { SNPCreateQuiz, MNPCreateQuiz, MNPQuizAddSection, MNPQuizAddQuestion } from 'app/src/constants/NavParams';
 
 import { QuizModel        } from 'app/src/models/QuizModel';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
-import { ModalController } from 'app/src/functions/ModalController';
-import { QuizStore       } from 'app/src/functions/QuizStore';
+import { QuizStore } from 'app/src/functions/QuizStore';
+
 
 // TODO:
 // [ ] - Move footerRef.setVisibilty to componentDidUpdate
@@ -56,8 +58,6 @@ export class CreateQuizScreen extends React.Component {
       marginHorizontal: 15,
     },
   });
-
-  
 
   constructor(props){
     super(props);
@@ -88,24 +88,8 @@ export class CreateQuizScreen extends React.Component {
   };
 
   _handleOnPressEditQuiz = ({section, index}) => {
-    const { navigation } = this.props;
-
-    // get quiz title/desc from state
-    const quizTitle = this.state[QuizKeys.quizTitle];
-    const quizDesc  = this.state[QuizKeys.quizDesc ];
-    
     // open CreateQuizModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalCreateQuiz,
-      navProps: {
-        [MNPCreateQuiz.navigation]: navigation,
-        [MNPCreateQuiz.isEditing ]: true     ,
-        [MNPCreateQuiz.quizTitle ]: quizTitle,
-        [MNPCreateQuiz.quizDesc  ]: quizDesc ,
-        //modal: attach onPress done/save event
-        [MNPCreateQuiz.onPressDone]: this._handleCreateQuizModalOnPressDone,
-      },
-    });
+    this.modalViewCreateQuizRef.setVisibilty(true);
   };
 
   // ScreenFooter - onPress "Finish Quiz"
@@ -279,6 +263,28 @@ export class CreateQuizScreen extends React.Component {
   // #endregion
 
   // #region - render functions
+  _renderModal(){
+    // get quiz title/desc from state
+    const quizTitle = this.state[QuizKeys.quizTitle];
+    const quizDesc  = this.state[QuizKeys.quizDesc ];
+
+    return(
+      <ModalView
+        ref={r => this.modalViewCreateQuizRef = r}
+        setModalInPresentationFromProps={true}
+      >
+        <CreateQuizModal {...{
+          [MNPCreateQuiz.navigation]: null     ,
+          [MNPCreateQuiz.isEditing ]: true     ,
+          [MNPCreateQuiz.quizTitle ]: quizTitle,
+          [MNPCreateQuiz.quizDesc  ]: quizDesc ,
+          //modal: attach onPress done/save event
+          [MNPCreateQuiz.onPressDone]: this._handleCreateQuizModalOnPressDone,
+        }}/>
+      </ModalView>
+    );
+  };
+
   _renderListHeader = ({scrollY, inputRange}) => {
     const state = this.state;
 
@@ -361,51 +367,54 @@ export class CreateQuizScreen extends React.Component {
     const itemCount = state[QuizKeys.quizSectionCount];
 
     return (
-      <View style={styles.rootContainer}>
-        <LargeTitleWithSnap
-          ref={r => this.largeTitleRef = r}
-          titleText={'Create Quiz'}
-          subtitleText={"Create a new quiz reviewer"}
-          showSubtitle={true}
-          itemSize={100}
-          //render handlers
-          renderHeader={this._renderListHeader}
-          renderFooter={this._renderListFooter}
-          renderTitleIcon={this._renderTitleIcon}
-          {...{itemCount}}
-        >
-          <REASectionList
-            ref={r => this.sectionList = r}
-            sections={[{ data: sections }]}
-            keyExtractor={this._handleKeyExtractor}
-            renderItem={this._renderItem}
-            contentOffset={{y: -100}}
-            {...{scrollEnabled}}
+      <Fragment>
+        {this._renderModal()}
+        <View style={styles.rootContainer}>
+          <LargeTitleWithSnap
+            ref={r => this.largeTitleRef = r}
+            titleText={'Create Quiz'}
+            subtitleText={"Create a new quiz reviewer"}
+            showSubtitle={true}
+            itemSize={100}
+            //render handlers
+            renderHeader={this._renderListHeader}
+            renderFooter={this._renderListFooter}
+            renderTitleIcon={this._renderTitleIcon}
+            {...{itemCount}}
+          >
+            <REASectionList
+              ref={r => this.sectionList = r}
+              sections={[{ data: sections }]}
+              keyExtractor={this._handleKeyExtractor}
+              renderItem={this._renderItem}
+              contentOffset={{y: -100}}
+              {...{scrollEnabled}}
+            />
+          </LargeTitleWithSnap>
+          <ScreenFooter ref={r => this.footerRef = r}>
+            <ButtonGradient
+              title={'Finish Quiz'}
+              subtitle={'Create and save the current quiz'}
+              onPress={this._handleOnPressFinishQuiz}
+              gradientColors={[Colors.INDIGO.A400, Colors.BLUE.A700]}
+              iconDistance={15}
+              isBgGradient={true}
+              showChevron={true}
+              showIcon={true}
+              leftIcon={(
+                <Ionicon
+                  name={'ios-checkmark-circle'}
+                  color={'white'}
+                  size={27}
+                />
+              )}
+            />
+          </ScreenFooter>
+          <ScreenOverlayCheck
+            ref={r => this.overlay = r}
           />
-        </LargeTitleWithSnap>
-        <ScreenFooter ref={r => this.footerRef = r}>
-          <ButtonGradient
-            title={'Finish Quiz'}
-            subtitle={'Create and save the current quiz'}
-            onPress={this._handleOnPressFinishQuiz}
-            gradientColors={[Colors.INDIGO.A400, Colors.BLUE.A700]}
-            iconDistance={15}
-            isBgGradient={true}
-            showChevron={true}
-            showIcon={true}
-            leftIcon={(
-              <Ionicon
-                name={'ios-checkmark-circle'}
-                color={'white'}
-                size={27}
-              />
-            )}
-          />
-        </ScreenFooter>
-        <ScreenOverlayCheck
-          ref={r => this.overlay = r}
-        />
-      </View>
+        </View>
+      </Fragment>
     );
   };
   //#endregion
