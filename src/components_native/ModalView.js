@@ -2,7 +2,9 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import { requireNativeComponent, UIManager, findNodeHandle, StyleSheet, View, Text } from 'react-native';
 
+import _ from 'lodash';
 import * as Helpers from 'app/src/functions/helpers';
+
 
 
 const componentName   = "RCTModalView";
@@ -124,20 +126,29 @@ export class ModalView extends React.PureComponent {
 
     this.state = {
       visible: false,
+      childProps: null,
       isModalInPresentation: props.isModalInPresentation,
     };
   };
 
-  setVisibilty = async (visible) => {
+  setVisibilty = async (nextVisible, childProps = null) => {
     const { visible: prevVisible } = this.state;
 
-    const didChange = (prevVisible != visible);
+    const didChange = (prevVisible != nextVisible);
     if (!didChange) return false;
 
     try {
-      if(visible) {
+      if(nextVisible) {
         // when showing modal, mount children first,
-        await Helpers.setStateAsync(this, {visible});
+        await Helpers.setStateAsync(this, {
+          visible: nextVisible, 
+          // pass down received props to childProps via state
+          childProps: (_.isObject(childProps)
+            ? childProps
+            : null
+          ),
+        });
+
         // wait for view to mount
         await new Promise((resolve) => {
           this.didOnLayout = resolve;
@@ -154,7 +165,7 @@ export class ModalView extends React.PureComponent {
       UIManager.dispatchViewManagerCommand(
         findNodeHandle(this.nativeModalViewRef),
         NativeCommands[COMMAND_KEYS.requestModalPresentation],
-        [requestID, visible]
+        [requestID, nextVisible]
       );
 
       const res = await new Promise((resolve, reject) => {
@@ -162,7 +173,11 @@ export class ModalView extends React.PureComponent {
       });
 
       // when finish hiding modal, unmount children
-      if(!visible) await Helpers.setStateAsync(this, {visible});
+      if(!nextVisible) await Helpers.setStateAsync(this, {
+        visible   : nextVisible,
+        childProps: null
+      });
+
       return res.success;
 
     } catch(error){
@@ -237,7 +252,8 @@ export class ModalView extends React.PureComponent {
     this._childRef?.onModalDismiss?.();
 
     this.setState({ 
-      visible: false,
+      visible   : false,
+      childProps: null ,
       isModalInPresentation:
         this.props.isModalInPresentation
     });
@@ -261,7 +277,7 @@ export class ModalView extends React.PureComponent {
   //#endregion
 
   render(){
-    const { visible, isModalInPresentation } = this.state;
+    const state = this.state;
 
     const nativeProps = {
       [PROP_KEYS.onModalShow          ]: this._handleOnModalShow          ,
@@ -276,7 +292,7 @@ export class ModalView extends React.PureComponent {
       ...this.props ,
       ...nativeProps,
       ...(this.props.setModalInPresentationFromProps && {
-        [PROP_KEYS.isModalInPresentation]: isModalInPresentation
+        [PROP_KEYS.isModalInPresentation]: state.isModalInPresentation
       }),
     };
 
@@ -286,7 +302,7 @@ export class ModalView extends React.PureComponent {
         style={styles.rootContainer}
         {...props}
       >
-        {visible && (
+        {state.visible && (
           <View 
             ref={r => this.modalContainerRef = r}
             style={[styles.modalContainer, props.containerStyle]}
@@ -295,6 +311,8 @@ export class ModalView extends React.PureComponent {
             {React.cloneElement(this.props.children, {
               ref        : this._handleChildRef   ,
               getModalRef: this._handleChildGetRef,
+              // pass down props received from setVisibility
+              ...(_.isObject(state.childProps) && state.childProps)
             })}
           </View>
         )}
