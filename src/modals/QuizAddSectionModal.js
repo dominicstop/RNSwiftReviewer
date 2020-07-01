@@ -130,11 +130,6 @@ class SectionTypeHeader extends React.Component {
 };
 
 export class QuizAddSectionModal extends React.Component {
-  static options() {
-    return {
-    };
-  };
-
   static styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
@@ -160,11 +155,13 @@ export class QuizAddSectionModal extends React.Component {
   constructor(props){
     super(props);
 
-    const section   = props[MNPQuizAddSection.section  ];
-    const isEditing = props[MNPQuizAddSection.isEditing];
+    const section   = props[MNPQuizAddSection.section   ];
+    const isEditing = props[MNPQuizAddSection.isEditing ];
+    const prevTitle = props[QuizSectionKeys.sectionTitle];
+    const prevDesc  = props[QuizSectionKeys.sectionDesc ];
 
-    console.log(section[QuizSectionKeys.sectionType]);
-    
+    this.textTitle = isEditing? prevTitle : '';
+    this.textDesc  = isEditing? prevDesc  : '';
 
     this.state = {
       //initial selected type
@@ -182,21 +179,25 @@ export class QuizAddSectionModal extends React.Component {
     });
   };
 
-  hasUnsavedChanges = () => {
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
+
+  hasUnsavedChanges = ({nextTitle, nextDesc}) => {
     const props = this.props;
     const { selectedSectionType: nextType } = this.state;
 
-    const initType = SectionTypes.IDENTIFICATION;
-
+    const initType  = SectionTypes.IDENTIFICATION;
     const section   = props[MNPQuizAddSection.section  ];
     const isEditing = props[MNPQuizAddSection.isEditing];
 
     const prevTitle = section[QuizSectionKeys.sectionTitle];
     const prevDesc  = section[QuizSectionKeys.sectionDesc ];
     const prevType  = section[QuizSectionKeys.sectionType ];
-
-    const nextTitle = this.inputFieldRefTitle.getText();
-    const nextDesc  = this.inputFieldRefDesc .getText();
 
     return (isEditing? (
       (prevTitle != nextTitle) ||
@@ -207,6 +208,48 @@ export class QuizAddSectionModal extends React.Component {
       (nextDesc  != ''      ) ||
       (nextType  != initType)
     ));
+  };
+
+  //#region - ModalView Events/Handlers
+  onModalAttemptDismiss = async () => {
+    const hasChanges = this.hasUnsavedChanges({
+      nextTitle: this.textTitle,
+      nextDesc : this.textDesc ,
+    });
+    
+    if (!hasChanges) return;
+    const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+      title        : 'Discard Changes',
+      message      : 'Looks like you have some unsaved changes, are you sure you want to discard them?',
+      confirmText  : 'Discard',
+      isDestructive: true,
+    });
+
+    if(shouldDiscard){
+      this.modalRef.setVisibilty(false);
+    };
+  };
+  //#endregion
+
+  //#region  - Event Handlers
+  _handleOnChangeTextTitle = (text) => {
+    this.textTitle = text;
+    this.modalRef.setIsModalInPresentation(
+      this.hasUnsavedChanges({
+        nextTitle: text,
+        nextDesc : this.textDesc,
+      })
+    );
+  };
+
+  _handleOnChangeTextDesc = (text) => {
+    this.textDesc = text;
+    this.modalRef.setIsModalInPresentation(
+      this.hasUnsavedChanges({
+        nextDesc : text,
+        nextTitle: this.textTitle,
+      })
+    );
   };
 
   _handleOnPressSectionItem = ({type}) => {
@@ -247,7 +290,7 @@ export class QuizAddSectionModal extends React.Component {
   };
 
   _handleOnPressDelete = async () => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
 
     const section       = props[MNPQuizAddSection.section      ];
     const onPressDelete = props[MNPQuizAddSection.onPressDelete];
@@ -267,14 +310,18 @@ export class QuizAddSectionModal extends React.Component {
     // call callback
     onPressDelete && onPressDelete(sectionID);
     // close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
     const { selectedSectionType } = this.state;
-    const hasChanges = this.hasUnsavedChanges();
+
+    const hasChanges = this.hasUnsavedChanges({
+      nextTitle: this.textTitle,
+      nextDesc : this.textDesc ,
+    });
 
     const section     = props[MNPQuizAddSection.section    ];
     const isEditing   = props[MNPQuizAddSection.isEditing  ];
@@ -287,7 +334,7 @@ export class QuizAddSectionModal extends React.Component {
 
     if(!hasChanges && isEditing){
       // no changes, close modal
-      Navigation.dismissModal(componentId);
+      this.modalRef.setVisibilty(false);
 
     } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
@@ -302,7 +349,7 @@ export class QuizAddSectionModal extends React.Component {
       });
 
       // close modal
-      Navigation.dismissModal(componentId);
+      this.modalRef.setVisibilty(false);
 
     } else {
       await Helpers.asyncAlert({
@@ -318,11 +365,12 @@ export class QuizAddSectionModal extends React.Component {
 
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
-    const { componentId } = this.props;
-    const didChange = this.hasUnsavedChanges();
+    const didChange = this.hasUnsavedChanges({
+      nextTitle: this.textTitle,
+      nextDesc : this.textDesc ,
+    });
 
     await Helpers.timeout(200);
-
     if(didChange){
       const shouldDiscard = await Helpers.asyncActionSheetConfirm({
         title: 'Discard Section Changes',
@@ -336,8 +384,9 @@ export class QuizAddSectionModal extends React.Component {
     };
     
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
+  //#endregion
 
   render(){
     const { styles } = QuizAddSectionModal;
@@ -391,7 +440,7 @@ export class QuizAddSectionModal extends React.Component {
         useKeyboardSpacer={true}
         {...{modalHeader, modalFooter, overlay}}
       >
-        <ModalSection>
+        <ModalSection extraPaddingTop={true}>
           <ModalInputField
             index={0}
             ref={r => this.inputFieldRefTitle = r}
@@ -400,6 +449,7 @@ export class QuizAddSectionModal extends React.Component {
             subtitle={'Give this section a title (ex: Math Prelims etc.)'}
             placeholder={'Enter Section Title'}
             initialValue={section[QuizSectionKeys.sectionTitle]}
+            onChangeText={this._handleOnChangeTextTitle}
             onSubmitEditing={this._handleOnSubmitEditing}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(
@@ -424,6 +474,7 @@ export class QuizAddSectionModal extends React.Component {
             title={'Description'}
             subtitle={'Give this section a short description.'}
             placeholder={'Enter Section Description'}
+            onChangeText={this._handleOnChangeTextDesc}
             initialValue={section[QuizSectionKeys.sectionDesc]}
             validate={Validate.isNotNullOrWhitespace}
             iconActive={(

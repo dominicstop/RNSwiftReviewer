@@ -15,8 +15,10 @@ import { CreateQuizListItem   } from 'app/src/components/CreateQuizScreen/Create
 import { CreateQuizListHeader } from 'app/src/components/CreateQuizScreen/CreateQuizListHeader';
 import { CreateQuizListFooter } from 'app/src/components/CreateQuizScreen/CreateQuizListFooter';
 
-import { ModalView       } from 'app/src/components_native/ModalView';
-import { CreateQuizModal } from 'app/src/modals/CreateQuizModal';
+import { ModalView } from 'app/src/components_native/ModalView';
+
+import { CreateQuizModal     } from 'app/src/modals/CreateQuizModal';
+import { QuizAddSectionModal } from 'app/src/modals/QuizAddSectionModal';
 
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
@@ -139,31 +141,24 @@ export class CreateQuizScreen extends React.Component {
   // onPress: Add New Section
   _handleOnPressAddSection = () => {
     // open QuizAddSectionModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizAddSection,
-      navProps: {
-        [MNPQuizAddSection.isEditing]: false,
-        [MNPQuizAddSection.section  ]: {},
-        //event: attach onPress done/save handler
-        [MNPQuizAddSection.onPressDone]: this._handleAddSectionModalOnPressCreate,
-      },
+    this.modalViewAddSectionRef.setVisibilty(true, {
+      [MNPQuizAddSection.isEditing]: false,
+      [MNPQuizAddSection.section  ]: {},
+      //event: attach onPress done/save handler
+      [MNPQuizAddSection.onPressDone]: this._handleAddSectionModalOnPressCreate,
     });
   };
 
   // CreateQuizListItem - edit
   _handleOnPressSectionEdit = ({section, index}) => {
-    // open QuizAddSectionModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizAddSection,
-      navProps: {
-        [MNPQuizAddSection.section  ]: section,
-        [MNPQuizAddSection.isEditing]: true,
-        //event: attach onPress done/save handler
-        [MNPQuizAddSection.onPressDone  ]: this._handleAddSectionModalOnPressEdit,
-        [MNPQuizAddSection.onPressDelete]: this._handleAddSectionModalOnPressDelete,
-      },
+    // open QuizAddSectionModal in isEditing mode
+    this.modalViewAddSectionRef.setVisibilty(true, {
+      [MNPQuizAddSection.section  ]: section,
+      [MNPQuizAddSection.isEditing]: true,
+      //event: attach onPress done/save handler
+      [MNPQuizAddSection.onPressDone  ]: this._handleAddSectionModalOnPressEdit,
+      [MNPQuizAddSection.onPressDelete]: this._handleAddSectionModalOnPressDelete,
     });
-  
   };
 
   // CreateQuizListItem - add question
@@ -269,19 +264,27 @@ export class CreateQuizScreen extends React.Component {
     const quizDesc  = this.state[QuizKeys.quizDesc ];
 
     return(
-      <ModalView
-        ref={r => this.modalViewCreateQuizRef = r}
-        setModalInPresentationFromProps={true}
-      >
-        <CreateQuizModal {...{
-          [MNPCreateQuiz.navigation]: null     ,
-          [MNPCreateQuiz.isEditing ]: true     ,
-          [MNPCreateQuiz.quizTitle ]: quizTitle,
-          [MNPCreateQuiz.quizDesc  ]: quizDesc ,
-          //modal: attach onPress done/save event
-          [MNPCreateQuiz.onPressDone]: this._handleCreateQuizModalOnPressDone,
-        }}/>
-      </ModalView>
+      <Fragment>
+        <ModalView
+          ref={r => this.modalViewCreateQuizRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <CreateQuizModal {...{
+            [MNPCreateQuiz.navigation]: null     ,
+            [MNPCreateQuiz.isEditing ]: true     ,
+            [MNPCreateQuiz.quizTitle ]: quizTitle,
+            [MNPCreateQuiz.quizDesc  ]: quizDesc ,
+            //modal: attach onPress done/save event
+            [MNPCreateQuiz.onPressDone]: this._handleCreateQuizModalOnPressDone,
+          }}/>
+        </ModalView>
+        <ModalView
+          ref={r => this.modalViewAddSectionRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <QuizAddSectionModal/>
+        </ModalView>
+      </Fragment>
     );
   };
 
