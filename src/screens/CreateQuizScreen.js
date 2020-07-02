@@ -34,6 +34,7 @@ import { QuizModel        } from 'app/src/models/QuizModel';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 
 import { QuizStore } from 'app/src/functions/QuizStore';
+import { QuizAddQuestionModal } from '../modals/QuizAddQuestionModal';
 
 
 // TODO:
@@ -164,12 +165,9 @@ export class CreateQuizScreen extends React.Component {
   // CreateQuizListItem - add question
   _handleOnPressSectionAdd = ({section, index}) => {
     // open QuizAddQuestionModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizAddQuestions,
-      navProps: {
-        [MNPQuizAddQuestion.quizSection ]: section,
-        [MNPQuizAddQuestion.onPressDone ]: this._handleQuizAddQuestionModalOnPressDone,
-      },
+    this.modalViewAddQuestionRef.setVisibilty(true, {
+      [MNPQuizAddQuestion.quizSection ]: section,
+      [MNPQuizAddQuestion.onPressDone ]: this._handleQuizAddQuestionModalOnPressDone,
     });
   };
 
@@ -283,6 +281,12 @@ export class CreateQuizScreen extends React.Component {
           setModalInPresentationFromProps={true}
         >
           <QuizAddSectionModal/>
+        </ModalView>
+        <ModalView
+          ref={r => this.modalViewAddQuestionRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <QuizAddQuestionModal/>
         </ModalView>
       </Fragment>
     );

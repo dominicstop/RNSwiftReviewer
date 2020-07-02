@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, SectionList } from 'react-native';
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
-
-import { Navigation } from 'react-native-navigation';
 import { createNativeWrapper } from 'react-native-gesture-handler';
 
 import { ModalBody          } from 'app/src/components/Modal/ModalBody';
@@ -101,6 +99,14 @@ export class QuizAddQuestionModal extends React.Component {
     };
   };
 
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
+
   hasUnsavedChanges = () => {
     const props = this.props;
     const state = this.state;
@@ -147,7 +153,7 @@ export class QuizAddQuestionModal extends React.Component {
     };
 
     // close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   // ModalFooter: cancel button
@@ -169,8 +175,8 @@ export class QuizAddQuestionModal extends React.Component {
       if(!shouldDiscard) return;
     };
     
-    //close modal
-    Navigation.dismissModal(componentId);
+    // close modal
+    this.modalRef.setVisibilty(false);
   };
 
   // Add New Question button press
@@ -239,7 +245,24 @@ export class QuizAddQuestionModal extends React.Component {
   };
   //#endregion
 
-  // #region - event handlers/callbacks
+  // #region - modal handlers/callbacks
+  // ModalView Event/Lifecycle
+  onModalAttemptDismiss = async () => {
+    const hasChanges = this.hasUnsavedChanges();
+    if (!hasChanges) return;
+    
+    const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+      title        : 'Discard Changes',
+      message      : 'Looks like you have some unsaved changes, are you sure you want to discard them?',
+      confirmText  : 'Discard',
+      isDestructive: true,
+    });
+
+    if(shouldDiscard){
+      this.modalRef.setVisibilty(false);
+    };
+  };
+
   // QuizCreateQuestionModal - isEditing: false
   // ModalFooterButton: onPressDone callback
   _handleQuizCreateQuestionModalOnPressCreate = ({question}) => {
