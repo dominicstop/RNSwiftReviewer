@@ -60,12 +60,15 @@ export class CreateQuizModal extends React.PureComponent {
   };
 
   // check if values were edited
-  hasUnsavedChanges = ({nextTitle, nextDesc}) => {
+  hasUnsavedChanges = () => {
     const props = this.props;
 
     const isEditing = props[MNPCreateQuiz.isEditing];
     const prevTitle = props[MNPCreateQuiz.quizTitle];
     const prevDesc  = props[MNPCreateQuiz.quizDesc ];
+
+    const nextTitle = this.textTitle;
+    const nextDesc  = this.textDesc;
 
     return (isEditing? (
       (prevTitle != nextTitle) ||
@@ -88,30 +91,21 @@ export class CreateQuizModal extends React.PureComponent {
   _handleOnChangeTextTitle = (text) => {
     this.textTitle = text;
     this.modalRef.setIsModalInPresentation(
-      this.hasUnsavedChanges({
-        nextTitle: text, 
-        nextDesc : this.textDesc,
-      })
+      this.hasUnsavedChanges()
     );
   };
 
   _handleOnChangeTextDesc = (text) => {
     this.textDesc = text;
     this.modalRef.setIsModalInPresentation(
-      this.hasUnsavedChanges({
-        nextTitle: this.textTitle,
-        nextDesc : text,
-      })
+      this.hasUnsavedChanges()
     );
   };
 
   //#region - ModalView Events/Handlers
   // ModalView: isModalInPresentation event
   onModalAttemptDismiss = async () => {
-    const hasChanges = this.hasUnsavedChanges({
-      nextTitle: this.textTitle,
-      nextDesc : this.textDesc ,
-    });
+    const hasChanges = this.hasUnsavedChanges();
 
     if (!hasChanges) return;
     const shouldDiscard = await Helpers.asyncActionSheetConfirm({
@@ -130,11 +124,7 @@ export class CreateQuizModal extends React.PureComponent {
   // modalFooter: confirm onPress
   _handleOnPressButtonLeft = async () => {
     const { navigation, ...props } = this.props;
-    
-    const hasChanges = this.hasUnsavedChanges({
-      nextTitle: this.textTitle,
-      nextDesc : this.textDesc ,
-    });
+    const hasChanges = this.hasUnsavedChanges();
 
     const isEditing   = props[MNPCreateQuiz.isEditing  ];
     const onPressDone = props[MNPCreateQuiz.onPressDone];
@@ -178,12 +168,9 @@ export class CreateQuizModal extends React.PureComponent {
   
   // modalFooter: cancel onPress
   _handleOnPressButtonRight = async () => {
-    const didChange = this.hasUnsavedChanges({
-      nextTitle: this.textTitle,
-      nextDesc : this.textDesc ,
-    });
-
+    const didChange = this.hasUnsavedChanges();
     await Helpers.timeout(200);
+
     if(didChange){
       const shouldDiscard = await Helpers.asyncActionSheetConfirm({
         title: 'Discard Changes',

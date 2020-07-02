@@ -187,7 +187,7 @@ export class QuizAddSectionModal extends React.Component {
     };
   };
 
-  hasUnsavedChanges = ({nextTitle, nextDesc}) => {
+  hasUnsavedChanges = () => {
     const props = this.props;
     const { selectedSectionType: nextType } = this.state;
 
@@ -198,6 +198,9 @@ export class QuizAddSectionModal extends React.Component {
     const prevTitle = section[QuizSectionKeys.sectionTitle];
     const prevDesc  = section[QuizSectionKeys.sectionDesc ];
     const prevType  = section[QuizSectionKeys.sectionType ];
+
+    const nextTitle = this.textTitle;
+    const nextDesc  = this.textDesc;
 
     return (isEditing? (
       (prevTitle != nextTitle) ||
@@ -212,10 +215,7 @@ export class QuizAddSectionModal extends React.Component {
 
   //#region - ModalView Events/Handlers
   onModalAttemptDismiss = async () => {
-    const hasChanges = this.hasUnsavedChanges({
-      nextTitle: this.textTitle,
-      nextDesc : this.textDesc ,
-    });
+    const hasChanges = this.hasUnsavedChanges();
     
     if (!hasChanges) return;
     const shouldDiscard = await Helpers.asyncActionSheetConfirm({
@@ -235,20 +235,14 @@ export class QuizAddSectionModal extends React.Component {
   _handleOnChangeTextTitle = (text) => {
     this.textTitle = text;
     this.modalRef.setIsModalInPresentation(
-      this.hasUnsavedChanges({
-        nextTitle: text,
-        nextDesc : this.textDesc,
-      })
+      this.hasUnsavedChanges()
     );
   };
 
   _handleOnChangeTextDesc = (text) => {
     this.textDesc = text;
     this.modalRef.setIsModalInPresentation(
-      this.hasUnsavedChanges({
-        nextDesc : text,
-        nextTitle: this.textTitle,
-      })
+      this.hasUnsavedChanges()
     );
   };
 
@@ -317,11 +311,7 @@ export class QuizAddSectionModal extends React.Component {
   _handleOnPressButtonLeft = async () => {
     const props = this.props;
     const { selectedSectionType } = this.state;
-
-    const hasChanges = this.hasUnsavedChanges({
-      nextTitle: this.textTitle,
-      nextDesc : this.textDesc ,
-    });
+    const hasChanges = this.hasUnsavedChanges();
 
     const section     = props[MNPQuizAddSection.section    ];
     const isEditing   = props[MNPQuizAddSection.isEditing  ];
@@ -365,12 +355,9 @@ export class QuizAddSectionModal extends React.Component {
 
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
-    const didChange = this.hasUnsavedChanges({
-      nextTitle: this.textTitle,
-      nextDesc : this.textDesc ,
-    });
-
+    const didChange = this.hasUnsavedChanges();
     await Helpers.timeout(200);
+
     if(didChange){
       const shouldDiscard = await Helpers.asyncActionSheetConfirm({
         title: 'Discard Section Changes',
