@@ -25,6 +25,13 @@
 		88C5432B24AB140B00DCDF15 /* RCTModalViewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430724AB140A00DCDF15 /* RCTModalViewError.swift */; };
 		88C5432C24AB140B00DCDF15 /* RCTModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430824AB140A00DCDF15 /* RCTModalViewController.swift */; };
 		88C5432D24AB140B00DCDF15 /* RCTModalViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C5430924AB140A00DCDF15 /* RCTModalViewManager.m */; };
+		88D3B2D124B3E779000323D1 /* SwiftUIListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2CC24B3E779000323D1 /* SwiftUIListOrder.swift */; };
+		88D3B2D224B3E779000323D1 /* RCTListOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2CD24B3E779000323D1 /* RCTListOrderModel.swift */; };
+		88D3B2D324B3E779000323D1 /* RCTListOrderViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2CE24B3E779000323D1 /* RCTListOrderViewManager.m */; };
+		88D3B2D424B3E779000323D1 /* RCTListOrderViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2CF24B3E779000323D1 /* RCTListOrderViewManager.swift */; };
+		88D3B2D524B3E779000323D1 /* RCTListOrderViewProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D024B3E779000323D1 /* RCTListOrderViewProxy.swift */; };
+		88D3B2D724B3E7E9000323D1 /* Encodable+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D624B3E7E9000323D1 /* Encodable+Helpers.swift */; };
+		88D3B2DA24B3E80F000323D1 /* Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D924B3E80E000323D1 /* Unwrap.swift */; };
 		A683E433441EE504DC6E2762 /* libPods-RNSwiftReviewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +88,13 @@
 		88C5430724AB140A00DCDF15 /* RCTModalViewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalViewError.swift; sourceTree = "<group>"; };
 		88C5430824AB140A00DCDF15 /* RCTModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTModalViewController.swift; sourceTree = "<group>"; };
 		88C5430924AB140A00DCDF15 /* RCTModalViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTModalViewManager.m; sourceTree = "<group>"; };
+		88D3B2CC24B3E779000323D1 /* SwiftUIListOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIListOrder.swift; sourceTree = "<group>"; };
+		88D3B2CD24B3E779000323D1 /* RCTListOrderModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTListOrderModel.swift; sourceTree = "<group>"; };
+		88D3B2CE24B3E779000323D1 /* RCTListOrderViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTListOrderViewManager.m; sourceTree = "<group>"; };
+		88D3B2CF24B3E779000323D1 /* RCTListOrderViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTListOrderViewManager.swift; sourceTree = "<group>"; };
+		88D3B2D024B3E779000323D1 /* RCTListOrderViewProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTListOrderViewProxy.swift; sourceTree = "<group>"; };
+		88D3B2D624B3E7E9000323D1 /* Encodable+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Encodable+Helpers.swift"; sourceTree = "<group>"; };
+		88D3B2D924B3E80E000323D1 /* Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unwrap.swift; sourceTree = "<group>"; };
 		91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSwiftReviewer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B14B87BA8B741BDBEA87686 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		9B2045AEA8644F168D329C17 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -135,6 +149,7 @@
 		13B07FAE1A68108700A75B9A /* RNSwiftReviewer */ = {
 			isa = PBXGroup;
 			children = (
+				88D3B2D824B3E80E000323D1 /* SwiftUI */,
 				88C542E224AB140800DCDF15 /* Extensions */,
 				88C542EB24AB140A00DCDF15 /* React Native */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -223,6 +238,7 @@
 				88C542E624AB140800DCDF15 /* UIView+Helpers.swift */,
 				88C542E924AB140800DCDF15 /* UIModalPresentationStyle+Helpers.swift */,
 				88C542EA24AB140800DCDF15 /* KeyWindow+Helpers.swift */,
+				88D3B2D624B3E7E9000323D1 /* Encodable+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -239,6 +255,7 @@
 		88C542EC24AB140A00DCDF15 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				88D3B2CB24B3E779000323D1 /* RCTListOrder */,
 				88C5430324AB140A00DCDF15 /* RCTModalView */,
 			);
 			path = Components;
@@ -273,6 +290,26 @@
 				88C542E724AB140800DCDF15 /* RCTLog.swift */,
 			);
 			path = RCTSwiftLog;
+			sourceTree = "<group>";
+		};
+		88D3B2CB24B3E779000323D1 /* RCTListOrder */ = {
+			isa = PBXGroup;
+			children = (
+				88D3B2CC24B3E779000323D1 /* SwiftUIListOrder.swift */,
+				88D3B2CD24B3E779000323D1 /* RCTListOrderModel.swift */,
+				88D3B2CE24B3E779000323D1 /* RCTListOrderViewManager.m */,
+				88D3B2CF24B3E779000323D1 /* RCTListOrderViewManager.swift */,
+				88D3B2D024B3E779000323D1 /* RCTListOrderViewProxy.swift */,
+			);
+			path = RCTListOrder;
+			sourceTree = "<group>";
+		};
+		88D3B2D824B3E80E000323D1 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				88D3B2D924B3E80E000323D1 /* Unwrap.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		F3A6B306DEB7ACF539C5CF4D /* Pods */ = {
@@ -578,18 +615,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88D3B2DA24B3E80F000323D1 /* Unwrap.swift in Sources */,
 				88C5431324AB140A00DCDF15 /* UIView+Helpers.swift in Sources */,
 				88C5432924AB140B00DCDF15 /* RCTModalViewDelegate.swift in Sources */,
+				88D3B2D524B3E779000323D1 /* RCTListOrderViewProxy.swift in Sources */,
+				88D3B2D324B3E779000323D1 /* RCTListOrderViewManager.m in Sources */,
 				88C5431624AB140A00DCDF15 /* KeyWindow+Helpers.swift in Sources */,
 				88C5432C24AB140B00DCDF15 /* RCTModalViewController.swift in Sources */,
+				88D3B2D224B3E779000323D1 /* RCTListOrderModel.swift in Sources */,
 				88C5431024AB140A00DCDF15 /* UIModalTransitionStyle+Helpers.swift in Sources */,
 				88C542E124AA5CAD00DCDF15 /* AppDelegate.swift in Sources */,
 				88C5431124AB140A00DCDF15 /* RCTSwiftLog.m in Sources */,
+				88D3B2D424B3E779000323D1 /* RCTListOrderViewManager.swift in Sources */,
 				88C5431424AB140A00DCDF15 /* RCTLog.swift in Sources */,
 				88C5432D24AB140B00DCDF15 /* RCTModalViewManager.m in Sources */,
 				88C5432824AB140A00DCDF15 /* RCTModalView.swift in Sources */,
+				88D3B2D124B3E779000323D1 /* SwiftUIListOrder.swift in Sources */,
 				88C5432A24AB140B00DCDF15 /* RCTModalViewManager.swift in Sources */,
 				88C5432B24AB140B00DCDF15 /* RCTModalViewError.swift in Sources */,
+				88D3B2D724B3E7E9000323D1 /* Encodable+Helpers.swift in Sources */,
 				88C5431524AB140A00DCDF15 /* UIModalPresentationStyle+Helpers.swift in Sources */,
 				88C5431224AB140A00DCDF15 /* UIBlurEffect+Helpers.swift in Sources */,
 			);
@@ -770,7 +814,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -824,7 +867,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
