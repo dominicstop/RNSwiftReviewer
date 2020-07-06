@@ -202,6 +202,10 @@ export class ModalBody extends React.Component {
       },
     };
 
+    const keyboardSpacer = props.useKeyboardSpacer && (
+      <Reanimated.View style={{ height: this._height }}/>
+    );
+
     if(props.animateAsGroup && mount){
       return(
         <Animatable.View
@@ -213,6 +217,7 @@ export class ModalBody extends React.Component {
         >
           <ScrollView {...scrollViewProps}>
             {props.children}
+            {keyboardSpacer}
           </ScrollView>
         </Animatable.View>
       );
@@ -232,6 +237,7 @@ export class ModalBody extends React.Component {
       return (
         <ScrollView {...scrollViewProps}>
           {mount && children}
+          {keyboardSpacer}
         </ScrollView>
       );
     };
@@ -285,11 +291,6 @@ export class ModalBody extends React.Component {
             })}
           </Animatable.View>
         ))}
-        {props.useKeyboardSpacer && (
-          <Reanimated.View
-            style={{ height: this._height }}
-          />
-        )}
         {props.modalBanner && React.cloneElement(props.modalBanner,
           { offsetTop: headerValues.insetTop }
         )}
