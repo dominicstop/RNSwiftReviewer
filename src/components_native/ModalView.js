@@ -4,7 +4,7 @@ import { requireNativeComponent, UIManager, findNodeHandle, StyleSheet, View, Te
 
 import _ from 'lodash';
 import * as Helpers from 'app/src/functions/helpers';
-
+import { RequestFactory } from 'app/src/functions/RequestFactory';
 
 
 const componentName   = "RCTModalView";
@@ -119,9 +119,7 @@ export class ModalView extends React.PureComponent {
   constructor(props){
     super(props);
 
-    this.requestID  = 0;
-    this.requestMap = new Map();
-
+    RequestFactory.initialize(this);
     this._childRef = null;
 
     this.state = {
@@ -136,6 +134,9 @@ export class ModalView extends React.PureComponent {
 
     const didChange = (prevVisible != nextVisible);
     if (!didChange) return false;
+
+    const { promise, requestID } = 
+      RequestFactory.newRequest(this, { timeout: 2000 });
 
     try {
       if(nextVisible) {
@@ -158,9 +159,6 @@ export class ModalView extends React.PureComponent {
         this.didOnLayout = null;
       };
 
-      // new requestID
-      const requestID = this.requestID++;
-      
       // request modal to open/close
       UIManager.dispatchViewManagerCommand(
         findNodeHandle(this.nativeModalViewRef),
@@ -168,9 +166,7 @@ export class ModalView extends React.PureComponent {
         [requestID, nextVisible]
       );
 
-      const res = await new Promise((resolve, reject) => {
-        this.requestMap[requestID] = { resolve, reject };
-      });
+      const result = await promise;
 
       // when finish hiding modal, unmount children
       if(!nextVisible) await Helpers.setStateAsync(this, {
@@ -178,14 +174,12 @@ export class ModalView extends React.PureComponent {
         childProps: null
       });
 
-      return res.success;
+      return result.success;
 
     } catch(error){
-      console.log(
-          "ModalView, setVisibilty error"
-        + ` - Error Code: ${error.errorCode   }`
-        + ` - Error Mesg: ${error.errorMessage}`
-      );
+      RequestFactory.rejectRequest(this, {requestID});
+      console.log("ModalView, setVisibilty failed:");
+      console.log(error);
 
       return false;
     };
@@ -223,23 +217,9 @@ export class ModalView extends React.PureComponent {
   //#region - Native Event Handlers
 
   _handleOnRequestResult = ({nativeEvent}) => {
-    const { requestID, success, errorCode, errorMessage } = nativeEvent;
-
-    const promise = this.requestMap[requestID];
-    if(!promise) return;
-
-    const params = { requestID, success, errorCode, errorMessage};
-
-    try {
-      (success? promise.resolve : promise.reject)(params);
-      this.props     .onRequestResult?.();
-      this._childRef?.onRequestResult?.();
-  
-    } catch(error){
-      promise.reject(params);
-      console.log("ModalView, _handleOnRequestResult: failed");
-      console.log(error);
-    };
+    RequestFactory.resolveRequestFromObj(this, nativeEvent);
+    this.props     .onRequestResult?.(nativeEvent);
+    this._childRef?.onRequestResult?.(nativeEvent);
   };
 
   _handleOnModalShow = () => {
