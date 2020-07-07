@@ -1,6 +1,6 @@
 import React from 'react';
 import Proptypes from 'prop-types';
-import { requireNativeComponent, UIManager, findNodeHandle, StyleSheet, View, Text } from 'react-native';
+import { requireNativeComponent, UIManager, findNodeHandle, StyleSheet, View, ScrollView } from 'react-native';
 
 import _ from 'lodash';
 import * as Helpers from 'app/src/functions/helpers';
@@ -89,6 +89,8 @@ export const UIModalTransitionStyles = {
   partialCurl   : 'partialCurl'   ,
   */
 };
+
+const VirtualizedListContext = React.createContext(null);
 
 export class ModalView extends React.PureComponent {
   static proptypes = {
@@ -189,6 +191,11 @@ export class ModalView extends React.PureComponent {
     this.setState({ isModalInPresentation: bool });
   };
 
+  // We don't want any responder events bubbling out of the modal.
+  _shouldSetResponder() {
+    return true;
+  };
+
   _handleOnLayout = () => {
     const { didOnLayout } = this;
     didOnLayout && didOnLayout();
@@ -280,22 +287,28 @@ export class ModalView extends React.PureComponent {
       <NativeModalView
         ref={r => this.nativeModalViewRef = r}
         style={styles.rootContainer}
+        onStartShouldSetResponder={this._shouldSetResponder}
         {...props}
       >
-        {state.visible && (
-          <View 
-            ref={r => this.modalContainerRef = r}
-            style={[styles.modalContainer, props.containerStyle]}
-            onLayout={this._handleOnLayout}
-          >
-            {React.cloneElement(this.props.children, {
-              ref        : this._handleChildRef   ,
-              getModalRef: this._handleChildGetRef,
-              // pass down props received from setVisibility
-              ...(_.isObject(state.childProps) && state.childProps)
-            })}
-          </View>
-        )}
+        <VirtualizedListContext.Provider value={null}>
+          <ScrollView.Context.Provider value={null}>
+            {state.visible && (
+              <View 
+                ref={r => this.modalContainerRef = r}
+                style={[styles.modalContainer, props.containerStyle]}
+                collapsable={false}
+                onLayout={this._handleOnLayout}
+              >
+                {React.cloneElement(this.props.children, {
+                  ref        : this._handleChildRef   ,
+                  getModalRef: this._handleChildGetRef,
+                  // pass down props received from setVisibility
+                  ...(_.isObject(state.childProps) && state.childProps)
+                })}
+              </View>
+            )}
+          </ScrollView.Context.Provider>
+        </VirtualizedListContext.Provider>
       </NativeModalView>
     );
   };
@@ -307,5 +320,8 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
   },
 });

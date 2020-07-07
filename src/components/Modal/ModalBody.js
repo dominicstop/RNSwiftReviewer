@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, View, ScrollView, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     bottom: MODAL_FOOTER_HEIGHT,
   },
   background: {
-    backgroundColor: 'rgba(252,252,252,0.7)',
+    backgroundColor: 'rgba(252,252,252,0.25)',
     //fill space
     position: 'absolute',
     top: MODAL_HEADER_HEIGHT,
@@ -133,7 +133,7 @@ export class ModalBody extends React.Component {
     };
 
     if(props.delayMount){
-      await Helpers.timeout(50);
+      await Helpers.timeout(100);
       this.setState({ mount: true });
     };
   };
@@ -202,10 +202,6 @@ export class ModalBody extends React.Component {
       },
     };
 
-    const keyboardSpacer = props.useKeyboardSpacer && (
-      <Reanimated.View style={{ height: this._height }}/>
-    );
-
     if(props.animateAsGroup && mount){
       return(
         <Animatable.View
@@ -217,28 +213,32 @@ export class ModalBody extends React.Component {
         >
           <ScrollView {...scrollViewProps}>
             {props.children}
-            {keyboardSpacer}
+            {props.useKeyboardSpacer && (
+              <Reanimated.View style={{ height: this._height }}/>
+            )}
           </ScrollView>
         </Animatable.View>
       );
 
-    } else {
-      const children = React.Children.map(props.children, (child, index) => (
-        <AnimatedListItem
-          animation={'fadeInUp'}
-          duration={250}
-          last={4}
-          {...{index}}
-        >
-          {child}
-        </AnimatedListItem>
-      ));
-
+    } else if(!props.animateAsGroup && mount) {
       return (
-        <ScrollView {...scrollViewProps}>
-          {mount && children}
-          {keyboardSpacer}
-        </ScrollView>
+        <Fragment>
+          <ScrollView {...scrollViewProps}>
+            {React.Children.map(props.children, (child, index) => (
+              <AnimatedListItem
+                animation={'fadeInUp'}
+                duration={250}
+                last={4}
+                {...{index}}
+              >
+                {child}
+              </AnimatedListItem>
+            ))}
+          </ScrollView>
+          {props.useKeyboardSpacer && (
+            <Reanimated.View style={{ height: this._height }}/>
+          )}
+        </Fragment>
       );
     };
   };
@@ -260,11 +260,6 @@ export class ModalBody extends React.Component {
 
     return(
       <View style={styles.rootContainer}>
-        <BlurView 
-          style={[styles.blurBackground, backgroundStyle]}
-          blurType={'light'}
-          blurAmount={75}
-        />
         <View style={[styles.background, backgroundStyle]}/>
         {props.wrapInScrollView? (
           this._renderScrollView()
