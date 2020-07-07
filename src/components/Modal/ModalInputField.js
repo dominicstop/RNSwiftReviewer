@@ -60,7 +60,7 @@ function deriveStateFromMode(mode){
   };
 };
 
-export class ModalInputField extends React.PureComponent {
+export class ModalInputField extends React.Component {
   static propTypes = {
     title       : PropTypes.string,
     subtitle    : PropTypes.string,
@@ -130,10 +130,10 @@ export class ModalInputField extends React.PureComponent {
 
     this.state = {
       mode: MODES.BLURRED,
-      textInput: props.initialValue ?? '',
     };
 
-    this._progress = new Value(0);
+    this._textInput = props.initialValue ?? '';
+    this._progress  = new Value(0);
 
     this._bgOpacity = interpolate(this._progress, {
       inputRange : [0  , 100],
@@ -189,6 +189,20 @@ export class ModalInputField extends React.PureComponent {
     });
   };
 
+  shouldComponentUpdate(nextProps, nextState){
+    const prevProps = this.props;
+    const prevState = this.state;
+
+    return (
+      // compare props ---------------------------------
+      prevProps.title       != nextProps.title        ||
+      prevProps.subtitle    != nextProps.subtitle     ||
+      prevProps.placeholder != nextProps.placeholder  ||
+      // compare state ---------------
+      prevState.mode != nextState.mode
+    );
+  };
+
   componentDidMount(){
     const { inputRef } = this.props;
     inputRef && inputRef(this.textInputRef);
@@ -196,9 +210,9 @@ export class ModalInputField extends React.PureComponent {
 
   isValid = (animate) => {
     const { validate } = this.props;
-    const { textInput,mode } = this.state;
+    const { mode } = this.state;
 
-    const isValid = validate && validate(textInput);
+    const isValid = validate && validate(this._textInput);
     if(!isValid && animate){
       this.inputContainerRef.shake(750);
       this.setState({
@@ -210,8 +224,7 @@ export class ModalInputField extends React.PureComponent {
   };
 
   getText = () => {
-    const { textInput } = this.state;
-    return textInput;
+    return this._textInput;
   };
 
   getProps = () => {
@@ -233,7 +246,6 @@ export class ModalInputField extends React.PureComponent {
 
   _handleOnTextBlur = () => {
     const { onBlur } = this.props;
-    const { textInput } = this.state;
 
     const animation = timing(this._progress, {
       duration: 300,
@@ -242,19 +254,21 @@ export class ModalInputField extends React.PureComponent {
     });
 
     animation.start();
-
     const mode = (this.isValid(true)
       ? MODES.BLURRED
       : MODES.INVALID
     );
 
-    onBlur && onBlur({textInput, mode});
     this.setState({mode});
+    onBlur && onBlur({
+      mode,
+      textInput: this._textInput
+    });
   };
 
   _handleOnChangeText = (input) => {
     this.props.onChangeText?.(input);
-    this.setState({textInput: input});
+    this._textInput = input;
   };
 
   _handleOnSubmitEditing = ({nativeEvent: {text, eventCount, target}}) => {
@@ -267,7 +281,7 @@ export class ModalInputField extends React.PureComponent {
   render(){
     const { styles } = ModalInputField;
     const { iconActive, iconInactive, ...props } = this.getProps();
-    const { mode, textInput: value } = this.state;
+    const { mode } = this.state;
 
     const values = deriveStateFromMode(mode);
 
@@ -360,7 +374,7 @@ export class ModalInputField extends React.PureComponent {
             maxLength={300}
             enablesReturnKeyAutomatically={true}
             returnKeyType={'next'}
-            {...{value, ...props}}
+            {...props}
           />
         </Animatable.View>
       </Fragment>
