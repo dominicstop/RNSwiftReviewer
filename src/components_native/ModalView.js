@@ -187,8 +187,11 @@ export class ModalView extends React.PureComponent {
     };
   };
 
-  setIsModalInPresentation = (bool) => {
-    this.setState({ isModalInPresentation: bool });
+  setIsModalInPresentation = (isModalInPresentation) => {
+    const { isModalInPresentation: prevVal } = this.state;
+    if(prevVal != isModalInPresentation){
+      this.setState({ isModalInPresentation });
+    };
   };
 
   // We don't want any responder events bubbling out of the modal.

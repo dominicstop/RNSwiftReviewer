@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, SectionList } from 'react-native';
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -23,8 +23,10 @@ import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';
 
-import { ModalController } from 'app/src/functions/ModalController';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
+import { ModalView } from '../components_native/ModalView';
+
+import { QuizCreateQuestionModal } from 'app/src/modals/QuizCreateQuestionModal';
 
 const GHSectionList = createNativeWrapper(SectionList);
 
@@ -186,15 +188,11 @@ export class QuizAddQuestionModal extends React.Component {
     // extract/isolate section values from stata
     const section = QuizSectionModel.extract(state);
 
-    // open QuizCreateQuestionModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizCreateQuestion,
-      navProps: {
-        [MNPQuizCreateQuestion.isEditing   ]: false,
-        [MNPQuizCreateQuestion.quizSection ]: section,
-        [MNPQuizCreateQuestion.quizQuestion]: {},
-        [MNPQuizCreateQuestion.onPressDone ]: this._handleQuizCreateQuestionModalOnPressCreate,
-      },
+    this.modalViewCreateQuestionRef.setVisibilty(true, {
+      [MNPQuizCreateQuestion.isEditing   ]: false,
+      [MNPQuizCreateQuestion.quizSection ]: section,
+      [MNPQuizCreateQuestion.quizQuestion]: {},
+      [MNPQuizCreateQuestion.onPressDone ]: this._handleQuizCreateQuestionModalOnPressCreate,
     });
   };
 
@@ -206,15 +204,12 @@ export class QuizAddQuestionModal extends React.Component {
     const section = QuizSectionModel.extract(state);
 
     // open QuizCreateQuestionModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizCreateQuestion,
-      navProps: {
-        [MNPQuizCreateQuestion.isEditing    ]: true,
-        [MNPQuizCreateQuestion.quizSection  ]: section,
-        [MNPQuizCreateQuestion.quizQuestion ]: question,
-        [MNPQuizCreateQuestion.onPressDone  ]: this._handleQuizCreateQuestionModalOnPressEdit  ,
-        [MNPQuizCreateQuestion.onPressDelete]: this._handleQuizCreateQuestionModalOnPressDelete,
-      },
+    this.modalViewCreateQuestionRef.setVisibilty(true, {
+      [MNPQuizCreateQuestion.isEditing    ]: true,
+      [MNPQuizCreateQuestion.quizSection  ]: section,
+      [MNPQuizCreateQuestion.quizQuestion ]: question,
+      [MNPQuizCreateQuestion.onPressDone  ]: this._handleQuizCreateQuestionModalOnPressEdit  ,
+      [MNPQuizCreateQuestion.onPressDelete]: this._handleQuizCreateQuestionModalOnPressDelete,
     });
   };
 
@@ -293,7 +288,18 @@ export class QuizAddQuestionModal extends React.Component {
   };
   //#endregion
 
-  // #region - render functiaons
+  // #region - render functions
+  _renderModal(){
+    return(
+      <ModalView
+        ref={r => this.modalViewCreateQuestionRef = r}
+        setModalInPresentationFromProps={true}
+      >
+        <QuizCreateQuestionModal/>
+      </ModalView>
+    );
+  };
+
   // SectionList: top header
   _renderListHeader = () => {
     const section = QuizSectionModel.extract(this.state);
@@ -409,21 +415,24 @@ export class QuizAddQuestionModal extends React.Component {
     );
 
     return (
-      <ModalBody
-        ref={r => this.modalBgRef = r}
-        wrapInScrollView={false}
-        {...{modalHeader, modalFooter, overlay}}
-      >
-        <GHSectionList
-          ref={r => this.sectionList = r}
-          sections={[{ data: questions }]}
-          keyExtractor={this._handleKeyExtractor}
-          renderItem={this._renderItem}
-          renderSectionHeader={this._renderSectionHeader}
-          ListHeaderComponent={this._renderListHeader}
-          ListFooterComponent={this._renderListFooter}
-        />
-      </ModalBody>
+      <Fragment>
+        {this._renderModal()}
+        <ModalBody
+          ref={r => this.modalBgRef = r}
+          wrapInScrollView={false}
+          {...{modalHeader, modalFooter, overlay}}
+        >
+          <GHSectionList
+            ref={r => this.sectionList = r}
+            sections={[{ data: questions }]}
+            keyExtractor={this._handleKeyExtractor}
+            renderItem={this._renderItem}
+            renderSectionHeader={this._renderSectionHeader}
+            ListHeaderComponent={this._renderListHeader}
+            ListFooterComponent={this._renderListFooter}
+          />
+        </ModalBody>
+      </Fragment>
     );
   };
   //#endregion

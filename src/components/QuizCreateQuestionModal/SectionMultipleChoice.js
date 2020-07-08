@@ -233,6 +233,11 @@ export class SectionMultipleChoice extends React.PureComponent {
 
   // ChoiceItem: onPress callback
   _handleOnPressChoice = ({choice, index}) => {
+    this.props.onChangeValue?.({
+      choice        : this.state.choices,
+      selectedChoice: choice,
+    });
+
     this.setState({
       selectedChoice: choice,
     });

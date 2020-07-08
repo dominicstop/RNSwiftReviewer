@@ -165,9 +165,8 @@ export class SectionMatchingType extends React.PureComponent {
   };
 
   _handleOnPressChoice = ({ answer, index }) => {
-    this.setState({
-      selectedAnswer: answer
-    });
+    this.props.onChangeValue?.(answer);
+    this.setState({ selectedAnswer: answer });
   };
 
   _renderChoices(){

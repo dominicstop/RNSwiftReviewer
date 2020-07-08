@@ -26,9 +26,10 @@ export class SectionTrueOrFalse extends React.PureComponent {
   };
 
   _handleOnChange = ({nativeEvent}) => {
-    this.setState({
-      selectedIndex: nativeEvent.selectedSegmentIndex
-    });
+    const selectedIndex = nativeEvent.selectedSegmentIndex;
+    
+    this.props.onChangeValue?.(selectedIndex == 0);
+    this.setState({selectedIndex});
   };
 
   render(){

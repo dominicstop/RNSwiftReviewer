@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import Ionicon           from 'react-native-vector-icons/Ionicons';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Navigation } from 'react-native-navigation';
-
 import { ModalBody           } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader         } from 'app/src/components/Modal/ModalHeader';
 import { ModalFooter         } from 'app/src/components/Modal/ModalFooter';
@@ -82,6 +80,31 @@ export class QuizCreateQuestionModal extends React.Component {
     
     this.state = {
       ...question.values,
+    };
+  };
+
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
+
+  // ModalView: isModalInPresentation event
+  onModalAttemptDismiss = async () => {
+    const hasChanges = this.hasUnsavedChanges();
+
+    if (!hasChanges) return;
+    const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+      title        : 'Discard Changes',
+      message      : 'Looks like you have some unsaved changes, are you sure you want to discard them?',
+      confirmText  : 'Discard',
+      isDestructive: true,
+    });
+
+    if(shouldDiscard){
+      this.modalRef.setVisibilty(false);
     };
   };
 
@@ -186,6 +209,12 @@ export class QuizCreateQuestionModal extends React.Component {
     ));
   };
 
+  _handleOnChangeValue = () => {
+    this.modalRef.setIsModalInPresentation(
+      this.hasUnsavedChanges()
+    );
+  };
+
   // ModalSectionButton: onPress delete
   _handleOnPressDelete = async () => {
     const { componentId, ...props } = this.props;
@@ -206,7 +235,7 @@ export class QuizCreateQuestionModal extends React.Component {
     // call callback
     onPressDelete && onPressDelete({question});
     // close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   // ModalFooter: onPress save button
@@ -220,7 +249,7 @@ export class QuizCreateQuestionModal extends React.Component {
     const isValid = this.validate(false);
     if(!hasChanges && isEditing){
       // no changes, close modal
-      Navigation.dismissModal(componentId);
+      this.modalRef.setVisibilty(false);
 
     } else if (!isValid){
       await Helpers.asyncAlert({
@@ -244,7 +273,7 @@ export class QuizCreateQuestionModal extends React.Component {
       await this.overlay.start();
 
       // close modal
-      Navigation.dismissModal(componentId);
+      this.modalRef.setVisibilty(false);
     };
   };
 
@@ -268,7 +297,7 @@ export class QuizCreateQuestionModal extends React.Component {
     };
 
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   _renderSectionAnswer(){
@@ -294,6 +323,7 @@ export class QuizCreateQuestionModal extends React.Component {
             placeholder={'Input Answer Text'}
             initialValue={(answer ?? '')}
             onSubmitEditing={this._handleOnSubmitEditing}
+            onChangeValue={this._handleOnChangeValue}
             validate={Validate.isNotNullOrWhitespace}
           />
         </ModalSection>
@@ -302,18 +332,21 @@ export class QuizCreateQuestionModal extends React.Component {
         <SectionMultipleChoice
           ref={r => this.multipleChoiceRef = r}
           selectedChoices={answer}
+          onChangeValue={this._handleOnChangeValue}
           {...{choices}}
         />
       );
       case SectionTypes.TRUE_OR_FALSE: return (
         <SectionTrueOrFalse
           ref={r => this.trueOrFalseRef = r}
+          onChangeValue={this._handleOnChangeValue}
           initialValue={answer}
         />
       );
       case SectionTypes.MATCHING_TYPE: return(
         <SectionMatchingType
           ref={r => this.matchingTypeRef = r}
+          onChangeValue={this._handleOnChangeValue}
           {...{section, answer, isEditing}}
         />
       );
@@ -409,6 +442,7 @@ export class QuizCreateQuestionModal extends React.Component {
             placeholder={'Input Question Text'}
             initialValue={state[QuizQuestionKeys.questionText] ?? ''}
             onSubmitEditing={this._handleOnSubmitEditing}
+            onChangeValue={this._handleOnChangeValue}
             validate={Validate.isNotNullOrWhitespace}
           />
         </ModalSection>

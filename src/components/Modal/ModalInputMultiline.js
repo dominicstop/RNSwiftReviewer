@@ -88,11 +88,11 @@ export class ModalInputMultiline extends React.PureComponent {
     super(props);
 
     this.state = {
-      mode     : MODES.INITIAL,
-      textInput: props.initialValue ?? '',
+      mode: MODES.INITIAL,
     };
 
-    this._progress = new Value(0);
+    this._textInput = props.initialValue ?? '';
+    this._progress  = new Value(0);
 
     this._bgOpacity = interpolate(this._progress, {
       inputRange : [0  , 100],
@@ -131,10 +131,9 @@ export class ModalInputMultiline extends React.PureComponent {
   };
 
   isValid = (animate) => {
-    const { validate } = this.props;
-    const { textInput, mode } = this.state;
+    const isValid = 
+      this.props.validate?.(this._textInput);
 
-    const isValid = validate && validate(textInput);
     if(!isValid && animate){
       this.inputContainerRef.shake(750);
       this.setState({
@@ -146,8 +145,7 @@ export class ModalInputMultiline extends React.PureComponent {
   };
 
   getTextValue = () => {
-    const { textInput } = this.state;
-    return textInput;
+    return this._textInput;
   };
 
   _handleOnTextFocus = () => {
@@ -164,10 +162,8 @@ export class ModalInputMultiline extends React.PureComponent {
   };
 
   _handleOnTextBlur = () => {
-    const { onBlur, validate } = this.props;
-    const { textInput } = this.state;
-
-    const isValid = validate && validate(textInput);
+    const isValid = 
+      this.props.validate?.(this._textInput);
 
     const animation = timing(this._progress, {
       easing  : Easing.inOut(Easing.ease),
@@ -182,21 +178,23 @@ export class ModalInputMultiline extends React.PureComponent {
       : MODES.INVALID
     );
 
-    onBlur && onBlur({textInput, mode});
     this.setState({mode});
+    this.props.onBlur?.({
+      mode, textInput: this._textInput 
+    });
   };
 
   _handleOnChangeText = (input) => {
-    this.setState({textInput: input});
+    this._textInput = input;
+    this.props.onChangeValue?.(input);
   };
 
   render(){
     const { styles } = ModalInputMultiline;
-    const { mode, ...state } = this.state;
+    const { mode } = this.state;
     const props = this.props;
     
     const values = deriveStateFromMode(mode);
-
     const inputBackgoundStyle = {
       opacity: this._bgOpacity,
       backgroundColor: values.colorBackground,
@@ -256,7 +254,6 @@ export class ModalInputMultiline extends React.PureComponent {
             returnKeyType={'default'}
             multiline={true}
             blurOnSubmit={false}
-            value={state.textInput}
             {...props}
           />
         </Animatable.View>
