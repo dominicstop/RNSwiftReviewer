@@ -4,17 +4,19 @@ import { StyleSheet, SectionList } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { createNativeWrapper } from 'react-native-gesture-handler';
 
-import { ModalBody          } from 'app/src/components/Modal/ModalBody';
-import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
-import { ModalFooter        } from 'app/src/components/Modal/ModalFooter';
-import { ModalFooterButton  } from 'app/src/components/Modal/ModalFooterButton';
-import { ModalOverlayCheck  } from 'app/src/components/Modal/ModalOverlayCheck';
-import { ModalSectionHeader } from 'app/src/components/Modal/ModalSectionHeader';
-import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
+import { ModalBody                  } from 'app/src/components/Modal/ModalBody';
+import { ModalHeader                } from 'app/src/components/Modal/ModalHeader';
+import { ModalFooter                } from 'app/src/components/Modal/ModalFooter';
+import { ModalFooterButton          } from 'app/src/components/Modal/ModalFooterButton';
+import { ModalOverlayCheck          } from 'app/src/components/Modal/ModalOverlayCheck';
+import { ModalSectionHeader         } from 'app/src/components/Modal/ModalSectionHeader';
+import { ModalSectionButton         } from 'app/src/components/Modal/ModalSectionButton';
+import { ModalHeaderRightTextButton } from 'app/src/components/Modal/ModalHeaderRightTextButton';
 
 import { QuizAddQuestionModalItem   } from 'app/src/components/QuizAddQuestionModalItem';
 import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
 
+import { QuizCreateQuestionModal } from 'app/src/modals/QuizCreateQuestionModal';
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 
 import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
@@ -26,7 +28,6 @@ import * as Helpers  from 'app/src/functions/helpers';
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
 import { ModalView } from '../components_native/ModalView';
 
-import { QuizCreateQuestionModal } from 'app/src/modals/QuizCreateQuestionModal';
 
 const GHSectionList = createNativeWrapper(SectionList);
 
@@ -135,6 +136,10 @@ export class QuizAddQuestionModal extends React.Component {
   // SectionList: item keyExtractor
   _handleKeyExtractor = (question, index) => {
     return question[QuizQuestionKeys.questionID];
+  };
+
+  _handleOnPressHeaderEdit = () => {
+    
   };
 
   // ModalFooter: save button
@@ -379,7 +384,6 @@ export class QuizAddQuestionModal extends React.Component {
 
   render(){
     const state = this.state;
-
     const questions = state[QuizSectionKeys.sectionQuestions] ?? [];
 
     const modalHeader = (
@@ -391,6 +395,14 @@ export class QuizAddQuestionModal extends React.Component {
             style={{marginTop: 3}}
             name={'ios-journal'}
             size={22}
+          />
+        )}
+        rightHeaderItem={(
+          <ModalHeaderRightTextButton
+            delay={1250}
+            text={'Edit'}
+            visible={(questions.length > 0)}
+            onPress={this._handleOnPressHeaderEdit}
           />
         )}
       />

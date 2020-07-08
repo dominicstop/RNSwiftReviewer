@@ -50,9 +50,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   iconStyle: {
-    shadowColor: 'white',
+    shadowColor: 'rgba(255,255,255,0.5)',
     shadowRadius: 7,
-    shadowOpacity: 0.5,
   },
   headerTextContainer: {
     flex: 1,
@@ -75,10 +74,11 @@ const styles = StyleSheet.create({
 // Displays a Icon, title/subtitle on the top of the modal
 export class ModalHeader extends React.PureComponent {
   static propTypes = {
-    title         : PropTypes.string ,
-    subtitle      : PropTypes.string ,
-    LeftHeaderIcon: PropTypes.element,
-    containerStyle: PropTypes.object ,
+    title          : PropTypes.string ,
+    subtitle       : PropTypes.string ,
+    headerIcon     : PropTypes.element,
+    rightHeaderItem: PropTypes.element,
+    containerStyle : PropTypes.object ,
   };
 
   static defaultProps = {
@@ -103,7 +103,6 @@ export class ModalHeader extends React.PureComponent {
       <View style={styles.rootContainer}>
         <BlurView
           style={styles.blurBackground}
-          blurAmount={50}
           blurType={'light'}
         />
         <View style={[styles.headerWrapper, props.containerStyle]}>
@@ -121,6 +120,7 @@ export class ModalHeader extends React.PureComponent {
                 {props.subtitle}
               </Text>
             </View>
+            {this.props.rightHeaderItem}
           </View>
         </View>
       </View>

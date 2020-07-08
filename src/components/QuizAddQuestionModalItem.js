@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, Text, Animated } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -7,9 +7,9 @@ import debounce   from 'lodash/debounce';
 import Swipeable  from 'react-native-gesture-handler/Swipeable';
 import Reanimated from 'react-native-reanimated';
 
-import { Easing     } from 'react-native-reanimated';
-import { iOSUIKit   } from 'react-native-typography'; 
-import { RectButton } from 'react-native-gesture-handler';
+import { Easing   } from 'react-native-reanimated';
+import { iOSUIKit } from 'react-native-typography'; 
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { ModalSection } from 'app/src/components/Modal/ModalSection';
 
