@@ -60,6 +60,11 @@ export const MNPQuizAddQuestion = {
   onPressDone: 'onPressDone',
 };
 
+export const MNPQuizAddQuestionEditList = {
+  quizSection: 'quizSection',
+  onPressDone: 'onPressDone',
+};
+
 // QuizCreateQuestionModal
 export const MNPQuizCreateQuestion = {
   isEditing    : 'isEditing'    ,

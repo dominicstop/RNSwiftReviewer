@@ -30,7 +30,7 @@ export class ModalHeaderRightTextButton extends React.PureComponent {
   };
 
   _handleOnPress = async () => {
-    await this.animatedRef.pulse(300);
+    await this.animatedRef.pulse(250);
     this.props.onPress?.();
   };
 

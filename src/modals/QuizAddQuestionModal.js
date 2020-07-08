@@ -16,17 +16,18 @@ import { ModalHeaderRightTextButton } from 'app/src/components/Modal/ModalHeader
 import { QuizAddQuestionModalItem   } from 'app/src/components/QuizAddQuestionModalItem';
 import { QuizAddQuestionModalHeader } from 'app/src/components/QuizAddQuestionModalHeader';
 
-import { QuizCreateQuestionModal } from 'app/src/modals/QuizCreateQuestionModal';
-import { RNN_ROUTES } from 'app/src/constants/Routes';
+import { ModalView } from 'app/src/components_native/ModalView';
+import { QuizCreateQuestionModal      } from 'app/src/modals/QuizCreateQuestionModal';
+import { QuizAddQuestionEditListModal } from 'app/src/modals/QuizAddQuestionEditListModal';
 
-import { MNPQuizAddQuestion, MNPQuizCreateQuestion } from 'app/src/constants/NavParams';
+import { RNN_ROUTES } from 'app/src/constants/Routes';
+import { MNPQuizAddQuestion, MNPQuizCreateQuestion, MNPQuizAddQuestionEditList } from 'app/src/constants/NavParams';
 import { QuizSectionKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
 
 import * as Colors   from 'app/src/constants/Colors';
 import * as Helpers  from 'app/src/functions/helpers';
 
 import { QuizSectionModel } from 'app/src/models/QuizSectionModel';
-import { ModalView } from '../components_native/ModalView';
 
 
 const GHSectionList = createNativeWrapper(SectionList);
@@ -138,54 +139,6 @@ export class QuizAddQuestionModal extends React.Component {
     return question[QuizQuestionKeys.questionID];
   };
 
-  _handleOnPressHeaderEdit = () => {
-    
-  };
-
-  // ModalFooter: save button
-  _handleOnPressButtonLeft = async () => {
-    const { componentId, ...props } = this.props;
-    const hasChanges = this.hasUnsavedChanges();
-
-    const onPressDone = props[MNPQuizAddQuestion.onPressDone];
-
-    if(hasChanges){
-      // trigger callback event
-      onPressDone && onPressDone({
-        section: this.quizSection.values,
-      });
-
-      // show check overlay
-      await this.overlay.start();
-    };
-
-    // close modal
-    this.modalRef.setVisibilty(false);
-  };
-
-  // ModalFooter: cancel button
-  _handleOnPressButtonRight = async () => {
-    const { componentId } = this.props;
-    const didChange = this.hasUnsavedChanges();
-
-    await Helpers.timeout(200);
-
-    if(didChange){
-      const shouldDiscard = await Helpers.asyncActionSheetConfirm({
-        title: 'Discard Changes',
-        message: 'Are you sure you want to discard all of your changes?',
-        confirmText: 'Discard',
-        isDestructive: true,
-      });
-
-      // early exit if cancel
-      if(!shouldDiscard) return;
-    };
-    
-    // close modal
-    this.modalRef.setVisibilty(false);
-  };
-
   // Add New Question button press
   _handleOnPressAddNewQuestion = () => {
     const state = this.state;
@@ -263,6 +216,61 @@ export class QuizAddQuestionModal extends React.Component {
     };
   };
 
+  //ModalHeader: edit button
+  _handleOnPressHeaderEdit = () => {
+    this.modalViewEditListRef.setVisibilty(true, {
+      [MNPQuizAddQuestionEditList.quizSection]: {...this.quizSection.values},
+      [MNPQuizAddQuestionEditList.onPressDone]: this._handleEditListModalOnPressDone,
+    });
+  };
+
+  // ModalFooter: save button
+  _handleOnPressButtonLeft = async () => {
+    const { componentId, ...props } = this.props;
+    const hasChanges = this.hasUnsavedChanges();
+
+    const onPressDone = props[MNPQuizAddQuestion.onPressDone];
+
+    if(hasChanges){
+      // trigger callback event
+      onPressDone && onPressDone({
+        section: this.quizSection.values,
+      });
+
+      // show check overlay
+      await this.overlay.start();
+    };
+
+    // close modal
+    this.modalRef.setVisibilty(false);
+  };
+
+  // ModalFooter: cancel button
+  _handleOnPressButtonRight = async () => {
+    const didChange = this.hasUnsavedChanges();
+    await Helpers.timeout(200);
+
+    if(didChange){
+      const shouldDiscard = await Helpers.asyncActionSheetConfirm({
+        title: 'Discard Changes',
+        message: 'Are you sure you want to discard all of your changes?',
+        confirmText: 'Discard',
+        isDestructive: true,
+      });
+
+      // early exit if cancel
+      if(!shouldDiscard) return;
+    };
+    
+    // close modal
+    this.modalRef.setVisibilty(false);
+  };
+
+  // QuizAddQuestionEditListModal: confirm changes
+  _handleEditListModalOnPressDone = ({quizSection}) => {
+    this.setState({ ...quizSection });
+  };
+
   // QuizCreateQuestionModal - isEditing: false
   // ModalFooterButton: onPressDone callback
   _handleQuizCreateQuestionModalOnPressCreate = ({question}) => {
@@ -294,14 +302,22 @@ export class QuizAddQuestionModal extends React.Component {
   //#endregion
 
   // #region - render functions
-  _renderModal(){
+  _renderModals(){
     return(
-      <ModalView
-        ref={r => this.modalViewCreateQuestionRef = r}
-        setModalInPresentationFromProps={true}
-      >
-        <QuizCreateQuestionModal/>
-      </ModalView>
+      <Fragment>
+        <ModalView
+          ref={r => this.modalViewCreateQuestionRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <QuizCreateQuestionModal/>
+        </ModalView>
+        <ModalView
+          ref={r => this.modalViewEditListRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <QuizAddQuestionEditListModal/>
+        </ModalView>
+      </Fragment>
     );
   };
 
@@ -428,7 +444,7 @@ export class QuizAddQuestionModal extends React.Component {
 
     return (
       <Fragment>
-        {this._renderModal()}
+        {this._renderModals()}
         <ModalBody
           ref={r => this.modalBgRef = r}
           wrapInScrollView={false}
