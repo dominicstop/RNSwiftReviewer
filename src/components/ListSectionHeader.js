@@ -2,12 +2,12 @@ import React, { Fragment } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import debounce from "lodash/debounce";
-
 import * as Animatable  from 'react-native-animatable';
-import { iOSUIKit     } from 'react-native-typography';
-import { Feather      } from 'react-native-vector-icons';
-import { BlurView     } from "@react-native-community/blur";
+import debounce from "lodash/debounce";
+import Feather  from 'react-native-vector-icons/Feather';
+
+import { iOSUIKit } from 'react-native-typography';
+import { BlurView } from "@react-native-community/blur";
 
 import { ListSortItems        } from 'app/src/components/ListSortItems';
 import { ListSortButton       } from 'app/src/components/ListSortButton';
