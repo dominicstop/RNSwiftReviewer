@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { StyleSheet, View, SectionList } from 'react-native';
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { Navigation } from 'react-native-navigation';
 
 import { ModalBody          } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';
@@ -39,13 +38,16 @@ const VQMSectionTypes = {
 // Replace w/ custom VirtualizedList impl.
 
 export class ViewQuizModal extends React.Component {
-  static options() {
-    return {
-    };
-  };
-
   static styles = StyleSheet.create({
   });
+
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
 
   getSections = () => {
     const props = this.props;
@@ -87,7 +89,7 @@ export class ViewQuizModal extends React.Component {
   };
 
   _handleOnPressDelete = async () => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
 
     const quiz     = props[MNPViewQuiz.quiz] ?? {};
     const callback = props[MNPViewQuiz.onPressDeleteQuiz];
@@ -111,12 +113,11 @@ export class ViewQuizModal extends React.Component {
       ]);
 
       // close modal
-      Navigation.dismissModal(componentId);
+      this.modalRef.setVisibilty(false);
       await Helpers.asyncAlert({
         title: 'Quiz Deleted',
         desc : `${quizTitle} has been deleted.`,
       });
-
     };
   };
 
@@ -127,17 +128,13 @@ export class ViewQuizModal extends React.Component {
 
   // ModalFooter: onPress "Start Quiz" button
   _handleOnPressButtonLeft = async () => {
-    const { navigation, componentId, ...props } = this.props;
+    const { navigation, ...props } = this.props;
 
     const quiz = props[MNPViewQuiz.quiz];
     const onPressStartQuiz = props[MNPViewQuiz.onPressStartQuiz];
     
     // disable swipe gesture
-    Navigation.mergeOptions(componentId, {
-      modal: {
-        swipeToDismiss: false,
-      }
-    });
+    this.modalRef.setIsModalInPresentation(true);
 
     // call callback
     onPressStartQuiz && onPressStartQuiz({quiz});
@@ -149,19 +146,17 @@ export class ViewQuizModal extends React.Component {
     await Promise.all([
       Helpers.timeout(1000),
       this.overlayRef.show(),
-      this.modalFooterRef.setVisibility(false)
+      this.modalFooterRef.setVisibilty(false)
     ]);
 
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   // ModalFooter: onPress "cancel" button
   _handleOnPressButtonRight = () => {
-    const { componentId } = this.props;
-
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibilty(false);
   };
 
   // #region - render methods
@@ -308,6 +303,7 @@ export class ViewQuizModal extends React.Component {
         headerMode={'NONE'}
         wrapInScrollView={false}
         delayMount={false}
+        passScrollviewProps={true}
         {...{modalHeader, modalFooter, overlay}}
       >
         <SectionList

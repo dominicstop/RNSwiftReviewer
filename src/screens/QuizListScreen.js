@@ -10,6 +10,11 @@ import { REASectionList     } from 'app/src/components/ReanimatedComps';
 import { QuizListItem   } from 'app/src/components/QuizListScreen/QuizListItem';
 import { QuizListHeader } from 'app/src/components/QuizListScreen/QuizListHeader';
 
+import { ModalView } from 'app/src/components_native/ModalView';
+
+import { ViewQuizModal   } from 'app/src/modals/ViewQuizModal';
+import { CreateQuizModal } from 'app/src/modals/CreateQuizModal';
+
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
@@ -24,12 +29,10 @@ import { QuizKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 
 import * as Helpers from 'app/src/functions/helpers';
 
-import { ModalController  } from 'app/src/functions/ModalController';
 import { sortQuizItems    } from 'app/src/functions/SortItems';
 import { QuizStore        } from 'app/src/functions/QuizStore';
 import { QuizSessionStore } from '../functions/QuizSessionStore';
-import { ModalView } from '../components_native/ModalView';
-import { CreateQuizModal } from '../modals/CreateQuizModal';
+
 
 
 export class QuizListScreen extends React.Component {
@@ -111,7 +114,7 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressCreateQuiz = () => {
-    this.modalViewRef.setVisibilty(true);
+    this.modalViewCreateQuizRef.setVisibilty(true);
   };
 
   // QuizListItem - onPress
@@ -124,15 +127,12 @@ export class QuizListScreen extends React.Component {
       (quizID == session[QuizSessionKeys.quizID])
     );
 
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalViewQuiz,
-      navProps: {
-        [MNPViewQuiz.quiz      ]: quiz      ,
-        [MNPViewQuiz.sessions  ]: filtered  ,
-        [MNPViewQuiz.navigation]: navigation,
-        [MNPViewQuiz.onPressStartQuiz ]: this._handleOnPressStartQuiz ,
-        [MNPViewQuiz.onPressDeleteQuiz]: this._handleOnPressDeleteQuiz,
-      },
+    this.modalViewShowQuizRef.setVisibilty(true, {
+      [MNPViewQuiz.quiz      ]: quiz      ,
+      [MNPViewQuiz.sessions  ]: filtered  ,
+      [MNPViewQuiz.navigation]: navigation,
+      [MNPViewQuiz.onPressStartQuiz ]: this._handleOnPressStartQuiz ,
+      [MNPViewQuiz.onPressDeleteQuiz]: this._handleOnPressDeleteQuiz,
     });
   };
 
@@ -225,7 +225,7 @@ export class QuizListScreen extends React.Component {
   //#endregion
 
   //#region - render functions
-  _renderModal(){
+  _renderModals(){
     const modalProps = {
       [MNPCreateQuiz.navigation]: this.props.navigation,
       [MNPCreateQuiz.isEditing ]: false,
@@ -234,12 +234,20 @@ export class QuizListScreen extends React.Component {
     };
 
     return(
-      <ModalView 
-        ref={r => this.modalViewRef = r}
-        setModalInPresentationFromProps={true}
-      >
-        <CreateQuizModal {...modalProps}/>
-      </ModalView>
+      <Fragment>
+        <ModalView 
+          ref={r => this.modalViewCreateQuizRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <CreateQuizModal {...modalProps}/>
+        </ModalView>
+        <ModalView 
+          ref={r => this.modalViewShowQuizRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <ViewQuizModal/>
+        </ModalView>
+      </Fragment>
     );
   };
 
@@ -319,7 +327,7 @@ export class QuizListScreen extends React.Component {
 
     return (
       <Fragment>
-        {this._renderModal()}
+        {this._renderModals()}
         <View style={styles.rootContainer}>
           <LargeTitleWithSnap
             ref={r => this.largeTitleRef = r}
