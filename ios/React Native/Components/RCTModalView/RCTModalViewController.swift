@@ -43,7 +43,9 @@ class RCTModalViewController: UIViewController {
       guard didChange && isPresented,
         let blurEffectStyle = self.blurEffectStyle
       else {
+        #if DEBUG
         print("RCTModalViewController, didSet blurEffectStyle: deffered");
+        #endif
         return;
       };
       
@@ -91,7 +93,9 @@ class RCTModalViewController: UIViewController {
     super.viewDidLayoutSubviews();
     
     guard let boundsDidChangeBlock = self.boundsDidChangeBlock else {
+      #if DEBUG
       print("RCTModalViewController, viewDidLayoutSubviews: guard check failed");
+      #endif
       return;
     };
     

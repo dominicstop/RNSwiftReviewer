@@ -45,7 +45,10 @@ export class QuizAddQuestionModalHeader extends React.PureComponent {
     const sectionTitle = props[QuizSectionKeys.sectionTitle];
     
     return(
-      <ModalSection showBorderTop={false}>
+      <ModalSection 
+        showBorderTop={false}
+        extraPaddingTop={true}
+      >
         <ImageTitleSubtitle
           containerStyle={styles.buttonAddSectionEmpty}
           title={'Looks A Bit Empty'}
@@ -83,7 +86,10 @@ export class QuizAddQuestionModalHeader extends React.PureComponent {
     const sectionTitle = props[QuizSectionKeys.sectionTitle];
 
     return(
-      <ModalSection showBorderTop={false}>
+      <ModalSection 
+        showBorderTop={false}
+        extraPaddingTop={true}
+      >
         <ImageTitleSubtitle
           containerStyle={styles.buttonAddSection}
           title={`${sectionTitle} Section`}

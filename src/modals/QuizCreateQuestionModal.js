@@ -411,7 +411,10 @@ export class QuizCreateQuestionModal extends React.Component {
         animateAsGroup={true}
         {...{modalHeader, modalFooter, overlay}}
       >
-        <ModalSection showBorderTop={false}>
+        <ModalSection 
+          showBorderTop={false}
+          extraPaddingTop={true}
+        >
           <ImageTitleSubtitle
             title={`New ${displaySectionType} item`}
             subtitle={displaySectionDesc}

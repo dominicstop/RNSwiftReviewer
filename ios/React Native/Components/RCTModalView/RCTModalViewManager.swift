@@ -28,7 +28,9 @@ class RCTModalViewManager: RCTViewManager {
         let component = self.bridge.uiManager.view(forReactTag: node),
         let modalView = component as? RCTModalView
       else {
+        #if DEBUG
         print("RCTModalViewManager, requestModalOpen failed");
+        #endif
         return;
       };
       

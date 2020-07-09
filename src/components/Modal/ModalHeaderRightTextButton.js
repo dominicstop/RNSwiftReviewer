@@ -63,7 +63,7 @@ export class ModalHeaderRightTextButton extends React.PureComponent {
 
 const styles = StyleSheet.create({
   rootContainer: {
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     shadowColor: 'rgba(255,255,255,0.5)',
     shadowRadius: 7,
     borderRadius: 15,
