@@ -146,7 +146,7 @@ export class ViewQuizModal extends React.Component {
     await Promise.all([
       Helpers.timeout(1000),
       this.overlayRef.show(),
-      this.modalFooterRef.setVisibilty(false)
+      this.modalFooterRef.setVisibility(false)
     ]);
 
     //close modal
