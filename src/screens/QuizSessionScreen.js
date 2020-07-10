@@ -30,6 +30,8 @@ import { QuizSessionStore } from 'app/src/functions/QuizSessionStore';
 import { QuizSessionModel         } from 'app/src/models/QuizSession';
 import { QuizSessionAnswerModel   } from 'app/src/models/QuizSessionAnswerModel';
 import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
+import { QuizSessionQuestionsModal } from '../modals/QuizSessionQuestionsModal';
+import { ModalView } from '../components_native/ModalView';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -206,19 +208,16 @@ export class QuizSessionScreen extends React.Component {
     };
 
     // open QuizSessionQuestionsModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizSessionQuestions,
-      navProps: {
-        [MNPQuizSessionQuestion.quiz           ]: quiz           ,
-        [MNPQuizSessionQuestion.answers        ]: answers        ,
-        [MNPQuizSessionQuestion.session        ]: session        ,
-        [MNPQuizSessionQuestion.questions      ]: questions      ,
-        [MNPQuizSessionQuestion.bookmarks      ]: bookmarks      ,
-        [MNPQuizSessionQuestion.currentIndex   ]: currentIndex   ,
-        [MNPQuizSessionQuestion.currentQuestion]: currentQuestion,
-        [MNPQuizSessionQuestion.updateBookmarks]: this.updateBookmarks,
-        [MNPQuizSessionQuestion.onPressQuestion]: this._handleModalOnPressQuestion2,
-      },
+    this.modalViewQuestionsRef.setVisibility(true, {
+      [MNPQuizSessionQuestion.quiz           ]: quiz           ,
+      [MNPQuizSessionQuestion.answers        ]: answers        ,
+      [MNPQuizSessionQuestion.session        ]: session        ,
+      [MNPQuizSessionQuestion.questions      ]: questions      ,
+      [MNPQuizSessionQuestion.bookmarks      ]: bookmarks      ,
+      [MNPQuizSessionQuestion.currentIndex   ]: currentIndex   ,
+      [MNPQuizSessionQuestion.currentQuestion]: currentQuestion,
+      [MNPQuizSessionQuestion.updateBookmarks]: this.updateBookmarks,
+      [MNPQuizSessionQuestion.onPressQuestion]: this._handleModalOnPressQuestion2,
     });
   };
   
@@ -406,6 +405,19 @@ export class QuizSessionScreen extends React.Component {
   //#endregion
 
   // #region - render functions
+  _renderModals(){
+    return(
+      <Fragment>
+        <ModalView
+          ref={r => this.modalViewQuestionsRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <QuizSessionQuestionsModal/>
+        </ModalView>
+      </Fragment>
+    );
+  };
+
   // FlatListCarousel - flatlist
   _renderItem = ({item, index}) => {
     const { currentIndex, answers, bookmarks } = this.state;
@@ -435,6 +447,7 @@ export class QuizSessionScreen extends React.Component {
 
     return(
       <Fragment>
+        {this._renderModals()}
         <Animatable.View 
           ref={r => this.rootContainerRef = r}
           style={styles.rootContainer}

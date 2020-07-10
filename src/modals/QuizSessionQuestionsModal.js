@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { Alert, FlatList } from 'react-native';
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { Navigation } from 'react-native-navigation';
 
 import { ModalBody    } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader  } from 'app/src/components/Modal/ModalHeader';
@@ -44,12 +43,20 @@ export class QuizSessionQuestionsModal extends React.Component {
     };
   };
 
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
+
   _handleKeyExtractor = (item, index) => {
     return (item?.questionID ?? index);
   };
 
   _handleOnPressQuestion = async ({answer, question, index}) => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
 
     const currentQuestion = props[MNPQuizSessionQuestion.currentQuestion];
     const onPressQuestion = props[MNPQuizSessionQuestion.onPressQuestion];
@@ -59,17 +66,12 @@ export class QuizSessionQuestionsModal extends React.Component {
 
     if(currQuizID != nextQuizID){
       // disable swipe gesture
-      Navigation.mergeOptions(componentId, {
-        modal: {
-          swipeToDismiss: false,
-        }
-      });
-      
+      this.modalRef.setIsModalInPresentation(true);
       onPressQuestion && onPressQuestion({answer, question, index});
     };
     
     // close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibility(false);
   };
 
   _handleOnLongPressQuestion = async ({question}) => {
