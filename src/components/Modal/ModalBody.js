@@ -185,7 +185,7 @@ export class ModalBody extends React.Component {
 
   _renderScrollView(){
     const props = this.props;
-    const { mount, keyboardVisible } = this.state;
+    const { keyboardVisible } = this.state;
 
     const insetBottom  = (keyboardVisible? 0 : MODAL_FOOTER_HEIGHT);
     const headerValues = getHeaderValues(props.headerMode);
@@ -202,45 +202,40 @@ export class ModalBody extends React.Component {
       },
     };
 
-    if(props.animateAsGroup && mount){
-      return(
-        <Animatable.View
-          style={{flex: 1}}
-          ref={r => this.animatedWrapperRef = r}
-          animation={'fadeInUp'}
-          duration={250}
-          useNativeDriver={true}
-        >
-          <ScrollView {...scrollViewProps}>
-            {props.children}
-            {props.useKeyboardSpacer && (
-              <Reanimated.View style={{ height: this._height }}/>
-            )}
-          </ScrollView>
-        </Animatable.View>
-      );
-
-    } else if(!props.animateAsGroup && mount) {
-      return (
-        <Fragment>
-          <ScrollView {...scrollViewProps}>
-            {React.Children.map(props.children, (child, index) => (
-              <AnimatedListItem
-                animation={'fadeInUp'}
-                duration={250}
-                last={4}
-                {...{index}}
-              >
-                {child}
-              </AnimatedListItem>
-            ))}
-          </ScrollView>
+    return props.animateAsGroup? (
+      <Animatable.View
+        style={{flex: 1}}
+        ref={r => this.animatedWrapperRef = r}
+        animation={'fadeInUp'}
+        duration={250}
+        useNativeDriver={true}
+      >
+        <ScrollView {...scrollViewProps}>
+          {props.children}
           {props.useKeyboardSpacer && (
             <Reanimated.View style={{ height: this._height }}/>
           )}
-        </Fragment>
-      );
-    };
+        </ScrollView>
+      </Animatable.View>
+    ):(
+      <Fragment>
+        <ScrollView {...scrollViewProps}>
+          {React.Children.map(props.children, (child, index) => (
+            <AnimatedListItem
+              animation={'fadeInUp'}
+              duration={250}
+              last={4}
+              {...{index}}
+            >
+              {child}
+            </AnimatedListItem>
+          ))}
+        </ScrollView>
+        {props.useKeyboardSpacer && (
+          <Reanimated.View style={{ height: this._height }}/>
+        )}
+      </Fragment>
+    );
   };
 
   render(){
@@ -258,34 +253,37 @@ export class ModalBody extends React.Component {
       bottom: (footerBGVisible ? 0 : MODAL_FOOTER_HEIGHT),
     };
 
+    const childProps = (props.passScrollviewProps? {
+      // pass down scrollview props to child
+      style: [styles.scrollView, headerValues.scrollviewStyle],
+      contentContainerStyle: styles.scrollviewContent,
+      scrollIndicatorInsets: { 
+        top   : headerValues.insetTop,
+        bottom: insetBottom,
+      },
+    }:{
+      // pass down props to child
+      topSpace   : headerValues.insetTop,
+      bottomSpace: insetBottom,
+    });
+
     return(
       <View style={styles.rootContainer}>
         <View style={[styles.background, backgroundStyle]}/>
-        {props.wrapInScrollView? (
-          this._renderScrollView()
-        ):(mount && (
-          <Animatable.View
-            ref={r => this.animatedWrapperRef = r}
-            style={{flex: 1}}
-            animation={'fadeInUp'}
-            duration={300}
-            useNativeDriver={true}
-          >
-            {React.cloneElement(props.children, props.passScrollviewProps? {
-              // pass down scrollview props to child
-              style: [styles.scrollView, headerValues.scrollviewStyle],
-              contentContainerStyle: styles.scrollviewContent,
-              scrollIndicatorInsets: { 
-                top   : headerValues.insetTop,
-                bottom: insetBottom,
-              },
-            }:{
-              // pass down props to child
-              topSpace   : headerValues.insetTop,
-              bottomSpace: insetBottom,
-            })}
-          </Animatable.View>
-        ))}
+        {mount && (props.wrapInScrollView
+          ? this._renderScrollView() 
+          : props.delayMount? (
+            <Animatable.View
+              ref={r => this.animatedWrapperRef = r}
+              style={{flex: 1}}
+              animation={'fadeInUp'}
+              duration={300}
+              useNativeDriver={true}
+            >
+              {React.cloneElement(props.children, childProps)}
+            </Animatable.View>
+          ): React.cloneElement(props.children, childProps)
+        )}
         {props.modalBanner && React.cloneElement(props.modalBanner,
           { offsetTop: headerValues.insetTop }
         )}
