@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { View, SectionList, Alert } from 'react-native';
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { Navigation } from 'react-native-navigation';
 
 import { ModalBody           } from 'app/src/components/Modal/ModalBody';
 import { ModalFooter         } from 'app/src/components/Modal/ModalFooter';
@@ -67,6 +66,14 @@ export class QuizSessionDoneModal extends React.Component {
     };
   };
 
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
+
   getSections = () => {
     const props = this.props;
 
@@ -111,7 +118,7 @@ export class QuizSessionDoneModal extends React.Component {
   };
 
   _handleOnPressButtonLeft = async () => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
 
     const confirm = await Helpers.asyncActionSheetConfirm({
       title: 'Are you done answering?',
@@ -125,11 +132,7 @@ export class QuizSessionDoneModal extends React.Component {
         props[MNPQuizSessionDoneModal.onPressDone];
 
       // disable swipe gesture
-      Navigation.mergeOptions(componentId, {
-        modal: {
-          swipeToDismiss: false,
-        }
-      });
+      this.modalRef.setIsModalInPresentation(true);
 
       await Promise.all([
         // wait for callback
@@ -141,20 +144,18 @@ export class QuizSessionDoneModal extends React.Component {
       ]);
 
       //close modal
-      Navigation.dismissModal(componentId);
+      this.modalRef.setVisibility(false);
     };
   };
 
   _handleOnPressButtonRight = async () => {
-    const { componentId } = this.props;
-
     await Helpers.timeout(200);
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibility(false);
   };
 
   _handleOnPressQuestion = async ({answer, question, index}) => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
 
     const currentQuestion = props[MNPQuizSessionDoneModal.currentQuestion];
     const onPressQuestion = props[MNPQuizSessionDoneModal.onPressQuestion];
@@ -164,11 +165,7 @@ export class QuizSessionDoneModal extends React.Component {
 
     if(currQuizID != nextQuizID){
       // disable swipe gesture
-      Navigation.mergeOptions(componentId, {
-        modal: {
-          swipeToDismiss: false,
-        }
-      });
+      this.modalRef.setIsModalInPresentation(true);
 
       await Promise.all([
         // wait for show overlay
@@ -181,7 +178,7 @@ export class QuizSessionDoneModal extends React.Component {
     };
     
     // close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibility(false);
   };
 
   _handleOnLongPressQuestion = async ({question}) => {

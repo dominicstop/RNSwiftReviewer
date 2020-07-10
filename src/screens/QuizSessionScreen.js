@@ -13,6 +13,11 @@ import { QuizSessionHeader } from 'app/src/components/QuizSessionScreen/QuizSess
 import { BannerPill           } from 'app/src/components/BannerPill';
 import { ScreenOverlayLoading } from 'app/src/components/ScreenOverlayLoading';
 
+import { ModalView } from 'app/src/components_native/ModalView';
+
+import { QuizSessionDoneModal      } from 'app/src/modals/QuizSessionDoneModal';
+import { QuizSessionQuestionsModal } from 'app/src/modals/QuizSessionQuestionsModal';
+
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 import { SNPQuizSession, SNPQuizSessionResult, MNPQuizSessionDoneModal, MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
 
@@ -24,14 +29,11 @@ import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
 import { QuizStore        } from 'app/src/functions/QuizStore';
-import { ModalController  } from 'app/src/functions/ModalController';
 import { QuizSessionStore } from 'app/src/functions/QuizSessionStore';
 
 import { QuizSessionModel         } from 'app/src/models/QuizSession';
 import { QuizSessionAnswerModel   } from 'app/src/models/QuizSessionAnswerModel';
 import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
-import { QuizSessionQuestionsModal } from '../modals/QuizSessionQuestionsModal';
-import { ModalView } from '../components_native/ModalView';
 
 
 export class QuizSessionScreen extends React.Component {
@@ -155,20 +157,17 @@ export class QuizSessionScreen extends React.Component {
     };
 
     // open QuizSessionDoneModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizSessionDone,
-      navProps: {
-        [MNPQuizSessionDoneModal.quiz           ]: quiz           ,
-        [MNPQuizSessionDoneModal.answers        ]: answers        ,
-        [MNPQuizSessionDoneModal.session        ]: session        ,
-        [MNPQuizSessionDoneModal.bookmarks      ]: bookmarks      ,
-        [MNPQuizSessionDoneModal.questions      ]: questions      ,
-        [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
-        [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
-        [MNPQuizSessionDoneModal.onPressDone    ]: this._handleModalOnPressDone,
-        [MNPQuizSessionDoneModal.updateBookmarks]: this.updateBookmarks,
-        [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion1,
-      },
+    this.modalViewDoneRef.setVisibility(true, {
+      [MNPQuizSessionDoneModal.quiz           ]: quiz           ,
+      [MNPQuizSessionDoneModal.answers        ]: answers        ,
+      [MNPQuizSessionDoneModal.session        ]: session        ,
+      [MNPQuizSessionDoneModal.bookmarks      ]: bookmarks      ,
+      [MNPQuizSessionDoneModal.questions      ]: questions      ,
+      [MNPQuizSessionDoneModal.currentIndex   ]: currentIndex   ,
+      [MNPQuizSessionDoneModal.currentQuestion]: currentQuestion,
+      [MNPQuizSessionDoneModal.onPressDone    ]: this._handleModalOnPressDone,
+      [MNPQuizSessionDoneModal.updateBookmarks]: this.updateBookmarks,
+      [MNPQuizSessionDoneModal.onPressQuestion]: this._handleModalOnPressQuestion1,
     });
   };
 
@@ -408,6 +407,12 @@ export class QuizSessionScreen extends React.Component {
   _renderModals(){
     return(
       <Fragment>
+        <ModalView
+          ref={r => this.modalViewDoneRef = r}
+          setModalInPresentationFromProps={true}
+        >
+          <QuizSessionDoneModal/>
+        </ModalView>
         <ModalView
           ref={r => this.modalViewQuestionsRef = r}
           setModalInPresentationFromProps={true}
