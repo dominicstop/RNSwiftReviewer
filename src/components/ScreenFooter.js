@@ -45,7 +45,7 @@ export class ScreenFooter extends React.Component {
     };
   };
 
-  setVisibilty = async (isVisible) => {
+  setVisibility = async (isVisible) => {
     const { mount } = this.state;
     const didChange = (mount != isVisible);
 

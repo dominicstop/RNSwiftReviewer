@@ -107,7 +107,7 @@ export class QuizAddQuestionEditListModal extends React.Component {
 
     onPressDone?.({quizSection: section});
     await this.overlay.start();
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // ModalFooter: cancel button
@@ -128,7 +128,7 @@ export class QuizAddQuestionEditListModal extends React.Component {
     };
     
     // close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   render(){

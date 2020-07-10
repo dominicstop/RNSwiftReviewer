@@ -113,7 +113,7 @@ export class ViewQuizModal extends React.Component {
       ]);
 
       // close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
       await Helpers.asyncAlert({
         title: 'Quiz Deleted',
         desc : `${quizTitle} has been deleted.`,
@@ -150,13 +150,13 @@ export class ViewQuizModal extends React.Component {
     ]);
 
     //close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // ModalFooter: onPress "cancel" button
   _handleOnPressButtonRight = () => {
     //close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // #region - render methods

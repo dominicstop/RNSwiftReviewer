@@ -131,7 +131,7 @@ export class ModalView extends React.PureComponent {
     };
   };
 
-  setVisibilty = async (nextVisible, childProps = null) => {
+  setVisibility = async (nextVisible, childProps = null) => {
     const { visible: prevVisible } = this.state;
 
     const didChange = (prevVisible != nextVisible);
@@ -180,7 +180,7 @@ export class ModalView extends React.PureComponent {
 
     } catch(error){
       RequestFactory.rejectRequest(this, {requestID});
-      console.log("ModalView, setVisibilty failed:");
+      console.log("ModalView, setVisibility failed:");
       console.log(error);
 
       return false;

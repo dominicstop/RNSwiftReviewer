@@ -146,7 +146,7 @@ export class QuizAddQuestionModal extends React.Component {
     // extract/isolate section values from stata
     const section = QuizSectionModel.extract(state);
 
-    this.modalViewCreateQuestionRef.setVisibilty(true, {
+    this.modalViewCreateQuestionRef.setVisibility(true, {
       [MNPQuizCreateQuestion.isEditing   ]: false,
       [MNPQuizCreateQuestion.quizSection ]: section,
       [MNPQuizCreateQuestion.quizQuestion]: {},
@@ -162,7 +162,7 @@ export class QuizAddQuestionModal extends React.Component {
     const section = QuizSectionModel.extract(state);
 
     // open QuizCreateQuestionModal
-    this.modalViewCreateQuestionRef.setVisibilty(true, {
+    this.modalViewCreateQuestionRef.setVisibility(true, {
       [MNPQuizCreateQuestion.isEditing    ]: true,
       [MNPQuizCreateQuestion.quizSection  ]: section,
       [MNPQuizCreateQuestion.quizQuestion ]: question,
@@ -212,13 +212,13 @@ export class QuizAddQuestionModal extends React.Component {
     });
 
     if(shouldDiscard){
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
     };
   };
 
   //ModalHeader: edit button
   _handleOnPressHeaderEdit = () => {
-    this.modalViewEditListRef.setVisibilty(true, {
+    this.modalViewEditListRef.setVisibility(true, {
       [MNPQuizAddQuestionEditList.quizSection]: {...this.quizSection.values},
       [MNPQuizAddQuestionEditList.onPressDone]: this._handleEditListModalOnPressDone,
     });
@@ -242,7 +242,7 @@ export class QuizAddQuestionModal extends React.Component {
     };
 
     // close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // ModalFooter: cancel button
@@ -263,7 +263,7 @@ export class QuizAddQuestionModal extends React.Component {
     };
     
     // close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // QuizAddQuestionEditListModal: confirm changes

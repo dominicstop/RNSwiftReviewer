@@ -226,7 +226,7 @@ export class QuizAddSectionModal extends React.Component {
     });
 
     if(shouldDiscard){
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
     };
   };
   //#endregion
@@ -304,7 +304,7 @@ export class QuizAddSectionModal extends React.Component {
     // call callback
     onPressDelete && onPressDelete(sectionID);
     // close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // ModalFooter: save button
@@ -324,7 +324,7 @@ export class QuizAddSectionModal extends React.Component {
 
     if(!hasChanges && isEditing){
       // no changes, close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
 
     } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
@@ -339,7 +339,7 @@ export class QuizAddSectionModal extends React.Component {
       });
 
       // close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
 
     } else {
       await Helpers.asyncAlert({
@@ -371,7 +371,7 @@ export class QuizAddSectionModal extends React.Component {
     };
     
     //close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
   //#endregion
 

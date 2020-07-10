@@ -114,7 +114,7 @@ export class QuizListScreen extends React.Component {
   };
 
   _handleOnPressCreateQuiz = () => {
-    this.modalViewCreateQuizRef.setVisibilty(true);
+    this.modalViewCreateQuizRef.setVisibility(true);
   };
 
   // QuizListItem - onPress
@@ -127,7 +127,7 @@ export class QuizListScreen extends React.Component {
       (quizID == session[QuizSessionKeys.quizID])
     );
 
-    this.modalViewShowQuizRef.setVisibilty(true, {
+    this.modalViewShowQuizRef.setVisibility(true, {
       [MNPViewQuiz.quiz      ]: quiz      ,
       [MNPViewQuiz.sessions  ]: filtered  ,
       [MNPViewQuiz.navigation]: navigation,

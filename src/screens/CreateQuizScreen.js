@@ -38,7 +38,7 @@ import { QuizAddQuestionModal } from '../modals/QuizAddQuestionModal';
 
 
 // TODO:
-// [ ] - Move footerRef.setVisibilty to componentDidUpdate
+// [ ] - Move footerRef.setVisibility to componentDidUpdate
 // [ ] - Change "Edit Quiz Details" color to secondary
 // [ ] - implement section deleting
 // [ ] - preview question/sections when creating
@@ -92,7 +92,7 @@ export class CreateQuizScreen extends React.Component {
 
   _handleOnPressEditQuiz = ({section, index}) => {
     // open CreateQuizModal
-    this.modalViewCreateQuizRef.setVisibilty(true);
+    this.modalViewCreateQuizRef.setVisibility(true);
   };
 
   // ScreenFooter - onPress "Finish Quiz"
@@ -142,7 +142,7 @@ export class CreateQuizScreen extends React.Component {
   // onPress: Add New Section
   _handleOnPressAddSection = () => {
     // open QuizAddSectionModal
-    this.modalViewAddSectionRef.setVisibilty(true, {
+    this.modalViewAddSectionRef.setVisibility(true, {
       [MNPQuizAddSection.isEditing]: false,
       [MNPQuizAddSection.section  ]: {},
       //event: attach onPress done/save handler
@@ -153,7 +153,7 @@ export class CreateQuizScreen extends React.Component {
   // CreateQuizListItem - edit
   _handleOnPressSectionEdit = ({section, index}) => {
     // open QuizAddSectionModal in isEditing mode
-    this.modalViewAddSectionRef.setVisibilty(true, {
+    this.modalViewAddSectionRef.setVisibility(true, {
       [MNPQuizAddSection.section  ]: section,
       [MNPQuizAddSection.isEditing]: true,
       //event: attach onPress done/save handler
@@ -165,7 +165,7 @@ export class CreateQuizScreen extends React.Component {
   // CreateQuizListItem - add question
   _handleOnPressSectionAdd = ({section, index}) => {
     // open QuizAddQuestionModal
-    this.modalViewAddQuestionRef.setVisibilty(true, {
+    this.modalViewAddQuestionRef.setVisibility(true, {
       [MNPQuizAddQuestion.quizSection ]: section,
       [MNPQuizAddQuestion.onPressDone ]: this._handleQuizAddQuestionModalOnPressDone,
     });
@@ -191,7 +191,7 @@ export class CreateQuizScreen extends React.Component {
 
   // modal callback: QuizAddSectionModal - create
   _handleAddSectionModalOnPressCreate = ({title, desc, sectionType}) => {
-    this.footerRef.setVisibilty(true);
+    this.footerRef.setVisibility(true);
 
     const quizID = this.quiz.values[QuizKeys.quizID];
     const section = new QuizSectionModel();

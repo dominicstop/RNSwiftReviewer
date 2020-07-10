@@ -104,7 +104,7 @@ export class QuizCreateQuestionModal extends React.Component {
     });
 
     if(shouldDiscard){
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
     };
   };
 
@@ -235,7 +235,7 @@ export class QuizCreateQuestionModal extends React.Component {
     // call callback
     onPressDelete && onPressDelete({question});
     // close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   // ModalFooter: onPress save button
@@ -249,7 +249,7 @@ export class QuizCreateQuestionModal extends React.Component {
     const isValid = this.validate(false);
     if(!hasChanges && isEditing){
       // no changes, close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
 
     } else if (!isValid){
       await Helpers.asyncAlert({
@@ -273,7 +273,7 @@ export class QuizCreateQuestionModal extends React.Component {
       await this.overlay.start();
 
       // close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
     };
   };
 
@@ -297,7 +297,7 @@ export class QuizCreateQuestionModal extends React.Component {
     };
 
     //close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   _renderSectionAnswer(){

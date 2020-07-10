@@ -116,7 +116,7 @@ export class CreateQuizModal extends React.PureComponent {
     });
 
     if(shouldDiscard){
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
     };
   };
   //#endregion
@@ -134,7 +134,7 @@ export class CreateQuizModal extends React.PureComponent {
 
     if(!hasChanges && isEditing){
       //no changes, close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
 
     } else if (isValidTitle && isValidSubtitle){
       const title = this.inputFieldRefTitle.getText();
@@ -152,7 +152,7 @@ export class CreateQuizModal extends React.PureComponent {
       onPressDone?.({title, desc});
 
       //close modal
-      this.modalRef.setVisibilty(false);
+      this.modalRef.setVisibility(false);
 
     } else {
       await Helpers.asyncAlert({
@@ -184,7 +184,7 @@ export class CreateQuizModal extends React.PureComponent {
     };
 
     //close modal
-    this.modalRef.setVisibilty(false);
+    this.modalRef.setVisibility(false);
   };
 
   render(){
