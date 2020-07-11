@@ -48,8 +48,6 @@ end
 pod 'React-Core'           , :path => '../node_modules/react-native/'               , :inhibit_warnings => true
 pod 'react-native-blur'    , :path => '../node_modules/@react-native-community/blur', :inhibit_warnings => true
 pod 'BVLinearGradient'     , :path => '../node_modules/react-native-linear-gradient', :inhibit_warnings => true
-pod 'ReactNativeNavigation', :path => '../node_modules/react-native-navigation'     , :inhibit_warnings => true
-
 
 # ignore warnings from pods
 post_install do |installer|
