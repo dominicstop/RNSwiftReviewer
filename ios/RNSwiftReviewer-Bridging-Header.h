@@ -23,5 +23,3 @@
 #import <React/RCTTextShadowView.h>
 #import <React/RCTComponent.h>
 #import <React/RCTLog.h>
-
-#import <ReactNativeNavigation/ReactNativeNavigation.h>

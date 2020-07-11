@@ -1,38 +1,11 @@
-import * as Animatable from "react-native-animatable";
-import { Navigation } from "react-native-navigation";
-
 import App from 'app/App';
+import { AppRegistry } from 'react-native';
+import { name as appName } from 'app/app.json';
 
-import { RNN_ROUTES } from 'app/src/constants/Routes';
-
-// register RNN components
-Navigation.registerComponent(RNN_ROUTES.RootReactNavigationRoute, () => App);
-
-Navigation.events().registerAppLaunchedListener(() => {
-  Navigation.setDefaultOptions({
-    layout: {
-      backgroundColor: 'white',
-    },
-    animations: {
-      setRoot: {
-        waitForRender: true,
-      },
-      showModal: {
-        waitForRender: false,
-      },
-    },
-  });
-  Navigation.setRoot({
-    root: {
-      component: {
-        name: RNN_ROUTES.RootReactNavigationRoute,
-      },
-    }
-  });
-});
+import * as Animatable from "react-native-animatable";
 
 
-
+AppRegistry.registerComponent(appName, () => App);
 
 // register animations for react-native-animatable
 Animatable.initializeRegistryWithDefinitions({
