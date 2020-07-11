@@ -22,7 +22,7 @@ import { SortValuesQuiz, SortTypesQuiz } from 'app/src/constants/SortValues';
 
 import { HeaderValues  } from 'app/src/constants/HeaderValues';
 import { INSET_TOP     } from 'app/src/constants/UIValues';
-import { RNN_ROUTES    } from 'app/src/constants/Routes';
+import { RNN_ROUTES, ModalID    } from 'app/src/constants/Routes';
 import { MNPCreateQuiz, MNPViewQuiz } from 'app/src/constants/NavParams';
 
 import { QuizKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
@@ -238,12 +238,14 @@ export class QuizListScreen extends React.Component {
         <ModalView 
           ref={r => this.modalViewCreateQuizRef = r}
           setModalInPresentationFromProps={true}
+          modalID={ModalID.ModalCreateQuiz}
         >
           <CreateQuizModal {...modalProps}/>
         </ModalView>
         <ModalView 
           ref={r => this.modalViewShowQuizRef = r}
           setModalInPresentationFromProps={true}
+          modalID={ModalID.ModalViewQuiz}
         >
           <ViewQuizModal/>
         </ModalView>

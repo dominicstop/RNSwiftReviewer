@@ -18,12 +18,15 @@ import { QuizSessionDetails } from 'app/src/components/QuizSessionDoneModal/Quiz
 
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
 
+import { ModalViewModule } from 'app/src/native_modules/ModalViewModule';
+
 import * as Colors  from 'app/src/constants/Colors';
 import * as Helpers from 'app/src/functions/helpers';
 
+import { QuizSessionBookmarkModel } from 'app/src/models/QuizSessionBookmarkModel';
+
 import { MNPQuizSessionDoneModal } from 'app/src/constants/NavParams';
 import { QuizSectionKeys, QuizKeys, QuizQuestionKeys } from 'app/src/constants/PropKeys';
-import { QuizSessionBookmarkModel } from '../models/QuizSessionBookmarkModel';
 
 
 // QSD: QuizSessionDone 🤣
@@ -136,15 +139,16 @@ export class QuizSessionDoneModal extends React.Component {
 
       await Promise.all([
         // wait for callback
-        onPressDone && onPressDone(),
+        onPressDone?.(),
         // wait for overlay animation
         this.overlayCheck.start(1000),
         // wait for footer hide animation
         this.modalFooterRef.setVisibility(false),
       ]);
 
-      //close modal
-      this.modalRef.setVisibility(false);
+      // the nav stack will be reset, and the ModalView
+      // will be unmounted so we have to close it manually
+      ModalViewModule.dismissModalByID(props.modalID);
     };
   };
 

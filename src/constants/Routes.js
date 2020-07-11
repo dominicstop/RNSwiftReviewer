@@ -14,9 +14,21 @@ export const ROUTES = {
   TabOptionsRoute: 'TabOptionsRoute',
 };
 
+//TODO: remove
 export const RNN_ROUTES = {
   RootReactNavigationRoute: 'RootReactNavigationRoute',
   // modal comps/routes
+  ModalViewQuiz               : 'ModalViewQuiz'               ,
+  ModalCreateQuiz             : 'ModalCreateQuiz'             ,
+  ModalQuizAddSection         : 'ModalQuizAddSection'         ,
+  ModalQuizAddQuestions       : 'ModalQuizAddQuestions'       ,
+  ModalQuizCreateQuestion     : 'ModalQuizCreateQuestion'     ,
+  ModalQuizSessionDone        : 'ModalQuizSessionDone'        ,
+  ModalQuizSessionQuestions   : 'ModalQuizSessionQuestions'   ,
+  ModalQuizSessionChooseAnswer: 'ModalQuizSessionChooseAnswer',
+};
+
+export const ModalID = {
   ModalViewQuiz               : 'ModalViewQuiz'               ,
   ModalCreateQuiz             : 'ModalCreateQuiz'             ,
   ModalQuizAddSection         : 'ModalQuizAddSection'         ,

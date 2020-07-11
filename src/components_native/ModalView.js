@@ -28,6 +28,7 @@ const PROP_KEYS = {
   isModalInPresentation: 'isModalInPresentation',
 
   // Modal Native Props: Strings
+  modalID               : 'modalID'               ,
   modalTransitionStyle  : 'modalTransitionStyle'  ,
   modalPresentationStyle: 'modalPresentationStyle',
   modalBGBlurEffectStyle: 'modalBGBlurEffectStyle',
@@ -267,6 +268,7 @@ export class ModalView extends React.PureComponent {
   //#endregion
 
   render(){
+    const props = this.props;
     const state = this.state;
 
     const nativeProps = {
@@ -276,11 +278,8 @@ export class ModalView extends React.PureComponent {
       [PROP_KEYS.onModalDidDismiss    ]: this._handleOnModalDidDismiss    ,
       [PROP_KEYS.onModalWillDismiss   ]: this._handleOnModalWillDismiss   ,
       [PROP_KEYS.onModalAttemptDismiss]: this._handleOnModalAttemptDismiss,
-    };
-
-    const props = {
-      ...this.props ,
-      ...nativeProps,
+      // pass down props
+      ...props, ...nativeProps,
       ...(this.props.setModalInPresentationFromProps && {
         [PROP_KEYS.isModalInPresentation]: state.isModalInPresentation
       }),
@@ -291,7 +290,7 @@ export class ModalView extends React.PureComponent {
         ref={r => this.nativeModalViewRef = r}
         style={styles.rootContainer}
         onStartShouldSetResponder={this._shouldSetResponder}
-        {...props}
+        {...nativeProps}
       >
         <VirtualizedListContext.Provider value={null}>
           <ScrollView.Context.Provider value={null}>
@@ -306,7 +305,9 @@ export class ModalView extends React.PureComponent {
                   ref        : this._handleChildRef   ,
                   getModalRef: this._handleChildGetRef,
                   // pass down props received from setVisibility
-                  ...(_.isObject(state.childProps) && state.childProps)
+                  ...(_.isObject(state.childProps) && state.childProps),
+                  // pass down modalID
+                  modalID: props[PROP_KEYS.modalID]
                 })}
               </View>
             )}

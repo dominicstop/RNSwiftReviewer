@@ -22,7 +22,7 @@ import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 import { SNPQuizSession, SNPQuizSessionResult, MNPQuizSessionDoneModal, MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
 
 import { SectionTypes } from 'app/src/constants/SectionTypes';
-import { RNN_ROUTES, ROUTES } from 'app/src/constants/Routes';
+import { RNN_ROUTES, ROUTES, ModalID } from 'app/src/constants/Routes';
 import { MNPQuizSessionChooseAnswer } from 'app/src/constants/NavParams';
 
 import * as Colors  from 'app/src/constants/Colors';
@@ -410,12 +410,14 @@ export class QuizSessionScreen extends React.Component {
         <ModalView
           ref={r => this.modalViewDoneRef = r}
           setModalInPresentationFromProps={true}
+          modalID={ModalID.ModalQuizSessionDone}
         >
           <QuizSessionDoneModal/>
         </ModalView>
         <ModalView
           ref={r => this.modalViewQuestionsRef = r}
           setModalInPresentationFromProps={true}
+          modalID={ModalID.ModalQuizSessionQuestions}
         >
           <QuizSessionQuestionsModal/>
         </ModalView>
