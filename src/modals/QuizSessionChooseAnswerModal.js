@@ -122,35 +122,39 @@ export class QuizSessionChooseAnswerModal extends React.Component {
     };
   };
 
+  componentDidMount(){
+    const { getModalRef } = this.props;
+    if(getModalRef){
+      // ModalView: receive modal ref
+      this.modalRef = getModalRef();
+    };
+  };
+
   _handleOnChoiceSelected = (choice, index) => {
-    this.setState({
-      selected: choice,
-    });
+    this.setState({selected: choice});
   };
 
   _handleOnPressButtonLeft = async () => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
     const { selected } = this.state;
 
     const question    = props[MNPQuizSessionChooseAnswer.question];
     const onPressDone = props[MNPQuizSessionChooseAnswer.onPressDone];
 
     onPressDone && onPressDone({
-      answer: selected,
       question,
+      answer: selected
     });
 
     await Helpers.timeout(200);
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibility(false);
   };
 
   _handleOnPressButtonRight = async () => {
-    const { componentId } = this.props;
-
     await Helpers.timeout(200);
     //close modal
-    Navigation.dismissModal(componentId);
+    this.modalRef.setVisibility(false);
   };
   
   render(){
@@ -158,7 +162,6 @@ export class QuizSessionChooseAnswerModal extends React.Component {
     const props = this.props;
 
     const sectionChoices = props[MNPQuizSessionChooseAnswer.sectionChoices];
-
 
     const modalHeader = (
       <ModalHeader

@@ -15,8 +15,9 @@ import { ScreenOverlayLoading } from 'app/src/components/ScreenOverlayLoading';
 
 import { ModalView } from 'app/src/components_native/ModalView';
 
-import { QuizSessionDoneModal      } from 'app/src/modals/QuizSessionDoneModal';
-import { QuizSessionQuestionsModal } from 'app/src/modals/QuizSessionQuestionsModal';
+import { QuizSessionDoneModal         } from 'app/src/modals/QuizSessionDoneModal';
+import { QuizSessionQuestionsModal    } from 'app/src/modals/QuizSessionQuestionsModal';
+import { QuizSessionChooseAnswerModal } from 'app/src/modals/QuizSessionChooseAnswerModal';
 
 import { QuizQuestionKeys, QuizSessionKeys } from 'app/src/constants/PropKeys';
 import { SNPQuizSession, SNPQuizSessionResult, MNPQuizSessionDoneModal, MNPQuizSessionQuestion } from 'app/src/constants/NavParams';
@@ -257,18 +258,14 @@ export class QuizSessionScreen extends React.Component {
     // get the matchingTypeChoices for this section
     const sectionChoices = matchingTypeChoices[sectionID];
 
-    
     // open QuizSessionChooseAnswerModal
-    ModalController.showModal({
-      routeName: RNN_ROUTES.ModalQuizSessionChooseAnswer,
-      navProps: {
-        [MNPQuizSessionChooseAnswer.quiz          ]: this.quiz,
-        [MNPQuizSessionChooseAnswer.question      ]: question,
-        [MNPQuizSessionChooseAnswer.answer        ]: answer,
-        [MNPQuizSessionChooseAnswer.answers       ]: answers,
-        [MNPQuizSessionChooseAnswer.sectionChoices]: sectionChoices,
-        [MNPQuizSessionChooseAnswer.onPressDone   ]: this._handleOnAnswerSelected,
-      },
+    this.modalViewChooseAnswerRef.setVisibility(true, {
+      [MNPQuizSessionChooseAnswer.quiz          ]: this.quiz,
+      [MNPQuizSessionChooseAnswer.question      ]: question,
+      [MNPQuizSessionChooseAnswer.answer        ]: answer,
+      [MNPQuizSessionChooseAnswer.answers       ]: answers,
+      [MNPQuizSessionChooseAnswer.sectionChoices]: sectionChoices,
+      [MNPQuizSessionChooseAnswer.onPressDone   ]: this._handleOnAnswerSelected,
     });
   };
 
@@ -420,6 +417,13 @@ export class QuizSessionScreen extends React.Component {
           modalID={ModalID.ModalQuizSessionQuestions}
         >
           <QuizSessionQuestionsModal/>
+        </ModalView>
+        <ModalView
+          ref={r => this.modalViewChooseAnswerRef = r}
+          setModalInPresentationFromProps={true}
+          modalID={ModalID.ModalQuizSessionChooseAnswer}
+        >
+          <QuizSessionChooseAnswerModal/>
         </ModalView>
       </Fragment>
     );
