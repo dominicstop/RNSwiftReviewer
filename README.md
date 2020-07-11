@@ -35,7 +35,7 @@
 - [ ] ModalInputField: Add character count when focused
 - [ ] ModalInputField: add support for separate sticky header
 - [ ] ModalInputField: combine with ModalInputMultiline
-- [ ] Modals - prevent swipeToDimss when there are unsaved changes
+- [x] Modals - prevent swipeToDimss when there are unsaved changes
 - [x] When cancel is pressed, prompt actionSheet/Alert and ask to discard changes 
 - [x] Don't show check animation when no changes in modal
 - [x] Refactor: rename ListCardEmpty to ListCardImageTitleBody
@@ -54,13 +54,13 @@
   * Use RNN for modals, and use RN for everything else
   * Test whether or not RNS can be used
 
-- [ ] Migrate wix/react-native-navigation modals to use the built in modal comp.
+- [x] Migrate wix/react-native-navigation modals to use the built in modal comp.
   * Everytime a new modal is presented, the comps are wrapped inside a new, seperate react-native instance w/ it's own VC.
   * For every modal opened, there's about 5 to 10% increase in cpu usage (Tested: Release build, iPhone XR/6S). Could be a bug, or i configured rnn wrong.
   * both rnn modals and rn's modals supports the native ios 12 modalPresentation style, but rnn impl. is more customizable and concise. Both has support for scroll view drag to close.
   * Use RNN modal in situations where swipeDown gesture needs to be disabled.
 
-### Migrae from Expo-Bare to Vanilla React-Native
+### Migrate from Expo-Bare to Vanilla React-Native
 - [x] Create New RN Proj
 - [x] Transfer packages/dep and install
 - [x] Run and show starter/welcome screen
