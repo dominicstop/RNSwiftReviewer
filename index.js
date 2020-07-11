@@ -14,7 +14,6 @@ import { QuizSessionChooseAnswerModal } from "app/src/modals/QuizSessionChooseAn
 
 import { RNN_ROUTES } from 'app/src/constants/Routes';
 
-
 // register RNN components
 Navigation.registerComponent(RNN_ROUTES.RootReactNavigationRoute, () => App);
 // register RNN modals

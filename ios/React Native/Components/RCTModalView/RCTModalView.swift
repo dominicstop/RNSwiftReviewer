@@ -128,7 +128,12 @@ class RCTModalView: UIView {
     }
   };
   
-  @objc var modalID: NSString = "";
+  // unique identifier for this modal
+  @objc var modalID: NSString = "" {
+    didSet {
+      self.modalVC.modalID = self.modalID;
+    }
+  };
   
   // control modal present/dismiss by mounting/unmounting the react subview
   // * true : the modal is presented/dismissed when the view is mounted/unmounted

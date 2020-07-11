@@ -10,6 +10,9 @@ import Foundation
 
 @objc (RCTModalViewManager)
 class RCTModalViewManager: RCTViewManager {
+  static var sharedInstance: RCTModalViewManager!;
+  
+  var presentedModals: [NSString] = [];
  
   override static func requiresMainQueueSetup() -> Bool {
     return true;
@@ -20,6 +23,11 @@ class RCTModalViewManager: RCTViewManager {
     view.delegate = self;
     
     return view;
+  };
+  
+  override init() {
+    super.init();
+    RCTModalViewManager.sharedInstance = self;
   };
   
   @objc func requestModalPresentation(_ node: NSNumber, requestID: NSNumber, visibility: Bool){
@@ -48,13 +56,16 @@ class RCTModalViewManager: RCTViewManager {
 };
 
 
-// WIP: not finished yet
 extension RCTModalViewManager: RCTModalViewDelegate {
   func presentModalView(modalView: RCTModalView, viewController: RCTModalViewController) {
-    
+    self.presentedModals.append(
+      modalView.modalID
+    );
   };
   
   func dismissModalView(modalView: RCTModalView, viewController: RCTModalViewController) {
-    
+    if let index = self.presentedModals.firstIndex(of: modalView.modalID){
+      self.presentedModals.remove(at: index);
+    };
   };
 };

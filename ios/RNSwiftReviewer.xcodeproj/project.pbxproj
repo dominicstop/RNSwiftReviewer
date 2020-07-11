@@ -32,6 +32,8 @@
 		88D3B2D524B3E779000323D1 /* RCTListOrderViewProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D024B3E779000323D1 /* RCTListOrderViewProxy.swift */; };
 		88D3B2D724B3E7E9000323D1 /* Encodable+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D624B3E7E9000323D1 /* Encodable+Helpers.swift */; };
 		88D3B2DA24B3E80F000323D1 /* Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D924B3E80E000323D1 /* Unwrap.swift */; };
+		88D3B2DC24B950BD000323D1 /* RCTModalViewModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2DB24B950BC000323D1 /* RCTModalViewModule.swift */; };
+		88D3B2DE24B951DD000323D1 /* RCTModalViewModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2DD24B951DD000323D1 /* RCTModalViewModule.m */; };
 		A683E433441EE504DC6E2762 /* libPods-RNSwiftReviewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +97,8 @@
 		88D3B2D024B3E779000323D1 /* RCTListOrderViewProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTListOrderViewProxy.swift; sourceTree = "<group>"; };
 		88D3B2D624B3E7E9000323D1 /* Encodable+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Encodable+Helpers.swift"; sourceTree = "<group>"; };
 		88D3B2D924B3E80E000323D1 /* Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unwrap.swift; sourceTree = "<group>"; };
+		88D3B2DB24B950BC000323D1 /* RCTModalViewModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCTModalViewModule.swift; sourceTree = "<group>"; };
+		88D3B2DD24B951DD000323D1 /* RCTModalViewModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTModalViewModule.m; sourceTree = "<group>"; };
 		91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSwiftReviewer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B14B87BA8B741BDBEA87686 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		9B2045AEA8644F168D329C17 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 				88C5430724AB140A00DCDF15 /* RCTModalViewError.swift */,
 				88C5430824AB140A00DCDF15 /* RCTModalViewController.swift */,
 				88C5430924AB140A00DCDF15 /* RCTModalViewManager.m */,
+				88D3B2DB24B950BC000323D1 /* RCTModalViewModule.swift */,
+				88D3B2DD24B951DD000323D1 /* RCTModalViewModule.m */,
 			);
 			path = RCTModalView;
 			sourceTree = "<group>";
@@ -630,9 +636,11 @@
 				88D3B2D424B3E779000323D1 /* RCTListOrderViewManager.swift in Sources */,
 				88C5431424AB140A00DCDF15 /* RCTLog.swift in Sources */,
 				88C5432D24AB140B00DCDF15 /* RCTModalViewManager.m in Sources */,
+				88D3B2DC24B950BD000323D1 /* RCTModalViewModule.swift in Sources */,
 				88C5432824AB140A00DCDF15 /* RCTModalView.swift in Sources */,
 				88D3B2D124B3E779000323D1 /* SwiftUIListOrder.swift in Sources */,
 				88C5432A24AB140B00DCDF15 /* RCTModalViewManager.swift in Sources */,
+				88D3B2DE24B951DD000323D1 /* RCTModalViewModule.m in Sources */,
 				88C5432B24AB140B00DCDF15 /* RCTModalViewError.swift in Sources */,
 				88D3B2D724B3E7E9000323D1 /* Encodable+Helpers.swift in Sources */,
 				88C5431524AB140A00DCDF15 /* UIModalPresentationStyle+Helpers.swift in Sources */,

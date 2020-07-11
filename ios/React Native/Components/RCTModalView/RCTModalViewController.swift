@@ -13,6 +13,8 @@ class RCTModalViewController: UIViewController {
   var lastViewFrame: CGRect?;
   var boundsDidChangeBlock: ((CGRect) -> Void)?;
   
+  var modalID: NSString?;
+  
   var isBGTransparent: Bool = false {
     didSet {
       guard oldValue != self.isBGTransparent else { return };
