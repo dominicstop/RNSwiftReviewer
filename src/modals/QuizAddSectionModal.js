@@ -6,7 +6,6 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { Divider    } from 'react-native-elements';
 import { iOSUIKit   } from 'react-native-typography';
-import { Navigation } from 'react-native-navigation';
 
 import { ModalBody          } from 'app/src/components/Modal/ModalBody';
 import { ModalHeader        } from 'app/src/components/Modal/ModalHeader';

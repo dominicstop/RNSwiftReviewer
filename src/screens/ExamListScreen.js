@@ -13,19 +13,17 @@ import { LargeTitleFadeIcon   } from 'app/src/components/LargeTitleFadeIcon';
 import { LargeTitleHeaderCard } from 'app/src/components/LargeTitleHeaderCard';
 import { ListSectionHeader    } from 'app/src/components/ListSectionHeader';
 import { ExamListItem         } from 'app/src/components/ExamListItem';
+import { ButtonGradient       } from 'app/src/components/ButtonGradient';
+import { REASectionList       } from 'app/src/components/ReanimatedComps';
 
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
 import { SortValuesExam, SortTypesExam } from 'app/src/constants/SortValues';
 import { GREY } from 'app/src/constants/Colors';
+import { TestDataExam } from 'app/src/constants/TestData';
 
-import { ModalController } from 'app/src/functions/ModalController';
 import { setStateAsync, timeout } from 'app/src/functions/helpers';
-import { ButtonGradient } from '../components/ButtonGradient';
-import { HeaderValues } from '../constants/HeaderValues';
-import { TestDataExam } from '../constants/TestData';
-import { REASectionList } from '../components/ReanimatedComps';
 
 
 export class ExamListScreen extends React.Component {

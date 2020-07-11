@@ -5,7 +5,6 @@ import * as Animatable from 'react-native-animatable';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { iOSUIKit   } from 'react-native-typography';
-import { Navigation } from 'react-native-navigation';
 
 import { ListItemBadge  } from 'app/src/components/ListItemBadge';
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';

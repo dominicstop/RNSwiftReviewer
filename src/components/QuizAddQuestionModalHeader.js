@@ -3,7 +3,6 @@ import { StyleSheet, SectionList, Text, View, TouchableOpacity, Dimensions } fro
 
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
-import { Navigation } from 'react-native-navigation';
 import { Divider } from 'react-native-elements';
 import { iOSUIKit } from 'react-native-typography';
 import { createNativeWrapper } from 'react-native-gesture-handler';
