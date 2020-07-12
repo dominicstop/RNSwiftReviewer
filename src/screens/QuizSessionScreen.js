@@ -406,6 +406,7 @@ export class QuizSessionScreen extends React.Component {
       <Fragment>
         <ModalView
           ref={r => this.modalViewDoneRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
           modalID={ModalID.ModalQuizSessionDone}
         >
@@ -413,6 +414,7 @@ export class QuizSessionScreen extends React.Component {
         </ModalView>
         <ModalView
           ref={r => this.modalViewQuestionsRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
           modalID={ModalID.ModalQuizSessionQuestions}
         >
@@ -420,6 +422,7 @@ export class QuizSessionScreen extends React.Component {
         </ModalView>
         <ModalView
           ref={r => this.modalViewChooseAnswerRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
           modalID={ModalID.ModalQuizSessionChooseAnswer}
         >

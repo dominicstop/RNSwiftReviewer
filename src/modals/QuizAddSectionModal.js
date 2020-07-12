@@ -303,6 +303,11 @@ export class QuizAddSectionModal extends React.Component {
 
     // call callback
     onPressDelete && onPressDelete(sectionID);
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
+
     // close modal
     this.modalRef.setVisibility(false);
   };
@@ -327,8 +332,12 @@ export class QuizAddSectionModal extends React.Component {
       this.modalRef.setVisibility(false);
 
     } else if (isValidTitle && isValidSubtitle){
+      // disable modal swipe gesture
+      this.onModalAttemptDismiss = null;
+      await this.modalRef.setEnableSwipeGesture(false);
+      
       const title = this.inputFieldRefTitle.getText();
-      const desc  = this.inputFieldRefDesc .getText()
+      const desc  = this.inputFieldRefDesc .getText();
 
       await this.overlay.start();
 
@@ -362,6 +371,10 @@ export class QuizAddSectionModal extends React.Component {
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
     const didChange = this.hasUnsavedChanges();
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
 
     if(didChange){

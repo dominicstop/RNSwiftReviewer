@@ -226,8 +226,12 @@ export class QuizAddQuestionModal extends React.Component {
 
   // ModalFooter: save button
   _handleOnPressButtonLeft = async () => {
-    const { componentId, ...props } = this.props;
+    const props = this.props;
     const hasChanges = this.hasUnsavedChanges();
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
 
     const onPressDone = props[MNPQuizAddQuestion.onPressDone];
 
@@ -248,6 +252,10 @@ export class QuizAddQuestionModal extends React.Component {
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
     const didChange = this.hasUnsavedChanges();
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
 
     if(didChange){
@@ -308,12 +316,14 @@ export class QuizAddQuestionModal extends React.Component {
       <Fragment>
         <ModalView
           ref={r => this.modalViewCreateQuestionRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
         >
           <QuizCreateQuestionModal/>
         </ModalView>
         <ModalView
           ref={r => this.modalViewEditListRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
         >
           <QuizAddQuestionEditListModal/>

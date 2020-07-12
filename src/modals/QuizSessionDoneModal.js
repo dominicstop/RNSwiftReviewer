@@ -134,8 +134,9 @@ export class QuizSessionDoneModal extends React.Component {
       const onPressDone = 
         props[MNPQuizSessionDoneModal.onPressDone];
 
-      // disable swipe gesture
-      this.modalRef.setIsModalInPresentation(true);
+      // disable modal swipe gesture
+      this.onModalAttemptDismiss = null;
+      await this.modalRef.setEnableSwipeGesture(false);
 
       await Promise.all([
         // wait for callback
@@ -153,7 +154,11 @@ export class QuizSessionDoneModal extends React.Component {
   };
 
   _handleOnPressButtonRight = async () => {
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
+
     //close modal
     this.modalRef.setVisibility(false);
   };
@@ -167,10 +172,11 @@ export class QuizSessionDoneModal extends React.Component {
     const nextQuizID = question       [QuizQuestionKeys.questionID];
     const currQuizID = currentQuestion[QuizQuestionKeys.questionID];
 
-    if(currQuizID != nextQuizID){
-      // disable swipe gesture
-      this.modalRef.setIsModalInPresentation(true);
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
 
+    if(currQuizID != nextQuizID){
       await Promise.all([
         // wait for show overlay
         this.overlayLoading.setVisibility(true),

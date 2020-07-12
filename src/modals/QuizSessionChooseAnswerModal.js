@@ -145,13 +145,21 @@ export class QuizSessionChooseAnswerModal extends React.Component {
       answer: selected
     });
 
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
+
     //close modal
     this.modalRef.setVisibility(false);
   };
 
   _handleOnPressButtonRight = async () => {
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
+    
     //close modal
     this.modalRef.setVisibility(false);
   };

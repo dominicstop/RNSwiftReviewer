@@ -237,6 +237,7 @@ export class QuizListScreen extends React.Component {
       <Fragment>
         <ModalView 
           ref={r => this.modalViewCreateQuizRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
           modalID={ModalID.ModalCreateQuiz}
         >
@@ -244,6 +245,7 @@ export class QuizListScreen extends React.Component {
         </ModalView>
         <ModalView 
           ref={r => this.modalViewShowQuizRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
           modalID={ModalID.ModalViewQuiz}
         >

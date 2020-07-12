@@ -103,22 +103,26 @@ export class ViewQuizModal extends React.Component {
       isDestructive: true,
     });
 
-    if(confirm){
-      await Promise.all([
-        this.overlayRef.show(),
-        // wait for delete to finish
-        callback && callback(quiz),
-        // wait at least 1 sec
-        Helpers.timeout(1000),
-      ]);
+    if(!confirm) return;
 
-      // close modal
-      this.modalRef.setVisibility(false);
-      await Helpers.asyncAlert({
-        title: 'Quiz Deleted',
-        desc : `${quizTitle} has been deleted.`,
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
+
+    await Promise.all([
+      this.overlayRef.show(),
+      // wait for delete to finish
+      callback && callback(quiz),
+      // wait at least 1 sec
+      Helpers.timeout(1000),
+    ]);
+
+    // close modal
+    this.modalRef.setVisibility(false);
+    await Helpers.asyncAlert({
+      title: 'Quiz Deleted',
+      desc : `${quizTitle} has been deleted.`,
       });
-    };
   };
 
   _handleOnPressCloseModal = () => {
@@ -133,8 +137,9 @@ export class ViewQuizModal extends React.Component {
     const quiz = props[MNPViewQuiz.quiz];
     const onPressStartQuiz = props[MNPViewQuiz.onPressStartQuiz];
     
-    // disable swipe gesture
-    this.modalRef.setIsModalInPresentation(true);
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
 
     // call callback
     onPressStartQuiz && onPressStartQuiz({quiz});
@@ -154,7 +159,11 @@ export class ViewQuizModal extends React.Component {
   };
 
   // ModalFooter: onPress "cancel" button
-  _handleOnPressButtonRight = () => {
+  _handleOnPressButtonRight = async () => {
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
+
     //close modal
     this.modalRef.setVisibility(false);
   };

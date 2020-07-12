@@ -265,6 +265,7 @@ export class CreateQuizScreen extends React.Component {
       <Fragment>
         <ModalView
           ref={r => this.modalViewCreateQuizRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
         >
           <CreateQuizModal {...{
@@ -278,12 +279,14 @@ export class CreateQuizScreen extends React.Component {
         </ModalView>
         <ModalView
           ref={r => this.modalViewAddSectionRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
         >
           <QuizAddSectionModal/>
         </ModalView>
         <ModalView
           ref={r => this.modalViewAddQuestionRef = r}
+          setEnableSwipeGestureFromProps ={true}
           setModalInPresentationFromProps={true}
         >
           <QuizAddQuestionModal/>

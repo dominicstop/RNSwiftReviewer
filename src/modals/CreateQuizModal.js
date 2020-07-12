@@ -136,12 +136,19 @@ export class CreateQuizModal extends React.PureComponent {
     const isValidSubtitle = this.inputFieldRefDesc .isValid(false);
 
     if(!hasChanges && isEditing){
-      //no changes, close modal
+      // no changes, close modal
+      // disable modal swipe gesture
+      this.onModalAttemptDismiss = null;
+      await this.modalRef.setEnableSwipeGesture(false);
       this.modalRef.setVisibility(false);
 
     } else if (isValidTitle && isValidSubtitle){
+      // disable modal swipe gesture
+      this.onModalAttemptDismiss = null;
+      this.modalRef.setEnableSwipeGesture(false);
+
       const title = this.inputFieldRefTitle.getText();
-      const desc  = this.inputFieldRefDesc .getText()
+      const desc  = this.inputFieldRefDesc .getText();
 
       !isEditing && navigation.navigate(ROUTES.createQuizRoute, {
         // pass as nav params to CreateQuizScreen
@@ -150,7 +157,6 @@ export class CreateQuizModal extends React.PureComponent {
       });
 
       await this.overlay.start();
-
       // trigger event callback
       onPressDone?.({title, desc});
 
@@ -178,6 +184,10 @@ export class CreateQuizModal extends React.PureComponent {
   // modalFooter: cancel onPress
   _handleOnPressButtonRight = async () => {
     const didChange = this.hasUnsavedChanges();
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
 
     if(didChange){

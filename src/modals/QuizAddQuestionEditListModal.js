@@ -85,34 +85,44 @@ export class QuizAddQuestionEditListModal extends React.Component {
     const props = this.props;
     const { listData }  = this.state;
 
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
+
     const hasChanges = this.hasUnsavedChanges();
+    if(hasChanges){
+      let   section     = props[MNPQuizAddQuestionEditList.quizSection];
+      const onPressDone = props[MNPQuizAddQuestionEditList.onPressDone];
 
-    let   section     = props[MNPQuizAddQuestionEditList.quizSection];
-    const onPressDone = props[MNPQuizAddQuestionEditList.onPressDone];
+      const questions = 
+        section?.[QuizSectionKeys.sectionQuestions] ?? [];
 
-    const questions = 
-      section?.[QuizSectionKeys.sectionQuestions] ?? [];
+      let questionMap = {};
+      for (const question of questions) {
+        questionMap[question[QuizQuestionKeys.questionID]] = {...question};
+      };
 
-    let questionMap = {};
-    for (const question of questions) {
-      questionMap[question[QuizQuestionKeys.questionID]] = {...question};
+      const updatedQuestions = listData.map(listItem => 
+        questionMap[listItem[ListOrderItemKeys.id]]
+      );
+
+      section[QuizSectionKeys.sectionQuestions    ] = updatedQuestions;
+      section[QuizSectionKeys.sectionQuestionCount] = updatedQuestions?.length;
+
+      onPressDone?.({quizSection: section});
+      await this.overlay.start();
     };
 
-    const updatedQuestions = listData.map(listItem => 
-      questionMap[listItem[ListOrderItemKeys.id]]
-    );
-
-    section[QuizSectionKeys.sectionQuestions    ] = updatedQuestions;
-    section[QuizSectionKeys.sectionQuestionCount] = updatedQuestions?.length;
-
-    onPressDone?.({quizSection: section});
-    await this.overlay.start();
     this.modalRef.setVisibility(false);
   };
 
   // ModalFooter: cancel button
   _handleOnPressButtonRight = async () => {
     const didChange = this.hasUnsavedChanges();
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
 
     if(didChange){

@@ -235,6 +235,11 @@ export class QuizCreateQuestionModal extends React.Component {
 
     // call callback
     onPressDelete && onPressDelete({question});
+
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
+
     // close modal
     this.modalRef.setVisibility(false);
   };
@@ -250,6 +255,9 @@ export class QuizCreateQuestionModal extends React.Component {
     const isValid = this.validate(false);
     if(!hasChanges && isEditing){
       // no changes, close modal
+      // disable modal swipe gesture
+      this.onModalAttemptDismiss = null;
+      await this.modalRef.setEnableSwipeGesture(false);
       this.modalRef.setVisibility(false);
 
     } else if (!isValid){
@@ -268,6 +276,10 @@ export class QuizCreateQuestionModal extends React.Component {
       this.validate(true);
 
     } else {
+      // disable modal swipe gesture
+      this.onModalAttemptDismiss = null;
+      await this.modalRef.setEnableSwipeGesture(false);
+
       // update question model
       this.updateQuestion();
 
@@ -286,9 +298,11 @@ export class QuizCreateQuestionModal extends React.Component {
 
   // ModalFooter: onPress cancel button
   _handleOnPressButtonRight = async () => {
-    const { componentId } = this.props;
     const didChange = this.hasUnsavedChanges();
 
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
     await Helpers.timeout(200);
 
     if(didChange){

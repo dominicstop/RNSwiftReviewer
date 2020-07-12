@@ -64,9 +64,11 @@ export class QuizSessionQuestionsModal extends React.Component {
     const nextQuizID = question       [QuizQuestionKeys.questionID];
     const currQuizID = currentQuestion[QuizQuestionKeys.questionID];
 
+    // disable modal swipe gesture
+    this.onModalAttemptDismiss = null;
+    await this.modalRef.setEnableSwipeGesture(false);
+
     if(currQuizID != nextQuizID){
-      // disable swipe gesture
-      this.modalRef.setIsModalInPresentation(true);
       onPressQuestion && onPressQuestion({answer, question, index});
     };
     
