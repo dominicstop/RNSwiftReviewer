@@ -13,21 +13,33 @@ export class BannerPill extends React.Component {
   static propTypes = {
     iconMap: PropTypes.object,
     offsetTop: PropTypes.number,
+    useFirstIconAsDefault: PropTypes.bool,
   };
 
   static defaultProps = {
     offsetTop: 0,
+    useFirstIconAsDefault: false
   };
 
   constructor(props){
     super(props);
 
+    const iconMap   = props.iconMap;
+    const iconKeys  = Object.keys(iconMap);
+    const iconCount = iconKeys.length;
+
+    this.iconCount = iconCount;
+    
     this.state = {
       mount: false,
-      iconKey: null,
       messageTitle: null,
       messageBody : null,
       bgColor: Colors.BLUE.A400,
+      iconKey: ((iconCount == 1 && props.useFirstIconAsDefault)
+        ? iconKeys[0]
+        : null
+      ),
+
     };
   };
 
@@ -47,28 +59,40 @@ export class BannerPill extends React.Component {
   };
 
   clear = async () => {
+    const { useFirstIconAsDefault } = this.props;
+
     await Helpers.setStateAsync(this, {
       mount: false,
-      iconKey: null,
       messageTitle: null,
       messageBody : null,
-      bgColor: Colors.BLUE.A400
+      bgColor: Colors.BLUE.A400,
+      ...((this.iconCount > 1 && !useFirstIconAsDefault)
+        && { iconKey: null }
+      ),
     });
   };
 
-  show = async ({iconKey, message, bgColor}) => {
+  show = async ({iconKey, message, bgColor, duration}) => {
+    const { useFirstIconAsDefault } = this.props;
     const state = this.state;
 
     if(!state.mount){
       await Helpers.setStateAsync(this, {
-        iconKey,
         mount: true,
         messageTitle: message,
         bgColor: (bgColor ?? Colors.BLUE.A400),
+        ...((this.iconCount > 1 && !useFirstIconAsDefault)
+          && { iconKey }
+        )
       });
 
+      // animate in
       await this.rootContainerRef.fadeInDown(300);
       await this.rootContainerRef.pulse(750);
+
+      duration && await Helpers.timeout(duration);
+
+      // animate out
       await this.rootContainerRef.fadeOutUp(500);
       await this.clear();
     };
