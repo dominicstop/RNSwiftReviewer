@@ -24,6 +24,7 @@ const PROP_KEYS = {
   // Modal Native Props: Flags/Booleans
   presentViaMount      : 'presentViaMount'      ,
   isModalBGBlurred     : 'isModalBGBlurred'     ,
+  enableSwipeGesture   : 'enableSwipeGesture'   ,
   isModalBGTransparent : 'isModalBGTransparent' ,
   isModalInPresentation: 'isModalInPresentation',
 
@@ -105,8 +106,10 @@ export class ModalView extends React.PureComponent {
     // Props: Bool/Flags --------------------------
     presentViaMount                : Proptypes.bool,
     isModalBGBlurred               : Proptypes.bool,
+    enableSwipeGesture             : Proptypes.bool,
     isModalBGTransparent           : Proptypes.bool,
     isModalInPresentation          : Proptypes.bool,
+    setEnableSwipeGestureFromProps : Proptypes.bool,
     setModalInPresentationFromProps: Proptypes.bool,
     // Props: String ------------------------
     modalTransitionStyle  : Proptypes.string,
@@ -115,7 +118,9 @@ export class ModalView extends React.PureComponent {
   };
 
   static defaultProps = {
+    enableSwipeGesture   : true ,
     isModalInPresentation: false,
+    setEnableSwipeGestureFromProps: false,
     setModalInPresentationFromProps: false,
   };
 
@@ -126,8 +131,9 @@ export class ModalView extends React.PureComponent {
     this._childRef = null;
 
     this.state = {
-      visible: false,
-      childProps: null,
+      visible   : false,
+      childProps: null ,
+      enableSwipeGesture   : props.enableSwipeGesture   ,
       isModalInPresentation: props.isModalInPresentation,
     };
   };
@@ -188,10 +194,21 @@ export class ModalView extends React.PureComponent {
     };
   };
 
-  setIsModalInPresentation = (isModalInPresentation) => {
+  setEnableSwipeGesture = async (enableSwipeGesture) => {
+    const { enableSwipeGesture: prevVal } = this.state;
+    if(prevVal != enableSwipeGesture){
+      await Helpers.setStateAsync(this, 
+        { enableSwipeGesture }
+      );
+    };
+  };
+
+  setIsModalInPresentation = async (isModalInPresentation) => {
     const { isModalInPresentation: prevVal } = this.state;
     if(prevVal != isModalInPresentation){
-      this.setState({ isModalInPresentation });
+      await Helpers.setStateAsync(this, 
+        { isModalInPresentation }
+      );
     };
   };
 
@@ -245,8 +262,9 @@ export class ModalView extends React.PureComponent {
     this.setState({ 
       visible   : false,
       childProps: null ,
-      isModalInPresentation:
-        this.props.isModalInPresentation
+      // reset state values from props
+      enableSwipeGesture   : this.props.enableSwipeGesture,
+      isModalInPresentation: this.props.isModalInPresentation
     });
   };
 
@@ -283,6 +301,9 @@ export class ModalView extends React.PureComponent {
       ...(this.props.setModalInPresentationFromProps && {
         [PROP_KEYS.isModalInPresentation]: state.isModalInPresentation
       }),
+      ...(this.props.setEnableSwipeGestureFromProps && {
+        [PROP_KEYS.enableSwipeGesture]: state.enableSwipeGesture
+      })
     };
 
     return(

@@ -135,6 +135,13 @@ class RCTModalView: UIView {
     }
   };
   
+  @objc var enableSwipeGesture: Bool = true {
+    didSet {
+      guard self.enableSwipeGesture != oldValue else { return };
+      self.enableSwipeGesture(self.enableSwipeGesture);
+    }
+  };
+  
   // control modal present/dismiss by mounting/unmounting the react subview
   // * true : the modal is presented/dismissed when the view is mounted/unmounted
   // * false: the modal is presented/dismissed by calling the functions from js
@@ -365,6 +372,14 @@ class RCTModalView: UIView {
     return self.getTopMostPresentedVC() === self.modalNVC;
   };
   
+  private func enableSwipeGesture(_ flag: Bool? = nil){
+    self.modalNVC
+        .presentationController?
+        .presentedView?
+        .gestureRecognizers?[0]
+        .isEnabled = flag ?? self.enableSwipeGesture;
+  };
+  
   private func presentModal(completion: completionResult = nil) {
     let hasWindow: Bool = (self.window != nil);
     
@@ -388,6 +403,7 @@ class RCTModalView: UIView {
     
     self.isPresented = true;
     topMostPresentedVC.present(modalNVC, animated: true) {
+      self.enableSwipeGesture();
       self.onModalShow?([:]);
       completion?(true, nil);
       
