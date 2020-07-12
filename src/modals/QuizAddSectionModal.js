@@ -16,6 +16,7 @@ import { ModalInputField    } from 'app/src/components/Modal/ModalInputField';
 import { ModalSection       } from 'app/src/components/Modal/ModalSection';
 import { ModalSectionButton } from 'app/src/components/Modal/ModalSectionButton';
 
+import { BannerPill         } from 'app/src/components/BannerPill';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ListItemBadge      } from 'app/src/components/ListItemBadge';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
@@ -346,6 +347,12 @@ export class QuizAddSectionModal extends React.Component {
         desc : 'Oops, please fill out the required forms to continue.'
       });
 
+      this.bannerPillRef.show({
+        bgColor: Colors.RED.A700,
+        message: "Fill out the required fields",
+        duration: 500,
+      });
+
       //animate shake
       this.inputFieldRefTitle.isValid(true);
       this.inputFieldRefDesc .isValid(true);
@@ -415,6 +422,14 @@ export class QuizAddSectionModal extends React.Component {
       </ModalFooter>
     );
 
+    const modalBanner = (
+      <BannerPill
+        ref={r => this.bannerPillRef = r}
+        useFirstIconAsDefault={true}
+        iconMap={iconMap}
+      />
+    );
+
     const overlay = (
       <ModalOverlayCheck
         ref={r => this.overlay = r}
@@ -424,7 +439,7 @@ export class QuizAddSectionModal extends React.Component {
     return (
       <ModalBody
         useKeyboardSpacer={true}
-        {...{modalHeader, modalFooter, overlay}}
+        {...{modalHeader, modalFooter, modalBanner, overlay}}
       >
         <ModalSection extraPaddingTop={true}>
           <ModalInputField
@@ -513,4 +528,15 @@ export class QuizAddSectionModal extends React.Component {
       </ModalBody>
     );
   };
+};
+
+const iconMap = {
+  "close-circle": (
+    <Ionicon
+      style={{marginTop: 3}}
+      name={'ios-close-circle'}
+      size={18}
+      color={'white'}
+    />
+  ),
 };

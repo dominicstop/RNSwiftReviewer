@@ -11,8 +11,10 @@ import { ModalSection      } from 'app/src/components/Modal/ModalSection';
 import { ModalInputField   } from 'app/src/components/Modal/ModalInputField';
 import { ModalOverlayCheck } from 'app/src/components/Modal/ModalOverlayCheck';
 
-import { ModalView } from 'app/src/components_native/ModalView';
+import { BannerPill     } from 'app/src/components/BannerPill';
 import { ListFooterIcon } from 'app/src/components/ListFooterIcon';
+
+import { ModalView } from 'app/src/components_native/ModalView';
 
 import { ROUTES } from 'app/src/constants/Routes';
 import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
@@ -20,6 +22,7 @@ import { SNPCreateQuiz, MNPCreateQuiz } from 'app/src/constants/NavParams';
 import   SvgIcon    from 'app/src/components/SvgIcon';
 import { SVG_KEYS } from 'app/src/components/SvgIcons';
 
+import * as Colors   from 'app/src/constants/Colors';
 import * as Validate from 'app/src/functions/Validate';
 import * as Helpers  from 'app/src/functions/helpers';
 
@@ -160,6 +163,12 @@ export class CreateQuizModal extends React.PureComponent {
         desc : 'Oops, please fill out the required forms to continue.'
       });
 
+      this.bannerPillRef.show({
+        bgColor: Colors.RED.A700,
+        message: "Fill out the required fields",
+        duration: 500,
+      });
+
       //animate shake
       this.inputFieldRefTitle.isValid(true);
       this.inputFieldRefDesc .isValid(true);
@@ -225,6 +234,14 @@ export class CreateQuizModal extends React.PureComponent {
       </ModalFooter>
     );
 
+    const modalBanner = (
+      <BannerPill
+        ref={r => this.bannerPillRef = r}
+        useFirstIconAsDefault={true}
+        iconMap={iconMap}
+      />
+    );
+
     const overlay = (
       <ModalOverlayCheck
         ref={r => this.overlay = r}
@@ -234,7 +251,7 @@ export class CreateQuizModal extends React.PureComponent {
     return (
       <ModalBody
         useKeyboardSpacer={true}
-        {...{modalHeader, modalFooter, overlay}}
+        {...{modalHeader, modalFooter, modalBanner, overlay}}
       >
         <ModalSection
           extraPaddingTop={true}
@@ -298,4 +315,15 @@ export class CreateQuizModal extends React.PureComponent {
       </ModalBody>
     );
   };
+};
+
+const iconMap = {
+  "close-circle": (
+    <Ionicon
+      style={{marginTop: 3}}
+      name={'ios-close-circle'}
+      size={18}
+      color={'white'}
+    />
+  ),
 };

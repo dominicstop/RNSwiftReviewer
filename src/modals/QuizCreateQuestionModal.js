@@ -15,6 +15,7 @@ import { ModalOverlayCheck   } from 'app/src/components/Modal/ModalOverlayCheck'
 import { ModalSectionHeader  } from 'app/src/components/Modal/ModalSectionHeader';
 import { ModalInputMultiline } from 'app/src/components/Modal/ModalInputMultiline';
 
+import { BannerPill         } from 'app/src/components/BannerPill';
 import { ListFooterIcon     } from 'app/src/components/ListFooterIcon';
 import { ImageTitleSubtitle } from 'app/src/components/ImageTitleSubtitle';
 
@@ -257,6 +258,12 @@ export class QuizCreateQuestionModal extends React.Component {
         desc : 'Oops, please fill out the required items to continue.'
       });
 
+      this.bannerPillRef.show({
+        bgColor: Colors.RED.A700,
+        message: "Fill out the required fields",
+        duration: 500,
+      });
+
       // animate shake
       this.validate(true);
 
@@ -398,6 +405,14 @@ export class QuizCreateQuestionModal extends React.Component {
       </ModalFooter>
     );
 
+    const modalBanner = (
+      <BannerPill
+        ref={r => this.bannerPillRef = r}
+        useFirstIconAsDefault={true}
+        iconMap={iconMap}
+      />
+    );
+
     const overlay = (
       <ModalOverlayCheck
         ref={r => this.overlay = r}
@@ -409,7 +424,7 @@ export class QuizCreateQuestionModal extends React.Component {
         stickyHeaderIndices={[0, 1, 3]}
         useKeyboardSpacer={true}
         animateAsGroup={true}
-        {...{modalHeader, modalFooter, overlay}}
+        {...{modalHeader, modalFooter, modalBanner, overlay}}
       >
         <ModalSection 
           showBorderTop={false}
@@ -481,4 +496,15 @@ export class QuizCreateQuestionModal extends React.Component {
       </ModalBody>
     );
   };
+};
+
+const iconMap = {
+  "close-circle": (
+    <Ionicon
+      style={{marginTop: 3}}
+      name={'ios-close-circle'}
+      size={18}
+      color={'white'}
+    />
+  ),
 };
