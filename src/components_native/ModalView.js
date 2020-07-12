@@ -25,6 +25,7 @@ const PROP_KEYS = {
   presentViaMount      : 'presentViaMount'      ,
   isModalBGBlurred     : 'isModalBGBlurred'     ,
   enableSwipeGesture   : 'enableSwipeGesture'   ,
+  hideNonVisibleModals : 'hideNonVisibleModals' ,
   isModalBGTransparent : 'isModalBGTransparent' ,
   isModalInPresentation: 'isModalInPresentation',
 
@@ -107,6 +108,7 @@ export class ModalView extends React.PureComponent {
     presentViaMount                : Proptypes.bool,
     isModalBGBlurred               : Proptypes.bool,
     enableSwipeGesture             : Proptypes.bool,
+    hideNonVisibleModals           : Proptypes.bool,
     isModalBGTransparent           : Proptypes.bool,
     isModalInPresentation          : Proptypes.bool,
     setEnableSwipeGestureFromProps : Proptypes.bool,

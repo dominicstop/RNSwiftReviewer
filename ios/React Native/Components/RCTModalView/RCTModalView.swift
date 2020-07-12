@@ -20,6 +20,11 @@ class RCTModalView: UIView {
   weak var delegate: RCTModalViewDelegate?;
   
   var isPresented: Bool = false;
+  var modalLevel : Int  = -1 {
+    didSet {
+      print("modalLevel: \(modalLevel)");
+    }
+  };
   
   private var modalVC     : RCTModalViewController!;
   private var modalNVC    : UINavigationController!;
@@ -135,12 +140,15 @@ class RCTModalView: UIView {
     }
   };
   
+  // disable swipe gesture recognizer for this modal
   @objc var enableSwipeGesture: Bool = true {
     didSet {
       guard self.enableSwipeGesture != oldValue else { return };
       self.enableSwipeGesture(self.enableSwipeGesture);
     }
   };
+  
+  @objc var hideNonVisibleModals: Bool = true;
   
   // control modal present/dismiss by mounting/unmounting the react subview
   // * true : the modal is presented/dismissed when the view is mounted/unmounted
@@ -330,7 +338,7 @@ class RCTModalView: UIView {
     bridge.uiManager.setSize(newBounds.size, for: reactSubview);
   };
   
-  private func getTopMostPresentedVC() -> UIViewController? {
+  private func getTopMostPresentedVC() -> (Int, UIViewController)? {
     guard let rootVC = UIWindow.key?.rootViewController else {
       #if DEBUG
       print("RCTModalView, getTopMostVC Error: could not get root VC. ");
@@ -338,15 +346,18 @@ class RCTModalView: UIView {
       return nil;
     };
     
-    // climb the vc hierarchy to find the topmost presented vc
+    var index = 1;
     var topmostVC = rootVC;
+    
+    // climb the vc hierarchy to find the topmost presented vc
     while topmostVC.presentedViewController != nil {
       if let parent = topmostVC.presentedViewController {
+        index += 1;
         topmostVC = parent;
       };
     };
     
-    return topmostVC;
+    return (index, topmostVC);
   };
   
   private func getPresentedVCList() -> [UIViewController] {
@@ -369,7 +380,10 @@ class RCTModalView: UIView {
   };
   
   private func isModalInFocus() -> Bool {
-    return self.getTopMostPresentedVC() === self.modalNVC;
+    guard let (_, vc) = self.getTopMostPresentedVC()
+      else { return false };
+    
+    return vc === self.modalNVC;
   };
   
   private func enableSwipeGesture(_ flag: Bool? = nil){
@@ -380,11 +394,21 @@ class RCTModalView: UIView {
         .isEnabled = flag ?? self.enableSwipeGesture;
   };
   
+  private func setIsHiddenForViewBelowLevel(_ level: Int, isHidden: Bool){
+    let presentedVCList = self.getPresentedVCList();
+    
+    for (index, vc) in presentedVCList.enumerated() {
+      if index < level {
+        vc.view.isHidden = isHidden;
+      };
+    };
+  };
+  
   private func presentModal(completion: completionResult = nil) {
     let hasWindow: Bool = (self.window != nil);
     
     guard (hasWindow && !self.isPresented),
-      let topMostPresentedVC = self.getTopMostPresentedVC()
+      let (index, topMostPresentedVC) = self.getTopMostPresentedVC()
     else {
       #if DEBUG
       print("RCTModalView, presentModal: guard check failed");
@@ -401,8 +425,14 @@ class RCTModalView: UIView {
     print("RCTModalView, presentModal: Start - for reactTag: \(self.reactTag ?? -1)");
     #endif
     
+    self.modalLevel  = index;
     self.isPresented = true;
+    
     topMostPresentedVC.present(modalNVC, animated: true) {
+      if self.hideNonVisibleModals {
+        self.setIsHiddenForViewBelowLevel(self.modalLevel - 1, isHidden: true);
+      };
+      
       self.enableSwipeGesture();
       self.onModalShow?([:]);
       completion?(true, nil);
@@ -442,6 +472,10 @@ class RCTModalView: UIView {
     print("RCTModalView, dismissModal: Start - for reactTag: \(self.reactTag ?? -1)");
     #endif
     
+    if self.hideNonVisibleModals {
+      self.setIsHiddenForViewBelowLevel(self.modalLevel, isHidden: false);
+    };
+    
     self.isPresented = false;
     presentedVC.dismiss(animated: true){
       self.onModalDismiss?([:]);
@@ -469,6 +503,10 @@ class RCTModalView: UIView {
 extension RCTModalView: UIAdaptivePresentationControllerDelegate {
     
   func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+    if self.hideNonVisibleModals {
+      self.setIsHiddenForViewBelowLevel(self.modalLevel, isHidden: false);
+    };
+    
     self.onModalWillDismiss?([:]);
     
     #if DEBUG
