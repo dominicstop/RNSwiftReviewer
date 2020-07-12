@@ -42,7 +42,7 @@ function compareArrays(arr1 = [], arr2 = []){
 };
 
 
-export class ListOrderView extends React.PureComponent {
+export class ListOrderView extends React.Component {
   constructor(props){
     super(props);
 
