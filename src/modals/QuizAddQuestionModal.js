@@ -268,7 +268,8 @@ export class QuizAddQuestionModal extends React.Component {
 
   // QuizAddQuestionEditListModal: confirm changes
   _handleEditListModalOnPressDone = ({quizSection}) => {
-    this.setState({ ...quizSection });
+    this.quizSection.values = { ...quizSection };
+    this.setState({ ...this.quizSection.values });
   };
 
   // QuizCreateQuestionModal - isEditing: false
