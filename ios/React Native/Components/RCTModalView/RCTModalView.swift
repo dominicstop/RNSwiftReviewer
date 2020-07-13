@@ -427,6 +427,7 @@ class RCTModalView: UIView {
     
     self.modalLevel  = index;
     self.isPresented = true;
+    self.enableSwipeGesture(false);
     
     topMostPresentedVC.present(modalNVC, animated: true) {
       if self.hideNonVisibleModals {
@@ -456,7 +457,7 @@ class RCTModalView: UIView {
     
     let isModalInFocus = self.isModalInFocus();
     
-    guard isModalInFocus && self.allowModalForceDismiss else {
+    guard isModalInFocus, self.allowModalForceDismiss else {
       #if DEBUG
       print("RCTModalView, dismissModal failed: Modal not in focus");
       #endif
@@ -477,6 +478,8 @@ class RCTModalView: UIView {
     };
     
     self.isPresented = false;
+    self.enableSwipeGesture(false);
+    
     presentedVC.dismiss(animated: true){
       self.onModalDismiss?([:]);
       completion?(true, nil);
@@ -484,14 +487,6 @@ class RCTModalView: UIView {
       #if DEBUG
       print("RCTModalView, dismissModal: Finished");
       #endif
-      
-      if let reactSubview = self.modalVC.reactView {
-        #if DEBUG
-        print("RCTModalView, dismissModal: Removing React Subview");
-        #endif
-        
-        self.removeReactSubview(reactSubview);
-      };
     };
   };
 };
@@ -521,6 +516,7 @@ extension RCTModalView: UIAdaptivePresentationControllerDelegate {
     
     self.onModalDismiss?([:]);
     self.onModalDidDismiss?([:]);
+    
     
     if let reactSubview = self.modalVC.reactView {
       #if DEBUG
