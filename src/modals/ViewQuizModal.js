@@ -65,7 +65,6 @@ export class ViewQuizModal extends React.Component {
     const sessions = props[MNPViewQuiz.sessions ] ?? [];
     const sections = quiz [QuizKeys.quizSections] ?? [];
 
-
     const detailsData = [
       { type: VQMSectionTypes.DETAILS }
     ];
@@ -87,14 +86,14 @@ export class ViewQuizModal extends React.Component {
         type     : VQMSectionTypes.SESSIONS,
         isEmpty  : false,
         isLoading: false,
-        session,
+        session, sessionCount
       }))
     );
 
     return ([
       { type: VQMSectionTypes.DETAILS , data: detailsData },
       { type: VQMSectionTypes.SECTIONS, data: sectionData },
-      { type: VQMSectionTypes.SESSIONS, data: sessionData },
+      { type: VQMSectionTypes.SESSIONS, data: sessionData, sessionCount },
     ]);
   };
 
@@ -200,6 +199,7 @@ export class ViewQuizModal extends React.Component {
         <ModalSectionHeader
           title={'Quiz Details'}
           subtitle={`Information about this quiz`}
+          
           // diff style bc it's first
           topOverflow={true}
           showTopBorder={false}
@@ -227,6 +227,7 @@ export class ViewQuizModal extends React.Component {
         <ModalSectionHeader
           title={'Quiz Sessions'}
           subtitle={`Your previous session history`}
+          footnote={`(${section.sessionCount} ${Helpers.plural('item', section.sessionCount)})`}
           titleIcon={(
             <Ionicon
               name={'ios-albums'}

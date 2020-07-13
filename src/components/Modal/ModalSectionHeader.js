@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     ...iOSUIKit.subheadObject,
     color: Colors.GREY[700],
   },
+  textFootnote: {
+    color: Colors.GREY[500],
+  },
 });
 
 // used in conjuction w/ components/ModalSection
@@ -65,6 +68,7 @@ export class ModalSectionHeader extends React.PureComponent {
   static propTypes = {
     title        : PropTypes.string,
     subtitle     : PropTypes.string,
+    footnote     : PropTypes.string,
     titleIcon    : PropTypes.element,
     topOverflow  : PropTypes.bool,
     showTopBorder: PropTypes.bool,
@@ -72,6 +76,7 @@ export class ModalSectionHeader extends React.PureComponent {
 
   static defaultProps = {
     title: 'Section Title',
+    footnote: null,
     showTopBorder: true,
     topOverflow: false,
   };
@@ -129,6 +134,11 @@ export class ModalSectionHeader extends React.PureComponent {
               {props.subtitle && (
                 <Text style={styles.textSubtitle}>
                   {props.subtitle}
+                  {props.footnote && (
+                    <Text style={styles.textFootnote}>
+                      {" " + props.footnote}
+                    </Text>
+                  )}
                 </Text>
               )}
             </View>
