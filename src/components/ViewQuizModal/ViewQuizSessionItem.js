@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Dimensions } from 'react-native';
+import PropTypes from 'prop-types';
 
 import moment         from 'moment';
 import Feather        from 'react-native-vector-icons/Feather';
@@ -75,6 +76,13 @@ class ScoreBar extends React.Component {
 };
 
 export class  ViewQuizSessionItem extends React.Component {
+  static propTypes = {
+    index    : PropTypes.number, // list item placement
+    session  : PropTypes.object, // QuizSession Object
+    isEmpty  : PropTypes.bool  , // use _renderEmpty
+    isLoading: PropTypes.bool  , // use _renderLoading
+  };
+
   static styles = StyleSheet.create({
     rootContainer: {
       paddingHorizontal: 12,
@@ -84,6 +92,13 @@ export class  ViewQuizSessionItem extends React.Component {
       borderBottomColor: 'rgba(0,0,0,0.2)',
     },
     rootContainerEmpty: {
+      paddingVertical: 25,
+      paddingHorizontal: 13,
+    },
+    rootContainerLoading: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
       paddingVertical: 25,
       paddingHorizontal: 13,
     },
@@ -140,10 +155,16 @@ export class  ViewQuizSessionItem extends React.Component {
     detailTableContainer: {
       marginVertical: 3
     },
+    loadingText: {
+      ...iOSUIKit.subheadObject,
+      ...sanFranciscoWeights.semibold,
+      color: Colors.BLUE.A700,
+      marginLeft: 10,
+    },
   });
 
   _renderEmpty(){
-    const { styles } =  ViewQuizSessionItem;
+    const { styles } = ViewQuizSessionItem;
 
     return (
       <ModalSection
@@ -157,6 +178,26 @@ export class  ViewQuizSessionItem extends React.Component {
           title={"No Sessions to show"}
           subtitle={"Oops, looks like you haven't taken this quiz yet. You can take this quiz by tapping the \"Start Quiz\" button."}
         />
+      </ModalSection>
+    );
+  };
+
+  _renderLoading(){
+    const { styles } = ViewQuizSessionItem;
+
+    return (
+      <ModalSection
+        containerStyle={styles.rootContainerLoading}
+        showBorderTop={false}
+        hasMarginBottom={false}
+      >
+        <ActivityIndicator
+          color={Colors.BLUE.A700}
+          size={'small'}
+        />
+        <Text style={styles.loadingText}>
+          {'Loading Sessions....'}
+        </Text>
       </ModalSection>
     );
   };
@@ -263,10 +304,13 @@ export class  ViewQuizSessionItem extends React.Component {
   };
 
   render(){
-    const { isEmpty } = this.props;
+    const props = this.props;
 
-    return (isEmpty
-      ? this._renderEmpty()
+    return (
+      props.isEmpty  ? this._renderEmpty  () :
+      props.isLoading? this._renderLoading()
+
+      // default: not empty/loading
       : this._renderSession()
     );
   };

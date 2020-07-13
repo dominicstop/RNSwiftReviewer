@@ -193,7 +193,7 @@ export class QuizListItem extends React.PureComponent {
   _handleOnPress = async () => {
     const { quiz, index, onPressQuizItem } = this.props;
 
-    await this.rootContainerRef.pulse(300);
+    this.rootContainerRef.pulse(300);
     onPressQuizItem && onPressQuizItem({quiz, index});
   };
 

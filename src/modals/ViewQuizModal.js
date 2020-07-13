@@ -41,6 +41,14 @@ export class ViewQuizModal extends React.Component {
   static styles = StyleSheet.create({
   });
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      loading: true
+    };
+  };
+
   componentDidMount(){
     const { getModalRef } = this.props;
     if(getModalRef){
@@ -51,10 +59,12 @@ export class ViewQuizModal extends React.Component {
 
   getSections = () => {
     const props = this.props;
+    const state = this.state;
 
     const quiz     = props[MNPViewQuiz.quiz     ] ?? {};
     const sessions = props[MNPViewQuiz.sessions ] ?? [];
     const sections = quiz [QuizKeys.quizSections] ?? [];
+
 
     const detailsData = [
       { type: VQMSectionTypes.DETAILS }
@@ -64,11 +74,21 @@ export class ViewQuizModal extends React.Component {
       ({type: VQMSectionTypes.SECTIONS, section})
     );
 
-    const sessionData = ((sessions.length == 0)
-      ? [{ type: VQMSectionTypes.SESSIONS, isEmpty: true }]
-      : sessions.map(session => (
-        ({ type: VQMSectionTypes.SESSIONS, session })
-      ))
+    const sessionCount     = (sessions?.length ?? 0);
+    const isSessionEmpty   = (sessionCount == 0);
+    const isSessionLoading = (state.loading && sessionCount > 1);
+
+    const sessionData = (
+      (isSessionEmpty  )? [{ type: VQMSectionTypes.SESSIONS, isEmpty: true , isLoading: false }]:
+      (isSessionLoading)? [{ type: VQMSectionTypes.SESSIONS, isEmpty: false, isLoading: true  }]
+      
+      // default: not empty/loading
+      : sessions.map(session => ({
+        type     : VQMSectionTypes.SESSIONS,
+        isEmpty  : false,
+        isLoading: false,
+        session,
+      }))
     );
 
     return ([
@@ -128,6 +148,11 @@ export class ViewQuizModal extends React.Component {
   _handleOnPressCloseModal = () => {
     const { navigation } = this.props;
     navigation.navigate(ROUTES.appStackRoute);
+  };
+
+  // ModalView: Lifecycle
+  onModalShow = async () => {
+    this.setState({loading: false});
   };
 
   // ModalFooter: onPress "Start Quiz" button
@@ -247,8 +272,11 @@ export class ViewQuizModal extends React.Component {
 
   _renderItem = ({item, index, section}) => {
     const props = this.props;
-    const quiz  = props[MNPViewQuiz.quiz] ?? {};
+    const state = this.state;
 
+    const quiz = 
+      props[MNPViewQuiz.quiz] ?? {};
+    
     switch (section.type) {
       case VQMSectionTypes.DETAILS: return (
         <ViewQuizDetails
@@ -264,6 +292,7 @@ export class ViewQuizModal extends React.Component {
       case VQMSectionTypes.SESSIONS: return (
         <ViewQuizSessionItem
           isEmpty={item.isEmpty}
+          isLoading={state.loading}
           session={item.session}
           {...{index}}
         />
