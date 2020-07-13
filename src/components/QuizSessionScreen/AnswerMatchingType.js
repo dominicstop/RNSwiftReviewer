@@ -27,8 +27,8 @@ class InactiveButton extends React.PureComponent {
       backgroundColor: 'white',
       borderRadius: 10,
       //shadow
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
+      shadowColor: 'rgba(0,0,0,0.15)',
+      shadowOpacity: 1,
       shadowRadius: 1.41,
       shadowOffset: {
         width: 0,
@@ -89,8 +89,8 @@ class ActiveButton extends React.PureComponent {
       backgroundColor: 'white',
       borderRadius: 10,
       //shadow
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
+      shadowColor: 'rgba(0,0,0,0.15)',
+      shadowOpacity: 1,
       shadowRadius: 1.41,
       shadowOffset: {
         width: 0,

@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     // shadow
-    shadowColor: "#000",
-    shadowOpacity: 0.075,
+    shadowColor: 'rgba(0,0,0,0.075)',
+    shadowOpacity: 1,
     shadowRadius: 3.84,
   },
   blurBackground: {

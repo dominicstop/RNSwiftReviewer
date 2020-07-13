@@ -44,8 +44,8 @@ class TabBarItem extends React.Component {
       alignItems: 'center',
       justifyContent: 'center',
       //glow style
-      shadowColor: "white",
-      shadowOpacity: 0.25,
+      shadowColor: 'rgba(255,255,255,0.25)',
+      shadowOpacity: 1,
       shadowRadius: 10,
       shadowOffset: {
         width: 0,
@@ -65,8 +65,8 @@ class TabBarItem extends React.Component {
       paddingRight: 10,
       color: 'white',
       //glow style
-      shadowColor: "white",
-      shadowOpacity: 0.25,
+      shadowColor: 'rgba(255,255,255,0.25)',
+      shadowOpacity: 1,
       shadowRadius: 4,
       shadowOffset: {
         width: 0,
@@ -197,8 +197,8 @@ export class CustomTabBar extends React.Component {
       borderTopWidth: BORDER_WIDTH,
       borderTopColor: Helpers.hexToRGBA(Colors.BLUE[900], 0.75),
       //shadow
-      shadowColor: "#000",
-      shadowOpacity: 0.2,
+      shadowColor: 'rgba(0,0,0,0.22)',
+      shadowOpacity: 1,
       shadowRadius: 7,
       shadowOffset: {
         width: 0,

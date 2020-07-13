@@ -42,8 +42,8 @@ export class LargeTitleHeaderCard  extends React.Component {
     shadow: {
       //shadows
       paddingBottom: 5,
-      shadowColor: "#000",
-      shadowOpacity: 0.10,
+      shadowColor: 'rgba(0,0,0,0.10)',
+      shadowOpacity: 1,
       shadowRadius: 7,
       shadowOffset: {
         width: 0,

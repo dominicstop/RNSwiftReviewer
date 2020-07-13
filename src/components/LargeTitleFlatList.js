@@ -123,8 +123,8 @@ export class LargeTitleWithSnap extends React.PureComponent {
         { backgroundColor: 'yellow' }
       ),
       //glow
-      shadowColor: "white",
-      shadowOpacity: 0.15,
+      shadowColor: 'rgba(255,255,255,0.25)',
+      shadowOpacity: 1,
       shadowRadius: 8,
       shadowOffset: {
         width: 0,

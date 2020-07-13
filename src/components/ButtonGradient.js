@@ -71,8 +71,8 @@ export class ButtonGradient extends React.PureComponent {
       margin: 10,
     },
     shadow: {
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
+      shadowColor: 'rgba(0,0,0,0.15)',
+      shadowOpacity: 1,
       shadowRadius: 3.5,
       shadowOffset: {
         width: 1,
@@ -80,8 +80,8 @@ export class ButtonGradient extends React.PureComponent {
       },
     },
     iconContainer: {
-      shadowColor: "white",
-      shadowOpacity: 0.15,
+      shadowColor: 'rgba(255,255,255,0.15)',
+      shadowOpacity: 1,
       shadowRadius: 8,
       shadowOffset: {
         width: 0,
@@ -166,10 +166,10 @@ export class ButtonGradient extends React.PureComponent {
 
     return(
       <Fragment>
-        {props.showIcon && (
-          <View style={[styles.iconContainer, props.iconContainerStyle, iconContainerStyle]}>
-            {props.leftIcon}
-          </View>
+        {props.showIcon && props.leftIcon && (
+          React.cloneElement(props.leftIcon, {
+            style: [styles.iconContainer, props.iconContainerStyle, iconContainerStyle]
+          })
         )}
         <View/>
         {this._renderMiddle()}

@@ -26,8 +26,8 @@ export class QuizQuestionItem extends React.Component {
       margin: 10,
       borderRadius: 15,
       // shadow
-      shadowColor: "#000",
-      shadowOpacity: 0.3,
+      shadowColor: 'rgba(0,0,0,0.3)',
+      shadowOpacity: 1,
       shadowRadius: 3.84,
       shadowOffset: {
         width: 0,

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { iOSUIKit, sanFranciscoWeights } from 'react-native-typography';
 
 import * as Colors  from 'app/src/constants/Colors';
+import * as Helpers from 'app/src/functions/helpers';
 
 
 export class DetailPill extends React.Component {
@@ -120,18 +121,18 @@ const styles = StyleSheet.create({
     ...iOSUIKit.subheadEmphasizedObject,
     ...sanFranciscoWeights.semibold,
     color: 'white',
-    shadowColor: 'white', 
+    shadowColor: 'rgba(255,255,255,0.5)', 
+    shadowOpacity: 1,
     shadowRadius: 7, 
-    shadowOpacity: 0.5,
     shadowOffset:{  
       width: 1,  
       height: 4,  
     }, 
   },
   glow: {
-    shadowColor: Colors.BLUE.A400, 
+    shadowColor: Helpers.hexToRGBA(Colors.BLUE.A400, 0.2), 
+    shadowOpacity: 1,
     shadowRadius: 5, 
-    shadowOpacity: 0.2,
     shadowOffset:{  
       width: 1,  
       height: 4,  

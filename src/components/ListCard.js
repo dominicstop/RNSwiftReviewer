@@ -14,12 +14,12 @@ class ListCardComp extends React.PureComponent {
       paddingBottom: 13,
       borderRadius: 10,
       //shadow style
-      shadowColor: "#000",
+      shadowColor: 'rgba(0,0,0,0.23)',
       shadowOffset: {
         width: 0,
         height: 2,
       },
-      shadowOpacity: 0.23,
+      shadowOpacity: 1,
       shadowRadius: 2.62,
     },
   });

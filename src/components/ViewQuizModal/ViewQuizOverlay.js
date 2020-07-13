@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // shadow
-    shadowColor: "#000",
+    shadowColor: 'rgba(0,0,0,0.23)',
+    shadowOpacity: 1,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.23,
     shadowRadius: 2.62,
   },
   overlay: {

@@ -45,8 +45,8 @@ export class ModalFooterButton extends React.PureComponent {
       marginTop: 12,
       marginBottom: (12 + INSET_BOTTOM),
       //shadow
-      shadowColor: "#000",
-      shadowOpacity: 0.4,
+      shadowColor: 'rgba(0,0,0,0.4)',
+      shadowOpacity: 1,
       shadowRadius: 3,
       shadowOffset: {
         width: 0,
@@ -71,8 +71,8 @@ export class ModalFooterButton extends React.PureComponent {
     buttonIcon: {
       opacity: 0.9,
       //glow
-      shadowColor: "white",
-      shadowOpacity: 0.25,
+      shadowColor: 'rgba(255,255,255,0.25)',
+      shadowOpacity: 1,
       shadowRadius: 3,
     },
     buttonTextContainer: {
@@ -82,8 +82,8 @@ export class ModalFooterButton extends React.PureComponent {
       ...iOSUIKit.subheadEmphasizedObject,
       color: 'white',
       //glow
-      shadowColor: "white",
-      shadowOpacity: 0.25,
+      shadowColor: 'rgba(255,255,255,0.25)',
+      shadowOpacity: 1,
       shadowRadius: 3,
     },
     textButtonSubtitle: {

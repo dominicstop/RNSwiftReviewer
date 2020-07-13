@@ -149,12 +149,12 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 20,
     // shadow
-    shadowColor: "#000",
-    shadowOpacity: 0.20,
+    shadowColor: 'rgba(0,0,0,0.25)',
+    shadowOpacity: 1,
     shadowRadius: 1.41,
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
   },
   textContainer: {
