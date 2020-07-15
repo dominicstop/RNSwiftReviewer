@@ -34,6 +34,12 @@
 		88D3B2DA24B3E80F000323D1 /* Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2D924B3E80E000323D1 /* Unwrap.swift */; };
 		88D3B2DC24B950BD000323D1 /* RCTModalViewModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2DB24B950BC000323D1 /* RCTModalViewModule.swift */; };
 		88D3B2DE24B951DD000323D1 /* RCTModalViewModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B2DD24B951DD000323D1 /* RCTModalViewModule.m */; };
+		88D3B31224BF7E1B000323D1 /* RCTContextMenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B30E24BF7E1B000323D1 /* RCTContextMenuManager.m */; };
+		88D3B31324BF7E1B000323D1 /* RCTContextMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B30F24BF7E1B000323D1 /* RCTContextMenuView.swift */; };
+		88D3B31424BF7E1B000323D1 /* RCTContextMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B31024BF7E1B000323D1 /* RCTContextMenuManager.swift */; };
+		88D3B31524BF7E1B000323D1 /* RCTMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B31124BF7E1B000323D1 /* RCTMenuItem.swift */; };
+		88D3B31824BF7E54000323D1 /* UIMenuElement+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B31624BF7E53000323D1 /* UIMenuElement+Helpers.swift */; };
+		88D3B31924BF7E54000323D1 /* UIMenuOptions+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3B31724BF7E54000323D1 /* UIMenuOptions+Helpers.swift */; };
 		A683E433441EE504DC6E2762 /* libPods-RNSwiftReviewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +105,12 @@
 		88D3B2D924B3E80E000323D1 /* Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unwrap.swift; sourceTree = "<group>"; };
 		88D3B2DB24B950BC000323D1 /* RCTModalViewModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCTModalViewModule.swift; sourceTree = "<group>"; };
 		88D3B2DD24B951DD000323D1 /* RCTModalViewModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTModalViewModule.m; sourceTree = "<group>"; };
+		88D3B30E24BF7E1B000323D1 /* RCTContextMenuManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTContextMenuManager.m; sourceTree = "<group>"; };
+		88D3B30F24BF7E1B000323D1 /* RCTContextMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTContextMenuView.swift; sourceTree = "<group>"; };
+		88D3B31024BF7E1B000323D1 /* RCTContextMenuManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTContextMenuManager.swift; sourceTree = "<group>"; };
+		88D3B31124BF7E1B000323D1 /* RCTMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTMenuItem.swift; sourceTree = "<group>"; };
+		88D3B31624BF7E53000323D1 /* UIMenuElement+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIMenuElement+Helpers.swift"; sourceTree = "<group>"; };
+		88D3B31724BF7E54000323D1 /* UIMenuOptions+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIMenuOptions+Helpers.swift"; sourceTree = "<group>"; };
 		91EF40DAF9DBEE07120A67D2 /* libPods-RNSwiftReviewer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSwiftReviewer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B14B87BA8B741BDBEA87686 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		9B2045AEA8644F168D329C17 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -237,6 +249,8 @@
 		88C542E224AB140800DCDF15 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				88D3B31624BF7E53000323D1 /* UIMenuElement+Helpers.swift */,
+				88D3B31724BF7E54000323D1 /* UIMenuOptions+Helpers.swift */,
 				88C542E324AB140800DCDF15 /* UIModalTransitionStyle+Helpers.swift */,
 				88C542E524AB140800DCDF15 /* UIBlurEffect+Helpers.swift */,
 				88C542E624AB140800DCDF15 /* UIView+Helpers.swift */,
@@ -259,6 +273,7 @@
 		88C542EC24AB140A00DCDF15 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				88D3B30D24BF7E1B000323D1 /* RCTContextMenu */,
 				88D3B2CB24B3E779000323D1 /* RCTListOrder */,
 				88C5430324AB140A00DCDF15 /* RCTModalView */,
 			);
@@ -316,6 +331,17 @@
 				88D3B2D924B3E80E000323D1 /* Unwrap.swift */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		88D3B30D24BF7E1B000323D1 /* RCTContextMenu */ = {
+			isa = PBXGroup;
+			children = (
+				88D3B30E24BF7E1B000323D1 /* RCTContextMenuManager.m */,
+				88D3B30F24BF7E1B000323D1 /* RCTContextMenuView.swift */,
+				88D3B31024BF7E1B000323D1 /* RCTContextMenuManager.swift */,
+				88D3B31124BF7E1B000323D1 /* RCTMenuItem.swift */,
+			);
+			path = RCTContextMenu;
 			sourceTree = "<group>";
 		};
 		F3A6B306DEB7ACF539C5CF4D /* Pods */ = {
@@ -622,22 +648,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88D3B31424BF7E1B000323D1 /* RCTContextMenuManager.swift in Sources */,
 				88D3B2DA24B3E80F000323D1 /* Unwrap.swift in Sources */,
+				88D3B31324BF7E1B000323D1 /* RCTContextMenuView.swift in Sources */,
 				88C5431324AB140A00DCDF15 /* UIView+Helpers.swift in Sources */,
 				88C5432924AB140B00DCDF15 /* RCTModalViewDelegate.swift in Sources */,
 				88D3B2D524B3E779000323D1 /* RCTListOrderViewProxy.swift in Sources */,
 				88D3B2D324B3E779000323D1 /* RCTListOrderViewManager.m in Sources */,
 				88C5431624AB140A00DCDF15 /* KeyWindow+Helpers.swift in Sources */,
 				88C5432C24AB140B00DCDF15 /* RCTModalViewController.swift in Sources */,
+				88D3B31824BF7E54000323D1 /* UIMenuElement+Helpers.swift in Sources */,
 				88D3B2D224B3E779000323D1 /* RCTListOrderModel.swift in Sources */,
+				88D3B31924BF7E54000323D1 /* UIMenuOptions+Helpers.swift in Sources */,
 				88C5431024AB140A00DCDF15 /* UIModalTransitionStyle+Helpers.swift in Sources */,
 				88C542E124AA5CAD00DCDF15 /* AppDelegate.swift in Sources */,
+				88D3B31524BF7E1B000323D1 /* RCTMenuItem.swift in Sources */,
 				88C5431124AB140A00DCDF15 /* RCTSwiftLog.m in Sources */,
 				88D3B2D424B3E779000323D1 /* RCTListOrderViewManager.swift in Sources */,
 				88C5431424AB140A00DCDF15 /* RCTLog.swift in Sources */,
 				88C5432D24AB140B00DCDF15 /* RCTModalViewManager.m in Sources */,
 				88D3B2DC24B950BD000323D1 /* RCTModalViewModule.swift in Sources */,
 				88C5432824AB140A00DCDF15 /* RCTModalView.swift in Sources */,
+				88D3B31224BF7E1B000323D1 /* RCTContextMenuManager.m in Sources */,
 				88D3B2D124B3E779000323D1 /* SwiftUIListOrder.swift in Sources */,
 				88C5432A24AB140B00DCDF15 /* RCTModalViewManager.swift in Sources */,
 				88D3B2DE24B951DD000323D1 /* RCTModalViewModule.m in Sources */,
